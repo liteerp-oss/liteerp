@@ -25,12 +25,12 @@ RUN if getent group ${GID} >/dev/null 2>&1; then \
       useradd -m -u ${UID} -g www -s /bin/bash www; \
       group_name=www; \
     fi && \
-    # --- PHẦN SỬA CHO APACHE ---
-    # Thay đổi user chạy Apache từ www-data sang www (UID 1000)
+    # --- APACHE MODIFICATIONS ---
+    # Change Apache user from www-data to www (UID 1000)
     sed -i "s/export APACHE_RUN_USER=www-data/export APACHE_RUN_USER=www/g" /etc/apache2/envvars && \
     sed -i "s/export APACHE_RUN_GROUP=www-data/export APACHE_RUN_GROUP=${group_name}/g" /etc/apache2/envvars
 
-# Ngắt lệnh RUN phía trên (không còn dấu && \) và bắt đầu lệnh WORKDIR mới
+# End previous RUN block; switch to new WORKDIR.
 WORKDIR /var/www/html
 
 #
