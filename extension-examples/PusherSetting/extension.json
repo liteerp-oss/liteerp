@@ -1,0 +1,13 @@
+{
+    "directory": "PusherSetting",
+    "name": "Pusher Setting",
+    "version": "0.1.0",
+    "description": "Manage Pusher credentials and broadcasting options with a React UI.",
+    "verified": true,
+    "status": true,
+    "author": "LiteERP",
+    "icon": null,
+    "setting_link": "/dashboard/pusher-setting",
+    "email": null,
+    "support_version": "12.x"
+}
