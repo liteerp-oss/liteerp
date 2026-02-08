@@ -213,7 +213,7 @@ Basic environment configuration:
 
 Steps:
 1. `docker compose build && docker compose up -d`
-2. `docker exec -it LiteERP-app bash`
+2. `docker exec -it LiteERP-8.3 bash`
 3. `composer install`
 4. `php artisan app:setup`
 5. `php artisan app:create-admin {email} {password} {name}`

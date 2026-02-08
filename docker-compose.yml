@@ -1,28 +1,21 @@
-x-app-build: &app-build
-  build:
-    context: ./
-    dockerfile: './Dockerfile.server'
-    args:
-      UID: ${UID:-1000}
-      GID: ${GID:-1000}
-
 services:
-  app:
-    <<: *app-build
+  erpsoft:
     mem_limit: 2048m
     mem_reservation: 512M
-    container_name: '${APP_NAME}-app'
+    build: 
+      context: ./
+      dockerfile: './Dockerfile.server'
+    container_name: '${APP_NAME}-8.3'
     restart: 'always'
     ports:
       - ${APP_PORT}:80
     links: 
-      - db
-      - redis
-    volumes:
+      - database
+    volumes: 
       - ./app:/var/www/html
       - ./docker-config:/etc/apache2/sites-enabled
       - ./docker-config/php/php.ini:/usr/local/etc/php/conf.d/custom.ini
-  db:
+  database:
     mem_limit: 1024m
     mem_reservation: 128M
     build:
@@ -48,9 +41,9 @@ services:
     mem_reservation: 32M
     container_name: '${APP_NAME}-phpmyadmin'
     links:
-      - db
+      - database
     environment:
-      PMA_HOST: db
+      PMA_HOST: database
       PMA_PORT: 3306
       UPLOAD_LIMIT: 1000000
     ports:
@@ -64,30 +57,28 @@ services:
     ports:
       - ${REDIS_PORT}:6379
   scheduler:
-    <<: *app-build
     container_name: '${APP_NAME}-scheduler'
     mem_limit: 256m
     mem_reservation: 64M
+    build:
+      context: .
+      dockerfile: Dockerfile.server
     command: >
       sh -c "
       while [ ! -f storage/app/private/erp.installed ]; do
         echo 'Waiting for ERP installation...';
         sleep 10;
       done;
-      echo 'Waiting for Redis to be ready...';
-      sleep 5;
       echo 'Start schedule';
       php artisan schedule:work
       "
     restart: unless-stopped
     depends_on:
-      - app
-      - db
-      - redis
+      - erpsoft
+      - database
     links: 
-      - db
-      - redis
-    volumes:
+      - database
+    volumes: 
       - ./app:/var/www/html
       - ./docker-config:/etc/apache2/sites-enabled
       - ./docker-config/php/php.ini:/usr/local/etc/php/conf.d/custom.ini

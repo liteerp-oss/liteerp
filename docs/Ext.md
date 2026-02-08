@@ -51,7 +51,7 @@ How to contribute:
 
 ## Make new extension 
 
-- `docker exec -it LiteERP-app bash` and next run `php artisan make:extension "Test Ext" Test`
+- `docker exec -it LiteERP-8.3 bash` and next run `php artisan make:extension "Test Ext" Test`
 
 At here we have `Test Ext` is name of extension, and Test is directory. Directory has rules name no using space and special character. After this action you can seen new extension on dashboard or at directory `./app/extensions`
 
