@@ -6,7 +6,6 @@ use Illuminate\Support\ServiceProvider;
 use Core\Overview\Domain\Repositories\OverviewRepositoryInterface;
 use Core\Overview\Infrastructure\Repositories\EloquentOverviewRepository;
 use Core\Overview\Domain\Services\OverviewService;
-use Core\Overview\Infrastructure\Commands\OverviewCommand;
 use Core\Overview\Infrastructure\Services\OverviewServiceImpl;
 
 class OverviewServiceProvider extends ServiceProvider
@@ -23,9 +22,7 @@ class OverviewServiceProvider extends ServiceProvider
         $this->loadModuleRoutes();
         $this->loadModuleTranslations();
         if ($this->app->runningInConsole()) {
-            $this->commands([
-                OverviewCommand::class
-            ]);
+            $this->loadModuleCommands();
         }
     }
 
@@ -53,6 +50,37 @@ class OverviewServiceProvider extends ServiceProvider
         }
         if (file_exists("$routePath/web.php")) {
             $this->loadRoutesFrom("$routePath/web.php");
+        }
+    }
+
+    protected function loadModuleCommands(): void
+    {
+        $commandDir = __DIR__ . '/../../Console';
+        if (is_dir($commandDir)) {
+            $commandFiles = glob($commandDir . '/*.php');
+
+            if (!empty($commandFiles)) {
+                foreach ($commandFiles as $file) {
+                    require_once $file;
+                }
+
+                $parts = explode('\\', __NAMESPACE__);
+                array_pop($parts);
+                array_pop($parts);
+                $parts[] = 'Console';
+                $consoleNamespace = implode('\\', $parts);
+
+                $commandClasses = array_map(function ($file) use ($consoleNamespace) {
+                    $class = basename($file, '.php');
+                    return $consoleNamespace . "\\" . $class;
+                }, $commandFiles);
+
+                $commandClasses = array_values(array_filter($commandClasses));
+
+                if (!empty($commandClasses)) {
+                    $this->commands($commandClasses);
+                }
+            }
         }
     }
 }
