@@ -14,7 +14,7 @@ use Core\CategoryProduct\Application\DTOs\IndexCategoryProductRequest;
 class IndexQuery implements QueryInterface {
     function __construct(private HookDispatcher $hooks)
     {
-        
+
     }
     public function handle(array $data): array
     {
@@ -26,7 +26,7 @@ class IndexQuery implements QueryInterface {
         $hooks = $this->hooks->dispatch(
             new HookContext(
                 action: HookAction::INDEX,
-                phase: HookPhase::RESPONSE,
+                phase: HookPhase::QUERY,
                 timing: HookTiming::ON,
                 payload: [
                     'data' => $data,
