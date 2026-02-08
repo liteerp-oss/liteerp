@@ -53,23 +53,30 @@ class ActivityLogServiceProvider extends ServiceProvider
             $this->loadRoutesFrom("$routePath/web.php");
         }
     }
+
     protected function loadModuleCommands(): void
     {
-
-        if (is_dir(base_path('core'))) {
-            $commandFiles = glob(base_path('core') . '/*/Console/*.php');
+        $commandDir = __DIR__ . '/../../Console';
+        if (is_dir($commandDir)) {
+            $commandFiles = glob($commandDir . '/*.php');
 
             if (!empty($commandFiles)) {
                 foreach ($commandFiles as $file) {
                     require_once $file;
                 }
 
-                $commandClasses = array_map(function ($file) {
+                // Get current namespace: Core\Module\Infrastructure\Providers
+                $parts = explode('\\', __NAMESPACE__);
+                // Remove Infrastructure and Providers (last 2)
+                array_pop($parts);
+                array_pop($parts);
+                // Add Console
+                $parts[] = 'Console';
+                $consoleNamespace = implode('\\', $parts);
+
+                $commandClasses = array_map(function ($file) use ($consoleNamespace) {
                     $class = basename($file, '.php');
-                    $parts = explode(DIRECTORY_SEPARATOR, $file);
-                    $moduleIndex = array_search('core', $parts);
-                    $module = isset($parts[$moduleIndex + 1]) ? $parts[$moduleIndex + 1] : null;
-                    return $module ? "Core\{$module}\Console\{$class}" : null;
+                    return $consoleNamespace . "\\" . $class;
                 }, $commandFiles);
 
                 $commandClasses = array_values(array_filter($commandClasses));
