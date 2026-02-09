@@ -203,6 +203,8 @@ This is how LiteERP stays stable.
 * Config files are located in `/core/{Module}/Infrastructure/config`
 * Do not hard-code text in backend or frontend
 
+Please consider how to use use translation for frontend at <a href="./docs/FE.md">Frontend document</a>
+
 ---
 
 ## 🤝 Code of Conduct
