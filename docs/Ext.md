@@ -59,6 +59,210 @@ At here we have `Test Ext` is name of extension, and Test is directory. Director
 
 - If you need do anything relate to core module then please use `service` no reuse `usecase` and `model`. Maybe you will seen a some place use `Model` of core module on `Extension Example` but it's old and in that we have not yet make this rule.
 
+- And you shuold't use `AuthencationService` because this is verify, it don't need Extension.
+
+# How to make new extension
+
+LiteERP has support generate new Extension by command and this document will talk to you know how to make a extension to you wanna.
+
+### Generate new extension 
+
+To generate new extension you need run: 
+
+    - 1. open terminal and run `docker exec -it LiteERP-app bash`
+    - 2. Continue run `php artisan make:extension "Your extension name" Test. 
+    
+At here Test is directory of extension. After that you will see your extension appear at `extensions/Test`
+
+
+### Dashboard menu?
+
+This only way to you add new menu into dashboard. If you can add menu into dashboard then you has been knew how to hook working? Consider Extensions example to understand all, we has been created a lots of example Extension, please consider here <a href="../extension-examples">Extension example</a>
+
+#### How to register new menu? 
+
+To display new menu on sidebar dashboard you need use hook to register new menu. Example:
+
+        <?php
+
+        namespace Extensions\Hrm\Hooks;
+
+        use App\Supports\Hooks\HookContext;
+        use App\Contracts\Hooks\HookInterface;
+        use App\Supports\Hooks\HookAction;
+        use App\Supports\Hooks\HookPhase;
+        use App\Supports\Hooks\HookResult;
+        use App\Supports\Hooks\HookTiming;
+        use Core\BusinessRole\Infrastructure\Helpers\SupportUINav;
+        use Illuminate\Support\Facades\Cache;
+        use Illuminate\Support\Str;
+        class AddNavMenu implements HookInterface
+        {
+            private string $action = 'erp.hrm.index';
+            public static function supports(HookContext $context): bool
+            {
+                return $context->action === HookAction::INDEX
+                    && $context->phase === HookPhase::UI
+                    && $context->module === 'BusinessRole'
+                    && $context->timing === HookTiming::BEFORE;
+            }
+
+            public function handle(HookContext $context): HookResult
+            {
+                $nav = [
+                    ...$context->payload['nav'],
+                    SupportUINav::buildNavItem([
+                        'to'        => '/hrm',
+                        'link'      => null,
+                        'icon'      => "bi bi-person-workspace",
+                        'label'     => __("extension.hrm::messages.nav"),
+                        'ability'   => $this->action,
+                    ])
+                ];
+                return HookResult::pass([
+                    ...$context->payload,
+                    'roles' => [
+                        ...$context->payload['roles'],
+                        $this->action
+                    ],
+                    'nav' => $nav
+                ]);
+            }
+        }
+    
+#### How to register new menu with permission? 
+
+You can see new menu appear on dashboard sidebar, but if you need user permission:
+
+    public function __construct(private BusinessRoleService $businessRole){
+
+    }
+
+    $role = $this->businessRole>findOne([
+        'role_user_id' => $context->payload['user_id'],
+        'business_id' => $context->payload['business_id']
+    ])
+
+    $role = $this->businessRole->findOne([
+        'role_user_id' => $context->payload['user_id'],
+        'business_id' => $context->payload['business_id']
+    ]);
+
+
+    // $role->isAdmin()
+    // $role->isManager()
+    // $role->isSeller()
+    // $role->isAccountanter()
+    // $role->isWarehouseman()
+    // $role->isPurchaser()
+
+    
+    
+    if(!$role->isAdmin()){
+        return HookResult::pass([
+                ...$context->payload
+        ]); 
+    }
+
+On method handle you can check what's role user? Then implement your logic. Example if user is not admin then return `payload` come back `Hook` and no change anything.
+
+#### Load 
+
+You should add this class into provider to load into core, go to `Service Provider` your module and implement
+
+    public function register()
+    {
+        //
+        $this->app->tag(
+            \Extensions\Hrm\Hooks\AddNavMenu::class,
+            'liteerp.hooks'
+        );
+    }
+
+
+
+### Database 
+
+With database you can use like laravel but change `command line` to create migration file
+
+    - php artisan extension:make-migration Weather create_weather_table 
+
+At here `Weather` is directory Extension and `create_weather_table` is migration name and next: 
+
+    - php artisan migrate 
+
+Now you will seen your table appear on database and go to your extension folder also appear new file migration. LiteERP has support `phpmyadmin` you can visit here: 
+
+    - http://localhost:3310/ 
+
+And username and password on `.env` of root folder.
+
+### How to register new router
+
+Default if you don't need create a independent page, you only register <a href="../FE.md">React router</a> and add `Dashboard menu`. But if it is necessary, now we will create a new page and use Laravel router.
+
+
+#### Middleware 
+
+If you wanna use middleware, we have a some middleware default. We have two types token `personal token` and `business token`. `Personal token` is token login account and `business token` is token if access into business if that user has permission.
+
+Account middlewares:
+
+    - app.isLogged -> only check if user has logged
+    - app.isAdmin -> check user role is admin, this role is system admin role
+
+Business middlewares:
+
+    - business.admin -> check business admin 
+    - business.token -> check if has logged business 
+
+And we also one middleware support language:
+
+    - app.language -> use App::setLocale if header has `App-Language`
+
+And one middleware groups is `business` it is two middleware neccessary for business 
+
+    - app.language
+    - business.token
+
+## Create notification 
+
+To create notification please consider at here <a href="./Module.md">Module</a>.
+
+## Send email 
+
+To send email you can use `SendMailJob`, example: 
+
+    SendMailJob::dispatch($user_id,$subject,$message,$link)
+
+We have params:
+
+    - $user_id: (int) is id of user receive email 
+    - $subject: (string) is subject will send  
+    - $message: (string) is message send,
+    - $link: this is link to user take action
+
+If you wanna use muitiple languages then you need implement more one step.
+
+    public function __construct(private UserService $userService) {}
+
+    $user = $this->userService->findById($user_id); 
+
+    $message = __('Test language',[],$user->lang);
+
+
+## Consider Hook
+
+Please consider hook document to know what can you do?
+
+<a href="./Hook.md"> Hook Document </a>
+
+## Public your extension 
+
+Currently we have not marketplace, so you need copy extension into folder `extension-examples` and push on your branch as rule.
+
+But before you publish please consider rule for contributing <a href="../CONTRIBUTING.md">CONTRIBUTING</a>
+
 ## 📄 License
 
 This project is licensed under the **MIT License**.
