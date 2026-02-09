@@ -114,7 +114,8 @@ Send to all users has roles selected
             'entity_type' => string, // any entity type purchase , order , shipping ... env
             'entity_id' => int, // entity id 
             'chanels' => array<string> // db or mail  example ['db','mail']
-            'roles' => array<string> // all users has this role ['admin','manager']
+            'roles' => array<string> // all users has this role ['admin','manager'],
+            'message' => ''
     ]);
 
 Send to someone
@@ -126,5 +127,8 @@ Send to someone
             'type' => string, // create | delete | update | approved ... etc
             'entity_type' => string, // any entity type purchase , order , shipping ... env
             'entity_id' => int, // entity id 
-            'chanels' => array<string> // db or mail  example ['db','mail']
+            'chanels' => array<string> // db or mail  example ['db','mail'],
+            'message' => '' // if you use chanel db then shuold short message
     ]);
+
+With field `message` is optional for channel `db`, but if you use chanel `mail` then it is required to send message by email.
