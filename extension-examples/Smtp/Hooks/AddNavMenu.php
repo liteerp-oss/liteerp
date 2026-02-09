@@ -19,7 +19,7 @@ class AddNavMenu implements HookInterface
         return $context->action === HookAction::INDEX
             && $context->phase === HookPhase::UI
             && $context->module === 'BusinessRole'
-            && $context->timing === HookTiming::ON;
+            && $context->timing === HookTiming::BEFORE;
     }
 
     public function handle(HookContext $context): HookResult
