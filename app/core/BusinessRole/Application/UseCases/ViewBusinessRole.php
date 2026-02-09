@@ -23,16 +23,42 @@ class ViewBusinessRole {
         ]);
         $roles = config('businessrole.roles.' . $role->role);
         $nav = config('businessrole.nav');
-        $nav = SupportUINav::build($nav,$roles);
-        $index = $this->hooks->dispatch(
+        $hook = $this->hooks->dispatch(
+            new HookContext(
+                action: HookAction::INDEX,
+                phase: HookPhase::UI,
+                timing: HookTiming::BEFORE,
+                payload: [
+                    ...$data,
+                    'roles' => $roles,
+                    'nav' => $nav
+                ],
+                module: 'BusinessRole'
+            )
+        );
+        $hook['nav'] = SupportUINav::build($hook['nav'],$hook['roles']);
+        /**
+         * Hook Timing ON really not necessary but to old Extensions continue working we need stay
+         * And Maybe it will be remove on next version
+         */
+        $hook = $this->hooks->dispatch(
             new HookContext(
                 action: HookAction::INDEX,
                 phase: HookPhase::UI,
                 timing: HookTiming::ON,
                 payload: [
-                    ...$data,
-                    'roles' => $roles,
-                    'nav' => $nav
+                    ...$hook
+                ],
+                module: 'BusinessRole'
+            )
+        );
+        $index = $this->hooks->dispatch(
+            new HookContext(
+                action: HookAction::INDEX,
+                phase: HookPhase::UI,
+                timing: HookTiming::AFTER,
+                payload: [
+                    ...$hook
                 ],
                 module: 'BusinessRole'
             )
