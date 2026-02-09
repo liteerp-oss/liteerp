@@ -11,7 +11,7 @@ Route::prefix('/api')->middleware(['app.language'])->group(function () {
         Route::put('/forget-password', [AuthencationController::class,'forgetPassword']);
         Route::put('/reset-password', [AuthencationController::class,'resetPassword']);
     });
-    Route::prefix('authencation')->middleware(['isLogged'])->group(function(){
+    Route::prefix('authencation')->middleware(['app.isLogged'])->group(function(){
         Route::get('/profile', [AuthencationController::class,'profile']);
         Route::put('/update', [AuthencationController::class,'update']);
     });
