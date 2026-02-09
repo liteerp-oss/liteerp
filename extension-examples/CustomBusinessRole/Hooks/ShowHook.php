@@ -18,7 +18,7 @@ class ShowHook implements HookInterface
         return $context->action === HookAction::SHOW
                && $context->phase === HookPhase::RESPONSE
                && $context->module === 'BusinessRole'
-               && $context->timing === HookTiming::AFTER;
+               && $context->timing === HookTiming::BEFORE;
     }
 
     public function handle(HookContext $context): HookResult
