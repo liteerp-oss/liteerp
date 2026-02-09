@@ -22,10 +22,10 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         //
         $middleware->alias([
-            'isLogged' => IsLogged::class,
+            'app.isLogged' => IsLogged::class,
             'business.token' => BusinessToken::class,
-            'IsAdmin'   => IsAdmin::class,
-            'BusinessAdmin' => BusinessAdmin::class,
+            'app.isAdmin'   => IsAdmin::class,
+            'business.admin' => BusinessAdmin::class,
             'auth:sanctum' => EnsureFrontendRequestsAreStateful::class,
             'auth' => Authenticate::class,
             'app.language' => AppLanguage::class
