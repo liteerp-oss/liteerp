@@ -53,7 +53,8 @@ The Hook System is designed to:
 
 | Module           | Action                            | HookPhase              | Supported Hooks |
 |------------------|-----------------------------------|------------------------|-----------------|
-| Business Role    | Create/Update/Delete/Show         | HookPhase::RESPONSE    | Before, After   |
+| Business Role    | Create/Update/Delete/Show/Index   | HookPhase::RESPONSE    | Before, After   |
+| Business Role    | Index                             | HookPhase::UI          | Before, After   |
 | CategoryProduct  | Create/Update/Delete/Index/Show   | HookPhase::RESPONSE    | Before, After   |
 | CategoryProduct  | Index                             | HookPhase::QUERY       | ON              |
 | CategoryProduct  | Create/Update/Delete/Index/Show   | HookPhase::VALIDATE    | ON              |
