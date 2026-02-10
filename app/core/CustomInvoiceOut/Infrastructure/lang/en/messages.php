@@ -1,6 +1,6 @@
 <?php
 
 return [
-    'created' => 'CustomInvoiceOut created successfully!',
-    'deleted' => 'CustomInvoiceOut deleted successfully!',
+    'document_no_used' => 'Document number has already been used.',
+    'not_found' => 'Custom invoice not found.',
 ];

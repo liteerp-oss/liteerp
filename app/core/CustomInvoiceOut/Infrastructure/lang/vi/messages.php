@@ -1,6 +1,6 @@
 <?php
 
 return [
-    'created' => 'Create CustomInvoiceOut successfully!',
-    'deleted' => 'Delete CustomInvoiceOut successfully!',
+    'document_no_used' => 'Số chứng từ đã được sử dụng.',
+    'not_found' => 'Không tìm thấy hóa đơn xuất tùy chỉnh.',
 ];
