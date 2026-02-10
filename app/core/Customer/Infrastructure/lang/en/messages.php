@@ -1,6 +1,6 @@
 <?php
 
 return [
-    'created' => 'Customer created successfully!',
-    'deleted' => 'Customer deleted successfully!',
+    'not_found' => 'Not found customer',
+    'phone_used' => 'Number phone has been used',
 ];

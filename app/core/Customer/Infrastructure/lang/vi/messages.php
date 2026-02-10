@@ -1,6 +1,6 @@
 <?php
 
 return [
-    'created' => 'Tạo Customer thành công!',
-    'deleted' => 'Xoá Customer thành công!',
+    'not_found'  => 'Không tìm thấy khách hàng',
+    'phone_used' => 'Số điện thoại đã được sử dụng',
 ];

@@ -15,7 +15,7 @@ class CustomerServiceImpl implements CustomerService
     {
         $row = $this->repo->findByPhone($data);
         if ($row) {
-            throw new BadException(__("Number phone has been used"));
+            throw new BadException(__("customer::messages.phone_used"));
         }
         $entity = Customer::fromArray($data);
         return $this->repo->create($entity);
@@ -24,11 +24,11 @@ class CustomerServiceImpl implements CustomerService
     {
         $entity = $this->repo->findByPhone($data);
         if ($entity && $entity->id !== $data['id']) {
-            throw new BadException(__("Number phone has been used"));
+            throw new BadException(__("customer::messages.phone_used"));
         } else {
             $entity = $this->repo->findById($data);
             if (!$entity) {
-                throw new BadException(__("Not found data"));
+                throw new BadException(__("customer::messages.not_found"));
             }
             $entity->name = $data['name'] ?? $entity->name;
             $entity->contact_name = $data['contact_name'] ?? $entity->contact_name;
@@ -50,7 +50,7 @@ class CustomerServiceImpl implements CustomerService
     {
         $entity = $this->repo->findById($data);
         if (!$entity) {
-            throw new BadException(__("Not found data"));
+            throw new BadException(__("customer::messages.not_found"));
         }
         return $entity;
     }
@@ -58,7 +58,7 @@ class CustomerServiceImpl implements CustomerService
     {
         $entity = $this->repo->findById($data);
         if (!$entity) {
-            throw new BadException(__("Not found data"));
+            throw new BadException(__("customer::messages.not_found"));
         }
         return $this->repo->delete($entity);
     }
