@@ -14,11 +14,11 @@ class BusinessServiceImpl implements BusinessService
     public function create(array $data): Business
     {
         if($this->repo->findByName($data)) {
-            throw new BadException(__("Business name has been used"));
+            throw new BadException(__("business::messages.name_used"));
         }
         $entity = Business::fromArray($data);
         if($this->repo->checkExists($entity)) {
-            throw new BadException(__("Name and address has been used"));
+            throw new BadException(__("business::messages.name_address_used"));
         }
         return $this->repo->create($entity);
     }
@@ -28,14 +28,14 @@ class BusinessServiceImpl implements BusinessService
     }
     public function show(array $data): array | BadException
     {
-        return $this->repo->findByIdWithFullData($data) ?? throw new BadException(__("Not found business"));
+        return $this->repo->findByIdWithFullData($data) ?? throw new BadException(__("business::messages.not_found"));
     }
     public function update(array $data): Business
     {
         $entity = $this->repo->findByName($data);
         if($entity) {
             if($data['id'] !== $entity->id) {
-                throw new BadException(__("Business name has been used"));
+                throw new BadException(__("business::messages.name_used"));
             } 
         } else {
             $entity = $this->repo->findById($data);
