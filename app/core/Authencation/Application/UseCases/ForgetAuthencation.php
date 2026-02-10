@@ -29,8 +29,8 @@ class ForgetAuthencation
         ]));
         Event::dispatch('erp.notification.create', [
             'user_id' => $account->id,
-            'message' => __("This is email to reset password"),
-            'title'   => __("Reset password account"),
+            'message' => __("authencation::message.message_reset_password"),
+            'title'   => __("authencation::message.subject_verify_account"),
             'entity_type' => "users",
             'entity_id' => $account->id,
             'chanels' => ['mail'],

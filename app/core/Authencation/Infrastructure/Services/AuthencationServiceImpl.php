@@ -37,10 +37,10 @@ class AuthencationServiceImpl implements AuthencationService
         $entity = Authencation::fromArray($entity);
         $user = $this->repo->findByEmail($entity->email);
         if(!$user) {
-            throw new UnauthorizedException(__("Not found data"));
+            throw new UnauthorizedException(__("authencation.not_found"));
         }
         if(!Hash::check($entity->password,$user->password)) {
-            throw new UnauthorizedException(__("Not found data"));
+            throw new UnauthorizedException(__("authencation.not_found"));
         }
         $user->token = $this->repo->token($entity);
         return $user;
@@ -62,12 +62,12 @@ class AuthencationServiceImpl implements AuthencationService
         $entity = $this->repo->findByEmail($data['email']);
         if($entity) {
             if($entity->id !== $data['id']) {
-                throw new BadException(__("Email has been used"));
+                throw new BadException(__("authencation::messages.email_used"));
             } 
         } else {
             $entity = $this->repo->findById($data['id']);
             if(!$entity) {
-                throw new UnauthorizedException(__("Account is not exists"));
+                throw new UnauthorizedException(__("authencation::messages.not_found"));
             }
         }
         $entity->name = $data['name'] ?? $entity->name;
@@ -81,6 +81,6 @@ class AuthencationServiceImpl implements AuthencationService
     }
     public function findByEmail(array $data): Authencation|UnauthorizedException
     {
-        return $this->repo->findByEmail($data['email']) ?? throw new BadException(__("Not found account"));
+        return $this->repo->findByEmail($data['email']) ?? throw new BadException(__("authencation::messages.not_found"));
     }
 }

@@ -17,16 +17,16 @@ class UpdateAuthencation
     {
         $user = Auth::guard('sanctum')->user();
         if(!$user) {
-            throw new UnauthorizedException(__("You are not logged"));
+            throw new UnauthorizedException(__("authencation::messages.not_logged"));
         }
         if($dto->password && !$dto->new_password) {
-            throw new BadException(__("You shuold insert new password and keep empty password if you shuold do not change password"));
+            throw new BadException(__("authencation::messages.new_password_is_required"));
         }
         if(!$dto->password && $dto->new_password) {
-            throw new BadException(__("You shuold insert password"));
+            throw new BadException(__("authencation::messages.password_is_required"));
         }
         if($dto->password && !Hash::check($dto->password,$user->password)) {
-            throw new BadException(__("Password is not correctly"));
+            throw new BadException(__("authencation::messages.password_is_not_correctly"));
         }
         if($dto->new_password) {
             $dto->password = Hash::make($dto->new_password);

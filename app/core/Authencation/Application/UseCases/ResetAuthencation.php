@@ -25,8 +25,10 @@ class ResetAuthencation
         ]);
         Event::dispatch('erp.notification.create', [
             'user_id' => $account->id,
-            'message' => __("You has been changed to password ") . ' : ' . $newPassword,
-            'title'   => __("Security account"),
+            'message' => __("authencation::messages.changed_password",[
+                'password' => $newPassword
+            ]),
+            'title'   => __("authencation::messages.security_account"),
             'entity_type' => "users",
             'entity_id' => $account->id,
             'chanels' => ['mail'],

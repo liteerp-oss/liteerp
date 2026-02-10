@@ -16,7 +16,7 @@ class ProfileAuthencation
     {
         $user = Auth::guard('sanctum')->user();
         if(!$user) {
-            throw new UnauthorizedException(__("You are not logged"));
+            throw new UnauthorizedException(__("authencation::messages.not_logged"));
         }
         return $this->service->profile([
             'email'=> $user->email,
