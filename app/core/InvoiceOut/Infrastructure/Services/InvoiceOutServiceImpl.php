@@ -22,19 +22,19 @@ class InvoiceOutServiceImpl implements InvoiceOutService
     public function show(array $data): array|BadException
     {
         $row = $this->repo->findWithFullData($data);
-        if(!$row) {
-            throw new BadException(__("Not found  data"));
-        }
+            if(!$row) {
+                throw new BadException(__("invoiceout::messages.not_found"));
+            }
         return $row;
     }
     public function update(array $data): InvoiceOut|BadException
     {
         $entity = $this->repo->findById($data);
-        if(!$entity) {
-            throw new BadException(__("Not found data"));
-        }
+            if(!$entity) {
+                throw new BadException(__("invoiceout::messages.not_found"));
+            }
         if($entity->isApproved() && $entity->isApproved() !== $data['approved']) {
-            throw new BadException(__("Invoice has been approved, you can not change status"));
+                throw new BadException(__("invoiceout::messages.approved_cannot_change"));
         }
         $entity->document_no = $data['document_no'] ?? $entity->document_no;
         $entity->invoice_date = $data['invoice_date'] ?? $entity->invoice_date;
@@ -44,10 +44,8 @@ class InvoiceOutServiceImpl implements InvoiceOutService
         $entity->image = $data['image'] ?? $entity->image;
         $entity->amount_paid = $data['amount_paid'] ?? $entity->amount_paid;
         $entity->total = $data['total'] ?? $entity->total;
-        if(!$entity->checkAmountPaidValid()) {
-            throw new BadException(__("This invoice is partial payment, 
-                so you need insert amount paid. 
-                    But amount paid is not greater than or equal total value invoice"));
+            if(!$entity->checkAmountPaidValid()) {
+                throw new BadException(__("invoiceout::messages.partial_payment"));
         }
         if($entity->isPaid()) {
             // paid full money 
@@ -58,21 +56,23 @@ class InvoiceOutServiceImpl implements InvoiceOutService
     public function unApproved(array $data): InvoiceOut|BadException
     {
         $entity = $this->repo->findById($data);
-        if(!$entity) {
-            throw new BadException(__("Not found data"));
-        }
+            if(!$entity) {
+                throw new BadException(__("invoiceout::messages.not_found"));
+            }
         $entity->markUnApproved();
         return $this->repo->update($entity);
     }
     public function findById(array $data): InvoiceOut|BadException
     {
-        return $this->repo->findById($data) ?? throw new BadException(__("not found data"));
+        return $this->repo->findById($data) ?? throw new BadException(__("invoiceout::messages.not_found"));
+            return $this->repo->findById($data) ?? throw new BadException(__("invoiceout::messages.not_found"));
     }
     public function getByOrderId(array $data): ?InvoiceOut
     {
         return $this->repo->findByOrderId($data);
     }
     public function findByOrderId(array $data): InvoiceOut|BadException {
-        return $this->repo->findByOrderId($data) ?? throw new BadException(__("not found data"));
+        return $this->repo->findByOrderId($data) ?? throw new BadException(__("invoiceout::messages.not_found"));
+            return $this->repo->findByOrderId($data) ?? throw new BadException(__("invoiceout::messages.not_found"));
     }
 }
