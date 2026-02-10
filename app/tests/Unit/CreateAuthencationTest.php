@@ -69,8 +69,8 @@ class CreateAuthencationTest extends TestCase
             ->once()
             ->with('erp.notification.create', [
                 'user_id' => 1,
-                'message' => __("This is email to verify your account"),
-                'title' => __("Verify account"),
+                'message' => __("authencation::messages.message_verify_account"),
+                'title' => __("authencation::messages.subject_verify_account"),
                 'entity_type' => "users",
                 'entity_id' => 1,
                 'chanels' => ['mail'],
