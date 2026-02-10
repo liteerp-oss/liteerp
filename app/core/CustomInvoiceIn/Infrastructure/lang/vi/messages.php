@@ -1,6 +1,6 @@
 <?php
 
 return [
-    'created' => 'Create CustomInvoiceIn successfully!',
-    'deleted' => 'Delete CustomInvoiceIn successfully!',
+    'document_no_used' => 'Số chứng từ đã được sử dụng.',
+    'not_found' => 'Không tìm thấy hóa đơn nhập tùy chỉnh.',
 ];

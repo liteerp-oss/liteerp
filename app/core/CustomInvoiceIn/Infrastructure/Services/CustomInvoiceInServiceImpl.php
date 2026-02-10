@@ -14,7 +14,7 @@ class CustomInvoiceInServiceImpl implements CustomInvoiceInService
     public function create(array $data): CustomInvoiceIn | BadException
     {
         if($this->repo->findByDocumentNo($data)) {
-            throw new BadException(__("Document no has been used"));
+            throw new BadException(__("custominvoicein::messages.document_no_used"));
         }
         $entity = CustomInvoiceIn::fromArray($data);
         $entity->makeDocumentNo();
@@ -24,11 +24,11 @@ class CustomInvoiceInServiceImpl implements CustomInvoiceInService
     {
         $entity = $this->repo->findById($data);
         if(!$entity) {
-            throw new BadException(__("Not found custom invoice in"));
+            throw new BadException(__("custominvoicein::messages.not_found"));
         }
         if($entity->document_no !== $data['document_no']) {
             if($this->repo->findByDocumentNo($data)) {
-                throw new BadException(__("Document no has been used"));
+                throw new BadException(__("custominvoicein::messages.document_no_used"));
             }    
         }
         $entity->document_no = $data['document_no'] ?? $entity->document_no;
@@ -44,7 +44,7 @@ class CustomInvoiceInServiceImpl implements CustomInvoiceInService
     {
         $entity = $this->repo->findById($data);
         if(!$entity) {
-            throw new BadException(__("Not found custom invoice in"));
+            throw new BadException(__("custominvoicein::messages.not_found"));
         }
 
         return $this->repo->delete($entity);
