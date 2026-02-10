@@ -32,7 +32,7 @@ class CreateAuthencation
         Event::dispatch('erp.notification.create', [
             'user_id' => $account->id,
             'message' => __("authencation::messages.message_verify_account"),
-            'title'   => __("authencation::messages.message_verify_account"),
+            'title'   => __("authencation::messages.subject_verify_account"),
             'entity_type' => "users",
             'entity_id' => $account->id,
             'chanels' => ['mail'],
