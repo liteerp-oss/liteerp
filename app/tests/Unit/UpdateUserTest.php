@@ -38,7 +38,7 @@ class UpdateUserTest extends TestCase
             'email' => 'test@example.com',
             'role' => 'admin',
             'business_id' => 123,
-            'user_id' => 1,
+            'user_id' => 1
         ];
 
         // UseCase UpdateUser sẽ gọi getByEmail($data)
@@ -63,6 +63,7 @@ class UpdateUserTest extends TestCase
             'role' => 'admin',
             'business_id' => 123,
             'user_id' => 2,
+            'lang' => 'en'
         ];
 
         $this->serviceMock
@@ -82,7 +83,8 @@ class UpdateUserTest extends TestCase
             'user_id' => 1,
             'business_id' => 123,
             'role' => 'admin',
-            'id' => 1
+            'id' => 1,
+            'lang' => 'en'
         ];
         $user = new User(1, 'test@example.com', 'admin', 123);
 
@@ -116,7 +118,9 @@ class UpdateUserTest extends TestCase
             'role_user_id' => 2,
             'user_id' => 1,
             'business_id' => 123,
-            'role' => 'admin'
+            'role' => 'admin',
+            'lang' => null,
+            'avatar' => null
         ])->once();
         DB::shouldReceive('commit')->once();
 

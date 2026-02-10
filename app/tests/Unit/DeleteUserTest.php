@@ -76,7 +76,9 @@ class DeleteUserTest extends TestCase
             'business_id' => 123,
             'role_user_id' => 2,
             'user_id' => 1,
-            'business_id' => 123
+            'business_id' => 123,
+            'lang' => null,
+            'avatar' => null 
         ])->once();
         DB::shouldReceive('commit')->once();
 

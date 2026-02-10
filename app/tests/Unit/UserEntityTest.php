@@ -13,7 +13,8 @@ class UserEntityTest extends TestCase
             'id' => 1,
             'email' => 'test@example.com',
             'role' => 'admin',
-            'business_id' => 123
+            'business_id' => 123,
+            'lang' => 'en'
         ];
 
         $user = User::fromArray($data);
@@ -44,7 +45,9 @@ class UserEntityTest extends TestCase
             id: 1,
             email: 'test@example.com',
             role: 'admin',
-            business_id: 123
+            business_id: 123,
+            lang: 'en',
+            avatar: null
         );
 
         $array = $user->toArray();
@@ -53,7 +56,9 @@ class UserEntityTest extends TestCase
             'id' => 1,
             'email' => 'test@example.com',
             'role' => 'admin',
-            'business_id' => 123
+            'business_id' => 123,
+            'lang' => 'en',
+            'avatar' => null
         ];
 
         $this->assertEquals($expected, $array);
