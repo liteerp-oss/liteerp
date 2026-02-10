@@ -1,6 +1,9 @@
 <?php
 
 return [
-    'created' => 'Tạo InvoiceIn thành công!',
-    'deleted' => 'Xoá InvoiceIn thành công!',
+    'created' => 'Tạo hóa đơn đầu vào thành công!',
+    'deleted' => 'Xoá hóa đơn đầu vào thành công!',
+    'not_found' => 'Không tìm thấy phiếu nhập.',
+    'stock_created' => 'Dữ liệu nhập kho đã được tạo, vì vậy bạn không thể chuyển hoá đơn này về trạng thái chưa duyệt. Bạn có thể yêu cầu Phòng Mua hàng hủy đơn mua.',
+    'partial_payment' => 'Hoá đơn này chỉ thanh toán một phần; vui lòng nhập số tiền đã trả. Số tiền đã trả phải lớn hơn hoặc bằng tổng giá trị hoá đơn.',
 ];

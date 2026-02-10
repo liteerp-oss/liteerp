@@ -27,12 +27,10 @@ class InvoiceInServiceImpl implements InvoiceInService
     {
         $entity = $this->repo->findById($data);
         if (!$entity) {
-            throw new BadException(__("Not found invoice in"));
+            throw new BadException(__("invoicein::messages.not_found"));
         }
         if ($data['approved'] === false && $entity->isApproved()) {
-            throw new BadException(__("The data for stock in has been created, 
-                    so you can change this invoice to unapprove. 
-                    But you can request Purchase Department cancel purchase"));
+            throw new BadException(__("invoicein::messages.stock_created"));
         }
         $entity->invoice_date = $data['invoice_date'] ?? $entity->invoice_date;
         $entity->approved_by = $data['approved_by'] ?? $entity->approved_by;
@@ -43,9 +41,7 @@ class InvoiceInServiceImpl implements InvoiceInService
         $entity->image = $data['image'] ?? $entity->image;
         $entity->amount_paid = $data['amount_paid'] ?? $entity->amount_paid;
         if(!$entity->checkAmountPaidValid()) {
-            throw new BadException(__("This invoice is partial payment, 
-                so you need insert amount paid. 
-                    But amount paid is not greater than or equal total value invoice"));
+            throw new BadException(__("invoicein::messages.partial_payment"));
         }
         if($entity->isPaid()) {
             // paid full money 
@@ -56,7 +52,7 @@ class InvoiceInServiceImpl implements InvoiceInService
     }
     public function show(array $data): array | BadException
     {
-        return $this->repo->findByIdWithFullData($data) ?? throw new BadException(__("Not found invoice"));
+        return $this->repo->findByIdWithFullData($data) ?? throw new BadException(__("invoicein::messages.not_found"));
     }
     public function getById(array $data): ?InvoiceIn
     {
@@ -68,7 +64,7 @@ class InvoiceInServiceImpl implements InvoiceInService
     }
     public function findById(array $data): InvoiceIn | BadException
     {
-        return $this->repo->findById($data) ?? throw new BadException(__("Not found invoice in"));
+        return $this->repo->findById($data) ?? throw new BadException(__("invoicein::messages.not_found"));
     }
     /**
      * While order change status cancel then invoice in listen and change to unapproved
@@ -76,7 +72,7 @@ class InvoiceInServiceImpl implements InvoiceInService
     public function changeToUnApproved(array $data): InvoiceIn|BadException{
         $entity = $this->repo->findByPurchaseId($data);
         if (!$entity) {
-            throw new BadException(__("Not found invoice in"));
+            throw new BadException(__("invoicein::messages.not_found"));
         }
         $entity->markUnApproved();
         $update = $this->repo->update($entity);
