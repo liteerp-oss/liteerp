@@ -14,22 +14,22 @@ class CategoryProductServiceImpl implements CategoryProductService
     public function create(array $data): CategoryProduct | BadException
     {
         if($this->repo->checkNameExists($data)) {
-            throw new BadException(__("Category name has been used"));
+            throw new BadException(__("categoryproduct::messages.name_used"));
         }
         $entity = CategoryProduct::fromArray($data);
         return $this->repo->create($entity);
     }
     public function show(array $data) : CategoryProduct | BadException {
-        return $this->repo->findById($data) ?? throw new BadException(__("Not found data"));
+        return $this->repo->findById($data) ?? throw new BadException(__("categoryproduct::messages.not_found"));
     }
     public function update(array $data): CategoryProduct | BadException {
         $entity = $this->repo->findById($data);
         if(!$entity) {
-            throw new BadException(__("not found data"));
+            throw new BadException(__("categoryproduct::messages.not_found"));
         }
         if($entity->name !== $data['name']) {
             if($this->repo->checkNameExists($data)) {
-                throw new BadException(__("Category name has been used"));
+                throw new BadException(__("categoryproduct::messages.name_used"));
             }
         }
         $entity->name = $data['name'];
@@ -41,7 +41,7 @@ class CategoryProductServiceImpl implements CategoryProductService
     {
         $entity = $this->repo->findById($data);
         if(!$entity) {
-            throw new BadException(__("not found data"));
+            throw new BadException(__("categoryproduct::messages.not_found"));
         }
         return $this->repo->delete($entity);
     }
