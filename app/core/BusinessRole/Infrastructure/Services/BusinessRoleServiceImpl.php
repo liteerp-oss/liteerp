@@ -19,7 +19,7 @@ class BusinessRoleServiceImpl implements BusinessRoleService
     }
     public function findOne(array $data): BusinessRole | BadException
     {
-        return $this->repo->findOne($data) ?? throw new BadException(__("Business role not found"));
+        return $this->repo->findOne($data) ?? throw new BadException(__("businessrole::messages.not_found"));
     }
     public function listUserByRole(array $data): array {
         return $this->repo->listUserByRole($data);
@@ -28,7 +28,7 @@ class BusinessRoleServiceImpl implements BusinessRoleService
     {
         $entity = $this->repo->findOne($data);
         if(!$entity) {
-            throw new BadException(__("Not found user role"));
+            throw new BadException(__("businessrole::messages.not_found_role"));
         }
         $entity->role = $data['role'];
         return $this->repo->update($entity);
@@ -37,7 +37,7 @@ class BusinessRoleServiceImpl implements BusinessRoleService
     {
         $entity = $this->repo->findOne($data);
         if(!$entity) {
-            throw new BadException(__("Not found user role"));
+            throw new BadException(__("businessrole::messages.not_found_role"));
         }
         return $this->repo->delete($entity);
     }

@@ -46,7 +46,7 @@ class CheckPermissionBusinessRole
             )
         );
         if(!in_array($dto->action,$data['roles'])) {
-            throw new ForbiddenBiddenException(__("You have not permission ") . $dto->action);
+            throw new ForbiddenBiddenException(__("businessrole::messages.not_permission") . $dto->action);
         }
         return $data;
     }
