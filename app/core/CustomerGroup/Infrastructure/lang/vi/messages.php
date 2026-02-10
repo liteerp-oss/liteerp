@@ -1,6 +1,5 @@
 <?php
 
 return [
-    'created' => 'Tạo CustomerGroup thành công!',
-    'deleted' => 'Xoá CustomerGroup thành công!',
+    'not_found' => 'Không tìm thấy nhóm khách hàng',
 ];

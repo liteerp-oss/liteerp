@@ -1,6 +1,5 @@
 <?php
 
 return [
-    'created' => 'CustomerGroup created successfully!',
-    'deleted' => 'CustomerGroup deleted successfully!',
+    'not_found' => 'Not found data'
 ];

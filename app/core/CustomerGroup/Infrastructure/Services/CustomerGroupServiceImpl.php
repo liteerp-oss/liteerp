@@ -22,13 +22,13 @@ class CustomerGroupServiceImpl implements CustomerGroupService
     }
     public function show(array $data): CustomerGroup|BadException
     {
-        return $this->repo->findById($data) ?? throw new BadException(__("Not found data"));
+        return $this->repo->findById($data) ?? throw new BadException(__("customergroup::messages.not_found"));
     }
     public function update(array $data): CustomerGroup|BadException
     {
         $entity = $this->repo->findById($data);
         if(!$entity) {
-            throw new BadException(__("Not found data"));
+            throw new BadException(__("customergroup::messages.not_found"));
         }
         $entity->name = $data['name'] ?? $entity->name;
         return $this->repo->update($entity);
@@ -37,7 +37,7 @@ class CustomerGroupServiceImpl implements CustomerGroupService
     {
         $entity = $this->repo->findById($data);
         if(!$entity) {
-            throw new BadException(__("Not found data"));
+            throw new BadException(__("customergroup::messages.not_found"));
         }
         return $this->repo->delete($entity);
     }
