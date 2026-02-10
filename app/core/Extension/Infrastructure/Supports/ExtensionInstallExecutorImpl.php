@@ -30,7 +30,7 @@ class ExtensionInstallExecutorImpl implements ExtensionInstallExecutor
                 '--force' => true
                ]);
             } else {
-                throw new BadException(__("Not found migration file :" . $migration));
+                throw new BadException(__("extension::messages.migration_not_found", ['migration' => $migration]));
             }
         }
     }
@@ -41,7 +41,7 @@ class ExtensionInstallExecutorImpl implements ExtensionInstallExecutor
                 Log::info('Run:'. $command['name']);
                 Artisan::call($command['name']);
             } else {
-                throw new BadException(__("Command register invalid"));
+                throw new BadException(__("extension::messages.command_register_invalid"));
             }
         }
     }

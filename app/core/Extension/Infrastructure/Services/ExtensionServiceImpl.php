@@ -14,19 +14,19 @@ class ExtensionServiceImpl implements ExtensionService
     public function create(array $data): Extension | BadException
     {
         $entity = $this->repo->create($data);
-        if(!$entity) {
-            throw new BadException(__("Add extension error"));
-        }
+            if(!$entity) {
+                throw new BadException(__("extension::messages.add_error"));
+            }
         return $entity;
     }
     public function update(array $data): Extension | BadException
     {
         $entity = $this->repo->findById($data);
-        if(!$entity) {
-            throw new BadException(__("Not found extension error"));
-        }
+            if(!$entity) {
+                throw new BadException(__("extension::messages.not_found"));
+            }
         $entity->switchStatus();
-        return $this->repo->update($entity) ?? throw new BadException(__("Update extension error"));
+            return $this->repo->update($entity) ?? throw new BadException(__("extension::messages.update_error"));
     }
     public function index(array $data): array
     {
@@ -35,17 +35,17 @@ class ExtensionServiceImpl implements ExtensionService
     public function delete(array $data): Extension|BadException
     {
         $entity = $this->repo->findById($data);
-        if(!$entity) {
-            throw new BadException(__("Not found extension error"));
-        }
+            if(!$entity) {
+                throw new BadException(__("extension::messages.not_found"));
+            }
         return $this->repo->delete($entity);
     }
     public function findById(array $data): Extension|BadException
     {
         $entity = $this->repo->findById($data);
-        if(!$entity) {
-            throw new BadException(__("Not found extension error"));
-        }
+            if(!$entity) {
+                throw new BadException(__("extension::messages.not_found"));
+            }
         return $entity;
     }
     public function all(): array
@@ -55,9 +55,9 @@ class ExtensionServiceImpl implements ExtensionService
     public function make(array $data): Extension | BadException
     {
         $entity = $this->repo->make(Extension::fromArray($data));
-        if(!$entity) {
-            throw new BadException(__("Add extension error"));
-        }
+            if(!$entity) {
+                throw new BadException(__("extension::messages.add_error"));
+            }
         return $entity;
     }
 }

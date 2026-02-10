@@ -11,8 +11,8 @@ class ExtensionInstallImpl implements ExtensionInstall
     public function installPlan(Extension $extension): ExtensionInstallPlan
     {
         $install = base_path("extensions/" . $extension->directory . "/Install.php");
-        if (!file_exists($install)) {
-            throw new \Exception(__("Extension is not found install file"));
+            if (!file_exists($install)) {
+                throw new \Exception(__("extension::messages.install_file_not_found"));
         }
         $config =  require_once $install;
         return new ExtensionInstallPlan(
@@ -26,8 +26,8 @@ class ExtensionInstallImpl implements ExtensionInstall
     public function uninstallPlan(Extension $extension): ExtensionInstallPlan
     {
         $install = base_path("extensions/" . $extension->directory . "/Install.php");
-        if (!file_exists($install)) {
-            throw new \Exception(__("Extension is not found install file"));
+            if (!file_exists($install)) {
+                throw new \Exception(__("extension::messages.install_file_not_found"));
         }
         $config =  require_once $install;
         return new ExtensionInstallPlan(
