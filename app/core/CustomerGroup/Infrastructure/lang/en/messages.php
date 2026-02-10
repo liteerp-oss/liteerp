@@ -1,5 +1,5 @@
 <?php
 
 return [
-    'not_found' => 'Not found data'
+    'not_found' => 'Not found customer group'
 ];
