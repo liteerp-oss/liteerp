@@ -16,7 +16,7 @@ class OrderServiceImpl implements OrderService
         $entity = Order::fromArray($data);
         if ($entity->order_no) {
             if ($this->repo->findByOrderNo($data)) {
-                throw new BadException(__("Order no has been used"));
+                throw new BadException(__("order::messages.order_no_used"));
             }
         } 
         $entity->makeOrderNo();
@@ -26,13 +26,13 @@ class OrderServiceImpl implements OrderService
     {
         $row = $this->repo->findByIdWithData($data);
         if (!$row) {
-            throw new BadException(__("Not found data"));
+            throw new BadException(__("order::messages.not_found"));
         }
         return $row;
     }
     public function findOneById(array $data): Order | BadException
     {
-        return $this->repo->findById($data) ?? throw new BadException(__("Not found data"));
+        return $this->repo->findById($data) ?? throw new BadException(__("order::messages.not_found"));
     }
     public function update(array $data): Order | BadException
     {
@@ -44,20 +44,20 @@ class OrderServiceImpl implements OrderService
          */
         $entity = $this->repo->findById($data);
         if (!$entity) {
-            throw new BadException(__("Not found data"));
+            throw new BadException(__("order::messages.not_found"));
         }
         /**
          * Check order no exists
          */
         if($entity->order_no !== $data['order_no']) {
             if ($this->repo->findByOrderNo($data)) {
-                throw new BadException(__("Order no has been used"));
+                throw new BadException(__("order::messages.order_no_used"));
             }    
         }
         switch ($data['status']) {
             case "pending":
                 if (!$entity->isPending()) {
-                    throw new BadException(__("Status invalid"));
+                    throw new BadException(__("order::messages.status_invalid"));
                 }
                 $entity->order_no = $data['order_no'] ?? $entity->order_no;
                 $entity->note = $data['note'] ?? $entity->note;
@@ -68,7 +68,7 @@ class OrderServiceImpl implements OrderService
                 break;
             case "approved":
                 if (!$entity->isPending()) {
-                    throw new BadException(__("Status invalid"));
+                    throw new BadException(__("order::messages.status_invalid"));
                 }
                 $entity->markApprove();
                 break;

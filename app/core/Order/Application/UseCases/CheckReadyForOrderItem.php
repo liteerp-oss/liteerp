@@ -14,7 +14,7 @@ class CheckReadyForOrderItem
     {
         $row = $this->service->findOneById($dto->toArray());
         if(!$row->isPending()) {
-            throw new BadException(__("Currently this order status can not add / delete product"));
+            throw new BadException(__("order::messages.status_cannot_modify_items"));
         }
         return $row;
     }

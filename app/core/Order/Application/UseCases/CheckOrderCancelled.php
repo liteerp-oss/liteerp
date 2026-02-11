@@ -14,7 +14,7 @@ class CheckOrderCancelled
     {
         $row = $this->service->findOneById($dto->toArray());
         if($row->isCancelled()) {
-            throw new BadException(__("Currently this order has been cancelled"));
+            throw new BadException(__("order::messages.order_cancelled"));
         }
         return $row;
     }
