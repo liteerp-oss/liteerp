@@ -1,6 +1,5 @@
 <?php
 
 return [
-    'created' => 'PurchaseCancel created successfully!',
-    'deleted' => 'PurchaseCancel deleted successfully!',
+    'created' => 'Purchase cancellation created successfully',
 ];

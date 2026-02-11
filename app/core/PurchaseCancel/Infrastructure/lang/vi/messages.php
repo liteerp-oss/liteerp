@@ -1,6 +1,5 @@
 <?php
 
 return [
-    'created' => 'Tạo PurchaseCancel thành công!',
-    'deleted' => 'Xoá PurchaseCancel thành công!',
+    'created' => 'Tạo hủy phiếu mua hàng thành công',
 ];
