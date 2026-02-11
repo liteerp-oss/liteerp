@@ -14,7 +14,7 @@ class CheckForPurchaseItem
     {
         $row = $this->service->findOneById($dto);
         if(!$row->isDraft()) {
-            throw new BadException(__("Currently purchase can not update data"));
+            throw new BadException(__("purchases::messages.cannot_update"));
         }
         return $row;
     }

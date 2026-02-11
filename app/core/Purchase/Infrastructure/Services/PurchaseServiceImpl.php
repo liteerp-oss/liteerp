@@ -6,7 +6,6 @@ use App\Exceptions\BadException;
 use Core\Purchase\Domain\Services\PurchaseService;
 use Core\Purchase\Domain\Repositories\PurchaseRepositoryInterface;
 use Core\Purchase\Domain\Entities\Purchase;
-use Illuminate\Support\Facades\Log;
 
 class PurchaseServiceImpl implements PurchaseService
 {
@@ -20,23 +19,23 @@ class PurchaseServiceImpl implements PurchaseService
     }
     public function show(array $data): array | BadException
     {
-        return $this->repo->findByIdWithFullData($data) ?? throw new BadException(__("Not found purchase"));
+        return $this->repo->findByIdWithFullData($data) ?? throw new BadException(__("purchases::messages.not_found"));
     }
     public function findOneById(array $data): Purchase|BadException
     {
-        return $this->repo->findById($data) ?? throw new BadException(__("Not found purchase")); 
+        return $this->repo->findById($data) ?? throw new BadException(__("purchases::messages.not_found")); 
     }
     public function update(array $data): Purchase|BadException
     {
 
         $row = $this->repo->findById($data);
         if(!$row) {
-            throw new BadException(__("Not found purchase"));
+            throw new BadException(__("purchases::messages.not_found"));
         }
         switch ($data['status']) {
             case "draft":
                 if (!$row->isDraft()) {
-                    throw new BadException(__("You has been changed status invalid"));
+                    throw new BadException(__("purchases::messages.status_transition_invalid"));
                 }
                 /**
                  * Only can change information purchase while it has not yet change status
@@ -51,13 +50,13 @@ class PurchaseServiceImpl implements PurchaseService
                 break;
             case "requested":
                 if (!$row->isDraft()) {
-                    throw new BadException(__("You has been changed status invalid"));
+                    throw new BadException(__("purchases::messages.status_transition_invalid"));
                 }
                 $row->setRequested();
                 break;
             case "approved":
                 if (!$row->isRequested()) {
-                    throw new BadException(__("You has been changed status invalid"));
+                    throw new BadException(__("purchases::messages.status_transition_invalid"));
                 }
                 $row->setApproved();
                 $row->approved_by = $data['approved_by'];
@@ -66,7 +65,7 @@ class PurchaseServiceImpl implements PurchaseService
                 $row->setCancelled();
                 break;
             default:
-                throw new BadException(__("status invalid"));
+                throw new BadException(__("purchases::messages.status_invalid"));
                 break;
         }
         return $this->repo->update($row);
