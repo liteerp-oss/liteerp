@@ -1,6 +1,6 @@
 <?php
 
 return [
-    'created' => 'Supplier created successfully!',
-    'deleted' => 'Supplier deleted successfully!',
+    'name_used' => 'Name has been used',
+    'not_found' => 'Not found data',
 ];

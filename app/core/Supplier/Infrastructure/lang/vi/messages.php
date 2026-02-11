@@ -1,6 +1,6 @@
 <?php
 
 return [
-    'created' => 'Tạo Supplier thành công!',
-    'deleted' => 'Xoá Supplier thành công!',
+    'name_used' => 'Tên đã được sử dụng',
+    'not_found' => 'Không tìm thấy dữ liệu',
 ];
