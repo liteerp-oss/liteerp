@@ -96,7 +96,7 @@ class CustomerGroupServiceImplTest extends TestCase
             ->andReturn(null);
 
         $this->expectException(BadException::class);
-        $this->expectExceptionMessage('Not found data');
+        $this->expectExceptionMessage(__('customergroup::messages.not_found'));
 
         $this->service->show($data);
     }
@@ -141,7 +141,7 @@ class CustomerGroupServiceImplTest extends TestCase
             ->andReturn(null);
 
         $this->expectException(BadException::class);
-        $this->expectExceptionMessage('Not found data');
+        $this->expectExceptionMessage(__('customergroup::messages.not_found'));
 
         $this->service->update($data);
     }
@@ -174,7 +174,7 @@ class CustomerGroupServiceImplTest extends TestCase
             ->andReturn(null);
 
         $this->expectException(BadException::class);
-        $this->expectExceptionMessage('Not found data');
+        $this->expectExceptionMessage(__('customergroup::messages.not_found'));
 
         $this->service->delete($data);
     }

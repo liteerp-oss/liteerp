@@ -34,10 +34,10 @@ class DeleteUserTest extends TestCase
     {
         $dto = new DeleteUserRequest(1, 1, 5);
 
-        $this->serviceMock->shouldReceive('findById')->andThrow(new BadException(__('user::message.not_found')));
+        $this->serviceMock->shouldReceive('findById')->andThrow(new BadException(__('user::messages.not_found')));
 
         $this->expectException(BadException::class);
-        $this->expectExceptionMessage(__("user::message.not_found"));
+        $this->expectExceptionMessage(__('user::messages.not_found'));
 
         $this->useCase->handle([
             ...$dto->toArray(),
@@ -53,7 +53,7 @@ class DeleteUserTest extends TestCase
         $this->serviceMock->shouldReceive('findById')->andReturn($user);
 
         $this->expectException(BadException::class);
-        $this->expectExceptionMessage(__('You can not delete to your-self'));
+        $this->expectExceptionMessage(__('user::messages.cannot_delete_self'));
 
         $this->useCase->handle([
             ...$dto->toArray(),

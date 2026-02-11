@@ -70,7 +70,7 @@ class CustomerServiceImplTest extends TestCase
         $this->repoMock->shouldReceive('findByPhone')->with($data)->andReturn($existingCustomer);
 
         $this->expectException(BadException::class);
-        $this->expectExceptionMessage('Number phone has been used');
+        $this->expectExceptionMessage(__('customer::messages.phone_used'));
 
         $this->service->create($data);
     }
@@ -133,7 +133,7 @@ class CustomerServiceImplTest extends TestCase
         $this->repoMock->shouldReceive('findByPhone')->with($data)->andReturn($anotherCustomer);
 
         $this->expectException(BadException::class);
-        $this->expectExceptionMessage('Number phone has been used');
+        $this->expectExceptionMessage(__('customer::messages.phone_used'));
 
         $this->service->update($data);
     }
@@ -151,7 +151,7 @@ class CustomerServiceImplTest extends TestCase
         $this->repoMock->shouldReceive('findById')->with($data)->andReturn(null);
 
         $this->expectException(BadException::class);
-        $this->expectExceptionMessage('Not found data');
+        $this->expectExceptionMessage(__('customer::messages.not_found'));
 
         $this->service->update($data);
     }
@@ -188,7 +188,7 @@ class CustomerServiceImplTest extends TestCase
         $this->repoMock->shouldReceive('findById')->with($data)->andReturn(null);
 
         $this->expectException(BadException::class);
-        $this->expectExceptionMessage('Not found data');
+        $this->expectExceptionMessage(__('customer::messages.not_found'));
 
         $this->service->show($data);
     }
@@ -226,7 +226,7 @@ class CustomerServiceImplTest extends TestCase
         $this->repoMock->shouldReceive('findById')->with($data)->andReturn(null);
 
         $this->expectException(BadException::class);
-        $this->expectExceptionMessage('Not found data');
+        $this->expectExceptionMessage(__('customer::messages.not_found'));
 
         $this->service->delete($data);
     }

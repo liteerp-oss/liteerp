@@ -72,7 +72,7 @@ class ShippingServiceImplTest extends TestCase
             ->andReturn($existingShipping);
 
         $this->expectException(BadException::class);
-        $this->expectExceptionMessage('Name has been used');
+        $this->expectExceptionMessage(__('shippings::messages.name_used'));
 
         $this->service->create($data);
     }
@@ -101,7 +101,7 @@ class ShippingServiceImplTest extends TestCase
             ->andReturn(null);
 
         $this->expectException(BadException::class);
-        $this->expectExceptionMessage('Not found data');
+        $this->expectExceptionMessage(__('shippings::messages.not_found'));
 
         $this->service->show($data);
     }
@@ -163,7 +163,7 @@ class ShippingServiceImplTest extends TestCase
             ->andReturn($anotherShipping);
 
         $this->expectException(BadException::class);
-        $this->expectExceptionMessage('Name has been used');
+        $this->expectExceptionMessage(__('shippings::messages.name_used'));
 
         $this->service->update($data);
     }
@@ -186,7 +186,7 @@ class ShippingServiceImplTest extends TestCase
             ->andReturn(null);
 
         $this->expectException(BadException::class);
-        $this->expectExceptionMessage('Not found data');
+        $this->expectExceptionMessage(__('shippings::messages.not_found'));
 
         $this->service->update($data);
     }
@@ -219,7 +219,7 @@ class ShippingServiceImplTest extends TestCase
             ->andReturn(null);
 
         $this->expectException(BadException::class);
-        $this->expectExceptionMessage('Not found data');
+        $this->expectExceptionMessage(__('shippings::messages.not_found'));
 
         $this->service->delete($data);
     }

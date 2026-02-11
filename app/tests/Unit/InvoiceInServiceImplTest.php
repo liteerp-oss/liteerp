@@ -197,7 +197,7 @@ class InvoiceInServiceImplTest extends TestCase
     public function test_update_invoice_in_fails_when_not_found()
     {
         $this->expectException(BadException::class);
-        $this->expectExceptionMessage('Not found invoice in');
+        $this->expectExceptionMessage(__('invoicein::messages.not_found'));
 
         $data = ['id' => 999];
 
@@ -262,7 +262,7 @@ class InvoiceInServiceImplTest extends TestCase
     public function test_show_fails_when_not_found()
     {
         $this->expectException(BadException::class);
-        $this->expectExceptionMessage('Not found invoice');
+        $this->expectExceptionMessage(__('invoicein::messages.not_found'));
 
         $data = ['id' => 999];
 
@@ -370,7 +370,7 @@ class InvoiceInServiceImplTest extends TestCase
     public function test_find_by_id_fails_when_not_found()
     {
         $this->expectException(BadException::class);
-        $this->expectExceptionMessage('Not found invoice in');
+        $this->expectExceptionMessage(__('invoicein::messages.not_found'));
 
         $data = ['id' => 999];
 
@@ -442,7 +442,7 @@ class InvoiceInServiceImplTest extends TestCase
     public function test_change_to_un_approved_fails_when_not_found()
     {
         $this->expectException(BadException::class);
-        $this->expectExceptionMessage('Not found invoice in');
+        $this->expectExceptionMessage(__('invoicein::messages.not_found'));
 
         $data = ['purchase_id' => 999];
 

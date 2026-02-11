@@ -50,7 +50,7 @@ class UpdateUserTest extends TestCase
             );
 
         $this->expectException(BadException::class);
-        $this->expectExceptionMessage(__("You can not change role your-self"));
+        $this->expectExceptionMessage(__('user::messages.cannot_change_own_role'));
 
         $this->useCase->handle($data);
     }
@@ -91,7 +91,7 @@ class UpdateUserTest extends TestCase
         $this->serviceMock->shouldReceive('getByEmail')->andReturn($user);
 
         $this->expectException(BadException::class);
-        $this->expectExceptionMessage(__('You can not change role your-self'));
+        $this->expectExceptionMessage(__('user::messages.cannot_change_own_role'));
 
         $this->useCase->handle($data);
     }

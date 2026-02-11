@@ -66,7 +66,7 @@ class ProductServiceImplTest extends TestCase
         $this->repoMock->shouldReceive('checkExists')->with($data)->andReturn($existingProduct);
 
         $this->expectException(BadException::class);
-        $this->expectExceptionMessage('Sku has been used');
+        $this->expectExceptionMessage(__('product::messages.sku_used'));
 
         $this->service->create($data);
     }
@@ -107,7 +107,7 @@ class ProductServiceImplTest extends TestCase
         $this->repoMock->shouldReceive('findOneWithFullData')->with($data)->andReturn(null);
 
         $this->expectException(BadException::class);
-        $this->expectExceptionMessage('Not found product');
+        $this->expectExceptionMessage(__('product::messages.not_found'));
 
         $this->service->show($data);
     }
@@ -174,7 +174,7 @@ class ProductServiceImplTest extends TestCase
         $this->repoMock->shouldReceive('findById')->with($data)->andReturn(null);
 
         $this->expectException(BadException::class);
-        $this->expectExceptionMessage('Not found data for update');
+        $this->expectExceptionMessage(__('product::messages.not_found_for_update'));
 
         $this->service->update($data);
     }
@@ -213,7 +213,7 @@ class ProductServiceImplTest extends TestCase
         $this->repoMock->shouldReceive('checkExists')->with($data)->andReturn($anotherProduct);
 
         $this->expectException(BadException::class);
-        $this->expectExceptionMessage('Sku has been used');
+        $this->expectExceptionMessage(__('product::messages.sku_used'));
 
         $this->service->update($data);
     }
@@ -254,7 +254,7 @@ class ProductServiceImplTest extends TestCase
         $this->repoMock->shouldReceive('findById')->with($data)->andReturn(null);
 
         $this->expectException(BadException::class);
-        $this->expectExceptionMessage('Not found data for update');
+        $this->expectExceptionMessage(__('product::messages.not_found_for_update'));
 
         $this->service->delete($data);
     }

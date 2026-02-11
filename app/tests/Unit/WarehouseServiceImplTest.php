@@ -64,7 +64,7 @@ class WarehouseServiceImplTest extends TestCase
         $this->repoMock->shouldReceive('checkNameExists')->andReturn(true);
 
         $this->expectException(BadException::class);
-        $this->expectExceptionMessage('Name has been used');
+        $this->expectExceptionMessage(__('warehouse::messages.name_used'));
 
         $this->service->create($data);
     }
@@ -131,7 +131,7 @@ class WarehouseServiceImplTest extends TestCase
         $this->repoMock->shouldReceive('findById')->with($data)->andReturn(null);
 
         $this->expectException(BadException::class);
-        $this->expectExceptionMessage('Not found warehouse');
+        $this->expectExceptionMessage(__('warehouse::messages.not_found'));
 
         $this->service->show($data);
     }
@@ -188,7 +188,7 @@ class WarehouseServiceImplTest extends TestCase
         $this->repoMock->shouldReceive('findById')->with($data)->andReturn(null);
 
         $this->expectException(BadException::class);
-        $this->expectExceptionMessage('Not found data');
+        $this->expectExceptionMessage(__('warehouse::messages.not_found'));
 
         $this->service->update($data);
     }
@@ -215,7 +215,7 @@ class WarehouseServiceImplTest extends TestCase
         $this->repoMock->shouldReceive('checkNameExists')->andReturn(true);
 
         $this->expectException(BadException::class);
-        $this->expectExceptionMessage('Name has been used');
+        $this->expectExceptionMessage(__('warehouse::messages.name_used'));
 
         $this->service->update($data);
     }
@@ -254,7 +254,7 @@ class WarehouseServiceImplTest extends TestCase
         $this->repoMock->shouldReceive('findById')->with($data)->andReturn(null);
 
         $this->expectException(BadException::class);
-        $this->expectExceptionMessage('Not found data');
+        $this->expectExceptionMessage(__('warehouse::messages.not_found'));
 
         $this->service->delete($data);
     }
