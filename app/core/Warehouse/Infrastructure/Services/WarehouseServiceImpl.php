@@ -16,7 +16,7 @@ class WarehouseServiceImpl implements WarehouseService
 
         $entity = Warehouse::fromArray($data);
         if ($this->repo->checkNameExists($entity)) {
-            throw new BadException(__("Name has been used"));
+            throw new BadException(__("warehouse::messages.name_used"));
         }
         return $this->repo->create($entity);
     }
@@ -28,7 +28,7 @@ class WarehouseServiceImpl implements WarehouseService
     {
         $data = $this->repo->findById($data);
         if (!$data) {
-            throw new BadException(__("Not found warehouse"));
+            throw new BadException(__("warehouse::messages.not_found"));
         }
         return $data;
     }
@@ -36,11 +36,11 @@ class WarehouseServiceImpl implements WarehouseService
     {
         $entity = $this->repo->findById($data);
         if(!$entity) {
-            throw new BadException(__("Not found data"));
+            throw new BadException(__("warehouse::messages.not_found"));
         }
         if ($entity->name !== $data['name']) {
             if ($this->repo->checkNameExists($entity)) {
-                throw new BadException(__("Name has been used"));
+                throw new BadException(__("warehouse::messages.name_used"));
             }
         }
         $entity->name = $data['name'];
@@ -52,7 +52,7 @@ class WarehouseServiceImpl implements WarehouseService
     {
         $entity = $this->repo->findById($data);
         if(!$entity) {
-            throw new BadException(__("Not found data"));
+            throw new BadException(__("warehouse::messages.not_found"));
         }
         return $this->repo->delete($entity);
     }

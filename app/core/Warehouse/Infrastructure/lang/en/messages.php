@@ -1,6 +1,6 @@
 <?php
 
 return [
-    'created' => 'Warehouse created successfully!',
-    'deleted' => 'Warehouse deleted successfully!',
+    'name_used' => 'Name has been used',
+    'not_found' => 'Not found warehouse',
 ];

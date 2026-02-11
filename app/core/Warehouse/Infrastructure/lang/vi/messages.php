@@ -1,6 +1,6 @@
 <?php
 
 return [
-    'created' => 'Tạo Warehouse thành công!',
-    'deleted' => 'Xoá Warehouse thành công!',
+    'name_used' => 'Tên đã được sử dụng',
+    'not_found' => 'Không tìm thấy kho',
 ];
