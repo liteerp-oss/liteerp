@@ -20,7 +20,7 @@ class CancelledStockOutByOrderCancelled
         $entity = $this->service->getByInvoiceInId($dto->toArray());
         if ($entity) {
             if($entity->isCompleted()) {
-                throw new BadException(__("This order has been completed, you can not change to cancel"));
+                throw new BadException(__("stockout::messages.order_completed_cannot_cancel"));
             }
             $entity->markCancelled();
             $update = $this->service->update($entity->toArray());

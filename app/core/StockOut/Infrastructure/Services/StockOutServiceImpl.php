@@ -22,21 +22,21 @@ class StockOutServiceImpl implements StockOutService
     {
         $entity = $this->repo->findById($data);
         if(!$entity) {
-            throw new BadException(__("Not found data"));
+            throw new BadException(__("stockout::messages.not_found"));
         }
         if($data['status'] === 'shipped') {
             if(!$entity->isPending()) {
-                throw new BadException(__("Status invalid"));
+                throw new BadException(__("stockout::messages.status_invalid"));
             }
         }
         if($data['status'] === 'completed') {
             if(!$entity->isShipped()) {
-                throw new BadException(__("Status invalid"));
+                throw new BadException(__("stockout::messages.status_invalid"));
             }
         }
         if($data['status'] === 'cancelled') {
             if($entity->isCompleted()) {
-                throw new BadException(__("Status invalid"));
+                throw new BadException(__("stockout::messages.status_invalid"));
             }
         }
         $entity->status = $data['status'];
@@ -48,7 +48,7 @@ class StockOutServiceImpl implements StockOutService
     }
     public function findById(array $data): StockOut | BadException
     {
-        return $this->repo->findById($data) ?? throw new BadException(__("Not found data"));
+        return $this->repo->findById($data) ?? throw new BadException(__("stockout::messages.not_found"));
     }
     public function getById(array $data): ?StockOut
     {
