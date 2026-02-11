@@ -1,6 +1,6 @@
 <?php
 
 return [
-    'created' => 'Tạo PriceList thành công!',
-    'deleted' => 'Xoá PriceList thành công!',
+	'product_used_in_group' => 'Sản phẩm này đã được sử dụng trong nhóm giá chọn.',
+	'not_found' => 'Không tìm thấy mục bảng giá.',
 ];
