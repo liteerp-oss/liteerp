@@ -1,6 +1,7 @@
 <?php
 
 return [
-    'created' => 'OrderShipping created successfully!',
-    'deleted' => 'OrderShipping deleted successfully!',
+	'used' => 'Order shipping already exists for this order.',
+	'not_found' => 'Order shipping not found.',
+	'not_ready' => 'Order shipping is not ready; please select a shipping service.',
 ];

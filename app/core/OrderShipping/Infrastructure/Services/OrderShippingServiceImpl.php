@@ -16,7 +16,7 @@ class OrderShippingServiceImpl implements OrderShippingService
     {
         $row = $this->repo->findByOrderId($data);
         if($row) {
-            throw new BadException(__("Order shipping used"));
+              throw new BadException(__("ordershipping::messages.used"));
         }
         $entity = OrderShipping::fromArray($data);
         return $this->repo->create($entity);
@@ -29,7 +29,7 @@ class OrderShippingServiceImpl implements OrderShippingService
     {
         $entity = $this->repo->findById($data);
         if(!$entity) {
-            throw new BadException(__("Not found data"));
+              throw new BadException(__("ordershipping::messages.not_found"));
         }
         $entity->receiver_name = $data['receiver_name'] ?? $entity->receiver_name;
         $entity->receiver_phone = $data['receiver_phone'] ?? $entity->receiver_phone;
@@ -47,11 +47,11 @@ class OrderShippingServiceImpl implements OrderShippingService
     public function findByOrderId(array $data): OrderShipping|BadException
     {
         return $this->repo->findByOrderId($data) 
-            ?? throw new BadException(__("Not found data"));
+              ?? throw new BadException(__("ordershipping::messages.not_found"));
     }
     public function findById(array $data): OrderShipping|BadException
     {
         return $this->repo->findById($data) 
-            ?? throw new BadException(__("Not found data"));
+              ?? throw new BadException(__("ordershipping::messages.not_found"));
     }
 }

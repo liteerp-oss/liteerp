@@ -14,7 +14,7 @@ class CheckReadyOrderShipping
     {
         $OrderShipping = $this->service->findByOrderId($dto->toArray());
         if(!$OrderShipping->isReady()) {
-            throw new BadException(__("You are not yet selecting to service shipping"));
+            throw new BadException(__("ordershipping::messages.not_ready"));
         }
     }
 }
