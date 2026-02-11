@@ -15,7 +15,7 @@ class OrderItemServiceImpl implements OrderItemService
     {
         $entity = OrderItem::fromArray($data);
         if($this->repo->findByProductId($data)) {
-            throw new BadException(__("Product has been used"));
+            throw new BadException(__("orderitem::messages.product_used"));
         }
         return $this->repo->create($entity);
     }
@@ -37,7 +37,7 @@ class OrderItemServiceImpl implements OrderItemService
     {
         $entity = $this->repo->show($data);
         if(!$entity) {
-            throw new BadException(__("Not found data"));
+            throw new BadException(__("orderitem::messages.not_found"));
         }
         return $entity;
     }
@@ -45,7 +45,7 @@ class OrderItemServiceImpl implements OrderItemService
     {
         $entity = $this->repo->findById($data);
         if(!$entity) {
-            throw new BadException(__("Not found data"));
+            throw new BadException(__("orderitem::messages.not_found"));
         }
         $entity->discount = $data['discount'];
         $entity->buy_quantity = $data['buy_quantity'];
@@ -60,7 +60,7 @@ class OrderItemServiceImpl implements OrderItemService
     {
         $entity = $this->repo->findById($data);
         if(!$entity) {
-            throw new BadException(__("Not found data"));
+            throw new BadException(__("orderitem::messages.not_found"));
         }
         return $this->repo->delete($entity);
     }
@@ -68,7 +68,7 @@ class OrderItemServiceImpl implements OrderItemService
     {
         $entity = $this->repo->findById($data);
         if(!$entity) {
-            throw new BadException(__("Not found data"));
+            throw new BadException(__("orderitem::messages.not_found"));
         }
         return $entity;
     }

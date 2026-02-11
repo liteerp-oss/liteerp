@@ -15,7 +15,7 @@ class CheckExistsOrderItem
     {
         $list = $this->service->indexForStockMovementOut($dto->toArray());
         if(empty($list) || count($list) === 0) {
-            throw new BadException(__("You has not add products"));
+            throw new BadException(__("orderitem::messages.no_products_added"));
         }
     }
 }
