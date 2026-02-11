@@ -15,7 +15,7 @@ class StockMovementInServiceImpl implements StockMovementInService
     {
         $entity = $this->repo->checkExists($data);
         if($entity) {
-            throw new BadException(__("Stock has been used, please update quantity"));
+            throw new BadException(__("stockmovementin::messages.already_exists"));
         }
         $entity = StockMovementIn::fromArray($data);
 
@@ -29,7 +29,7 @@ class StockMovementInServiceImpl implements StockMovementInService
     {
         $entity = $this->repo->findById($data);
         if(!$entity) {
-            throw new BadException(__("Not found data"));
+            throw new BadException(__("stockmovementin::messages.not_found"));
         }
         $entity->qty_change = $data['qty_change'];
         return $this->repo->update($entity);

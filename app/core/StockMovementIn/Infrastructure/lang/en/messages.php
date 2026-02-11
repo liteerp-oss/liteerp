@@ -1,6 +1,7 @@
 <?php
 
 return [
-    'created' => 'StockMovementIn created successfully!',
-    'deleted' => 'StockMovementIn deleted successfully!',
+    'already_exists' => 'Stock has been used, please update quantity',
+    'not_found' => 'Not found data',
+    'no_inventory_added' => 'You are not yet add inventory',
 ];

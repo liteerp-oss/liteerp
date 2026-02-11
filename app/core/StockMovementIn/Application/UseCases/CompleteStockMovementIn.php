@@ -14,7 +14,7 @@ class CompleteStockMovementIn
     {
         $list = $this->service->index($data->toArray());
         if(intval($list['total']) === 0) {
-            throw new BadException(__("You are not yet add inventory"));
+            throw new BadException(__("stockmovementin::messages.no_inventory_added"));
         }
         Event::dispatch('erp.stockmovementin.completed', [
             'stock_in_id' => $data->stock_in_id,
