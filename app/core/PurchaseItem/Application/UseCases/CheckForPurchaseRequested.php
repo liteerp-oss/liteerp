@@ -15,7 +15,7 @@ class CheckForPurchaseRequested
     {
         $index = $this->service->indexMinimal($dto->toArray());
         if (count($index) == false) {
-            throw new BadException(__("You are not yet add products"));
+            throw new BadException(__("purchaseitem::messages.no_products_added"));
         }
     }
 }

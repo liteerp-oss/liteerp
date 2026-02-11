@@ -15,7 +15,7 @@ class PurchaseItemServiceImpl implements PurchaseItemService
     {
         $entity = $this->repo->findByPurchaseIdAndProductId($data);
         if($entity) {
-            throw new BadException(__("Product has been addedd into purchase before, please update quantity"));
+            throw new BadException(__("purchaseitem::messages.already_exists"));
         }
         $entity = PurchaseItem::fromArray($data);
 
@@ -29,7 +29,7 @@ class PurchaseItemServiceImpl implements PurchaseItemService
     {
         $entity = $this->repo->findById($data);
         if(!$entity) {
-            throw new BadException(__("Not found data"));
+            throw new BadException(__("purchaseitem::messages.not_found"));
         }
         $entity->discount = $data['discount'] ?? $entity->discount;
         $entity->tax = $data['tax'] ?? $entity->tax;
@@ -43,7 +43,7 @@ class PurchaseItemServiceImpl implements PurchaseItemService
     }
     public function findById(array $data): PurchaseItem|BadException
     {
-        return $this->repo->findById($data) ?? throw new BadException(__("Not found purchase item"));
+        return $this->repo->findById($data) ?? throw new BadException(__("purchaseitem::messages.not_found"));
     }
     public function indexMinimal(array $data): array
     {
@@ -53,7 +53,7 @@ class PurchaseItemServiceImpl implements PurchaseItemService
     {
         $entity = $this->repo->findById($data);
         if(!$entity) {
-            throw new BadException(__("Not found data"));
+            throw new BadException(__("purchaseitem::messages.not_found"));
         }
         return $this->repo->delete($entity);
     }

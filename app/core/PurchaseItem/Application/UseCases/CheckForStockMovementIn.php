@@ -16,7 +16,7 @@ class CheckForStockMovementIn
 
         $row = $this->service->findById($dto->toArray());
         if ($row->totalQuantity() < $dto->qty_change) {
-            throw new BadException(__("Quantity order product can not less than stock movement in"));
+            throw new BadException(__("purchaseitem::messages.qty_less_than_stock_in"));
         }
         return $row;
     }
