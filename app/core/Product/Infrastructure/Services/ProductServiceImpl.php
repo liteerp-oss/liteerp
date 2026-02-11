@@ -6,8 +6,6 @@ use App\Exceptions\BadException;
 use Core\Product\Domain\Services\ProductService;
 use Core\Product\Domain\Repositories\ProductRepositoryInterface;
 use Core\Product\Domain\Entities\Product;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Str;
 
 class ProductServiceImpl implements ProductService
 {
@@ -17,24 +15,24 @@ class ProductServiceImpl implements ProductService
     {
         $entity = Product::fromArray($data);
         if ($this->repo->checkExists($data)) {
-            throw new BadException(__("Sku has been used"));
+            throw new BadException(__("product::messages.sku_used"));
         }
         return $this->repo->create($entity);
     }
     public function show(array $data): array | BadException
     {
-        return $this->repo->findOneWithFullData($data) ?? throw new BadException(__("Not found product"));
+        return $this->repo->findOneWithFullData($data) ?? throw new BadException(__("product::messages.not_found"));
     }
     public function update(array $data): Product
     {
         $entity = $this->repo->findById($data);
         if (!$entity) {
-            throw new BadException(__("Not found data for update"));
+            throw new BadException(__("product::messages.not_found_for_update"));
         }
         $check = $this->repo->checkExists($data);
         if ($check) {
             if($check->id !== $entity->id) {
-                throw new BadException(__("Sku has been used"));
+                throw new BadException(__("product::messages.sku_used"));
             }
         }
         $entity->description = $data['description'];
@@ -49,7 +47,7 @@ class ProductServiceImpl implements ProductService
     {
         $entity = $this->repo->findById($data);
         if (!$entity) {
-            throw new BadException(__("Not found data for update"));
+            throw new BadException(__("product::messages.not_found_for_update"));
         }
         return $this->repo->delete($entity);
     }

@@ -1,6 +1,7 @@
 <?php
 
 return [
-    'created' => 'Tạo Product thành công!',
-    'deleted' => 'Xoá Product thành công!',
+    'sku_used' => 'Mã SKU đã được sử dụng',
+    'not_found' => 'Không tìm thấy sản phẩm',
+    'not_found_for_update' => 'Không tìm thấy dữ liệu để cập nhật',
 ];
