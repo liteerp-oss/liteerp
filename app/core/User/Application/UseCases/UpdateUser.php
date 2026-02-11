@@ -26,7 +26,7 @@ class UpdateUser
             throw new BadException(__("user::messages.not_exists_on_business"));
         }
         if($dto->created_by === $account->id) {
-            throw new BadException(__("You can not change role your-self"));
+            throw new BadException(__("user::messages.cannot_change_own_role"));
         }
         Event::dispatch("erp.user.update", [
             ...$account->toArray(),

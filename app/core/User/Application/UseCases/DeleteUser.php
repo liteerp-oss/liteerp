@@ -18,7 +18,7 @@ class DeleteUser
         $dto = DeleteUserRequest::fromArray($data);
         $account = $this->service->findById($dto->toArray());
         if($dto->created_by === $account->id) {
-            throw new BadException(__("You can not delete to your-self"));
+            throw new BadException(__("user::messages.cannot_delete_self"));
         }
         Event::dispatch("erp.user.delete", [
             ...$account->toArray(),
