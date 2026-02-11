@@ -104,15 +104,88 @@ Use:
 
 When you need data from a core module (e.g. user list):
 
-✅ **Use the module `Service`**
+---
 
-❌ **Do NOT use:**
-- `UseCase`  
-  → UseCases coordinate business flows and may contain logic unrelated to your feature.
-- `Model`  
-  → Direct model access bypasses domain rules and invariants.
+## Architecture Access Rules
 
-> The `Service` layer is the **only correct and stable entry point**.
+To preserve domain integrity and maintain clean boundaries,  
+the following rules apply **strictly to Core modules only**.
+
+These rules are designed to protect the core domain model and its invariants.
+
+Extensions are free to manage their own tables and internal logic,  
+as long as they do not violate Core module boundaries.
+
+---
+
+### Scope of Enforcement
+
+The restrictions below apply to:
+
+- All Core modules
+- All Core domain entities
+- All Core business state transitions
+
+For tables and models created by an Extension:
+
+- The Extension has full control
+- Direct model access is allowed within that Extension
+- The Extension defines its own rules and invariants
+
+However, Extensions must never bypass Core domain rules.
+
+---
+
+### ❌ Do NOT use `Model` directly (Core only)
+
+Direct access to Core `Model` classes bypasses:
+
+- Domain rules
+- Business invariants
+- Validation logic
+- Application coordination
+- Domain events
+
+Core `Model` classes are data structures only.  
+They must never be used directly to mutate business state.
+
+---
+
+### ✅ Read Operations (Core)
+
+For read-only operations (no state mutation):
+
+- You may use a `Service`
+- You may use a `UseCase` (recommended for consistency)
+
+Read operations do not affect domain invariants.
+
+---
+
+### ✅ Write Operations (Core)
+
+All state-changing operations in Core modules must go through a `UseCase`.
+
+This includes:
+
+- Create
+- Update
+- Delete
+- Approve / Reject
+- Workflow transitions
+- Any status change
+
+The `UseCase` layer:
+
+- Defines the application boundary
+- Coordinates business flows
+- Manages transaction scope
+- Calls domain `Service` methods
+- Ensures domain invariants are preserved
+
+Direct calls to `Service` for state mutation in Core modules are strictly forbidden.
+
+---
 
 #### Read-only Joins
 
@@ -120,7 +193,7 @@ When you need data from a core module (e.g. user list):
 - This must NOT:
   - modify data
   - bypass business rules
-  - introduce write logic
+  - introduce write|update|delete logic
 
 ---
 
