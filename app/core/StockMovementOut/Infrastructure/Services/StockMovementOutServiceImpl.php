@@ -14,7 +14,7 @@ class StockMovementOutServiceImpl implements StockMovementOutService
     public function create(array $data): StockMovementOut
     {
         if($this->repo->findExists($data)) {
-            throw new BadException(__("This product used on this order"));
+            throw new BadException(__("stockmovementout::messages.product_used_in_order"));
         }
         $entity = StockMovementOut::fromArray($data);
         return $this->repo->create($entity);
@@ -35,7 +35,7 @@ class StockMovementOutServiceImpl implements StockMovementOutService
     {
         $entity = $this->repo->findById($data);
         if(!$entity) {
-            throw new BadException(__("Not found data"));
+            throw new BadException(__("stockmovementout::messages.not_found"));
         }
         //$entity->qty_change = $data['qty_change'];
         return $this->repo->update($entity);
