@@ -1,6 +1,6 @@
 <?php
 
 return [
-    'created' => 'Tạo Shipping thành công!',
-    'deleted' => 'Xoá Shipping thành công!',
+    'name_used' => 'Tên đã được sử dụng',
+    'not_found' => 'Không tìm thấy dữ liệu',
 ];

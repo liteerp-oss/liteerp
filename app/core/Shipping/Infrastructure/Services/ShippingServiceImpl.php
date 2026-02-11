@@ -15,24 +15,24 @@ class ShippingServiceImpl implements ShippingService
     {
         $row = $this->repo->findByName($data);
         if($row) {
-            throw new BadException(__("Name has been used"));
+            throw new BadException(__("shippings::messages.name_used"));
         }
         $entity = Shipping::fromArray($data);
         return $this->repo->create($entity);
     }
     public function show(array $data): Shipping | BadException
     {
-        return $this->repo->findById($data) ?? throw new BadException(__("Not found data"));
+        return $this->repo->findById($data) ?? throw new BadException(__("shippings::messages.not_found"));
     }
     public function update(array $data): Shipping | BadException
     {
         $row = $this->repo->findByName($data);
         if($row && $row->id !== $data['id']) {
-            throw new BadException(__("Name has been used"));
+            throw new BadException(__("shippings::messages.name_used"));
         }
         $entity = $this->repo->findById($data);
         if(!$entity) {
-            throw new BadException(__("Not found data"));
+            throw new BadException(__("shippings::messages.not_found"));
         }
         $entity->name = $data['name'];
         $entity->code = $data['code'];
@@ -44,7 +44,7 @@ class ShippingServiceImpl implements ShippingService
     {
         $entity = $this->repo->findById($data);
         if(!$entity) {
-            throw new BadException(__("Not found data"));
+            throw new BadException(__("shippings::messages.not_found"));
         }
         return $this->repo->delete($entity);
     }

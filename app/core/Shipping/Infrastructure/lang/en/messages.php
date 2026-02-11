@@ -1,6 +1,6 @@
 <?php
 
 return [
-    'created' => 'Shipping created successfully!',
-    'deleted' => 'Shipping deleted successfully!',
+    'name_used' => 'Name has been used',
+    'not_found' => 'Not found data',
 ];
