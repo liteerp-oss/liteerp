@@ -14,10 +14,10 @@ class CheckForStockMovementIn
     {
         $stock = $this->service->findById($dto->toArray());
         if($stock->isReceived()) {
-            throw new BadException(__("Stock in has been received, you can not update data"));
+            throw new BadException(__("stockin::messages.received_cannot_update"));
         }
         if($stock->isCancelled()) {
-            throw new BadException(__("Stock in has been cancelled, you can not update data"));
+            throw new BadException(__("stockin::messages.cancelled_cannot_update"));
         }
         return $stock;
     }

@@ -1,6 +1,9 @@
 <?php
 
 return [
-    'created' => 'Tạo StockIn thành công!',
-    'deleted' => 'Xoá StockIn thành công!',
+    'inventory_not_found' => 'Không tìm thấy tồn kho',
+    'not_found' => 'Không tìm thấy phiếu nhập kho',
+    'already_received' => 'Phiếu này đã được duyệt',
+    'received_cannot_update' => 'Phiếu nhập kho đã nhận, bạn không thể cập nhật dữ liệu',
+    'cancelled_cannot_update' => 'Phiếu nhập kho đã hủy, bạn không thể cập nhật dữ liệu',
 ];
