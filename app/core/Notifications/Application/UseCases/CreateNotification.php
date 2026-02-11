@@ -26,7 +26,7 @@ class CreateNotification
                     break;
                 case "mail":
                     if(!$dto->title || !$dto->message) {
-                        throw new BadException(__("Notification chanel DB can not empty title or message"));
+                        throw new BadException(__("notifications::messages.empty_title_message"));
                     }
                     SendMailJob::dispatch($dto->user_id,$dto->title,
                         $dto->message,$dto->link ?? URL::to('/dashboard'))

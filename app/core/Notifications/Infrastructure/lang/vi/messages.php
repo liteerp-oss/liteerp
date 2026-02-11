@@ -1,6 +1,6 @@
 <?php
 
 return [
-    'created' => 'Tạo Notification thành công!',
-    'deleted' => 'Xoá Notification thành công!',
+    'not_found' => 'Không tìm thấy thông báo.',
+    'empty_title_message' => 'Kênh thông báo yêu cầu cả tiêu đề và tin nhắn.',
 ];

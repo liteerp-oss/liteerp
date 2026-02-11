@@ -28,7 +28,7 @@ class NotificationDBServiceImpl implements NotificationDBService
     {
         $entity = $this->repo->findById($data);
         if(!$entity) {
-            throw new BadException(__("Not found data"));
+            throw new BadException(__("notifications::messages.not_found"));
         }
         $entity->markRead();
         return $this->repo->update($entity);
@@ -37,7 +37,7 @@ class NotificationDBServiceImpl implements NotificationDBService
     {
         $entity = $this->repo->findById($data);
         if(!$entity) {
-            throw new BadException(__("Not found data"));
+            throw new BadException(__("notifications::messages.not_found"));
         }
         return $this->repo->delete($entity);
     }
