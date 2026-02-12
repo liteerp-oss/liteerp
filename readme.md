@@ -84,7 +84,7 @@ for real-world pilot deployment.
 Priority is given to:
 - Distribution businesses
 - Inventory-based operations
-- Teams with 3–30 employees
+- Teams with 1–30 employees
 - Businesses located in Vietnam (preferred for faster coordination)
 
 ---
