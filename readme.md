@@ -76,6 +76,19 @@ The system is built on:
 
 ---
 
+## 🚀 Pilot Partner Program
+
+LiteERP is onboarding 2–3 small businesses 
+for real-world pilot deployment.
+
+Priority is given to:
+- Distribution businesses
+- Inventory-based operations
+- Teams with 3–30 employees
+- Businesses located in Vietnam (preferred for faster coordination)
+
+---
+
 ## 🧠 A Pure and Minimal Core
 
 The LiteERP core intentionally focuses only on:
