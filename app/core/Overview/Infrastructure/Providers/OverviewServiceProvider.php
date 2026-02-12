@@ -8,7 +8,7 @@ use Core\Overview\Infrastructure\Repositories\EloquentOverviewRepository;
 use Core\Overview\Domain\Services\OverviewService;
 use Core\Overview\Infrastructure\Commands\OverviewCommand;
 use Core\Overview\Infrastructure\Services\OverviewServiceImpl;
-
+use Illuminate\Console\Scheduling\Schedule;
 class OverviewServiceProvider extends ServiceProvider
 {
     public function register()
@@ -27,6 +27,13 @@ class OverviewServiceProvider extends ServiceProvider
                 OverviewCommand::class
             ]);
         }
+        $this->app->booted(function () {
+            app(Schedule::class)
+                ->command('app:overview')
+                ->everyThirtyMinutes()
+                ->withoutOverlapping()
+                ->onOneServer();
+        });
     }
 
     protected function mergeModuleConfig(): void
