@@ -217,18 +217,47 @@ Business middlewares:
     - business.admin -> check business admin 
     - business.token -> check if has logged business 
 
-And we also one middleware support language:
+And we also a middleware support language:
 
     - app.language -> use App::setLocale if header has `App-Language`
 
-And one middleware groups is `business` it is two middleware neccessary for business 
+And a middleware groups is `business`, it is two middlewares necessary for `business` 
 
     - app.language
     - business.token
 
+If you use API then you only need implement `business` middleware, because only user logged and got approved permission that business by manager has `business token`.
+
 ## Create notification 
 
-To create notification please consider at here <a href="./Module.md">Module</a>.
+With extension shouldn't use as module to trigger create notification, you should implement `usecase` of Notification module:
+
+### Use case namespace: 
+
+    - namespace Core\Notifications\Application\UseCases;
+
+#### class:
+
+    - CreateNotification
+
+### Adapter namespace: 
+
+    - namespace Core\Notifications\Application\DTOs;
+
+#### class:
+
+    - CreateNotificationRequest
+
+#### Example 
+
+You can use easy way if you can't implement as injection class: 
+
+    $createNotification = app(CreateNotification::class);
+    $createNotification->handle( 
+        CreateNotificationRequest::fromArray(
+            // your data 
+        )
+    );
 
 ## Send email 
 
