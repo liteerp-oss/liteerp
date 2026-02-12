@@ -1,0 +1,13 @@
+{
+    "name": "Fast Mode",
+    "version": "0.0.1",
+    "description": "Fast Mode extension support LiteERP",
+    "status": false,
+    "verified": true,
+    "author": "LiteERP team",
+    "icon": null,
+    "setting_link": null,
+    "email": null,
+    "directory": "FastMode",
+    "support_version": ""
+}
