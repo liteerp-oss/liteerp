@@ -218,11 +218,7 @@ pure-core and extension-first philosophy.
 
 ## 🐳 Docker Setup (Quick Start)
 
-Basic environment configuration:
-
-  APP_TIMEZONE="Asia/Ho_Chi_Minh"  
-  APP_CURRENCY="USD"  
-  APP_CURRENCY_LOCALE="en-US"
+- First step you need copy `.env.example` at root folder to `.env`, please don't mistake `.env.example` at root and `.env.example` at `./app/.env.example`. At root is environment of docker and at app folder is environment for laravel.
 
 Steps:
 1. `docker compose build && docker compose up -d`
@@ -230,6 +226,12 @@ Steps:
 3. `composer install`
 4. `php artisan app:setup`
 5. `php artisan app:create-admin {email} {password} {name}`
+
+Basic environment configuration (`./app/.env.example`):
+
+    APP_TIMEZONE="Asia/Ho_Chi_Minh"  
+    APP_CURRENCY="USD"  
+    APP_CURRENCY_LOCALE="en-US"
 
 Visit:  
 http://localhost:8002/dashboard/login
