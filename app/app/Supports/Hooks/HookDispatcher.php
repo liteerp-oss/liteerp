@@ -9,11 +9,11 @@ use Illuminate\Contracts\Container\Container;
 
 class HookDispatcher
 {
-    protected iterable $hooks;
+    protected Container $container;
 
     public function __construct(Container $container)
     {
-        $this->hooks = $container->tagged('liteerp.hooks');
+        $this->container = $container;
     }
 
     /**
@@ -21,7 +21,7 @@ class HookDispatcher
      */
     public function dispatch(HookContext $context): mixed
     {
-        foreach ($this->hooks as $hook) {
+        foreach ($this->container->tagged('liteerp.hooks') as $hook) {
             if (! $hook instanceof HookInterface) {
                 continue;
             }
