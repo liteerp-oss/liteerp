@@ -227,11 +227,24 @@ Steps:
 4. `php artisan app:setup`
 5. `php artisan app:create-admin {email} {password} {name}`
 
+You need register a account at Pusher and update connect config at `./app/.env`. <a href="https://pusher.com/" target="_blank">Register new account</a>
+
+    PUSHER_APP_ID=""
+    PUSHER_APP_KEY=""
+    PUSHER_APP_SECRET=""
+    PUSHER_APP_CLUSTER=""
+
+On a some case you need restart docker again after config Pusher: 
+
+    docker compose build && docker compose up -d
+
 Basic environment configuration (`./app/.env.example`):
 
     APP_TIMEZONE="Asia/Ho_Chi_Minh"  
     APP_CURRENCY="USD"  
     APP_CURRENCY_LOCALE="en-US"
+
+Find your <a href="https://www.php.net/manual/en/timezones.php" target="_blank">timezone</a>
 
 Visit:  
 http://localhost:8002/dashboard/login
