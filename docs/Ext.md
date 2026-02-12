@@ -21,6 +21,7 @@ No manual configuration is required.
 - Extensions can be enabled, disabled, or removed via the LiteERP UI
 - Core updates will not overwrite installed extensions
 - name ZIP file is name directory `example with directory name is Test then it will be Test.zip`
+
 ---
 
 ## 👥 Who Is This For?
@@ -57,7 +58,7 @@ At here we have `Test Ext` is name of extension, and Test is directory. Director
 
 ## Rules 
 
-- If you need do anything relate to core module then please use `service` no reuse `usecase` and `model`. Maybe you will seen a some place use `Model` of core module on `Extension Example` but it's old and in that we have not yet make this rule.
+- If you need do anything relate to core module then please use `service` and `usecase` no use `model`, please consider here <a href="../CONTRIBUTING.md">CONTRIBUTING</a>. Maybe you will seen a some place use `Model` of core module on `Extension Example` but it's old and in that we have not yet make this rule.
 
 - And you shuold't use `AuthencationService` because this is verify, it don't need Extension.
 
