@@ -1,0 +1,13 @@
+{
+    "name": "App SSL",
+    "version": "0.0.1",
+    "description": "Support SSL extension support LiteERP",
+    "status": false,
+    "verified": true,
+    "author": "LiteERP Team",
+    "icon": null,
+    "setting_link": null,
+    "email": null,
+    "directory": "AppSSL",
+    "support_version": ""
+}
