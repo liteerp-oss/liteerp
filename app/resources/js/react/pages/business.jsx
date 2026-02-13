@@ -112,7 +112,7 @@ export default function Business() {
                 <div className="container">
                     <div className="row mt-3">
                         {listBusiness.length >= 1 ? listBusiness.map((item, index) => {
-                            return <div key={index} className="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                            return <div key={index} className="col-xs-12 col-sm-12 col-md-12 col-lg-6">
                                 <div>
                                     <BusinessListItem
                                         business={item}

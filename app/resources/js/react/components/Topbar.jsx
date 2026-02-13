@@ -8,6 +8,7 @@ import { setNotificationCount } from "../redux/NotificationSlice";
 import { useEcho } from "@laravel/echo-react";
 import LanguageSwitcher from "./LanguageSwitcher";
 import { useI18n } from "../../i18n/useI18n";
+import MenuMobile from "./Topbar/MenuMobile";
 export default function Topbar() {
   const { t } = useI18n();
   const navigate = useNavigate();
@@ -44,6 +45,9 @@ export default function Topbar() {
     <div className="erp-topbar d-flex align-items-center justify-content-between px-4">
       {/* Left Section */}
       <div className="d-flex align-items-center">
+        <div className="menu-mobile">
+          <MenuMobile />
+        </div>
         <div>
           <h5 className="fw-bold mb-0 erp-topbar-title">{business?.name}</h5>
           <small className="theme-title">

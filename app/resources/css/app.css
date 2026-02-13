@@ -47,3 +47,14 @@ a {
 .extension-content-page {
   min-height: 100vh;
 }
+/**
+ @ Reponsive
+**/
+@media screen and (max-width: 1140px) {
+  .sidebar-desktop {
+    display: none;
+  }
+  .dashboard-content {
+    min-height: 100vh;
+  }
+}
