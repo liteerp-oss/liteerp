@@ -10,43 +10,55 @@
 @import './business.css';
 @import './ui.css';
 @import './notification.css';
+
 .dashboard-megabox {
-    overflow-x: hidden;
-    background-color: var(--body);
+  overflow-x: hidden;
+  background-color: var(--body);
 }
+
 .dashboard-content {
   border-left: 1px solid var(--border-color);
 }
+
 .card-overview {
-    border: 1px solid var(--border-color);
-    background-color: var(--erp-sidebar-bg);
-    color: var(--erp-text);
+  border: 1px solid var(--border-color);
+  background-color: var(--erp-sidebar-bg);
+  color: var(--erp-text);
 }
+
 a {
-  text-decoration: none!important;
+  text-decoration: none !important;
 }
+
 .thumbnail {
   max-width: 100%;
 }
+
 .cursor-default {
   cursor: pointer;
 }
+
 .invalid-feedback {
-  display: block!important;
+  display: block !important;
 }
+
 .invalid-feedback p {
   margin-bottom: 0px;
   padding-bottom: 0px;
 }
+
 .hidden {
   display: none;
 }
+
 .show {
   display: block;
 }
+
 .extension-content-page {
   min-height: 100vh;
 }
+
 /**
  @ Reponsive
 **/
@@ -54,7 +66,96 @@ a {
   .sidebar-desktop {
     display: none;
   }
+
   .dashboard-content {
     min-height: 100vh;
+  }
+}
+
+/* Button */
+.menu-mobile-button {
+  font-size: 35px;
+  margin-top: 5px;
+  cursor: pointer;
+}
+
+/* Overlay */
+.menu-mobile-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  animation: menu-mobile-fadeIn 0.2s ease;
+}
+
+/* Grid */
+.menu-mobile-grid {
+  width: 90%;
+  max-width: 900px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 30px;
+  text-align: center;
+}
+
+/* Link reset */
+.menu-mobile-link {
+  text-decoration: none;
+}
+
+/* Item */
+.menu-mobile-item {
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+
+.menu-mobile-item:hover {
+  transform: scale(1.1);
+}
+
+/* Icon box */
+.menu-mobile-icon-wrapper {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto;
+  border-radius: 20px;
+
+  background: linear-gradient(135deg, #4f46e5, #6366f1);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}
+
+/* Icon */
+.menu-mobile-icon {
+  font-size: 30px;
+  color: #fff;
+}
+
+/* Label */
+.menu-mobile-label {
+  margin-top: 10px;
+  font-weight: 500;
+  color: #fff;
+  font-size: 14px;
+}
+
+/* Animation */
+@keyframes menu-mobile-fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
   }
 }
