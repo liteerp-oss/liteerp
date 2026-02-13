@@ -3,6 +3,9 @@ import ExtensionService from "../../services/ExtensionService";
 import { useForm } from '../../libraries/handleInput'
 import { usePopup } from '../popups/PopupContext'
 import { useI18n } from "../../../i18n/useI18n";
+import BusinessRoleService from "@/react/services/BusinessRoleService";
+import { setBusinessNav, setBusinessRole } from "@/react/redux/businessRoleSlice";
+import { useDispatch } from "react-redux";
 export default function ExtensionCard({
   item = {
     icon: "bi bi-box",
@@ -17,9 +20,20 @@ export default function ExtensionCard({
     setting_link: "#"
   }
 }) {
-  const {t} = useI18n();
+  const { t } = useI18n();
   const { openPopup } = usePopup();
   const form = useForm();
+  const dispatch = useDispatch();
+  const businessRole = useCallback(() => {
+    BusinessRoleService.view()
+      .then((resp) => {
+        dispatch(setBusinessNav(resp.message.nav))
+        dispatch(setBusinessRole(resp.message.roles))
+      })
+      .catch((error) => {
+
+      })
+  }, [dispatch])
   const update = useCallback(() => {
     if (form.formData?.directory) {
       form.setLoading(true)
@@ -33,6 +47,7 @@ export default function ExtensionCard({
             status: form.formData.status ? false : true
           })
           form.setLoading(false)
+          businessRole();
         })
         .catch((error) => {
           form.setLoading(false)
@@ -48,6 +63,7 @@ export default function ExtensionCard({
         .then((resp) => {
           form.setLoading(false)
           form.setFormData(null)
+          businessRole();
         })
         .catch((error) => {
           form.setLoading(false)
@@ -67,77 +83,77 @@ export default function ExtensionCard({
     form.setFormData(item)
   }, [])
   return form.formData ? <div className="card h-100 shadow-sm">
-      <div className="card-body d-flex flex-column">
+    <div className="card-body d-flex flex-column">
 
-        {/* Header */}
-        <div className="d-flex align-items-start mb-3">
-          <div className="me-3 fs-3 text-primary">
-            <i className={form.formData?.icon ?? 'bi bi-google-play'}></i>
-          </div>
-
-          <div className="flex-grow-1">
-            <h5 className="card-title mb-1 text-primary text-truncate">
-              {form.formData?.name}
-            </h5>
-            <div className="small theme-title">
-              v{form.formData?.version} •{" "}
-              {form.formData?.verified ? (
-                <span className="text-success">{t('Verified')}</span>
-              ) : (
-                <span className="text-danger">{t('Unverified')}</span>
-              )}
-            </div>
-          </div>
+      {/* Header */}
+      <div className="d-flex align-items-start mb-3">
+        <div className="me-3 fs-3 text-primary">
+          <i className={form.formData?.icon ?? 'bi bi-google-play'}></i>
         </div>
 
-        {/* Description */}
-        <p className="card-text small text-muted mb-3">
-          {form.formData?.description.length > 120
-            ? form.formData?.description.substring(0, 120) + "..."
-            : form.formData?.description}
-        </p>
-
-        {/* Meta */}
-        <ul className="list-unstyled small text-muted mb-4">
-          <li>
-            <strong>{t('Author')}:</strong> {form.formData?.author}
-          </li>
-          <li>
-            <strong>{t('Directory')}:</strong> {form.formData?.directory}
-          </li>
-        </ul>
-
-        {/* Actions */}
-        <div className="mt-auto d-flex gap-2">
-          <button
-            disabled={form.loading}
-            onClick={update}
-            className={`btn btn-sm ${form.formData?.status ? "btn-danger" : "btn-success"
-              }`}
-          >
-            <i className={`bi ${form.formData?.status ? "bi-x-circle" : "bi-check-circle"} me-1`} />
-            {form.formData?.status ? t("Disable") : t("Enable")}
-          </button>
-          {form.formData?.setting_link ? <a
-            href={form.formData?.setting_link}
-            target="_blank"
-            className="btn btn-sm btn-outline-secondary"
-            rel="noreferrer"
-          >
-            <i className="bi bi-gear me-1" />
-            {t("Settings")}
-          </a> : null }   
-
-          <button
-            onClick={confirmDelete}
-            className="btn btn-sm btn-outline-danger ms-auto"
-            title={t("Delete")}
-          >
-            <i className="bi bi-trash" />
-          </button>
+        <div className="flex-grow-1">
+          <h5 className="card-title mb-1 text-primary text-truncate">
+            {form.formData?.name}
+          </h5>
+          <div className="small theme-title">
+            v{form.formData?.version} •{" "}
+            {form.formData?.verified ? (
+              <span className="text-success">{t('Verified')}</span>
+            ) : (
+              <span className="text-danger">{t('Unverified')}</span>
+            )}
+          </div>
         </div>
       </div>
-    </div> : null
-    
-  ;
+
+      {/* Description */}
+      <p className="card-text small text-muted mb-3">
+        {form.formData?.description.length > 120
+          ? form.formData?.description.substring(0, 120) + "..."
+          : form.formData?.description}
+      </p>
+
+      {/* Meta */}
+      <ul className="list-unstyled small text-muted mb-4">
+        <li>
+          <strong>{t('Author')}:</strong> {form.formData?.author}
+        </li>
+        <li>
+          <strong>{t('Directory')}:</strong> {form.formData?.directory}
+        </li>
+      </ul>
+
+      {/* Actions */}
+      <div className="mt-auto d-flex gap-2">
+        <button
+          disabled={form.loading}
+          onClick={update}
+          className={`btn btn-sm ${form.formData?.status ? "btn-danger" : "btn-success"
+            }`}
+        >
+          <i className={`bi ${form.formData?.status ? "bi-x-circle" : "bi-check-circle"} me-1`} />
+          {form.formData?.status ? t("Disable") : t("Enable")}
+        </button>
+        {form.formData?.setting_link ? <a
+          href={form.formData?.setting_link}
+          target="_blank"
+          className="btn btn-sm btn-outline-secondary"
+          rel="noreferrer"
+        >
+          <i className="bi bi-gear me-1" />
+          {t("Settings")}
+        </a> : null}
+
+        <button
+          onClick={confirmDelete}
+          className="btn btn-sm btn-outline-danger ms-auto"
+          title={t("Delete")}
+        >
+          <i className="bi bi-trash" />
+        </button>
+      </div>
+    </div>
+  </div> : null
+
+    ;
 }
