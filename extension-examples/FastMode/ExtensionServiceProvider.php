@@ -2,6 +2,7 @@
 
 namespace Extensions\FastMode;
 
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 
 class ExtensionServiceProvider extends ServiceProvider
