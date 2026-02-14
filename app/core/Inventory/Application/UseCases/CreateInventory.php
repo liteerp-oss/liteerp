@@ -2,8 +2,11 @@
 
 namespace Core\Inventory\Application\UseCases;
 
-use Core\ActivityLog\Application\DTOs\CreateActivityLogRequest;
-use Core\ActivityLog\Application\UseCases\CreateActivityLog;
+use App\Supports\Hooks\HookAction;
+use App\Supports\Hooks\HookContext;
+use App\Supports\Hooks\HookPhase;
+use App\Supports\Hooks\HookTiming;
+use App\Supports\Hooks\HookDispatcher;
 use Core\Inventory\Application\DTOs\CreateInventoryRequest;
 use Core\Inventory\Domain\Services\InventoryService;
 use Illuminate\Support\Facades\DB;
@@ -12,18 +15,40 @@ use Illuminate\Support\Facades\Event;
 class CreateInventory
 {
     public function __construct(private InventoryService $service,
-    private CreateActivityLog $createLog) {}
+    private HookDispatcher $hooks) {}
 
-    public function handle(CreateInventoryRequest $dto)
+    public function handle(array $data)
     {
         DB::beginTransaction();
-        $create = $this->service->create($dto->toArray());
+        $data = $this->hooks->dispatch(
+            new HookContext(
+                action: HookAction::CREATE,
+                phase: HookPhase::RESPONSE,
+                timing: HookTiming::BEFORE,
+                payload: $data,
+                module: 'Inventory'
+            )
+        );
+        $dto = CreateInventoryRequest::fromArray($data);
+        $create = $this->service->create($data);
+        $data = $this->hooks->dispatch(
+            new HookContext(
+                action: HookAction::CREATE,
+                phase: HookPhase::RESPONSE,
+                timing: HookTiming::AFTER,
+                payload: [
+                    ...$data,
+                    ...$create->toArray()
+                ],
+                module: 'Inventory'
+            )
+        );
         Event::dispatch('erp.inventory.create',[
             'user_id' => $dto->created_by,
             'business_id' => $dto->business_id,
-            ...$create->toArray()
+            ...$data
         ]);
         DB::commit();
-        return $create;
+        return $data;
     }
 }

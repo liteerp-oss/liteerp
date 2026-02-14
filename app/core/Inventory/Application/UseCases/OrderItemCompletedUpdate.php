@@ -2,7 +2,11 @@
 
 namespace Core\Inventory\Application\UseCases;
 
-use Core\Inventory\Application\DTOs\CreateInventoryRequest;
+use App\Supports\Hooks\HookAction;
+use App\Supports\Hooks\HookContext;
+use App\Supports\Hooks\HookDispatcher;
+use App\Supports\Hooks\HookPhase;
+use App\Supports\Hooks\HookTiming;
 use Core\Inventory\Application\DTOs\OrderItemCompletedUpdateRequest;
 use Core\Inventory\Application\DTOs\UpdateInventoryByIdRequest;
 use Core\Inventory\Domain\Services\InventoryService;
@@ -11,7 +15,10 @@ use Illuminate\Support\Facades\Event;
 
 class OrderItemCompletedUpdate
 {
-    public function __construct(private InventoryService $service) {}
+    public function __construct(
+        private InventoryService $service,
+        private HookDispatcher $hooks
+    ) {}
 
     public function handle(OrderItemCompletedUpdateRequest $dto)
     {
@@ -30,14 +37,35 @@ class OrderItemCompletedUpdate
                 'id'    => $value['inventory_id'],
                 'user_id' => $dto->created_by
             ]);
-            $update = $this->service->updateById($adapter->toArray());
+            $data = $this->hooks->dispatch(
+                new HookContext(
+                    action: HookAction::UPDATE,
+                    phase: HookPhase::RESPONSE,
+                    timing: HookTiming::BEFORE,
+                    payload: $adapter->toArray(),
+                    module: 'Inventory'
+                )
+            );
+            $update = $this->service->updateById($data);
+            $data = $this->hooks->dispatch(
+                new HookContext(
+                    action: HookAction::UPDATE,
+                    phase: HookPhase::RESPONSE,
+                    timing: HookTiming::AFTER,
+                    payload: [
+                        ...$data,
+                        ...$update->toArray()
+                    ],
+                    module: 'Inventory'
+                )
+            );
             Event::dispatch('erp.inventory.update', [
                 'user_id' => $dto->created_by,
                 'business_id' => $dto->business_id,
-                ...$update->toArray()
+                ...$data
             ]);
         }
         DB::commit();
-        return $update;
+        return;
     }
 }
