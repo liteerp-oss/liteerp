@@ -11,4 +11,13 @@ class ExtensionInstallPlan
         public bool $install) {
             
         }
+    public function toArray(){
+        return [
+            'commands' => $this->commands,
+            'migrations' => $this->migrations,
+            'warnings' => $this->warnings,
+            'directory' => $this->directory,
+            'install' => $this->install
+        ];
+    }
 }
