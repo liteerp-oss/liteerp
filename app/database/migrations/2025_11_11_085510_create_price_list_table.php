@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('customer_group_id')->constrained('customer_group')->cascadeOnDelete();
             $table->foreignId('product_id')->constrained('products')->cascadeOnDelete();
-            $table->decimal('price', 20, 4);
+            $table->decimal('price', 20, 2);
             $table->softDeletes();
             $table->timestamps();
         });
