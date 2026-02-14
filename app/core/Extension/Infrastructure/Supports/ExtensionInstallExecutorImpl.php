@@ -6,7 +6,6 @@ use App\Exceptions\BadException;
 use Core\Extension\Application\DTOs\ExtensionInstallPlan;
 use Core\Extension\Domain\Supports\ExtensionInstallExecutor;
 use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\Log;
 
 class ExtensionInstallExecutorImpl implements ExtensionInstallExecutor
 {
@@ -38,7 +37,6 @@ class ExtensionInstallExecutorImpl implements ExtensionInstallExecutor
     {
         foreach ($plan->commands as $command) {
             if (in_array($command['name'], $this->allowCommands)) {
-                Log::info('Run:'. $command['name']);
                 Artisan::call($command['name']);
             } else {
                 throw new BadException(__("extension::messages.command_register_invalid"));
@@ -47,6 +45,6 @@ class ExtensionInstallExecutorImpl implements ExtensionInstallExecutor
     }
     private function log(ExtensionInstallPlan $plan): void
     {
-        Log::info(json_encode($plan));
+        logs()->info("install extension",$plan->toArray());
     }
 }
