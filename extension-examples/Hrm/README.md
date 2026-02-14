@@ -1,106 +1,56 @@
-# HRM Extension for LiteERP
+# HRM Extension
 
-A comprehensive Human Resource Management extension with integrated email notifications.
+HRM Extension is a lightweight Human Resource Management module for LiteERP.  
+It helps small and medium-sized businesses manage employee leave requests and track attendance in a simple and transparent way.
 
-## Features
+This extension focuses on essential HR needs without adding unnecessary complexity.
 
-### ✅ Leave Management
-- Submit leave requests (vacation, sick leave, etc.)
-- Approval workflow with email notifications
-- Leave request status tracking
+---
 
-### ✅ Time Attendance
-- Daily check-in/check-out tracking
-- Automatic working hours calculation
-- End-of-day reports
-- Monthly attendance summaries with CSV export
+## What This Extension Supports
 
-### ✅ Employment Contracts
-- Upload and store contract documents
-- Secure contract download
-- Contract management per user
+### 1. Leave Management
 
-## Email Integration
+- Employees can create leave requests.
+- Track request status: Pending, Approved, Rejected.
+- Clear approval workflow.
+- Notifications when a leave request is submitted or processed.
+- Leave history for easy reference and transparency.
 
-The extension automatically integrates with SMTP settings configured in LiteERP:
+This helps businesses manage annual leave, sick leave, and personal leave efficiently.
 
-- **Runtime SMTP Configuration**: Notifications automatically detect and use configured SMTP settings
-- **Fallback Handling**: Gracefully handles cases where SMTP is not configured
-- **No External Dependencies**: Works independently while leveraging existing SMTP configuration
+---
 
-## Installation
+### 2. Attendance Tracking
 
-1. **Install HRM extension:**
-   ```bash
-   # Copy HRM extension to extensions directory
-   cp -r hrm /path/to/liteerp/app/extensions/
+- Record daily check-in and check-out times.
+- Track actual working hours.
+- Monthly attendance summaries.
+- Export reports for internal management or accounting purposes.
 
-   # Install HRM extension
-   php artisan extension:install hrm
-   ```
+Suitable for SMEs that need a simple attendance system without complex infrastructure.
 
-2. **Run migrations:**
-   ```bash
-   php artisan migrate
-   ```
+---
 
-3. **Configure SMTP (optional but recommended):**
-   - Install and configure the SMTP extension if email notifications are needed
-   - The HRM extension will automatically use SMTP settings if available
+### 3. Automatic Notifications
 
-## API Endpoints
+- Notify managers when a new leave request is submitted.
+- Notify employees when their request is approved or rejected.
+- Improves communication and speeds up HR processes.
 
-### Leave Requests
-- `POST /api/hrm/leave-requests` - Create leave request
-- `GET /api/hrm/leave-requests` - List user's leave requests
-- `POST /api/hrm/leave-requests/{id}/approve` - Approve leave request
-- `POST /api/hrm/leave-requests/{id}/reject` - Reject leave request
+---
 
-### Time Attendance
-- `POST /api/hrm/attendance` - Record attendance
-- `POST /api/hrm/attendance/end-of-day` - Create end-of-day report
-- `GET /api/hrm/attendance/monthly/{userId}/{month}/{year}` - Get monthly summary
-- `GET /api/hrm/attendance/export/{userId}/{month}/{year}` - Export monthly report (CSV)
+## Target Users
 
-### Employment Contracts
-- `POST /api/hrm/contracts` - Upload contract
-- `GET /api/hrm/contracts` - List contracts
-- `GET /api/hrm/contracts/{id}/download` - Download contract
+- Small and medium-sized businesses (SMEs).
+- Companies with approximately 5–50 employees.
+- Organizations that want a basic HR system before scaling further.
 
-## Email Notifications
+---
 
-The extension automatically sends email notifications when SMTP is configured:
+## Design Philosophy
 
-- **Leave Request Submitted**: Sent to approver when a new request is created
-- **Leave Request Approved**: Sent to employee when request is approved
-- **Leave Request Rejected**: Sent to employee when request is rejected
-
-## Security
-
-- Policy-based authorization
-- Input validation
-- User-specific data access
-- Secure file storage for contracts
-
-## Frontend Integration
-
-The extension includes React components that are automatically loaded:
-
-- `LeaveRequestForm` - Submit leave requests
-- `TimeAttendanceForm` - Record daily attendance
-- `MonthlyAttendanceSummary` - View attendance reports
-- `LeaveApprovalList` - Approve pending requests
-- `ContractList` - Manage contracts
-
-The main HRM interface is rendered in an element with id `extension-hrm`.
-
-## Database Tables
-
-- `leave_requests` - Leave request data
-- `time_attendances` - Daily attendance records
-- `end_of_day_reports` - End-of-day summaries
-- `employment_contracts` - Contract file information
-
-## Configuration
-
-No additional configuration required. The extension uses Laravel's built-in features and follows LiteERP conventions.
+- Simple and practical.
+- Focused on real business needs.
+- Lightweight and easy to integrate into LiteERP.
+- Built to be extendable for future HR features.
