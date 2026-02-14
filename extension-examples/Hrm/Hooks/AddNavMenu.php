@@ -24,8 +24,6 @@ class AddNavMenu implements HookInterface
 
     public function handle(HookContext $context): HookResult
     {
-        $token = Str::random(32);
-        Cache::set($token,true);
         $nav = [
             ...$context->payload['nav'],
             SupportUINav::buildNavItem([
