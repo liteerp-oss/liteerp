@@ -23,7 +23,8 @@ class IndexQuery implements QueryInterface {
             "products.unit as unit",
             "warehouses.name as warehouse",
             "category_product.name as category",
-            "category_product.tax as tax"
+            "category_product.tax as tax",
+            "price_list.price as price"
         )
             ->join("products", "products.id", "=", "inventories.product_id")
             ->join("warehouses", "warehouses.id", "=", "inventories.warehouse_id")
@@ -32,9 +33,12 @@ class IndexQuery implements QueryInterface {
                 "category_product.id",
                 "=",
                 "products.category_id"
-            );
+            )
+            ->join("price_list", "price_list.product_id", "=", "products.id");
         $index = $index->groupBy(
-            "inventories.id"
+            "inventories.id",
+            "products.id",
+            "price_list.price"
         );
         $hooks = $this->hooks->dispatch(
             new HookContext(
