@@ -34,9 +34,9 @@ class InsertManyNotification
             foreach($dto->chanels as $key => $chanels) {
                 $adapter = new CreateNotificationRequest(
                     user_id: $user['user_id'],
-                    message: $dto->message,
+                    message: $dto->message ? __($dto->message,$dto->message_params,$user['lang']) : null,
                     link: $dto->link,
-                    title: $dto->title,
+                    title: $dto->title ? __($dto->title,$dto->title_params,$user['lang']) : null,
                     entity_type: $dto->entity_type,
                     entity_id: $dto->entity_id,
                     chanels: $dto->chanels,

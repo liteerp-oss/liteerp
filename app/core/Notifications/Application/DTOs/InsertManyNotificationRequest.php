@@ -17,7 +17,10 @@ class InsertManyNotificationRequest
         public ?string $queue = null,
         public ?int $business_id = null,
         public ?string $type = null,
-        public int $user_id
+        public int $user_id,
+        // translate params
+        public array $message_params = [],
+        public array $title_params = []
     ) {
         
     }
@@ -35,7 +38,9 @@ class InsertManyNotificationRequest
             role: $data['role'] ?? ['admin', 'manager'],
             business_id: $data['business_id'] ?? null,
             type: $data['type'] ?? null,
-            user_id: $data['user_id']
+            user_id: $data['user_id'],
+            message_params: $data['message_params'] ?? [],
+            title_params: $data['title_params'] ?? []
         );
     }
     
@@ -52,7 +57,9 @@ class InsertManyNotificationRequest
             'role' => $this->role,
             'business_id'   => $this->business_id,
             'type'  => $this->type,
-            'user_id' => $this->user_id
+            'user_id' => $this->user_id,
+            'message_params' => $this->message_params,
+            'title_params' => $this->title_params
         ];
     }
     public function getQueue():string {
