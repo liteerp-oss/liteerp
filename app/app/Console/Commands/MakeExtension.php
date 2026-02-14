@@ -59,6 +59,14 @@ class MakeExtension extends Command
             'Database/Migrations',
             'Routes',
             'Config',
+            'Resources/js',
+            'Resources/js/i18n/en',
+            'Resources/js/i18n/ja',
+            'Resources/js/i18n/vi',
+            'Resources/css',
+            'lang/en',
+            'lang/ja',
+            'lang/vi',
         ];
 
         foreach ($dirs as $dir) {
@@ -68,6 +76,7 @@ class MakeExtension extends Command
 
     protected function createFiles(Filesystem $fs, string $base, string $directory)
     {
+        $strtolower = strtolower($directory);
         $namespace = "Extensions\\{$directory}";
 
         // Service Provider
@@ -84,7 +93,7 @@ class ExtensionServiceProvider extends ServiceProvider
     {
         //
         \$this->app->tag(
-            \Extensions\\{$directory}\\Hooks\ViewShowHook::class,
+            \Extensions\\{$directory}\\Hooks\AddMenuHook::class,
             'liteerp.hooks'
         );
     }
@@ -96,6 +105,8 @@ class ExtensionServiceProvider extends ServiceProvider
           \$this->loadMigrationsFrom(__DIR__.'/Database/Migrations');
         }
         \$this->loadRoutesFrom(__DIR__.'/Routes/web.php');
+        \$this->loadRoutesFrom(__DIR__.'/Routes/web.php');
+        \$this->loadTranslationsFrom(__DIR__.'/lang','extension.{$strtolower}');
     }
 }
 PHP);
@@ -114,7 +125,7 @@ Route::middleware(['web'])
 PHP);
 
         // Hook example
-        $fs->put("{$base}/Hooks/ViewShowHook.php", <<<PHP
+        $fs->put("{$base}/Hooks/AddMenuHook.php", <<<PHP
 <?php
 
 namespace Extensions\\{$directory}\\Hooks;
@@ -127,27 +138,39 @@ use App\Supports\Hooks\HookAction;
 use App\Supports\Hooks\HookPhase;
 use App\Supports\Hooks\HookResult;
 use App\Supports\Hooks\HookTiming;
+use Core\BusinessRole\Infrastructure\Helpers\SupportUINav;
 
-class ViewShowHook implements HookInterface
+class AddMenuHook implements HookInterface
 {
+    private static \$module="BusinessRole";
+    private string \$action = 'erp.{$strtolower}.index';
     public static function supports(HookContext \$context): bool
     {
-        return \$context->action === HookAction::SHOW
+        return \$context->action === HookAction::INDEX
             && \$context->phase === HookPhase::UI
-            && \$context->timing === HookTiming::ON;
+            && \$context->timing === HookTiming::BEFORE
+            && \$context->module === self::\$module;
     }
 
     public function handle(HookContext \$context): HookResult
     {
-        \$form = new FormFieldRender(
-            type: FormFieldType::TEXT,
-            value: '',
-            key: 'fax',
-            label: 'Fax'
-        );
+        \$nav = [
+            ...\$context->payload['nav'],
+            SupportUINav::buildNavItem([
+                'to'        => '/{$strtolower}',
+                'link'      => null,
+                'icon'      => "bi bi-person-workspace",
+                'label'     => __("extension.{$strtolower}::messages.nav"),
+                'ability'   => \$this->action,
+        ])
+        ];
         return HookResult::pass([
             ...\$context->payload,
-            \$form->toArray()
+            'roles' => [
+            ...\$context->payload['roles'],
+            \$this->action
+            ],
+            'nav' => \$nav
         ]);
     }
 }
@@ -202,6 +225,94 @@ return [
 ];
 
 PHP);
+
+        // lang
+        $fs->put("{$base}/lang/en/messages.php", <<<PHP
+            <?php
+
+            return [
+                "nav" => "{$directory}"
+            ];
+
+            PHP);
+        $fs->put("{$base}/lang/ja/messages.php", <<<PHP
+            <?php
+
+            return [
+                "nav" => "{$directory}"
+            ];
+
+            PHP);
+        $fs->put("{$base}/lang/vi/messages.php", <<<PHP
+            <?php
+
+            return [
+                "nav" => "{$directory}"
+            ];
+
+            PHP);
+
+        /**
+         * React
+         */
+        // React router   
+        $fs->put("{$base}/Resources/js/autoload.js", <<<JS
+        import Extension from '@core/Extension'
+        import RegisterRoute from '@core/RegisterRoute'
+        import {$directory}App from './app.jsx'
+        export default class ServiceProvider extends Extension {
+            register() {
+                RegisterRoute({
+                    path: '/{$strtolower}',
+                    component: {$directory}App
+                })
+            }
+            boot() {
+                //console.log('{$directory} loadded');
+            }
+        }
+        JS);
+        // react app 
+        $fs->put("{$base}/Resources/js/app.jsx", <<<JS
+        import React, { useState } from 'react';
+        import DashboardLayout from '@layouts/DashboardLayout'
+        import PageHead from '@components/PageHead'
+        import {useI18n} from '@i18n/useI18n'
+        const {$directory}Page = () => {
+            const {t} = useI18n()
+
+            return (
+                <DashboardLayout>
+                    <div className="">
+                        <PageHead title={t('{$strtolower}.title')} subtitle={t('{$strtolower}.desc')}/>
+                        <div>
+
+                        </div>
+                    </div>
+                </DashboardLayout>
+
+            );
+        };
+
+        export default {$directory}Page;
+        JS);
+        // react i18n - en 
+        $fs->put("{$base}/Resources/js/i18n/en/messages.js", <<<JS
+        export default {}
+        JS);
+        // react i18n - vi 
+        $fs->put("{$base}/Resources/js/i18n/vi/messages.js", <<<JS
+        export default {}
+        JS);
+        // react i18n - ja 
+        $fs->put("{$base}/Resources/js/i18n/ja/messages.js", <<<JS
+        export default {}
+        JS);
+
+        // css 
+        $fs->put("{$base}/Resources/css/autoload.css", <<<CSS
+        .{$strtolower} {}
+        CSS);
 
         // extension.json
         $fs->put("{$base}/extension.json", json_encode($this->info, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
