@@ -26,7 +26,7 @@ class EloquentProductRepository implements ProductRepositoryInterface
     }
     public function findOneWithFullData(array $data): ?array
     {
-        return ProductModel::with(['category', 'attributes'])->where('id', $data['id'])
+        return ProductModel::with(['category'])->where('id', $data['id'])
             ->where('business_id', $data['business_id'])->first()?->toArray();
     }
     public function findById(array $data): ?Product
