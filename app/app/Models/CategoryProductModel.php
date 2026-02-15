@@ -19,8 +19,4 @@ class CategoryProductModel extends Model
         'created_by',
         'tax'
     ];
-    public function attributes()
-    {
-        return $this->hasMany(ProductAttributeModel::class,'category_id','id');
-    }
 }

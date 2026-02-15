@@ -11,7 +11,6 @@ class CreateCategoryProductRequest
         public int $created_by,
         public ?int $id,
         public int $tax,
-        public array $attributes = [] 
     ) {}
 
     public static function fromArray(array $data): self
@@ -23,7 +22,6 @@ class CreateCategoryProductRequest
             created_by: $data['user_id'] ?? null,
             id: $data['id'] ?? null,
             tax: $data['tax'],
-            attributes: $data['attributes'] ?? [] 
         );
     }
     public function toArray() : array {
@@ -34,7 +32,6 @@ class CreateCategoryProductRequest
             'created_by' => $this->created_by,
             'id' => $this->id,
             'tax' => $this->tax,
-            'attributes' => $this->attributes
         ];
     }
 }

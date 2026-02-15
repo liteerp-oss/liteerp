@@ -1,7 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import CommonDataTable from '../CommonDataTable'
 import ProductService from '../../services/ProductService'
-import SearchInput from '../UI/Input/SearchInput'
 import { useForm } from '../../libraries/handleInput'
 import useTable from '../../libraries/handleTable'
 import { PopupLayout } from '../../layouts/PopupLayout'
@@ -9,11 +7,8 @@ import { InputForm } from '../UI/Input/InputForm'
 import TextArea from '../UI/Input/Textarea'
 import { usePopup } from '../popups/PopupContext'
 import { useSelector } from 'react-redux'
-import PrimaryButton from '../UI/Buttons/PrimaryButton'
-import { Select } from '../UI/Input/Select'
 import RenderFieldTableByList from '../RenderFieldTableByList'
 import RenderFormFieldByList from '../RenderFormFieldByList'
-import { RenderTableSearch } from '../RenderTableSearch'
 import { useI18n } from '../../../i18n/useI18n'
 import PERMISSIONS from '../../common/permission'
 import CommonDataTableV2 from '../CommonDataTableV2'
@@ -21,12 +16,9 @@ import CommonDataTableV2 from '../CommonDataTableV2'
 export default function Category() {
     const { t } = useI18n()
     const roles = useSelector((state) => state.businessRole.role);
-    const business = useSelector((state) => state.business.data)
 
     const [attributes, setAttributes] = useState([])
     const [showAdd, setShowAdd] = useState(false)
-
-    const attrAddForm = useForm()
     const attrForm = useForm()
     const form = useForm()
     const search = useForm()
@@ -163,53 +155,6 @@ export default function Category() {
         [attrForm]
     )
 
-    const addAttribute = () => {
-        if (!attrAddForm.formData?.type) {
-            return openPopup({
-                type: 'error',
-                message: t('You are not select type'),
-            })
-        }
-
-        if (!attrAddForm.formData?.key) {
-            return openPopup({
-                type: 'error',
-                message: t('You are not insert attribute name'),
-            })
-        }
-
-        if (attrAddForm.formData.key.length >= 50) {
-            return openPopup({
-                type: 'error',
-                message: t('Attribute name should not greater than 50 characters'),
-            })
-        }
-
-        setAttributes((prev) => {
-            if (prev.find((item) => item.key === attrAddForm.formData.key)) {
-                openPopup({
-                    type: 'error',
-                    message: t('This attribute has been used'),
-                })
-                return prev
-            }
-            if (prev.length >= 10) {
-                openPopup({
-                    type: 'error',
-                    message: t('You have reached your limit'),
-                })
-                return prev
-            }
-            return [...prev, attrAddForm.formData]
-        })
-
-        attrAddForm.setFormData(null)
-    }
-
-    const removeAttribute = (attr) => {
-        setAttributes((prev) => prev.filter((item) => item.key !== attr.key))
-    }
-
     useEffect(() => {
         getCategorires()
         view()
@@ -226,11 +171,6 @@ export default function Category() {
             },
         ])
     }, [])
-
-    const hasPermission = useMemo(
-        () => business.role === 'manager' || business.role === 'admin',
-        [business]
-    )
 
     return (
         <div className="mt-3">
@@ -316,92 +256,11 @@ export default function Category() {
                         />
                     </div>
 
-                    {attributes.map((item, index) => (
-                        <div className="form-group mt-3" key={index}>
-                            <label className="text-capitalize">{item.key}</label>
-                            <div className="row align-items-center">
-                                <div className="col-11">
-                                    {item.type !== 'textarea' ? (
-                                        <InputForm
-                                            name={item.key}
-                                            type={item.type}
-                                            value={attrForm.formData?.[item.key]}
-                                            handleChange={attrForm.handleChange}
-                                            errorMessage={
-                                                form.formErrors?.[
-                                                    `attributes.${index}.value`
-                                                ]
-                                            }
-                                        />
-                                    ) : (
-                                        <TextArea
-                                            name={item.key}
-                                            value={attrForm.formData?.[item.key]}
-                                            handleChange={attrForm.handleChange}
-                                            errorMessage={
-                                                form.formErrors?.[
-                                                    `attributes.${index}.value`
-                                                ]
-                                            }
-                                        />
-                                    )}
-                                </div>
-                                <div
-                                    className="col-1"
-                                    onClick={() => removeAttribute(item)}
-                                >
-                                    <i className="bi bi-x"></i>
-                                </div>
-                            </div>
-                        </div>
-                    ))}
-
                     {form.hookRender.map((item, index) => (
                         <div className="form-group mt-3" key={index}>
                             <RenderFormFieldByList item={item} form={form} />
                         </div>
                     ))}
-
-                    <div className="row mt-3">
-                        <h4 className="h6">{t('Attributes')}</h4>
-                        <p>
-                            {t(
-                                'You can add maximum 10 custom fields for products in this category'
-                            )}
-                        </p>
-
-                        <div className="col-6">
-                            <label>{t('Attribute name')}</label>
-                            <InputForm
-                                name="key"
-                                value={attrAddForm.formData?.key}
-                                handleChange={attrAddForm.handleChange}
-                            />
-                        </div>
-
-                        <div className="col-3">
-                            <label>{t('Type')}</label>
-                            <Select
-                                name="type"
-                                value={attrAddForm.formData?.type}
-                                handleChange={attrAddForm.handleChange}
-                                options={[
-                                    { value: 'number', label: t('Number') },
-                                    { value: 'text', label: t('Character') },
-                                    { value: 'textarea', label: t('Long text') },
-                                    { value: 'date', label: t('Date') },
-                                ]}
-                            />
-                        </div>
-
-                        <div className="col-3">
-                            <PrimaryButton
-                                loading={form.loading}
-                                onClick={addAttribute}
-                                label={t('Add')}
-                            />
-                        </div>
-                    </div>
                 </PopupLayout>
             )}
         </div>

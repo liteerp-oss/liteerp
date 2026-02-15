@@ -19,8 +19,7 @@ class IndexQuery implements QueryInterface {
     public function handle(array $data): array
     {
         $dto = IndexCategoryProductRequest::fromArray($data);
-        $index = CategoryProductModel::with(['attributes'])
-        ->select("category_product.*","users.name as created_by_name")
+        $index = CategoryProductModel::select("category_product.*","users.name as created_by_name")
         ->join("users","users.id","=","category_product.created_by")
         ->where('category_product.business_id',$dto->business_id);
         $hooks = $this->hooks->dispatch(

@@ -47,8 +47,7 @@ class UpdateCategoryProduct
             ...$data,
             'user_id' => $dto->created_by,
             'business_id' => $dto->business_id,
-            'category_id' => $update->id,
-            'attributes' => $dto->attributes
+            'category_id' => $update->id
         ]);
         DB::commit();
         return $data;

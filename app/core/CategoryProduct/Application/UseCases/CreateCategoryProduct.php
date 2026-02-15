@@ -50,8 +50,7 @@ class CreateCategoryProduct
             ...$create->toArray(),
             'user_id' => $dto->created_by,
             'business_id' => $dto->business_id,
-            'category_id' => $create->id,
-            'attributes' => $dto->attributes
+            'category_id' => $create->id
         ]);
         DB::commit();
         return $create;
