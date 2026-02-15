@@ -37,10 +37,10 @@ class AuthencationServiceImpl implements AuthencationService
         $entity = Authencation::fromArray($entity);
         $user = $this->repo->findByEmail($entity->email);
         if(!$user) {
-            throw new UnauthorizedException(__("authencation.not_found"));
+            throw new UnauthorizedException(__("authencation::messages.not_found"));
         }
         if(!Hash::check($entity->password,$user->password)) {
-            throw new UnauthorizedException(__("authencation.not_found"));
+            throw new UnauthorizedException(__("authencation::messages.not_found"));
         }
         $user->token = $this->repo->token($entity);
         return $user;
