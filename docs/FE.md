@@ -40,6 +40,23 @@ export default class ServiceProvider extends Extension {
 ```
 This only register React routers, it can not display menu on sidebar dashboard. To add new menu into dashboard you need consider php hook, because Frontend can not handle user role.
 
+Even maybe you don't need React Router but you keep implement default as:
+
+```js
+import Extension from '@core/Extension'
+import RegisterRoute from '@core/RegisterRoute'
+
+export default class ServiceProvider extends Extension {
+    register() {
+        
+    }
+
+    boot() {
+        console.log('HRM loaded')
+    }
+}
+```
+
 **File:** `extensions/Hrm/Resources/js/app.jsx`
 
 ```js
