@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import hrmService from '../services/hrm-service';
 import useTable from '@libraries/handleTable'
-import CommonDataTable from '@components/CommonDataTable'
+import CommonDataTableV2 from '@components/CommonDataTableV2'
 import { PopupLayout } from '@layouts/PopupLayout'
 import { isoToDateTime } from '@libraries/common'
 import { useForm } from '@libraries/handleInput'
@@ -71,23 +71,26 @@ const EndOfDayReportForm = () => {
     return (
         <div className="row">
             <div>
-                <CommonDataTable
-                    filter={<div className='row'>
-                        <div className='col-4'>
-                            <label>{t("hrm.report.filter.keywords.label")}</label>
-                            <InputForm
-                            name={"keywords"}
-                            value={search.formData?.keywords}
-                            handleChange={search.handleChange}
-                            placeholder={t("hrm.report.filter.keywords.placeholder")}
-                            />
-                        </div>
-                        <div className='col-2'>
-                            <PrimaryButton onClick={() => {
-                                getData()
-                            }} label={t("hrm.report.filter.button.label")}/>
-                        </div>
-                    </div>}
+                <CommonDataTableV2
+                    config={{
+                            default: [{
+                                key: "order_by",
+                                placeholder: t("Order by"),
+                                options: [
+                                    { value: 'ASC', label: t('Oldest') },
+                                    { value: 'DESC', label: t('Newest') },
+                                ],
+                                type: "select",
+                                label: t("Order by"),
+                                col: "col-6"
+                            }, {
+                                key: "keywords",
+                                placeholder: t("Keywords"),
+                                type: "text",
+                                label: t("Search"),
+                                col: "col-6"
+                            }]
+                        }}
                     columns={[
                         {
                             label: 'ID',
@@ -129,12 +132,13 @@ const EndOfDayReportForm = () => {
                     add={() => setShowAdd(true)}
                     data={table.data}
                     loading={table.loading}
-                    movePage={getData}
+                    callback={getData}
                     onEdit={(item) => {
                         setShowDetail(true)
                         form.setFormData(item)
                     }}
                     iconEdit={<i className="bi bi-eyeglasses"></i>}
+                    search={search}
                 />
             </div>
             {showAdd ? <PopupLayout
