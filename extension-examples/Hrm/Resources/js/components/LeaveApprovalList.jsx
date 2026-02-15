@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import hrmService from '../services/hrm-service';
 import useTable from '@libraries/handleTable'
-import CommonDataTable from '@components/CommonDataTable'
+import CommonDataTableV2 from '@components/CommonDataTableV2'
 import { PopupLayout } from '@layouts/PopupLayout'
 import { isoToDateTime } from '@libraries/common'
 import StatusBadge from '@components/StatusBadge'
@@ -10,14 +10,14 @@ import { InputForm } from '@components/UI/Input/InputForm'
 import { Select } from '@components/UI/Input/Select'
 import TextArea from '@components/UI/Input/Textarea'
 import { usePopup } from '@components/popups/PopupContext'
-import {useI18n} from '@i18n/useI18n'
+import { useI18n } from '@i18n/useI18n'
 const LeaveApprovalList = () => {
-    const { t,lang } = useI18n();
+    const { t, lang } = useI18n();
     const form = useForm();
+    const search = useForm();
     const { openPopup } = usePopup();
     const [showAdd, setShowAdd] = useState(false);
     const table = useTable();
-    const [currentPage,setCurrentPage] = useState(0);
 
     const getData = (page = 0) => {
         hrmService.leave.all({
@@ -31,11 +31,11 @@ const LeaveApprovalList = () => {
                             label: t('hrm.leave.action'),
                             key: 'id'
                         }
-                    ], (th,id) => {
+                    ], (th, id) => {
                         return <div onClick={() => {
                             console.log(id)
-                            resp.message.list.data.map((item,index) => {
-                                if(Number(id) === item.id) {
+                            resp.message.list.data.map((item, index) => {
+                                if (Number(id) === item.id) {
                                     form.setFormData(item);
                                 }
                             })
@@ -49,47 +49,47 @@ const LeaveApprovalList = () => {
 
             })
     };
-    
+
     useEffect(() => {
         table.setColums([
-        {
-            label: t("hrm.leave.start_date.label"),
-            key: 'start_date',
-            render: (value) => {
-                return isoToDateTime(value)
+            {
+                label: t("hrm.leave.start_date.label"),
+                key: 'start_date',
+                render: (value) => {
+                    return isoToDateTime(value)
+                }
+            },
+            {
+                label: t("hrm.leave.end_date.label"),
+                key: 'end_date',
+                render: (value) => {
+                    return isoToDateTime(value)
+                }
+            },
+            {
+                label: t("hrm.leave.leave_type.label"),
+                key: 'leave_type',
+                render: (value) => {
+                    return <span>{t("hrm.leave.form." + value)}</span>
+                }
+            },
+            {
+                label: t("hrm.leave.reason"),
+                key: 'reason'
+            },
+            {
+                label: t("hrm.leave.status.label"),
+                key: 'status',
+                render: (value) => {
+                    return <StatusBadge status={t("hrm.leave.status." + value)} />
+                }
+            },
+            {
+                label: t("hrm.leave.name"),
+                key: 'name'
             }
-        },
-        {
-            label: t("hrm.leave.end_date.label"),
-            key: 'end_date',
-            render: (value) => {
-                return isoToDateTime(value)
-            }
-        },
-        {
-            label: t("hrm.leave.leave_type.label"),
-            key: 'leave_type',
-            render: (value) => {
-                return <span>{t("hrm.leave.form." + value)}</span>
-            }
-        },
-        {
-            label: t("hrm.leave.reason"),
-            key: 'reason'
-        },
-        {
-            label: t("hrm.leave.status.label"),
-            key: 'status',
-            render: (value) => {
-                return <StatusBadge status={t("hrm.leave.status." + value)} />
-            }
-        },
-        {
-            label: t("hrm.leave.name"),
-            key: 'name'
-        }
         ])
-        if(table.data?.length > 0) {
+        if (table.data?.length > 0) {
             return;
         }
         getData();
@@ -152,15 +152,35 @@ const LeaveApprovalList = () => {
                 form.setLoading(false)
             })
     };
-    
+
     return (
         <div className="card shadow-sm">
-            <CommonDataTable
+            <CommonDataTableV2
                 add={() => setShowAdd(true)}
                 columns={table.colums}
                 data={table.data}
                 loading={table.loading}
                 movePage={getData}
+                config={{
+                    default: [{
+                        key: "order_by",
+                        placeholder: t("Order by"),
+                        options: [
+                            { value: 'ASC', label: t('Oldest') },
+                            { value: 'DESC', label: t('Newest') },
+                        ],
+                        type: "select",
+                        label: t("Order by"),
+                        col: "col-6"
+                    }, {
+                        key: "keywords",
+                        placeholder: t("Keywords"),
+                        type: "text",
+                        label: t("Search"),
+                        col: "col-6"
+                    }]
+                }}
+                search={search}
             />
             {showAdd ? <PopupLayout
                 onClose={() => setShowAdd(false)}
