@@ -341,5 +341,16 @@ export default {
     "This year":"This year",
     "Revenue":"Revenue",
     "Expense":"Expense",
-    "Email language":"Email language"
+    "Email language":"Email language",
+    "Product link":"Product link",
+    "Buy quantity":"Buy quantity",
+    "Gift quantity":"Gift quantity",
+    "Compensation quantity":"Compensation quantity",
+    "Conversion quantity":"Conversion quantity",
+    "shipping_fee":"Shipping fee",
+    "quantity":"Quantity",
+    "subtotal":"Subtotal",
+    "total_tax":"Total tax",
+    "total":"total",
+    "summary":"Summary 2"
 };
