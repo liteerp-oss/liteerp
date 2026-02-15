@@ -242,11 +242,11 @@ export default function EditOrder() {
     return <div>
         <PageHead
             containerClass='mx-5'
-            title='Order' subtitle='Update order' />
+            title={t('Order')} subtitle={t("order_desc")} />
         {detail?.status === 'cancelled' ? <div className='row mx-4 mt-3'>
             <div className='col-12'>
                 <BootstrapAlert 
-                title='Cancelled' 
+                title={t('Cancelled')} 
                 type='danger' 
                 message={detail?.reason ?? 'No reason'} />
             </div>
@@ -255,7 +255,7 @@ export default function EditOrder() {
             <div className='row mx-4'>
                 <div className='mt-3'>
                     <FormStep
-                        list={["Customer & Order", "Products", "Shipping", "Completed"]}
+                        list={[t("Customer & Order"), t("Products"), t("Shipping"), t("Completed")]}
                         active={currentStep} />
                 </div>
                 <div className='col-9'>
@@ -279,7 +279,8 @@ export default function EditOrder() {
                         </div>
                         <div className="row mt-3">
                             <div className="col-2">
-                                <SecondaryButton loading={form.loading || shippingForm.loading} onClick={prevStep} label='Back' />
+                                <SecondaryButton loading={form.loading || shippingForm.loading} onClick={prevStep} 
+                                label={t('Back')} />
                             </div>
                             <div className="col-4 ms-auto text-end">
                                 <div className='row'>
@@ -287,16 +288,19 @@ export default function EditOrder() {
                                         {detail?.status !== 'cancelled' ?
                                             <DangerButton 
                                             width={150}
-                                            loading={form.loading || shippingForm.loading} onClick={confirmCancelled} label='Take Cancelled' />
+                                            loading={form.loading || shippingForm.loading} onClick={confirmCancelled} 
+                                            label={t('Take Cancel')} />
                                             : null}
                                     </div>
                                     <div className='col-6'>
                                         {currentStep <= 2
-                                            ? <PrimaryButton loading={form.loading || shippingForm.loading} onClick={nextStep} label='Next' />
+                                            ? <PrimaryButton width={120} loading={form.loading || shippingForm.loading} onClick={nextStep} 
+                                            label={t('Next')} />
                                             : null}
 
                                         {currentStep === 3 && detail?.status === 'pending'
-                                            ? <PrimaryButton loading={form.loading} onClick={confirmApprove} label='Approved' />
+                                            ? <PrimaryButton width={120} loading={form.loading} onClick={confirmApprove} 
+                                            label={t('Approved')} />
                                             : null}
                                     </div>
                                 </div>
@@ -311,20 +315,20 @@ export default function EditOrder() {
         </div> : null}
         {showCancelReason ? <PopupLayout
             loading={form.loading}
-            title='Cancel reason'
-            confirmText='Submit cancel'
+            title={t('Cancel reason')}
+            confirmText={t('Submit cancel')}
             onClose={() => setShowCancelReason(false)}
             onConfirm={() => {
                 form.handleChangeByKey('status', 'cancelled');
             }}
         >
-            <label>Reason</label>
+            <label>{t("Reason")}</label>
             <TextArea
                 name='reason'
                 value={form.formData?.reason}
                 errorMessage={form.formErrors?.reason}
                 handleChange={form.handleChange}
-                placeholder='Reason for cancel order, maximum 250 characters'
+                placeholder={t("reason_placeholder")}
             />
         </PopupLayout> : null}
 

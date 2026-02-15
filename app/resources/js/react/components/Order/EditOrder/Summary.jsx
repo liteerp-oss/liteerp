@@ -6,9 +6,6 @@ export default function Summary({
 }){
     
     return <div className='p-2'>
-        <div className='d-flex'>
-            <h4>Summary</h4>
-        </div>
         <VerticalCommonTable data={{
             total_quantity: summaryData?.total_quantity,
             total_discount: <Currencies amount={summaryData?.discount}/>,

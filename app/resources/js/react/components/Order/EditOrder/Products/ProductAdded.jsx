@@ -1,6 +1,7 @@
 import React from "react";
 import CommonDataTable from "../../../CommonDataTable";
 import Currencies from '../../../Currencies';
+import { useI18n } from "@/i18n/useI18n";
 
 export default function ProductAdded({ 
     table = null, 
@@ -11,12 +12,12 @@ export default function ProductAdded({
     setShowForm = (status) => {}, 
     onDelete = (value) => {}
     }) {
-    
+    const {t} = useI18n();
     const columns = [
-        { label: "Name", key: "name" },
-        { label: "Unit", key: "unit" },
+        { label: t("Name"), key: "name" },
+        { label: t("Unit"), key: "unit" },
         {
-            label: 'Price',
+            label: t('Price'),
             key: "price",
             render: (value) => {
                 return <Currencies amount={value}/>
@@ -24,44 +25,44 @@ export default function ProductAdded({
         },
 
         {
-            label: "Buy",
+            label: t("Buy"),
             key: "buy_quantity",
             render: (v) => Number(v)
         },
 
         {
-            label: "Gift",
+            label: t("Gift"),
             key: "gift_quantity",
             render: (v) => Number(v)
         },
 
         {
-            label: "Compensation",
+            label: t("Compensation"),
             key: "compensation_quantity",
             render: (v) => Number(v)
         },
 
         {
-            label: "Conversion",
+            label: t("Conversion"),
             key: "conversion_quantity",
             render: (v) => Number(v)
         },
 
         {
-            label: "Discount",
+            label: t("Discount"),
             key: "discount",
             render: (value) => {
                 return <span>{value}%</span>
             }
         },
 
-        { label: "Tax (%)", key: "tax" },
-        { label: "Warehouse", key: "warehouse" }
+        { label: t("Tax") + " (%)", key: "tax" },
+        { label: t("Warehouse"), key: "warehouse" }
     ];
 
     return (
         <div>
-            <h4 className="h5">Added to order</h4>
+            <h4 className="h5">{t("Added to order")}</h4>
             <CommonDataTable
                 columns={columns}
                 data={table?.data}

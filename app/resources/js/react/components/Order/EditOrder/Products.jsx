@@ -10,9 +10,11 @@ import { useSearchParams } from 'react-router-dom'
 import useTable from '../../../libraries/handleTable'
 import { setSummary } from '../../../redux/order/summarySlice'
 import { useDispatch } from 'react-redux'
+import { useI18n } from '@/i18n/useI18n'
 export default function Products({
     detail = null
 }) {
+    const {t} = useI18n();
     const dispatch = useDispatch();
     const form = useForm();
     const [showForm, setShowForm] = useState(false);
@@ -42,7 +44,7 @@ export default function Products({
             && Number(form.formData?.gift_quantity ?? 0) === 0) {
             openPopup({
                 type: 'error',
-                message: 'You need to choose at least 1 of the 4 options from buy, compensaction, conversion, gift'
+                message: t("empty_quantity")
             })
             return;
         }
@@ -57,7 +59,7 @@ export default function Products({
                 getOrderItem();
                 openPopup({
                     type: 'success',
-                    message: 'You has been added'
+                    message: t('You has been added')
                 })
                 form.setLoading(false)
                 setShowForm(false)
@@ -84,7 +86,7 @@ export default function Products({
             && Number(form.formData?.gift_quantity ?? 0) === 0) {
             openPopup({
                 type: 'error',
-                message: 'You need to choose at least 1 of the 4 options from buy, compensaction, conversion, gift'
+                message: t("empty_quantity")
             })
             return;
         }
@@ -94,7 +96,7 @@ export default function Products({
                 getOrderItem();
                 openPopup({
                     type: 'success',
-                    message: 'You has been updated'
+                    message: t('You has been updated')
                 })
                 form.setLoading(false);
                 setShowForm(false)
@@ -120,7 +122,7 @@ export default function Products({
                 getOrderItem();
                 openPopup({
                     type: 'success',
-                    message: 'You has been deleted'
+                    message: t('You has been deleted')
                 })
                 getSummary();
             })
@@ -139,7 +141,7 @@ export default function Products({
     const confirmDelete = useCallback((row) => {
         openPopup({
             type: 'warning',
-            message: 'Are you sure to delete?',
+            message: t('Are you sure to delete?'),
             onConfirm: () => {
                 deleteInventory(row)
             }
@@ -170,20 +172,20 @@ export default function Products({
             {showForm ? <PopupLayout
                 loading={form.loading}
                 onClose={() => setShowForm(false)}
-                title={form.isEdit ? 'Update product order' : 'Add product order'}
-                confirmText={form.isEdit ? 'Add' : 'Update'}
+                title={form.isEdit ? t('Update product order') : t('Add product order')}
+                confirmText={form.isEdit ? t('Add') : t('Update')}
                 onConfirm={form.isEdit ? updateInventory : addInventory}>
                 <div>
                     <div>
                         <div className='row'>
                             <div className='form-group col-6'>
-                                <label>Discount(%)</label>
+                                <label>{t("Discount")}(%)</label>
                                 <InputForm handleChange={form.handleChange}
                                     name='discount' value={form.formData?.discount}
                                     errorMessage={form.formErrors?.discount} />
                             </div>
                             <div className='form-group col-6'>
-                                <label>Buy quantity</label>
+                                <label>{t("Buy quantity")}</label>
                                 <InputForm handleChange={form.handleChange}
                                     name='buy_quantity' value={form.formData?.buy_quantity}
                                     errorMessage={form.formErrors?.buy_quantity} />
@@ -191,13 +193,13 @@ export default function Products({
                         </div>
                         <div className='row mt-3'>
                             <div className='form-group col-6'>
-                                <label>Gift quantity</label>
+                                <label>{t("Gift quantity")}</label>
                                 <InputForm handleChange={form.handleChange}
                                     name='gift_quantity' value={form.formData?.gift_quantity}
                                     errorMessage={form.formErrors?.gift_quantity} />
                             </div>
                             <div className='form-group col-6'>
-                                <label>Compensation quantity</label>
+                                <label>{t("Compensation quantity")}</label>
                                 <InputForm handleChange={form.handleChange}
                                     name='compensation_quantity' value={form.formData?.compensation_quantity}
                                     errorMessage={form.formErrors?.compensation_quantity} />
@@ -205,13 +207,13 @@ export default function Products({
                         </div>
                         <div className='row mt-3'>
                             <div className='form-group col-6'>
-                                <label>Conversion quantity</label>
+                                <label>{t("Conversion quantity")}</label>
                                 <InputForm handleChange={form.handleChange}
                                     name='conversion_quantity' value={form.formData?.conversion_quantity}
                                     errorMessage={form.formErrors?.conversion_quantity} />
                             </div>
                             <div className='form-group col-6'>
-                                <label>Price</label>
+                                <label>{t("Price")}</label>
                                 <InputForm handleChange={form.handleChange}
                                     name='price'
                                     value={form.formData?.price}

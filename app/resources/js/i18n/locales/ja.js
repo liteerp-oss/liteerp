@@ -351,5 +351,19 @@ export default {
     "quantity": "数量",
     "subtotal": "小計",
     "total_tax": "税額合計",
-    "total": "合計"
+    "total": "合計",
+    "summary":"Summary",
+    "summary": "集計",
+    "total_quantity": "総数量",
+    "total_discount": "割引合計",
+    "empty_quantity": "購入・補償・換算・贈答の4つのうち、少なくとも1つを選択してください",
+    "Receiver name": "受取人名",
+    "Receiver phone": "受取人の電話番号",
+    "Receiver address": "受取人の住所",
+    "Preferred unit": "優先単位",
+    "order_desc": "注文を作成するには、顧客情報、商品、配送情報、および承認が必要です",
+    "Added to order": "注文に追加されました",
+    "order_approve_desc": "この注文は承認済みのため、データを変更することはできません。修正が必要な場合は、管理者に連絡して削除し、新しい注文を作成してください。",
+    "order_cancel_desc": "この注文はキャンセルされているため、いかなる変更もできません。",
+    "order_before_approve_desc": "承認前に注文内容を確認してください。完了後、注文書を印刷して顧客に送付できます。"
 };

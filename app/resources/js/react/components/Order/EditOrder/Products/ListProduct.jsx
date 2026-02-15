@@ -4,23 +4,25 @@ import Currencies from "../../../Currencies";
 import useTable from "../../../../libraries/handleTable";
 import { useForm } from "../../../../libraries/handleInput";
 import InventoryService from '../../../../services/InventoryService'
+import { useI18n } from "@/i18n/useI18n";
 export default function ListProduct({
     add = (product) => { },
     loading = false,
     detail = null 
 }) {
+    const {t} = useI18n();
     const columns = [
         { label: "ID", key: "id" },
-        { label: "Name", key: "name" },
-        { label: "Quantity", key: "quantity" },
-        { label: "Category", key: "category" },
+        { label: t("Name"), key: "name" },
+        { label: t("Quantity"), key: "quantity" },
+        { label: t("Category"), key: "category" },
         {
-            label: "Price", key: "price", render: (value) => {
+            label: t("Price"), key: "price", render: (value) => {
                 return <Currencies amount={value}/>;
             }
         },
         {
-            label: "Warehouse", key: "warehouse", render: (value) => {
+            label: t("Warehouse"), key: "warehouse", render: (value) => {
                 return value;
             }
         }
@@ -47,8 +49,8 @@ export default function ListProduct({
     useEffect(() => {
         getInventories();
     },[detail?.customer_group_id])
-    return <div>
-        <h4 className="h5">Inventory</h4>
+    return <div className="mt-3">
+        <h4 className="h5">{t("Inventory")}</h4>
         <CommonDataTable
             loading={table.loading}
             columns={columns}

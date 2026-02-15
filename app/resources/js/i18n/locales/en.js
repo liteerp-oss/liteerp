@@ -351,6 +351,20 @@ export default {
     "quantity":"Quantity",
     "subtotal":"Subtotal",
     "total_tax":"Total tax",
-    "total":"total",
-    "summary":"Summary 2"
+    "total":"Total",
+    "summary":"Summary",
+    "total_quantity":"Total quantity",
+    "total_discount":"Total discount",
+    "empty_quantity":'You need to choose at least 1 of the 4 options from buy, compensaction, conversion, gift',
+    "Receiver name":"Receiver name",
+    "Receiver phone":"Receiver phone",
+    "Receiver address":"Receiver address",
+    "Preferred unit":"Preferred unit",
+    "order_desc":"To create order you need customer information, product, shipping, get approve",
+    "Added to order":"Added to order",
+    "order_approve_desc":`Order has been approved, so you can not change data, if it neededs please contact manager 
+            to delete and create one new`,
+    "order_cancel_desc":"This order has been cancelled, so you can not change anything",
+    "order_before_approve_desc":`Please check order before approved, 
+            you can print order to send to customer after get completed`
 };

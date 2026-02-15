@@ -54,7 +54,6 @@ export default function CustomerInformation({
                     </div>
 
                     <div className="form-group col-6">
-                        <label>{t('Customer')}</label>
                         <SearchSelect
                             name="customer_id"
                             search={getCustomers}
@@ -66,11 +65,12 @@ export default function CustomerInformation({
                                 label: item.name,
                             }))}
                             defaultKeywords={form.formData?.customer_name}
+                            required={true}
+                            label={t('Customer')}
                         />
                     </div>
 
                     <div className="form-group col-6">
-                        <label>{t('Type')}</label>
                         <Select
                             name="type"
                             handleChange={form.handleChange}
@@ -80,13 +80,14 @@ export default function CustomerInformation({
                                 { value: 'retail', label: t('Retail') },
                                 { value: 'wholesale', label: t('Wholesale') },
                             ]}
+                            required={true}
+                            label={t('Type')}
                         />
                     </div>
                 </div>
 
                 <div className="row mt-3">
                     <div className="form-group col-4">
-                        <label>{t('Expected delivery date')}</label>
                         <InputForm
                             type="date"
                             name="expected_delivery_date"
@@ -95,39 +96,44 @@ export default function CustomerInformation({
                             errorMessage={
                                 form.formErrors?.expected_delivery_date
                             }
+                            required={true}
+                            label={t('Expected delivery date')}
                         />
                     </div>
 
                     <div className="form-group col-4">
-                        <label>{t('Order date')}</label>
                         <InputForm
                             type="date"
                             name="order_date"
                             handleChange={form.handleChange}
                             value={form.formData?.order_date}
                             errorMessage={form.formErrors?.order_date}
+                            required={true}
+                            label={t('Order date')}
                         />
                     </div>
 
                     <div className="form-group col-4">
-                        <label>{t('Order no')}</label>
                         <InputForm
                             type="text"
                             name="order_no"
                             handleChange={form.handleChange}
                             value={form.formData?.order_no}
                             errorMessage={form.formErrors?.order_no}
+                            required={false}
+                            label={t('Order no')}
                         />
                     </div>
                 </div>
 
                 <div className="form-group mt-3">
-                    <label>{t('Note')}</label>
                     <TextArea
                         name="note"
                         handleChange={form.handleChange}
                         value={form.formData?.note}
                         errorMessage={form.formErrors?.note}
+                        required={false}
+                        label={t('Note')}
                     />
                 </div>
 

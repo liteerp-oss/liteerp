@@ -88,6 +88,7 @@ export default function AddOrder() {
                             loading={form.loading}
                             onClick={create}
                             label={t('Next')}
+                            width={100}
                         />
                     </div>
                 </div>

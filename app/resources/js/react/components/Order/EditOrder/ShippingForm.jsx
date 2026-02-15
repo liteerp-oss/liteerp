@@ -4,6 +4,7 @@ import { InputForm } from '../../UI/Input/InputForm';
 import SearchSelect from '../../UI/Input/SearchSelect';
 import ShippingService from '../../../services/ShippingService';
 import RenderFormFieldByList from '../../RenderFormFieldByList';
+import { useI18n } from '@/i18n/useI18n';
 export default function ShippingForm({
     form = {
         formData: null,
@@ -12,6 +13,7 @@ export default function ShippingForm({
         handleChangeByKey: null
     }
 }) {
+    const {t} = useI18n();
     const disabled = false;
     const { openPopup } = usePopup();
     //const form = useForm();
@@ -37,10 +39,9 @@ export default function ShippingForm({
             })
     }, []);
     return <div>
-        <h2 className='h5'>Shipping information</h2>
+        <h2 className='h5'>{t("Shipping information")}</h2>
         <div className='row  mt-3'>
             <div className='form-group col-4'>
-                <label>Receiver name</label>
                 <InputForm
                     disabled={disabled}
                     value={form.formData?.receiver_name}
@@ -48,10 +49,11 @@ export default function ShippingForm({
                     name='receiver_name'
                     errorMessage={form.formErrors?.receiver_name}
                     type='text'
+                    label={t("Receiver name")}
+                    required={true}
                 />
             </div>
             <div className='form-group col-4'>
-                <label>Receiver phone</label>
                 <InputForm
                     disabled={disabled}
                     value={form.formData?.receiver_phone}
@@ -59,10 +61,11 @@ export default function ShippingForm({
                     name='receiver_phone'
                     errorMessage={form.formErrors?.receiver_phone}
                     type='text'
+                    label={t("Receiver phone")}
+                    required={true}
                 />
             </div>
             <div className='form-group col-4'>
-                <label>Shipping fee estimated</label>
                 <InputForm
                     disabled={disabled}
                     value={form.formData?.shipping_fee_estimated}
@@ -70,11 +73,12 @@ export default function ShippingForm({
                     name='shipping_fee_estimated'
                     errorMessage={form.formErrors?.shipping_fee_estimated}
                     type='number'
+                    label={t("Shipping fee estimated")}
+                    required={false}
                 />
             </div>
         </div>
         <div className='form-group mt-3'>
-            <label>Receiver address</label>
             <InputForm
                 disabled={disabled}
                 value={form.formData?.receiver_address}
@@ -82,10 +86,11 @@ export default function ShippingForm({
                 name='receiver_address'
                 errorMessage={form.formErrors?.receiver_address}
                 type='text'
+                label={t("Receiver address")}
+                required={true}
             />
         </div>
         <div className='form-group mt-3'>
-            <label>Receiver note</label>
             <InputForm
                 disabled={disabled}
                 value={form.formData?.receiver_note}
@@ -93,11 +98,11 @@ export default function ShippingForm({
                 name='receiver_note'
                 errorMessage={form.formErrors?.receiver_note}
                 type='text'
+                label={t("Receiver note")}
+                required={false}
             />
         </div>
         <div className='form-group mt-3'>
-            <label>Preferred unit </label>
-
             <SearchSelect
                 errorMessage={form.formErrors?.preferred_unit}
                 disabled={disabled}
@@ -112,6 +117,8 @@ export default function ShippingForm({
                 changeValue={form.handleChangeByKey}
                 name='preferred_unit'
                 defaultKeywords={form.formData?.shipping_provider_name ?? ''}
+                label={t("Preferred unit")}
+                required={true}
             />
         </div>
         {form.hookRender.map((item,index) => {

@@ -15,13 +15,14 @@ export default function RenderFormFieldByList({
     }
 }) {
     return <div>
-        <label>{item.label ?? 'label'}</label>
         {item.type === 'textarea' ? <TextArea
             name={item.key}
             handleChange={form.handleChange}
             value={form.formData?.[item.key]}
             errorMessage={form.formErrors?.[item.key]}
             placeholder={item.placeHolder}
+            label={item?.label}
+            required={item?.required}
         />
             : item.type === 'select' ? <Select
                 name={item.key}
@@ -30,11 +31,15 @@ export default function RenderFormFieldByList({
                 errorMessage={form.formErrors?.[item.key]}
                 placeholder={item.placeHolder}
                 options={item.options}
+                label={item?.label}
+                required={item?.required}
             /> : item.type === 'image' ? <UploadImage
                 name={item.key}
                 handleChangeByKey={form.handleChangeByKey}
                 value={form.formData?.[item.key]}
                 errorMessage={form.formErrors?.[item.key]}
+                label={item?.label}
+                required={item?.required}
             />
                 : <InputForm
                     name={item.key}
@@ -42,6 +47,8 @@ export default function RenderFormFieldByList({
                     value={form.formData?.[item.key]}
                     errorMessage={form.formErrors?.[item.key]}
                     placeholder={item.placeHolder}
+                    label={item?.label}
+                    required={item?.required}
                 />}
     </div>
 }

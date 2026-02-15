@@ -351,5 +351,19 @@ export default {
     "quantity": "Số lượng",
     "subtotal": "Tạm tính",
     "total_tax": "Tổng thuế",
-    "total": "Tổng cộng"
+    "total": "Tổng cộng",
+    "summary":"Summary",
+    "summary": "Tổng kết",
+    "total_quantity": "Tổng số lượng",
+    "total_discount": "Tổng giảm giá",
+    "empty_quantity": "Bạn cần chọn ít nhất 1 trong 4 tùy chọn: mua, bồi thường, chuyển đổi hoặc tặng",
+    "Receiver name": "Tên người nhận",
+    "Receiver phone": "Số điện thoại người nhận",
+    "Receiver address": "Địa chỉ người nhận",
+    "Preferred unit": "Đơn vị ưu tiên",
+    "order_desc": "Để tạo đơn hàng, bạn cần thông tin khách hàng, sản phẩm, vận chuyển và phê duyệt",
+    "Added to order": "Đã thêm vào đơn hàng",
+    "order_approve_desc": "Đơn hàng đã được phê duyệt nên bạn không thể thay đổi dữ liệu. Nếu cần chỉnh sửa, vui lòng liên hệ quản lý để xóa và tạo đơn mới.",
+    "order_cancel_desc": "Đơn hàng này đã bị hủy nên bạn không thể thay đổi bất kỳ thông tin nào.",
+    "order_before_approve_desc": "Vui lòng kiểm tra đơn hàng trước khi phê duyệt. Sau khi hoàn tất, bạn có thể in đơn hàng để gửi cho khách."
 };
