@@ -1,0 +1,13 @@
+{
+    "name": "Invoice Out PDF",
+    "version": "0.0.1",
+    "description": "Invoice Out PDF extension support LiteERP",
+    "status": false,
+    "verified": true,
+    "author": "Author name",
+    "icon": null,
+    "setting_link": null,
+    "email": null,
+    "directory": "InvoiceOutPDF",
+    "support_version": ""
+}

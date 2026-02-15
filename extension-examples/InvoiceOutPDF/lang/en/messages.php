@@ -1,0 +1,28 @@
+<?php
+
+return [
+    'print' => 'Print',
+    'title' => 'INVOICE OUT',
+    'footer' => 'This is a computer-generated invoice. No signature is required.',
+    'document_no' => 'Document No',
+    'invoice_date' => 'Invoice Date',
+    'due_date' => 'Due Date',
+    'customer' => 'Customer',
+    'receiver' => 'Receiver',
+    'payment' => 'Payment',
+    'amount_paid' => 'Amount Paid',
+    'payment_status' => 'Payment Status',
+    'name' => 'Name',
+    'buy' => 'Buy',
+    'gift' => 'Gift',
+    'compensation' => 'Compensation',
+    'conversion' => 'Conversion',
+    'unit_price' => 'Unit Price',
+    'amount' => 'Amount',
+    'tax' => 'Tax',
+    'note' => 'Note',
+    'subtotal' => 'Subtotal',
+    'shipping_fee' => 'Shipping Fee',
+    'discount' => 'Discount',
+    'total' => 'Total',
+];

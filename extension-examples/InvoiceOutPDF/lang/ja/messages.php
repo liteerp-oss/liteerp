@@ -1,0 +1,28 @@
+<?php
+
+return [
+    'print' => '印刷',
+    'title' => '請求書（売上）',
+    'footer' => '本請求書はシステムにより自動生成されています。署名は不要です。',
+    'document_no' => '書類番号',
+    'invoice_date' => '請求日',
+    'due_date' => '支払期限',
+    'customer' => '顧客',
+    'receiver' => '受取人',
+    'payment' => '支払',
+    'amount_paid' => '支払済金額',
+    'payment_status' => '支払状況',
+    'name' => '名称',
+    'buy' => '購入',
+    'gift' => '贈答',
+    'compensation' => '補償',
+    'conversion' => '換算',
+    'unit_price' => '単価',
+    'amount' => '金額',
+    'tax' => '税金',
+    'note' => '備考',
+    'subtotal' => '小計',
+    'shipping_fee' => '送料',
+    'discount' => '割引',
+    'total' => '合計',
+];

@@ -1,0 +1,28 @@
+<?php
+
+return [
+    'print' => 'In',
+    'title' => 'HÓA ĐƠN BÁN RA',
+    'footer' => 'Đây là hóa đơn được tạo tự động bởi hệ thống. Không cần chữ ký.',
+    'document_no' => 'Số chứng từ',
+    'invoice_date' => 'Ngày hóa đơn',
+    'due_date' => 'Ngày đến hạn',
+    'customer' => 'Khách hàng',
+    'receiver' => 'Người nhận',
+    'payment' => 'Thanh toán',
+    'amount_paid' => 'Số tiền đã thanh toán',
+    'payment_status' => 'Trạng thái thanh toán',
+    'name' => 'Tên',
+    'buy' => 'Mua',
+    'gift' => 'Tặng',
+    'compensation' => 'Bồi thường',
+    'conversion' => 'Chuyển đổi',
+    'unit_price' => 'Đơn giá',
+    'amount' => 'Thành tiền',
+    'tax' => 'Thuế',
+    'note' => 'Ghi chú',
+    'subtotal' => 'Tạm tính',
+    'shipping_fee' => 'Phí vận chuyển',
+    'discount' => 'Giảm giá',
+    'total' => 'Tổng cộng',
+];
