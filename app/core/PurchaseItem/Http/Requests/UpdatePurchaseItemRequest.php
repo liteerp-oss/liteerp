@@ -9,14 +9,14 @@ class UpdatePurchaseItemRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'discount'                => 'integer|min:0',
-            'tax'                     => 'required|integer|min:0|max:100',
-            'product_link'            => 'string|max:250',
-            'buy_quantity'            => 'integer|min:0',
-            'gift_quantity'           => 'integer|min:0',
-            'compensation_quantity'   => 'integer|min:0',
-            'conversion_quantity'     => 'integer|min:0',
-            'unit_cost'               => 'integer|min:0'
+            'discount'                => 'nullable|integer|min:0',
+            'tax'                     => 'nullable|required|integer|min:0|max:100',
+            'product_link'            => 'nullable|string|max:250',
+            'buy_quantity'            => 'nullable|integer|min:0',
+            'gift_quantity'           => 'nullable|integer|min:0',
+            'compensation_quantity'   => 'nullable|integer|min:0',
+            'conversion_quantity'     => 'nullable|integer|min:0',
+            'unit_cost'               => 'nullable|integer|min:0'
         ];
     }
 

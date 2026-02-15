@@ -44,7 +44,6 @@ export default function PurchaseInformation({
 
             <div className="row">
                 <div className="col-6">
-                    <label>{t('Supplier')}</label>
                     <SearchSelect
                         errorMessage={form.formErrors?.supplier_id}
                         disabled={disabled}
@@ -57,11 +56,12 @@ export default function PurchaseInformation({
                         }))}
                         name="supplier_id"
                         defaultKeywords={form.formData?.supplier_name}
+                        label={t('Supplier')}
+                        required={true}
                     />
                 </div>
 
                 <div className="col-6">
-                    <label>{t('Purchase date')}</label>
                     <InputForm
                         disabled={disabled}
                         type="date"
@@ -71,13 +71,14 @@ export default function PurchaseInformation({
                         )}
                         errorMessage={form.formErrors?.purchase_date}
                         name="purchase_date"
+                        label={t('Purchase date')}
+                        required={true}
                     />
                 </div>
             </div>
 
-            <div className="row">
+            <div className="row mt-2">
                 <div className="col-4">
-                    <label>{t('Expected date')}</label>
                     <InputForm
                         disabled={disabled}
                         type="date"
@@ -87,11 +88,12 @@ export default function PurchaseInformation({
                         )}
                         errorMessage={form.formErrors?.expected_date}
                         name="expected_date"
+                        label={t('Expected date')}
+                        required={true}
                     />
                 </div>
 
                 <div className="col-4">
-                    <label>{t('Payment method')}</label>
                     <Select
                         disabled={disabled}
                         name="payment_method"
@@ -104,11 +106,12 @@ export default function PurchaseInformation({
                             { value: 'transfer', label: t('Transfer') },
                             { value: 'other', label: t('Other') },
                         ]}
+                        label={t('Payment method')}
+                        required={true}
                     />
                 </div>
 
                 <div className="col-4">
-                    <label>{t('Shipping fee')}</label>
                     <InputForm
                         disabled={disabled}
                         type="number"
@@ -117,11 +120,13 @@ export default function PurchaseInformation({
                         errorMessage={form.formErrors?.shipping_fee}
                         name="shipping_fee"
                         placeholder={t('Enter full shipping fee')}
+                        label={t('Shipping fee')}
+                        required={true}
                     />
                 </div>
             </div>
 
-            <div className="row">
+            <div className="row mt-2">
                 <div>
                     <label>{t('Note')}</label>
                     <TextArea

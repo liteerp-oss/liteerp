@@ -10,9 +10,6 @@ export default function AddProduct() {
 
             <div className="d-flex">
                 <div className="col-xs-12 col-sm-4 col-md-2 col-lg-2">
-                    <div className='mt-4'>
-                        <h5 className="fw-bold mb-2 theme-title">Summary</h5>
-                    </div>
                     <VerticalCommonTable data={{
                         shipping_fee: purchasedetail?.shipping_fee 
                             ? <Currencies amount={purchasedetail?.shipping_fee}/> : 0,

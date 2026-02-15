@@ -19,7 +19,7 @@ import { useI18n } from '../../../../i18n/useI18n';
 export default function ListProducts({
     purchase = null
 }) {
-    const {t} = useI18n();
+    const { t } = useI18n();
     const dispatch = useDispatch();
     const [checkList, setCheckList] = useState([]);
     const [isCheckAll, setIsCheckAll] = useState(false);
@@ -49,89 +49,8 @@ export default function ListProducts({
                 }
             })
     }, []);
-    const addToCheckList = (id) => {
-        setCheckList(prev => {
-            if (prev.includes(id)) {
-                return prev.filter(x => x !== id);
-            }
-            return [...prev, id];
-        });
-    };
-
-    const removeFromCheckList = (id) => {
-        setCheckList(prev => prev.filter(item => item !== id));
-    };
-    const columns = useMemo(() => {
-        return [
-            {
-                label: "Select",
-                key: "id",
-                render: (id) => (
-                    <input
-                        disabled={purchase.status !== 'draft'}
-                        type="checkbox"
-                        checked={checkList.includes(id)}
-                        onChange={(e) => {
-                            if (e.target.checked) {
-                                addToCheckList(id);
-                            } else {
-                                removeFromCheckList(id);
-                            }
-                        }}
-                    />
-                )
-            },
-            {
-                label: "Image", key: "image", render: (src) => (
-                    src ? (
-                        <img
-                            src={src}
-                            alt="product"
-                            style={{ width: 50, height: 50, borderRadius: 8, objectFit: 'cover' }}
-                        />
-                    ) : (
-                        <img src='/assets/icons/default_image.png' width={50} height={50} alt='' />
-                    )
-                )
-            },
-            { label: "Name", key: "name" },
-            { label: "SKU", key: "sku" },
-            { label: "Category", key: "category_name" },
-            { label: "Buy", key: "buy_quantity" },
-            { label: "Gift", key: "gift_quantity" },
-            { label: "Compensation", key: "compensation_quantity" },
-            { label: "Conversion", key: "conversion_quantity" },
-            {
-                label: "Unit cost", key: "unit_cost", render: (value) => {
-                    return <span>{<Currencies amount={value} />}</span>
-                }
-            },
-            {
-                label: "Subtotal", key: "subtotal", render: (value) => (
-                    <span>{<Currencies amount={value} />}</span>
-                )
-            },
-            {
-                label: "Tax", key: "tax", render: (value) => {
-                    return <span>{value}%</span>
-                }
-            },
-            {
-                label: "Total tax", key: "total_tax", render: (value) => {
-                    return <span>{<Currencies amount={value} />}</span>
-                }
-            },
-            {
-                label: "Total price", key: "total", render: (value) => (
-                    <span>{<Currencies amount={value} />}</span>
-                )
-            }
-        ]
-    }, [checkList]);
 
     const handleEdit = (row) => {
-        console.log("Edit clicked:", row);
-        //navigate(`/products?edit=${row.id}`);
         form.setFormData(row);
         form.setIsEdit(true);
         setShowForm(true);
@@ -314,261 +233,266 @@ export default function ListProducts({
     };
     useEffect(() => {
         getPurchaseItems();
-        table.setColums([
-            {
-                label: t('Select'),
-                key: 'id',
-                render: (id) => (
-                    <input
-                        disabled={purchase.status !== 'draft'}
-                        type="checkbox"
-                        checked={checkList.includes(id)}
-                        onChange={(e) =>
-                            e.target.checked
-                                ? setCheckList((p) => [...p, id])
-                                : setCheckList((p) => p.filter((x) => x !== id))
-                        }
-                    />
-                ),
-            },
-            {
-                label: t('Image'),
-                key: 'image',
-                render: (src) =>
-                    src ? (
-                        <img
-                            src={src}
-                            alt="product"
-                            style={{
-                                width: 50,
-                                height: 50,
-                                borderRadius: 8,
-                                objectFit: 'cover',
-                            }}
-                        />
-                    ) : (
-                        <img
-                            src="/assets/icons/default_image.png"
-                            width={50}
-                            height={50}
-                            alt=""
-                        />
-                    ),
-            },
-            { label: t('Name'), key: 'name' },
-            { label: t('SKU'), key: 'sku' },
-            { label: t('Category'), key: 'category_name' },
-            { label: t('Buy'), key: 'buy_quantity' },
-            { label: t('Gift'), key: 'gift_quantity' },
-            { label: t('Compensation'), key: 'compensation_quantity' },
-            { label: t('Conversion'), key: 'conversion_quantity' },
-            {
-                label: t('Unit cost'),
-                key: 'unit_cost',
-                render: (value) => <Currencies amount={value} />,
-            },
-            {
-                label: t('Subtotal'),
-                key: 'subtotal',
-                render: (value) => <Currencies amount={value} />,
-            },
-            {
-                label: t('Tax'),
-                key: 'tax',
-                render: (value) => <span>{value}%</span>,
-            },
-            {
-                label: t('Total tax'),
-                key: 'total_tax',
-                render: (value) => <Currencies amount={value} />,
-            },
-            {
-                label: t('Total price'),
-                key: 'total',
-                render: (value) => <Currencies amount={value} />,
-            },
-        ])
     }, []);
     return (
         <div className="m-4">
             <div className="d-flex justify-content-between align-items-center">
                 <div>
-                    <h5 className="fw-bold mb-2 theme-title">List products</h5>
+                    <h5 className="fw-bold mb-2 theme-title">{t('List products')}</h5>
                 </div>
-                {/* {purchase?.status === 'draft' ? <div>
-                    <GradientButton callback={() => submit('requested')} text={'Send to approve'} />
-                </div> : <div>
-                    <GradientButton callback={() => submit('approved')} text={'Take a approve'} />
-                </div>} */}
             </div>
 
             <CommonDataTable
                 filter={<div className='row'>
                     <div className='col-3'>
-                        <PrimaryButton disabled={purchase?.status !== 'draft' || table.data.length === 0} onClick={!isCheckAll ? checkAll : uncheckAll} label={'Check all'} />
+                        <PrimaryButton
+                            width={120}
+                            disabled={purchase?.status !== 'draft' || table.data.length === 0}
+                            onClick={!isCheckAll ? checkAll : uncheckAll} label={t('Check all')} />
                     </div>
                     <div className='col-3'>
                         <PrimaryButton
+                            width={120}
                             disabled={checkList.length >= 1 ? false : true}
                             onClick={() => {
                                 if (checkList.length >= 1) {
                                     return setShowTaxForm(true)
                                 }
-                            }} label='Tax (%)' />
+                            }} label={t('Tax') + ' (%)'} />
                     </div>
                 </div>}
                 movePage={getPurchaseItems}
                 loading={table.loading}
                 add={purchase?.status !== 'draft' ? null : () => setShowForm(true)}
                 links={table.links}
-                columns={table.colums}
+                columns={[
+                    {
+                        label: t('Select'),
+                        key: 'id',
+                        render: (id) => (
+                            <input
+                                disabled={purchase.status !== 'draft'}
+                                type="checkbox"
+                                checked={checkList.includes(id)}
+                                onChange={(e) =>
+                                    e.target.checked
+                                        ? setCheckList((p) => [...p, id])
+                                        : setCheckList((p) => p.filter((x) => x !== id))
+                                }
+                            />
+                        ),
+                    },
+                    {
+                        label: t('Image'),
+                        key: 'image',
+                        render: (src) =>
+                            src ? (
+                                <img
+                                    src={src}
+                                    alt="product"
+                                    style={{
+                                        width: 50,
+                                        height: 50,
+                                        borderRadius: 8,
+                                        objectFit: 'cover',
+                                    }}
+                                />
+                            ) : (
+                                <img
+                                    src="/assets/icons/default_image.png"
+                                    width={50}
+                                    height={50}
+                                    alt=""
+                                />
+                            ),
+                    },
+                    { label: t('Name'), key: 'name' },
+                    { label: t('SKU'), key: 'sku' },
+                    { label: t('Category'), key: 'category_name' },
+                    { label: t('Buy'), key: 'buy_quantity' },
+                    { label: t('Gift'), key: 'gift_quantity' },
+                    { label: t('Compensation'), key: 'compensation_quantity' },
+                    { label: t('Conversion'), key: 'conversion_quantity' },
+                    {
+                        label: t('Unit cost'),
+                        key: 'unit_cost',
+                        render: (value) => <Currencies amount={value} />,
+                    },
+                    {
+                        label: t('Subtotal'),
+                        key: 'subtotal',
+                        render: (value) => <Currencies amount={value} />,
+                    },
+                    {
+                        label: t('Tax'),
+                        key: 'tax',
+                        render: (value) => <span>{value}%</span>,
+                    },
+                    {
+                        label: t('Total tax'),
+                        key: 'total_tax',
+                        render: (value) => <Currencies amount={value} />,
+                    },
+                    {
+                        label: t('Total price'),
+                        key: 'total',
+                        render: (value) => <Currencies amount={value} />,
+                    },
+                ]}
                 data={table.data}
                 onEdit={purchase?.status !== 'draft' ? null : handleEdit}
                 onDelete={purchase?.status !== 'draft' ? null : handleDelete}
             />
             {showForm ? (
-    <PopupLayout
-        loading={form.loading}
-        confirmText={t('Save change')}
-        onClose={() => {
-            setShowForm(false);
-            form.setIsEdit(false);
-        }}
-        onConfirm={form.isEdit ? update : create}
-        title={t('Add product')}
-    >
-        <h4>{t('Information')}</h4>
+                <PopupLayout
+                    loading={form.loading}
+                    confirmText={t('Save change')}
+                    onClose={() => {
+                        setShowForm(false);
+                        form.setIsEdit(false);
+                    }}
+                    onConfirm={form.isEdit ? update : create}
+                    title={t('Add product')}
+                >
+                    <h4>{t('Information')}</h4>
 
-        <div className="mb-3 form-group">
-            <label className="theme-title">{t('Product')}</label>
-            <SearchSelect
-                placeholder={t('Search by name or sku')}
-                name="product_id"
-                value={form.formData?.product_id}
-                changeValue={form.handleChangeByKey}
-                errorMessage={form.formErrors?.product_id}
-                search={getProducts}
-                options={products.map((item) => ({
-                    value: item.id,
-                    label: item.name,
-                }))}
-                defaultKeywords={form.formData?.name ?? ''}
-            />
-        </div>
+                    <div className="mb-3 form-group">
+                        <SearchSelect
+                            placeholder={t('Search by name or sku')}
+                            name="product_id"
+                            value={form.formData?.product_id}
+                            changeValue={form.handleChangeByKey}
+                            errorMessage={form.formErrors?.product_id}
+                            search={getProducts}
+                            options={products.map((item) => ({
+                                value: item.id,
+                                label: item.name,
+                            }))}
+                            defaultKeywords={form.formData?.name ?? ''}
+                            label={t("Product")}
+                            required={true}
+                        />
+                    </div>
 
-        <div className="row">
-            <div className="mb-3 form-group col-6">
-                <label className="theme-title">{t('Discount')}</label>
-                <InputForm
-                    name="discount"
-                    type="number"
-                    value={form.formData?.discount}
-                    handleChange={form.handleChange}
-                    errorMessage={form.formErrors?.discount}
-                />
-            </div>
+                    <div className="row">
+                        <div className="mb-3 form-group col-6">
+                            <InputForm
+                                name="discount"
+                                type="number"
+                                value={form.formData?.discount}
+                                handleChange={form.handleChange}
+                                errorMessage={form.formErrors?.discount}
+                                label={t("Discount")}
+                                required={false}
+                            />
+                        </div>
 
-            <div className="mb-3 form-group col-6">
-                <label className="theme-title">{t('Tax')}</label>
-                <InputForm
-                    name="tax"
-                    type="number"
-                    value={form.formData?.tax}
-                    handleChange={form.handleChange}
-                    errorMessage={form.formErrors?.tax}
-                />
-            </div>
-        </div>
+                        <div className="mb-3 form-group col-6">
+                            <InputForm
+                                name="tax"
+                                type="number"
+                                value={form.formData?.tax}
+                                handleChange={form.handleChange}
+                                errorMessage={form.formErrors?.tax}
+                                label={t("Tax") + ' (%)'}
+                                required={true}
+                            />
+                        </div>
+                    </div>
 
-        <div className="mb-3 form-group">
-            <label className="theme-title">{t('Product link')}</label>
-            <InputForm
-                name="product_link"
-                type="text"
-                value={form.formData?.product_link}
-                handleChange={form.handleChange}
-                errorMessage={form.formErrors?.product_link}
-            />
-        </div>
+                    <div className="mb-3 form-group">
+                        <InputForm
+                            name="product_link"
+                            type="text"
+                            value={form.formData?.product_link}
+                            handleChange={form.handleChange}
+                            errorMessage={form.formErrors?.product_link}
+                            label={t("Product link")}
+                            required={false}
+                        />
+                    </div>
 
-        <div className="row">
-            <div className="mb-3 form-group col-6">
-                <label className="theme-title">{t('Buy quantity')}</label>
-                <InputForm
-                    name="buy_quantity"
-                    type="text"
-                    value={form.formData?.buy_quantity}
-                    handleChange={form.handleChange}
-                    errorMessage={form.formErrors?.buy_quantity}
-                />
-            </div>
+                    <div className="row">
+                        <div className="mb-3 form-group col-6">
+                            <InputForm
+                                name="buy_quantity"
+                                type="text"
+                                value={form.formData?.buy_quantity}
+                                handleChange={form.handleChange}
+                                errorMessage={form.formErrors?.buy_quantity}
+                                label={t("Buy quantity")}
+                                required={false}
+                            />
+                        </div>
 
-            <div className="mb-3 form-group col-6">
-                <label className="theme-title">{t('Gift quantity')}</label>
-                <InputForm
-                    name="gift_quantity"
-                    type="number"
-                    value={form.formData?.gift_quantity}
-                    handleChange={form.handleChange}
-                    errorMessage={form.formErrors?.gift_quantity}
-                />
-            </div>
+                        <div className="mb-3 form-group col-6">
+                            <InputForm
+                                name="gift_quantity"
+                                type="number"
+                                value={form.formData?.gift_quantity}
+                                handleChange={form.handleChange}
+                                errorMessage={form.formErrors?.gift_quantity}
+                                label={t("Gift quantity")}
+                                required={false}
+                            />
+                        </div>
 
-            <div className="mb-3 form-group col-6">
-                <label className="theme-title">
-                    {t('Compensation quantity')}
-                </label>
-                <InputForm
-                    name="compensation_quantity"
-                    type="number"
-                    value={form.formData?.compensation_quantity}
-                    handleChange={form.handleChange}
-                    errorMessage={form.formErrors?.compensation_quantity}
-                />
-            </div>
+                        <div className="mb-3 form-group col-6">
+                            <InputForm
+                                name="compensation_quantity"
+                                type="number"
+                                value={form.formData?.compensation_quantity}
+                                handleChange={form.handleChange}
+                                errorMessage={form.formErrors?.compensation_quantity}
+                                label={t("Compensation quantity")}
+                                required={false}
+                            />
+                        </div>
 
-            <div className="mb-3 form-group col-6">
-                <label className="theme-title">
-                    {t('Conversion quantity')}
-                </label>
-                <InputForm
-                    name="conversion_quantity"
-                    type="number"
-                    value={form.formData?.conversion_quantity}
-                    handleChange={form.handleChange}
-                    errorMessage={form.formErrors?.conversion_quantity}
-                />
-            </div>
-        </div>
+                        <div className="mb-3 form-group col-6">
+                            <InputForm
+                                name="conversion_quantity"
+                                type="number"
+                                value={form.formData?.conversion_quantity}
+                                handleChange={form.handleChange}
+                                errorMessage={form.formErrors?.conversion_quantity}
+                                label={t("Conversion quantity")}
+                                required={false}
+                            />
+                        </div>
+                    </div>
 
-        <div className="mb-3 form-group">
-            <label className="theme-title">{t('Unit cost')}</label>
-            <InputForm
-                name="unit_cost"
-                type="number"
-                value={form.formData?.unit_cost}
-                handleChange={form.handleChange}
-                errorMessage={form.formErrors?.unit_cost}
-            />
-        </div>
-    </PopupLayout>
-) : null}
+                    <div className="mb-3 form-group">
+                        <InputForm
+                            name="unit_cost"
+                            type="number"
+                            value={form.formData?.unit_cost}
+                            handleChange={form.handleChange}
+                            errorMessage={form.formErrors?.unit_cost}
+                            label={t("Unit cost")}
+                            required={false}
+                        />
+                    </div>
+                </PopupLayout>
+            ) : null}
 
             {showTaxForm ? <PopupLayout
                 onConfirm={setTax}
-                title='Set tax products'
-                confirmText='Change'
+                title={t('Set tax products')}
+                confirmText={t('Change')}
                 onClose={() => {
                     setShowTaxForm(false)
                 }}>
                 <div>
-                    <label>Tax (%)</label>
                     <InputForm
                         name='tax'
+                        type='number'
                         errorMessage={taxForm.formErrors?.tax}
                         handleChange={taxForm.handleChange}
                         value={taxForm.formData?.tax}
                         placeholder='Enter tax for products selected'
+                        label={t("Tax") + ' (%)'}
+                        required={true}
                     />
                 </div>
             </PopupLayout> : null}

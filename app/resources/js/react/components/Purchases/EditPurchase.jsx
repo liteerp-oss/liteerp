@@ -225,7 +225,7 @@ export default function EditPurchase() {
                             <div className="col-6">
                                 {detail?.status !== 'cancelled' && (
                                     <DangerButton
-                                        width={150}
+                                        width={170}
                                         loading={form.loading}
                                         onClick={confirmUpdateToCancelled}
                                         label={t('Cancel purchase')}
@@ -236,6 +236,7 @@ export default function EditPurchase() {
                             <div className="col-6">
                                 {currentStep <= 1 && (
                                     <PrimaryButton
+                                        width={100}
                                         loading={form.loading}
                                         onClick={nextStep}
                                         label={t('Next')}
@@ -245,6 +246,7 @@ export default function EditPurchase() {
                                 {currentStep === 2 &&
                                     detail?.status === 'draft' && (
                                         <PrimaryButton
+                                            width={120}
                                             loading={form.loading}
                                             onClick={confirmUpdateToRequest}
                                             label={t('Send to request')}
@@ -254,6 +256,7 @@ export default function EditPurchase() {
                                 {currentStep === 2 &&
                                     detail?.status === 'requested' && (
                                         <PrimaryButton
+                                            width={100}
                                             loading={form.loading}
                                             onClick={confirmUpdateToApprove}
                                             label={t('Approve')}
