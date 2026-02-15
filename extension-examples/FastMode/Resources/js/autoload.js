@@ -9,6 +9,6 @@ export default class ServiceProvider extends Extension {
         })
     }
     boot() {
-        console.log('HRM loadded');
+        console.log('FastMode loadded');
     }
 }
