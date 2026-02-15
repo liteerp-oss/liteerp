@@ -80,7 +80,7 @@ export default function CommonDataTableV2({
                                 />
                         </div>
                         <div className="col-2 pt-4">
-                            <PrimaryButton onClick={() => callback()} label={t("Search")} />
+                            <PrimaryButton width={100} onClick={() => callback()} label={t("Search")} />
                         </div>
                     </div>
                     {filter}
