@@ -15,6 +15,7 @@ import { RenderTableSearch } from '../RenderTableSearch'
 import { useI18n } from '../../../i18n/useI18n'
 import { useSelector } from 'react-redux'
 import PERMISSIONS from '../../common/permission'
+import CommonDataTableV2 from '../CommonDataTableV2'
 
 export default function ListCustomer() {
     const { t } = useI18n()
@@ -182,94 +183,37 @@ export default function ListCustomer() {
 
     return (
         <div>
-            <CommonDataTable
+            <CommonDataTableV2
                 add={ roles?.includes(PERMISSIONS.CUSTOMER.CREATE) 
                     ? () => setShowAdd(true)
                     : null}
                 loading={table.loading}
-                movePage={getCustomers}
+                callback={getCustomers}
                 columns={table.colums}
                 data={table.data}
                 links={table.links}
                 onEdit={roles?.includes(PERMISSIONS.CUSTOMER.UPDATE) ? handleEdit : null}
                 onDelete={ roles?.includes(PERMISSIONS.CUSTOMER.DELETE) ? handleDelete : null}
-                filter={
-                    <div className="row">
-                        <div className="col-2">
-                            <label>{t('Status')}</label>
-                            <Select
-                                name="active"
-                                value={search.formData?.active}
-                                handleChange={search.handleChange}
-                                options={[
-                                    { value: 0, label: t('Inactive') },
-                                    { value: 1, label: t('Active') },
-                                ]}
-                            />
-                        </div>
-
-                        <div className="col-2">
-                            <label>{t('Type')}</label>
-                            <Select
-                                name="type"
-                                value={search.formData?.type}
-                                handleChange={search.handleChange}
-                                options={[
-                                    {
-                                        value: 'individual',
-                                        label: t('Individual'),
-                                    },
-                                    {
-                                        value: 'company',
-                                        label: t('Company'),
-                                    },
-                                ]}
-                            />
-                        </div>
-
-                        <div className="col-2">
-                            <label>{t('Order by')}</label>
-                            <Select
-                                name="order_by"
-                                value={search.formData?.order_by}
-                                handleChange={search.handleChange}
-                                options={[
-                                    { value: 'ASC', label: t('Oldest') },
-                                    { value: 'DESC', label: t('Newest') },
-                                ]}
-                            />
-                        </div>
-
-                        {search.hookRender.map((item, index) => (
-                            <div className="col-2" key={index}>
-                                <RenderTableSearch
-                                    item={item}
-                                    search={search}
-                                />
-                            </div>
-                        ))}
-
-                        <div className="col-2">
-                            <label>{t('Search')}</label>
-                            <SearchInput
-                                submit={getCustomers}
-                                placeholder={t(
-                                    'Search by customer name'
-                                )}
-                                value={search.formData?.keywords}
-                                name="keywords"
-                                handleChange={search.handleChange}
-                            />
-                        </div>
-
-                        <div className="col-2">
-                            <ButtonPrimary
-                                onClick={getCustomers}
-                                label={t('Search')}
-                            />
-                        </div>
-                    </div>
-                }
+                config={{
+                    default: [{
+                        key: "order_by",
+                        placeholder: t("Order by"),
+                        options: [
+                            { value: 'ASC', label: t('Oldest') },
+                            { value: 'DESC', label: t('Newest') },
+                        ],
+                        type: "select",
+                        label: t("Order by"),
+                        col: "col-6"
+                    },{
+                        key: "keywords",
+                        placeholder: t("Keywords"),
+                        type: "text",
+                        label: t("Search"),
+                        col: "col-6"
+                    }]
+                }}
+                search={search}
             />
 
             {showAdd && (

@@ -17,6 +17,7 @@ import PrimaryButton from '../UI/Buttons/PrimaryButton';
 import { useI18n } from '../../../i18n/useI18n';
 import PERMISSIONS from '../../common/permission';
 import { useSelector } from 'react-redux';
+import CommonDataTableV2 from '../CommonDataTableV2';
 
 export default function ListOrder() {
     const { t } = useI18n();
@@ -136,84 +137,27 @@ export default function ListOrder() {
             />
 
             <div className="m-4">
-                <CommonDataTable
-                    filter={
-                        <div className="d-flex flex-wrap gap-2">
-                            <div className="col-2">
-                                <label>{t('Status')}</label>
-                                <Select
-                                    name="status"
-                                    handleChange={search.handleChange}
-                                    value={search.formData?.status}
-                                    options={[
-                                        {
-                                            value: 'pending',
-                                            label: t('Pending'),
-                                        },
-                                        {
-                                            value: 'approved',
-                                            label: t('Approved'),
-                                        },
-                                        {
-                                            value: 'cancelled',
-                                            label: t('Cancelled'),
-                                        },
-                                    ]}
-                                />
-                            </div>
-
-                            <div className="col-2">
-                                <label>{t('Order by')}</label>
-                                <Select
-                                    name="order_by"
-                                    value={search.formData?.order_by}
-                                    handleChange={search.handleChange}
-                                    errorMessage={
-                                        search.formErrors?.order_by
-                                    }
-                                    options={[
-                                        {
-                                            value: 'ASC',
-                                            label: t('Oldest'),
-                                        },
-                                        {
-                                            value: 'DESC',
-                                            label: t('Newest'),
-                                        },
-                                    ]}
-                                />
-                            </div>
-
-                            {search.hookRender.map((item, index) => (
-                                <div className="col-2" key={index}>
-                                    <RenderTableSearch
-                                        item={item}
-                                        search={search}
-                                    />
-                                </div>
-                            ))}
-
-                            <div className="col-3">
-                                <label>{t('Search')}</label>
-                                <SearchInput
-                                    submit={getOrders}
-                                    name="keywords"
-                                    handleChange={search.handleChange}
-                                    value={search.formData?.keywords}
-                                    placeholder={t(
-                                        'Search by customer name'
-                                    )}
-                                />
-                            </div>
-
-                            <div className="col-2">
-                                <PrimaryButton
-                                    label={t('Search')}
-                                    onClick={() => getOrders()}
-                                />
-                            </div>
-                        </div>
-                    }
+                <CommonDataTableV2
+                    config={{
+                    default: [{
+                        key: "order_by",
+                        placeholder: t("Order by"),
+                        options: [
+                            { value: 'ASC', label: t('Oldest') },
+                            { value: 'DESC', label: t('Newest') },
+                        ],
+                        type: "select",
+                        label: t("Order by"),
+                        col: "col-6"
+                    },{
+                        key: "keywords",
+                        placeholder: t("Keywords"),
+                        type: "text",
+                        label: t("Search"),
+                        col: "col-6"
+                    }]
+                }}
+                search={search}
                     add={ roles?.includes(PERMISSIONS.ORDER.CREATE) 
                         ? () => navigate('/orders?form=add')
                         : null}
@@ -222,7 +166,7 @@ export default function ListOrder() {
                     links={table?.links}
                     onEdit={ roles?.includes(PERMISSIONS.ORDER.SHOW) ? handleEdit : null}
                     loading={table.loading}
-                    movePage={getOrders}
+                    callback={getOrders}
                 />
             </div>
         </div>

@@ -5,13 +5,15 @@ export default function SuccessButton({
   onClick = null, 
   width = 150,
   disabled = false,
-  loading = false
+  loading = false,
+  height = 35
 }) {
   return (
     <button 
     disabled={disabled || loading}
     className="erp-btn erp-btn-success" onClick={onClick} style={{
-      width: width
+      width: width,
+      height : height
     }}>
       {label}
     </button>

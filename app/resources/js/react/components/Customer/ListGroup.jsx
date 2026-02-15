@@ -10,6 +10,7 @@ import CustomerGroupService from '../../services/CustomerGroupService'
 import { useI18n } from '../../../i18n/useI18n'
 import { useSelector } from 'react-redux'
 import PERMISSIONS from '../../common/permission'
+import CommonDataTableV2 from '../CommonDataTableV2'
 
 export default function ListGroup() {
     const { t } = useI18n()
@@ -139,31 +140,35 @@ export default function ListGroup() {
 
     return (
         <div>
-            <CommonDataTable
+            <CommonDataTableV2
                 add={ roles?.includes(PERMISSIONS.CUSTOMER_GROUP.CREATE) ? () => setShowAdd(true) : null}
                 loading={table.loading}
-                movePage={getGroup}
+                callback={getGroup}
                 columns={columns}
                 data={table.data}
                 links={table.links}
                 onEdit={roles?.includes(PERMISSIONS.CUSTOMER_GROUP.UPDATE) ?handleEdit : null}
                 onDelete={roles?.includes(PERMISSIONS.CUSTOMER_GROUP.DELETE) ? handleDelete : null}
-                filter={
-                    <div className="d-flex">
-                        <div className="mx-2 col-4">
-                            <label>{t('Search')}</label>
-                            <SearchInput
-                                submit={getGroup}
-                                placeholder={t(
-                                    'Search by customer group name'
-                                )}
-                                value={search.formData?.keywords}
-                                name="keywords"
-                                handleChange={search.handleChange}
-                            />
-                        </div>
-                    </div>
-                }
+                config={{
+                    default: [{
+                        key: "order_by",
+                        placeholder: t("Order by"),
+                        options: [
+                            { value: 'ASC', label: t('Oldest') },
+                            { value: 'DESC', label: t('Newest') },
+                        ],
+                        type: "select",
+                        label: t("Order by"),
+                        col: "col-6"
+                    },{
+                        key: "keywords",
+                        placeholder: t("Keywords"),
+                        type: "text",
+                        label: t("Search"),
+                        col: "col-6"
+                    }]
+                }}
+                search={search}
             />
 
             {showAdd && (

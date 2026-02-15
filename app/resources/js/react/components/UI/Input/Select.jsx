@@ -6,9 +6,15 @@ export function Select({
     value= '',
     options= [],
     name= 'select',
-    disabled = false
+    disabled = false,
+    label = null,
+    required = false 
 }) {
     return <div>
+        {label ? <label>
+            {label} 
+            {required ? <span className='text-danger'>*</span> : null}
+        </label> : null}
         <select
         disabled={disabled}
         value={value}

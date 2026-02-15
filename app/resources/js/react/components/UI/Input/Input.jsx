@@ -5,9 +5,15 @@ export function Input(data = {
     placeholder: '',
     errorMessage : null,
     onChangeText: (text) => {},
-    value: ''
+    value: '',
+    required: false,
+    label: null
 }) {
     return <div>
+        {data.label ? <label>
+            {data.label} 
+            {data.required ? <span className='text-danger'>*</span> : null}
+        </label> : null}
         <input
         onChange={(event) => {
             data.onChangeText(event.target.value);

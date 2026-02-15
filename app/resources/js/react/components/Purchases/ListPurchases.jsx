@@ -19,6 +19,7 @@ import PrimaryButton from '../UI/Buttons/PrimaryButton';
 import { useI18n } from '../../../i18n/useI18n';
 import { useSelector } from 'react-redux';
 import PERMISSIONS from '../../common/permission';
+import CommonDataTableV2 from '../CommonDataTableV2';
 
 export default function ListPurchases() {
     const { t } = useI18n();
@@ -162,97 +163,35 @@ export default function ListPurchases() {
             />
 
             <div className="m-4">
-                <CommonDataTable
-                    filter={
-                        <div className="d-flex flex-wrap gap-3">
-                            <div className="col-2">
-                                <label>{t('Status')}</label>
-                                <Select
-                                    name="status"
-                                    value={search.formData?.status}
-                                    handleChange={search.handleChange}
-                                    errorMessage={search.formErrors?.status}
-                                    options={[
-                                        { value: 'draft', label: t('Draft') },
-                                        {
-                                            value: 'requested',
-                                            label: t('Requested'),
-                                        },
-                                        {
-                                            value: 'approved',
-                                            label: t('Approved'),
-                                        },
-                                        {
-                                            value: 'cancelled',
-                                            label: t('Cancelled'),
-                                        },
-                                    ]}
-                                />
-                            </div>
-
-                            <div className="col-2">
-                                <label>{t('Order by')}</label>
-                                <Select
-                                    name="order_by"
-                                    value={search.formData?.order_by}
-                                    handleChange={search.handleChange}
-                                    errorMessage={
-                                        search.formErrors?.order_by
-                                    }
-                                    options={[
-                                        {
-                                            value: 'ASC',
-                                            label: t('Oldest'),
-                                        },
-                                        {
-                                            value: 'DESC',
-                                            label: t('Newest'),
-                                        },
-                                    ]}
-                                />
-                            </div>
-
-                            {search.hookRender.map((item, index) => (
-                                <div key={index} className="col-2">
-                                    <RenderTableSearch
-                                        item={item}
-                                        search={search}
-                                    />
-                                </div>
-                            ))}
-
-                            <div className="col-2">
-                                <label>{t('Search')}</label>
-                                <SearchInput
-                                    submit={getPurchases}
-                                    name="keywords"
-                                    value={search.formData?.keywords}
-                                    handleChange={search.handleChange}
-                                    errorMessage={
-                                        search.formErrors?.keywords
-                                    }
-                                    placeholder={t(
-                                        'Search by supplier'
-                                    )}
-                                />
-                            </div>
-
-                            <div className="col-2">
-                                <PrimaryButton
-                                    label={t('Search')}
-                                    onClick={() => getPurchases()}
-                                />
-                            </div>
-                        </div>
-                    }
-                    add={ roles?.includes(PERMISSIONS.PURCHASE.CREATE) 
+                <CommonDataTableV2
+                    config={{
+                        default: [{
+                            key: "order_by",
+                            placeholder: t("Order by"),
+                            options: [
+                                { value: 'ASC', label: t('Oldest') },
+                                { value: 'DESC', label: t('Newest') },
+                            ],
+                            type: "select",
+                            label: t("Order by"),
+                            col: "col-6"
+                        }, {
+                            key: "keywords",
+                            placeholder: t("Keywords"),
+                            type: "text",
+                            label: t("Search"),
+                            col: "col-6"
+                        }]
+                    }}
+                    search={search}
+                    add={roles?.includes(PERMISSIONS.PURCHASE.CREATE)
                         ? () => navigate('/purchases?form=add') : null}
                     columns={table.colums}
                     data={table.data}
                     links={table.links}
-                    onEdit={ roles?.includes(PERMISSIONS.PURCHASE.SHOW) 
+                    onEdit={roles?.includes(PERMISSIONS.PURCHASE.SHOW)
                         ? handleEdit : null}
-                    movePage={getPurchases}
+                    callback={getPurchases}
                     loading={table.loading}
                 />
             </div>

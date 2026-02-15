@@ -14,7 +14,7 @@ export const PopupProvider = ({ children }) => {
   const openPopup = useCallback((options) => {
     setPopup({
       message: options.message || "",
-      type: options.type || "Success", // success | warning | error | info
+      type: options.type || "success", // success | warning | error | info
       onConfirm: options.onConfirm || null,
       onCancel: options.onCancel || null,
       confirmText: options.confirmText || "Confirm",

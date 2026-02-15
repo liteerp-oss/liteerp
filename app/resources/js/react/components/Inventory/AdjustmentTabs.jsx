@@ -15,6 +15,7 @@ import { isoToDateTime } from '../../libraries/common'
 import { useI18n } from '../../../i18n/useI18n'
 import PERMISSIONS from '../../common/permission'
 import { useSelector } from 'react-redux'
+import CommonDataTableV2 from '../CommonDataTableV2'
 
 export default function AdjustmentTabs() {
     const { t } = useI18n()
@@ -97,27 +98,34 @@ export default function AdjustmentTabs() {
 
     return (
         <div>
-            <CommonDataTable
+            <CommonDataTableV2
                 loading={table.loading}
-                movePage={getAdjustment}
+                callback={getAdjustment}
                 data={table.data}
                 links={table.links}
                 add={ roles?.includes(PERMISSIONS.INVENTORY.ADJUSTMENT_CREATE) 
                     ? () => setShowForm(true)
                     : null}
-                filter={
-                    <div className="row">
-                        <div className="col-6">
-                            <SearchInput
-                                submit={getAdjustment}
-                                name="keywords"
-                                handleChange={search.handleChange}
-                                value={search.formData?.keywords}
-                                placeholder={t('Search by name')}
-                            />
-                        </div>
-                    </div>
-                }
+                config={{
+                    default: [{
+                        key: "order_by",
+                        placeholder: t("Order by"),
+                        options: [
+                            { value: 'ASC', label: t('Oldest') },
+                            { value: 'DESC', label: t('Newest') },
+                        ],
+                        type: "select",
+                        label: t("Order by"),
+                        col: "col-6"
+                    },{
+                        key: "keywords",
+                        placeholder: t("Keywords"),
+                        type: "text",
+                        label: t("Search"),
+                        col: "col-6"
+                    }]
+                }}
+                search={search}
                 columns={[
                     { key: 'id', label: t('ID') },
                     { key: 'product_name', label: t('Product') },

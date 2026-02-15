@@ -20,6 +20,7 @@ import { RenderTableSearch } from '../components/RenderTableSearch'
 import { useI18n } from '../../i18n/useI18n'
 import { useSelector } from 'react-redux'
 import PERMISSIONS from '../common/permission'
+import CommonDataTableV2 from '../components/CommonDataTableV2'
 
 export default function Suppliers() {
     const { t } = useI18n()
@@ -216,73 +217,38 @@ export default function Suppliers() {
             />
 
             <div className="m-4">
-                <CommonDataTable
+                <CommonDataTableV2
                     columns={table.colums}
                     loading={table.loading}
                     data={table.data}
                     links={table.links}
-                    filter={
-                        <div className="row">
-                            <div className="col-2">
-                                <label>{t('Status')}</label>
-                                <Select
-                                    name="active"
-                                    handleChange={search.handleChange}
-                                    value={search.formData?.active ?? ''}
-                                    options={[
-                                        { value: 1, label: t('Active') },
-                                        { value: 0, label: t('Inactive') },
-                                    ]}
-                                />
-                            </div>
-
-                            <div className="col-2 ml-2">
-                                <label>{t('Order by')}</label>
-                                <Select
-                                    name="order_by"
-                                    value={search.formData?.order_by}
-                                    handleChange={search.handleChange}
-                                    options={[
-                                        { value: 'ASC', label: t('Oldest') },
-                                        { value: 'DESC', label: t('Newest') },
-                                    ]}
-                                />
-                            </div>
-
-                            {search.hookRender.map((item, index) => (
-                                <div className="col-2 ml-2" key={index}>
-                                    <RenderTableSearch
-                                        item={item}
-                                        search={search}
-                                    />
-                                </div>
-                            ))}
-
-                            <div className="col-2 ml-2">
-                                <label>{t('Keywords')}</label>
-                                <SearchInput
-                                    name="keywords"
-                                    submit={getSupliers}
-                                    value={search.formData?.keywords}
-                                    handleChange={search.handleChange}
-                                    placeholder={t('Search by name')}
-                                />
-                            </div>
-
-                            <div className="col-2 mx-2">
-                                <PrimaryButton
-                                    onClick={getSupliers}
-                                    label={t('Search')}
-                                />
-                            </div>
-                        </div>
-                    }
-                    add={ roles?.includes(PERMISSIONS.SUPPLIER.CREATE) ? () => {
+                    config={{
+                        default: [{
+                            key: "order_by",
+                            placeholder: t("Order by"),
+                            options: [
+                                { value: 'ASC', label: t('Oldest') },
+                                { value: 'DESC', label: t('Newest') },
+                            ],
+                            type: "select",
+                            label: t("Order by"),
+                            col: "col-6"
+                        }, {
+                            key: "keywords",
+                            placeholder: t("Keywords"),
+                            type: "text",
+                            label: t("Search"),
+                            col: "col-6"
+                        }]
+                    }}
+                    search={search}
+                    add={roles?.includes(PERMISSIONS.SUPPLIER.CREATE) ? () => {
                         setAddShow(true)
                         form.setIsEdit(false)
                     } : null}
-                    onEdit={ roles?.includes(PERMISSIONS.SUPPLIER.UPDATE) ? handleEdit : null}
-                    onDelete={ roles?.includes(PERMISSIONS.SUPPLIER.DELETE) ? handleDelete : null}
+                    onEdit={roles?.includes(PERMISSIONS.SUPPLIER.UPDATE) ? handleEdit : null}
+                    onDelete={roles?.includes(PERMISSIONS.SUPPLIER.DELETE) ? handleDelete : null}
+                    callback={getSupliers}
                 />
 
                 {addShow && (

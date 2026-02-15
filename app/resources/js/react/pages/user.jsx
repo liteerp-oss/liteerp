@@ -13,12 +13,14 @@ import { useI18n } from '../../i18n/useI18n'
 import { useSelector } from 'react-redux'
 import PERMISSIONS from '../common/permission'
 import ContentOnTable from '../components/ContentOnTable'
+import CommonDataTableV2 from '../components/CommonDataTableV2'
 
 export default function User() {
     const { t } = useI18n()
     const { openPopup } = usePopup()
     const table = useTable()
     const form = useForm()
+    const search = useForm();
     const [showForm, setShowForm] = useState(false)
     const roles = useSelector((state) => state.businessRole.role);
     const getUsers = useCallback(() => {
@@ -146,7 +148,7 @@ export default function User() {
                 key: 'bio',
                 label: t('Bio'),
                 render: (bio) => (
-                    <ContentOnTable value={bio}/>
+                    <ContentOnTable value={bio} />
                 ),
             },
             { key: 'phone', label: t('Phone') },
@@ -187,7 +189,28 @@ export default function User() {
                 />
 
                 <div className="container mt-3">
-                    <CommonDataTable
+                    <CommonDataTableV2
+                        config={{
+                            default: [{
+                                key: "order_by",
+                                placeholder: t("Order by"),
+                                options: [
+                                    { value: 'ASC', label: t('Oldest') },
+                                    { value: 'DESC', label: t('Newest') },
+                                ],
+                                type: "select",
+                                label: t("Order by"),
+                                col: "col-6"
+                            }, {
+                                key: "keywords",
+                                placeholder: t("Keywords"),
+                                type: "text",
+                                label: t("Search"),
+                                col: "col-6"
+                            }]
+                        }}
+                        callback={getUsers}
+                        search={search}
                         loading={table.loading}
                         add={roles?.includes(PERMISSIONS.USER.CREATE) ? () => setShowForm(true) : null}
                         columns={table.colums}

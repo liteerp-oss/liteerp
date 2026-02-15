@@ -16,6 +16,7 @@ import RenderFormFieldByList from '../RenderFormFieldByList'
 import { RenderTableSearch } from '../RenderTableSearch'
 import { useI18n } from '../../../i18n/useI18n'
 import PERMISSIONS from '../../common/permission'
+import CommonDataTableV2 from '../CommonDataTableV2'
 
 export default function Category() {
     const { t } = useI18n()
@@ -233,42 +234,35 @@ export default function Category() {
 
     return (
         <div className="mt-3">
-            <CommonDataTable
+            <CommonDataTableV2
                 loading={tableCategory.loading}
-                filter={
-                    <div className="d-flex">
-                        <div className="col-4">
-                            <label>{t('Keywords')}</label>
-                            <SearchInput
-                                name="keywords"
-                                value={search.formData?.keywords}
-                                submit={getCategorires}
-                                handleChange={search.handleChange}
-                                placeholder={t('Search by name')}
-                            />
-                        </div>
-
-                        {search.hookRender.map((item, index) => (
-                            <div className="col-3 ml-2" key={index}>
-                                <RenderTableSearch item={item} search={search} />
-                            </div>
-                        ))}
-
-                        <div className="col-2 ml-2">
-                            <PrimaryButton
-                                onClick={() => getCategorires()}
-                                label={t('Search')}
-                            />
-                        </div>
-                    </div>
-                }
+                config={{
+                    default: [{
+                        key: "order_by",
+                        placeholder: t("Order by"),
+                        options: [
+                            { value: 'ASC', label: t('Oldest') },
+                            { value: 'DESC', label: t('Newest') },
+                        ],
+                        type: "select",
+                        label: t("Order by"),
+                        col: "col-6"
+                    },{
+                        key: "keywords",
+                        placeholder: t("Keywords"),
+                        type: "text",
+                        label: t("Search"),
+                        col: "col-6"
+                    }]
+                }}
+                search={search}
+                callback={getCategorires}
                 add={
                     roles?.includes(PERMISSIONS.CATEGORY_PRODUCT.CREATE) ? () => {
                               setShowAdd(true)
                               form.setIsEdit(false)
                           } : null
                 }
-                movePage={getCategorires}
                 columns={tableCategory.colums}
                 data={tableCategory.data}
                 links={tableCategory.links}

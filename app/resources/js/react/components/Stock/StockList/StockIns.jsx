@@ -15,6 +15,7 @@ import PrimaryButton from '../../UI/Buttons/PrimaryButton'
 import { useI18n } from '../../../../i18n/useI18n'
 import { useSelector } from 'react-redux'
 import PERMISSIONS from '../../../common/permission'
+import CommonDataTableV2 from '../../CommonDataTableV2'
 
 export default function StockIns() {
     const { t } = useI18n()
@@ -131,7 +132,7 @@ export default function StockIns() {
 
     return (
         <div className="mt-3">
-            <CommonDataTable
+            <CommonDataTableV2
                 loading={table.loading}
                 columns={table.colums}
                 data={table.data}
@@ -141,83 +142,27 @@ export default function StockIns() {
                     navigate(`/stocks?stockin=${row.id}`)
                     } : null
                 }
-                filter={
-                    <div className="row">
-                        <div className="col-2">
-                            <label>{t('Status')}</label>
-                            <Select
-                                name="status"
-                                handleChange={search.handleChange}
-                                value={search.formData?.status}
-                                options={[
-                                    {
-                                        value: 'received',
-                                        label: t('Received'),
-                                    },
-                                    {
-                                        value: 'pending',
-                                        label: t('Pending'),
-                                    },
-                                    {
-                                        value: 'cancelled',
-                                        label: t('Cancelled'),
-                                    },
-                                ]}
-                            />
-                        </div>
-
-                        <div className="col-2 mx-2">
-                            <label>{t('Order by')}</label>
-                            <Select
-                                name="order_by"
-                                value={search.formData?.order_by}
-                                handleChange={search.handleChange}
-                                options={[
-                                    {
-                                        value: 'ASC',
-                                        label: t('Oldest'),
-                                    },
-                                    {
-                                        value: 'DESC',
-                                        label: t('Newest'),
-                                    },
-                                ]}
-                            />
-                        </div>
-
-                        {search.hookRender.map((item, index) => (
-                            <div
-                                className="col-2 ml-2"
-                                key={index}
-                            >
-                                <RenderTableSearch
-                                    item={item}
-                                    search={search}
-                                />
-                            </div>
-                        ))}
-
-                        <div className="col-2 ml-2">
-                            <label>{t('Search')}</label>
-                            <SearchInput
-                                submit={getListStockIn}
-                                placeholder={t(
-                                    'Search by invoice no'
-                                )}
-                                name="keywords"
-                                value={search.formData?.keywords}
-                                handleChange={search.handleChange}
-                            />
-                        </div>
-
-                        <div className="col-2 ml-2">
-                            <PrimaryButton
-                                label={t('Search')}
-                                onClick={() => getListStockIn()}
-                            />
-                        </div>
-                    </div>
-                }
+                config={{
+                    default: [{
+                        key: "order_by",
+                        placeholder: t("Order by"),
+                        options: [
+                            { value: 'ASC', label: t('Oldest') },
+                            { value: 'DESC', label: t('Newest') },
+                        ],
+                        type: "select",
+                        label: t("Order by"),
+                        col: "col-6"
+                    },{
+                        key: "keywords",
+                        placeholder: t("Keywords"),
+                        type: "text",
+                        label: t("Search"),
+                        col: "col-6"
+                    }]
+                }}
+                search={search}
+                callback={getListStockIn}
             />
         </div>
     )

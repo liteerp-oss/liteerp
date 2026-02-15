@@ -7,10 +7,15 @@ export default function Select2({
     onChangeText= (text) => {},
     value= '',
     options = [],
-    onBlur = () => {}
+    onBlur = () => {},
+    required = false,
+    label = null
 }){
     const [showFilter,setShowFilter] = useState(false);
-    return <div className='select2'>
+    return <div className='select2'>{label ? <label>
+          {label}
+          {required ? <span className='text-danger'>*</span> : null}
+        </label> : null}
         <input
         value={value}
         onChange={(event) => {

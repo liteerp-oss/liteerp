@@ -5,46 +5,52 @@ import { InputForm } from "./InputForm";
 export default function SearchSelect({
   options = [],
   search = (text) => { },
-  changeValue = (key,value) => { },
+  changeValue = (key, value) => { },
   value = null,
   disabled = false,
   errorMessage = null,
   defaultKeywords = '',
   name = '',
-  placeholder = 'Search...'
+  placeholder = 'Search...',
+  required = false,
+  label = null
 }) {
   const historyKeyword = useRef('');
   const keywords = useRef('');
   const [wait, setWait] = useState(false);
-  const [localValue,setLocalValue] = useState(null);
-  const [loading,setLoading] = useState(false);
+  const [localValue, setLocalValue] = useState(null);
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     if (wait || historyKeyword.current === keywords.current) {
       return;
     }
     setLoading(true);
-    search(keywords.current,() => {
+    search(keywords.current, () => {
       setLoading(false);
     });
     historyKeyword.current = keywords.current;
-    
-  }, [keywords.current, search, wait,historyKeyword]);
+
+  }, [keywords.current, search, wait, historyKeyword]);
   useEffect(() => {
-    if(options.length === 0 && defaultKeywords !== '') {
-        keywords.current = defaultKeywords;
+    if (options.length === 0 && defaultKeywords !== '') {
+      keywords.current = defaultKeywords;
     }
     options.map((item) => {
-      if(value === item.value) {
+      if (value === item.value) {
         setLocalValue(item);
         keywords.current = item.label;
       }
     })
-  },[options,keywords.current])
+  }, [options, keywords.current])
   return (
     disabled ? <div>
       <InputForm disabled={true} value={localValue?.label} />
     </div> :
       <div className="erp-search-select">
+        {label ? <label>
+          {label}
+          {required ? <span className='text-danger'>*</span> : null}
+        </label> : null}
         <Select
           disabled={disabled}
           value={localValue}
@@ -65,7 +71,7 @@ export default function SearchSelect({
           }}
           onChange={(item) => {
             setLocalValue(item);
-            changeValue(name,item.value)
+            changeValue(name, item.value)
           }}
           options={options}
           placeholder={placeholder}
@@ -76,10 +82,10 @@ export default function SearchSelect({
             return <p key={index}>{mess}</p>
           })}
         </div> : null}
-        {loading ?<div className="spinner-border text-primary" role="status">
+        {loading ? <div className="spinner-border text-primary" role="status">
           <span className="visually-hidden">Loading...</span>
-        </div>: null }
-        
+        </div> : null}
+
       </div>
   );
 }

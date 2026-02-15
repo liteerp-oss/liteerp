@@ -15,6 +15,7 @@ import PrimaryButton from '../../UI/Buttons/PrimaryButton'
 import { useI18n } from '../../../../i18n/useI18n'
 import { useSelector } from 'react-redux'
 import PERMISSIONS from '../../../common/permission'
+import CommonDataTableV2 from '../../CommonDataTableV2'
 
 export default function StockOuts() {
     const { t } = useI18n()
@@ -122,7 +123,7 @@ export default function StockOuts() {
 
     return (
         <div className="mt-3">
-            <CommonDataTable
+            <CommonDataTableV2
                 loading={table.loading}
                 columns={table.colums}
                 data={table.data}
@@ -133,83 +134,27 @@ export default function StockOuts() {
                 } : null
 
                 }
-                filter={
-                    <div className="row">
-                        <div className="col-2">
-                            <label>{t('Status')}</label>
-                            <Select
-                                name="status"
-                                handleChange={search.handleChange}
-                                value={search.formData?.status}
-                                options={[
-                                    {
-                                        value: 'pending',
-                                        label: t('Pending'),
-                                    },
-                                    {
-                                        value: 'shipped',
-                                        label: t('Shipped'),
-                                    },
-                                    {
-                                        value: 'completed',
-                                        label: t('Completed'),
-                                    },
-                                ]}
-                            />
-                        </div>
-
-                        <div className="col-2 ml-2">
-                            <label>{t('Order by')}</label>
-                            <Select
-                                name="order_by"
-                                value={search.formData?.order_by}
-                                handleChange={search.handleChange}
-                                options={[
-                                    {
-                                        value: 'ASC',
-                                        label: t('Oldest'),
-                                    },
-                                    {
-                                        value: 'DESC',
-                                        label: t('Newest'),
-                                    },
-                                ]}
-                            />
-                        </div>
-
-                        {search.hookRender.map((item, index) => (
-                            <div
-                                className="col-2 ml-2"
-                                key={index}
-                            >
-                                <RenderTableSearch
-                                    item={item}
-                                    search={search}
-                                />
-                            </div>
-                        ))}
-
-                        <div className="col-2 ml-2">
-                            <label>{t('Search')}</label>
-                            <SearchInput
-                                submit={getListStockOut}
-                                name="keywords"
-                                value={search.formData?.keywords}
-                                handleChange={search.handleChange}
-                                placeholder={t(
-                                    'Search by invoice'
-                                )}
-                            />
-                        </div>
-
-                        <div className="col-2 ml-2">
-                            <PrimaryButton
-                                label={t('Search')}
-                                onClick={() => getListStockOut()}
-                            />
-                        </div>
-                    </div>
-                }
+                config={{
+                    default: [{
+                        key: "order_by",
+                        placeholder: t("Order by"),
+                        options: [
+                            { value: 'ASC', label: t('Oldest') },
+                            { value: 'DESC', label: t('Newest') },
+                        ],
+                        type: "select",
+                        label: t("Order by"),
+                        col: "col-6"
+                    },{
+                        key: "keywords",
+                        placeholder: t("Keywords"),
+                        type: "text",
+                        label: t("Search"),
+                        col: "col-6"
+                    }]
+                }}
+                search={search}
+                callback={getListStockOut}
             />
         </div>
     )

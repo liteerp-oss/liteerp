@@ -7,7 +7,8 @@ export default function RenderNav({
   const {t} = useI18n();
     return list.map((item,index) => {
         return <li className="nav-item mb-2" key={index} style={{
-          height: 40
+          height: 40,
+          maxWidth: '100%'
         }}>
           {item.to ? <NavLink to={item.to} className="erp-link" style={{
             display: 'inline-block',

@@ -1,11 +1,15 @@
 import React from "react";
 import SecondaryButton from "../components/UI/Buttons/SecondaryButton";
 import SuccessButton from "../components/UI/Buttons/SuccessButton";
+import { useI18n } from "@/i18n/useI18n";
 
 export function PopupLayout({ onClose = null, 
   title = '', onConfirm = null, 
-  confirmText = 'Add new', children,
-  loading = false }) {
+  confirmText = 'Add new', 
+  children,
+  loading = false,
+  cancelText="Cancel" }) {
+    const { t } = useI18n();
   return (
     <div
       className={`modal fade show d-block`}
@@ -31,10 +35,8 @@ export function PopupLayout({ onClose = null,
           </div>
 
           <div className="modal-footer border-secondary">
-            <SecondaryButton loading={loading} label="Cancel" onClick={onClose} />
+            <SecondaryButton loading={loading} label={t(cancelText)} onClick={onClose} />
             {onConfirm ?<SuccessButton loading={loading} onClick={onConfirm} label={confirmText} /> : null }
-            
-
           </div>
         </div>
       </div>

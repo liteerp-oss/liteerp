@@ -6,9 +6,15 @@ export default function TextArea({
     handleChange= (text) => {},
     value= '',
     name = 'textarea',
-    disabled = false
+    disabled = false,
+    required = false,
+    label = null
 }){
     return <div>
+        {label ? <label>
+          {label}
+          {required ? <span className='text-danger'>*</span> : null}
+        </label> : null}
         <textarea 
         disabled={disabled}
         value={value}

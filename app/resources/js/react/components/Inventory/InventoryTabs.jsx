@@ -5,6 +5,7 @@ import CommonDataTable from '../CommonDataTable'
 import SearchInput from '../UI/Input/SearchInput'
 import { useForm } from '../../libraries/handleInput'
 import { useI18n } from '../../../i18n/useI18n'
+import CommonDataTableV2 from '../CommonDataTableV2'
 
 export default function InventoryTabs() {
     const { t } = useI18n()
@@ -31,24 +32,31 @@ export default function InventoryTabs() {
 
     return (
         <div>
-            <CommonDataTable
+            <CommonDataTableV2
                 loading={table.loading}
-                movePage={getInventory}
+                callback={getInventory}
                 data={table.data}
                 links={table.links}
-                filter={
-                    <div className="row">
-                        <div className="col-6">
-                            <SearchInput
-                                submit={getInventory}
-                                value={search.formData?.keywords}
-                                name="keywords"
-                                handleChange={search.handleChange}
-                                placeholder={t('Search by name')}
-                            />
-                        </div>
-                    </div>
-                }
+                config={{
+                    default: [{
+                        key: "order_by",
+                        placeholder: t("Order by"),
+                        options: [
+                            { value: 'ASC', label: t('Oldest') },
+                            { value: 'DESC', label: t('Newest') },
+                        ],
+                        type: "select",
+                        label: t("Order by"),
+                        col: "col-6"
+                    },{
+                        key: "keywords",
+                        placeholder: t("Keywords"),
+                        type: "text",
+                        label: t("Search"),
+                        col: "col-6"
+                    }]
+                }}
+                search={search}
                 columns={[
                     { key: 'id', label: t('ID') },
                     { key: 'name', label: t('Name') },

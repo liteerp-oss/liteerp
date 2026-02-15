@@ -18,6 +18,7 @@ import { RenderTableSearch } from '../components/RenderTableSearch'
 import { useI18n } from '../../i18n/useI18n'
 import { useSelector } from 'react-redux'
 import PERMISSIONS from '../common/permission'
+import CommonDataTableV2 from '../components/CommonDataTableV2'
 
 export default function Shipping() {
     const { t } = useI18n()
@@ -209,58 +210,38 @@ export default function Shipping() {
                 />
 
                 <div className="container mt-4">
-                    <CommonDataTable
-                        add={ roles?.includes(PERMISSIONS.SHIPPING.CREATE) ? () => {
+                    <CommonDataTableV2
+                        add={roles?.includes(PERMISSIONS.SHIPPING.CREATE) ? () => {
                             setShowAdd(true)
                             form.setIsEdit(false)
                         } : null}
                         loading={table.loading}
-                        movePage={getShippings}
+                        callback={getShippings}
                         data={table.data}
                         links={table.links}
                         columns={table.colums}
-                        onEdit={ roles?.includes(PERMISSIONS.SHIPPING.UPDATE) ? handEdit : null}
-                        onDelete={ roles?.includes(PERMISSIONS.SHIPPING.DELETE) ? handleDelete : null}
-                        filter={
-                            <div className="row">
-                                {search.hookRender.map(
-                                    (item, index) => (
-                                        <div
-                                            className="col-2"
-                                            key={index}
-                                        >
-                                            <RenderTableSearch
-                                                item={item}
-                                                search={search}
-                                            />
-                                        </div>
-                                    )
-                                )}
-
-                                <div className="col-2">
-                                    <label>{t('Keywords')}</label>
-                                    <SearchInput
-                                        submit={getShippings}
-                                        name="keywords"
-                                        handleChange={
-                                            search.handleChange
-                                        }
-                                        value={
-                                            search.formData?.keywords
-                                        }
-                                    />
-                                </div>
-
-                                <div className="col-2">
-                                    <PrimaryButton
-                                        label={t('Search')}
-                                        onClick={() =>
-                                            getShippings(0)
-                                        }
-                                    />
-                                </div>
-                            </div>
-                        }
+                        onEdit={roles?.includes(PERMISSIONS.SHIPPING.UPDATE) ? handEdit : null}
+                        onDelete={roles?.includes(PERMISSIONS.SHIPPING.DELETE) ? handleDelete : null}
+                        config={{
+                            default: [{
+                                key: "order_by",
+                                placeholder: t("Order by"),
+                                options: [
+                                    { value: 'ASC', label: t('Oldest') },
+                                    { value: 'DESC', label: t('Newest') },
+                                ],
+                                type: "select",
+                                label: t("Order by"),
+                                col: "col-6"
+                            }, {
+                                key: "keywords",
+                                placeholder: t("Keywords"),
+                                type: "text",
+                                label: t("Search"),
+                                col: "col-6"
+                            }]
+                        }}
+                        search={search}
                     />
                 </div>
 

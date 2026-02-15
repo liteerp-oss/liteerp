@@ -5,12 +5,14 @@ export default function SecondaryButton({
   onClick = null, 
   width = 150,
   disabled = false,
-loading = false }) {
+loading = false,
+  height= 35 }) {
   return (
     <button 
     disabled={disabled || loading}
     className="erp-btn erp-btn-secondary" onClick={onClick} style={{
-      width: width
+      width: width,
+      height: height
     }}>
       {label}
     </button>

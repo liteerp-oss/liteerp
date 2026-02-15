@@ -22,6 +22,7 @@ import PrimaryButton from '../UI/Buttons/PrimaryButton';
 import { useI18n } from '../../../i18n/useI18n';
 import { useSelector } from 'react-redux';
 import PERMISSIONS from '../../common/permission';
+import CommonDataTableV2 from '../CommonDataTableV2';
 
 export default function CustomInvoiceIns() {
     const { t } = useI18n();
@@ -231,62 +232,36 @@ export default function CustomInvoiceIns() {
     }, [])
 
     return <div>
-        <CommonDataTable
+        <CommonDataTableV2
             add={ roles?.includes(PERMISSIONS.CUSTOM_INVOICE_IN.CREATE) ? () => {
                 setShowForm(true)
             } : null}
-            filter={<div className="row">
-                <div className="col-2">
-                    <label>{t("Payment status")}</label>
-                    <Select
-                        name="payment_status"
-                        value={search.formData?.payment_status}
-                        handleChange={search.handleChange}
-                        options={[
-                            { value: '', label: t('All') },
-                            { value: 'partial_payment', label: t('Partial') },
-                            { value: 'paid', label: t('Paid') },
-                            { value: 'pending', label: t('Pending') }
-                        ]}
-                    />
-                </div>
-                <div className='col-2'>
-                    <label>{t("Order by")}</label>
-                    <Select
-                        name='order_by'
-                        value={search.formData?.order_by}
-                        handleChange={search.handleChange}
-                        errorMessage={search.formErrors?.order_by}
-                        options={[
+            config={{
+                    default: [{
+                        key: "order_by",
+                        placeholder: t("Order by"),
+                        options: [
                             { value: 'ASC', label: t('Oldest') },
-                            { value: 'DESC', label: t('Newest') }
-                        ]} />
-                </div>
-                {search.hookRender.map((item, index) => {
-                    return <div className='col-2' key={index}>
-                        <RenderTableSearch item={item} search={search} />
-                    </div>
-                })}
-                <div className="col-2">
-                    <label>{t("Search")}</label>
-                    <SearchInput
-                        placeholder={t("Search by invoice no")}
-                        submit={getInvoices}
-                        value={search.formData?.keywords}
-                        name="keywords"
-                        handleChange={search.handleChange}
-                    />
-                </div>
-                <div className="col-2">
-                    <PrimaryButton label={t('Search')} onClick={() => getInvoices()} />
-                </div>
-            </div>}
+                            { value: 'DESC', label: t('Newest') },
+                        ],
+                        type: "select",
+                        label: t("Order by"),
+                        col: "col-6"
+                    },{
+                        key: "keywords",
+                        placeholder: t("Keywords"),
+                        type: "text",
+                        label: t("Search"),
+                        col: "col-6"
+                    }]
+                }}
+                search={search}
             loading={table.loading}
             columns={table.colums}
             data={table.data}
             links={table.links}
             onEdit={ roles?.includes(PERMISSIONS.CUSTOM_INVOICE_IN.UPDATE) ? onEdit : null}
-            movePage={getInvoices}
+            callback={getInvoices}
             onDelete={ roles?.includes(PERMISSIONS.CUSTOM_INVOICE_IN.DELETE) ? onDelete : null}
         />
         {showForm ? <PopupLayout

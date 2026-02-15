@@ -9,9 +9,15 @@ export function InputForm({
     name = 'input',
     width = null,
     disabled = false,
-    ref = null
+    ref = null,
+    required = false,
+    label = null
 }) {
     return <div>
+        {label ? <label>
+            {label} 
+            {required ? <span className='text-danger'>*</span> : null}
+        </label> : null}
         {type === 'checkbox' ? <input
             disabled={disabled}
             checked={Boolean(Number(value)) ? true : false}

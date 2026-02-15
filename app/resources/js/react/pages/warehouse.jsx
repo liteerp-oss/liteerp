@@ -13,6 +13,7 @@ import PageHead from '../components/PageHead'
 import { useI18n } from '../../i18n/useI18n'
 import { useSelector } from 'react-redux'
 import PERMISSIONS from '../common/permission'
+import CommonDataTableV2 from '../components/CommonDataTableV2'
 
 export default function Warehouse() {
     const { t } = useI18n()
@@ -161,13 +162,13 @@ export default function Warehouse() {
             />
 
             <div className="m-4">
-                <CommonDataTable
+                <CommonDataTableV2
                     add={roles?.includes(PERMISSIONS.WAREHOUSE.CREATE) ? () => {
                         setShowPopup(true)
                         form.setIsEdit(false)
                     } : null}
                     loading={table.loading}
-                    movePage={getList}
+                    callback={getList}
                     columns={table.colums}
                     data={table.data}
                     links={table.links}
@@ -177,32 +178,26 @@ export default function Warehouse() {
                         form.setIsEdit(true)
                     } : null}
                     onDelete={roles?.includes(PERMISSIONS.WAREHOUSE.DELETE) ? handleDelete : null}
-                    filter={
-                        <div className="d-flex">
-                            <div className="col-6">
-                                <label>{t('Status')}</label>
-                                <Select
-                                    name="active"
-                                    value={search.formData?.active ?? ''}
-                                    handleChange={search.handleChange}
-                                    options={[
-                                        { value: 0, label: t('Inactive') },
-                                        { value: 1, label: t('Active') },
-                                    ]}
-                                />
-                            </div>
-                            <div className="col-6 mx-2">
-                                <label>{t('Search')}</label>
-                                <SearchInput
-                                    name="keywords"
-                                    submit={getList}
-                                    placeholder={t('Search by name')}
-                                    value={search.formData?.keywords}
-                                    handleChange={search.handleChange}
-                                />
-                            </div>
-                        </div>
-                    }
+                    config={{
+                    default: [{
+                        key: "order_by",
+                        placeholder: t("Order by"),
+                        options: [
+                            { value: 'ASC', label: t('Oldest') },
+                            { value: 'DESC', label: t('Newest') },
+                        ],
+                        type: "select",
+                        label: t("Order by"),
+                        col: "col-6"
+                    },{
+                        key: "keywords",
+                        placeholder: t("Keywords"),
+                        type: "text",
+                        label: t("Search"),
+                        col: "col-6"
+                    }]
+                }}
+                search={search}
                 />
             </div>
 

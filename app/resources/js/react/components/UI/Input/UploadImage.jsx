@@ -7,9 +7,11 @@ export default function UploadImage({
     value = null,
     name = 'name',
     width = 150,
-    height = 150
+    height = 150,
+    required = false,
+    label = null
 }) {
-    const [loading,setLoading] = useState(false)
+    const [loading, setLoading] = useState(false)
     const [message, setMessage] = useState(null)
     const fileRef = useRef();
     const imageRef = useRef();
@@ -40,6 +42,10 @@ export default function UploadImage({
             width: width,
             height: height
         }}>
+            {label ? <label>
+          {label}
+          {required ? <span className='text-danger'>*</span> : null}
+        </label> : null}
             <LoadImage
                 ref={imageRef}
                 onClick={() => {
@@ -48,10 +54,10 @@ export default function UploadImage({
             <input onChange={handleUpload} ref={fileRef} id={name} name={name} type='file' style={{
                 display: 'none'
             }} />
-            {loading ?<div className="uploadimage-component-loading spinner-border text-primary" role="status">
+            {loading ? <div className="uploadimage-component-loading spinner-border text-primary" role="status">
                 <span className="visually-hidden">Loading...</span>
-            </div> : null }
-            
+            </div> : null}
+
         </div>
 
         {message ? <div>

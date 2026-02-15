@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import ProductService from '../../services/ProductService'
-import CommonDataTable from '../CommonDataTable'
 import { Select } from '../UI/Input/Select'
 import { InputForm } from '../UI/Input/InputForm'
 import { useForm } from '../../libraries/handleInput'
@@ -17,8 +16,9 @@ import { useI18n } from '../../../i18n/useI18n'
 import PERMISSIONS from '../../common/permission'
 import RenderFieldTableByList from '../RenderFieldTableByList'
 import RenderFormFieldByList from '../RenderFormFieldByList'
-import {RenderTableSearch} from '../RenderTableSearch'
+import { RenderTableSearch } from '../RenderTableSearch'
 import PrimaryButton from '../UI/Buttons/PrimaryButton'
+import CommonDataTableV2 from '../CommonDataTableV2'
 export default function ListProducts() {
     const { t } = useI18n()
     const roles = useSelector((state) => state.businessRole.role);
@@ -146,24 +146,24 @@ export default function ListProducts() {
         })
     }
     const view = useCallback(() => {
-            table.setLoading(true)
-            ProductService.view()
-                .then((resp) => {
-                    form.setHookRender(resp.message.form)
-                    search.setHookRender(resp.message.form)
-                    table.addColums(resp.message.index,(item,data) => {
-                        return <RenderFieldTableByList item={item} data={data}/>
+        table.setLoading(true)
+        ProductService.view()
+            .then((resp) => {
+                form.setHookRender(resp.message.form)
+                search.setHookRender(resp.message.form)
+                table.addColums(resp.message.index, (item, data) => {
+                    return <RenderFieldTableByList item={item} data={data} />
+                })
+            })
+            .catch((error) => {
+                if (error.response?.data?.message) {
+                    openPopup({
+                        type: 'error',
+                        message: error.response.data.message,
                     })
-                })
-                .catch((error) => {
-                    if (error.response?.data?.message) {
-                        openPopup({
-                            type: 'error',
-                            message: error.response.data.message,
-                        })
-                    }
-                })
-        },[])
+                }
+            })
+    }, [])
     useEffect(() => {
         table.setColums([
             { label: t('ID'), key: 'id' },
@@ -183,48 +183,35 @@ export default function ListProducts() {
 
     return (
         <div className="mt-3">
-            <CommonDataTable
+            <CommonDataTableV2
                 add={
                     roles?.includes(PERMISSIONS.PRODUCT.CREATE) ? () => {
                         setShowForm(true)
                         form.setIsEdit(false)
                     } : null
                 }
-                filter={
-                    <div className="row">
-                        <div className="col-2">
-                            <label>{t('Order by')}</label>
-                            <Select
-                                name="order_by"
-                                value={search.formData?.order_by}
-                                handleChange={search.handleChange}
-                                options={[
-                                    { value: 'ASC', label: t('Oldest') },
-                                    { value: 'DESC', label: t('Newest') },
-                                ]}
-                            />
-                        </div>
-                        {search.hookRender.map((item,index) => {
-                            return <div className="col-2" key={index}>
-                                <RenderTableSearch item={item} search={search}/>
-                            </div>
-                        })}
-                        <div className="col-2">
-                            <label>{t('Search')}</label>
-                            <SearchInput
-                                submit={getProducts}
-                                name="keywords"
-                                handleChange={search.handleChange}
-                                value={search.formData?.keywords}
-                            />
-                        </div>
-                        <div className="col-2">
-                            <PrimaryButton label="Search" onClick={() => getProducts()}/>
-                        </div>
-                    </div>
-                }
+                config={{
+                    default: [{
+                        key: "order_by",
+                        placeholder: t("Order by"),
+                        options: [
+                            { value: 'ASC', label: t('Oldest') },
+                            { value: 'DESC', label: t('Newest') },
+                        ],
+                        type: "select",
+                        label: t("Order by"),
+                        col: "col-6"
+                    },{
+                        key: "keywords",
+                        placeholder: t("Keywords"),
+                        type: "text",
+                        label: t("Search"),
+                        col: "col-6"
+                    }]
+                }}
+                search={search}
+                callback={getProducts}
                 loading={table.loading}
-                movePage={getProducts}
                 columns={table.colums}
                 data={table.data}
                 links={table.links}
@@ -313,9 +300,9 @@ export default function ListProducts() {
                             placeholder={t('Description')}
                         />
                     </div>
-                    {form.hookRender.map((item,index) => {
+                    {form.hookRender.map((item, index) => {
                         return <div className="form-group mt-3" key={index}>
-                            <RenderFormFieldByList item={item} form={form}/>
+                            <RenderFormFieldByList item={item} form={form} />
                         </div>
                     })}
                 </PopupLayout>
