@@ -341,5 +341,15 @@ export default {
     "This year": "今年",
     "Revenue": "収益",
     "Expense": "費用",
-    "Email language":"メールの言語"
+    "Email language": "メールの言語",
+    "Product link": "商品リンク",
+    "Buy quantity": "購入数量",
+    "Gift quantity": "贈答数量",
+    "Compensation quantity": "補償数量",
+    "Conversion quantity": "換算数量",
+    "shipping_fee": "送料",
+    "quantity": "数量",
+    "subtotal": "小計",
+    "total_tax": "税額合計",
+    "total": "合計"
 };

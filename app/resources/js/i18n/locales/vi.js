@@ -341,5 +341,15 @@ export default {
     "This year":"Năm nay",
     "Revenue":"Doanh thu",
     "Expense":"Chi phí",
-    "Email language":"Ngôn ngữ email"
+    "Email language":"Ngôn ngữ email",
+     "Product link": "Liên kết sản phẩm",
+    "Buy quantity": "Số lượng mua",
+    "Gift quantity": "Số lượng tặng",
+    "Compensation quantity": "Số lượng bồi thường",
+    "Conversion quantity": "Số lượng chuyển đổi",
+    "shipping_fee": "Phí vận chuyển",
+    "quantity": "Số lượng",
+    "subtotal": "Tạm tính",
+    "total_tax": "Tổng thuế",
+    "total": "Tổng cộng"
 };

@@ -44,6 +44,10 @@ export default function SearchSelect({
   }, [options, keywords.current])
   return (
     disabled ? <div>
+      {label ? <label>
+          {label}
+          {required ? <span className='text-danger'>*</span> : null}
+        </label> : null}
       <InputForm disabled={true} value={localValue?.label} />
     </div> :
       <div className="erp-search-select">
