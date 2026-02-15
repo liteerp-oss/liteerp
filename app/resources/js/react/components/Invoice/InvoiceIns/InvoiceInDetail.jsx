@@ -332,6 +332,7 @@ const confirmApproved = useCallback(() => {
                                                 width={'auto'}
                                             />
                                             <PrimaryButton
+                                                width={'auto'}
                                                 loading={form.loading}
                                                 disabled={form.formData?.approved}
                                                 onClick={confirmApproved}

@@ -277,7 +277,7 @@ export default function EditOrder() {
                                         ? <Cancelled /> : <BeforeApprove />}
                             </div>
                         </div>
-                        <div className="row">
+                        <div className="row mt-3">
                             <div className="col-2">
                                 <SecondaryButton loading={form.loading || shippingForm.loading} onClick={prevStep} label='Back' />
                             </div>
@@ -285,7 +285,9 @@ export default function EditOrder() {
                                 <div className='row'>
                                     <div className='col-6'>
                                         {detail?.status !== 'cancelled' ?
-                                            <DangerButton loading={form.loading || shippingForm.loading} onClick={confirmCancelled} label='Take Cancelled' />
+                                            <DangerButton 
+                                            width={150}
+                                            loading={form.loading || shippingForm.loading} onClick={confirmCancelled} label='Take Cancelled' />
                                             : null}
                                     </div>
                                     <div className='col-6'>

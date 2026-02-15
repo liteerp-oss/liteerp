@@ -225,6 +225,7 @@ export default function EditPurchase() {
                             <div className="col-6">
                                 {detail?.status !== 'cancelled' && (
                                     <DangerButton
+                                        width={150}
                                         loading={form.loading}
                                         onClick={confirmUpdateToCancelled}
                                         label={t('Cancel purchase')}

@@ -228,8 +228,9 @@ export default function Setting() {
                             />
                         </div>
 
-                        <div style={{ width: 200 }}>
+                        <div className='mt-3'>
                             <PrimaryButton
+                                width={150}
                                 loading={form.loading || !roles?.includes(PERMISSIONS.BUSINESS.UPDATE)}
                                 onClick={update}
                                 label={t('Save changes')}
