@@ -181,7 +181,7 @@ export default {
     "Supplier has been deleted": "Supplier has been deleted",
     "Add new supplier": "Add new supplier",
     "Update supplier": "Update supplier",
-    "Unit Name": "Unit Name",
+    "Unit name": "Unit Name",
     "Phone Number": "Phone Number",
     "Tax Code": "Tax Code",
     "Bank Account": "Bank Account",
@@ -366,5 +366,9 @@ export default {
             to delete and create one new`,
     "order_cancel_desc":"This order has been cancelled, so you can not change anything",
     "order_before_approve_desc":`Please check order before approved, 
-            you can print order to send to customer after get completed`
+            you can print order to send to customer after get completed`,
+    "Add Price":"Add Price",
+    "Update Price":"Update Price",
+    "Cancel":"Cancel",
+    "supplier_desc":"List of suppliers for materials, accessories, and goods."
 };
