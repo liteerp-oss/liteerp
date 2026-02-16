@@ -34,89 +34,95 @@ export default function CustomerForm({
     return (
         <div>
             <div className="form-group">
-                <label>{t('Name')}</label>
                 <InputForm
                     name="name"
                     handleChange={form.handleChange}
                     value={form.formData?.name}
                     errorMessage={form.formErrors?.name}
                     placeholder={t('Customer name')}
+                    required={true}
+                    label={t('Name')}
                 />
             </div>
 
             <div className="row mt-2">
                 <div className="form-group col-6">
-                    <label>{t('Contact name')}</label>
                     <InputForm
                         name="contact_name"
                         handleChange={form.handleChange}
                         value={form.formData?.contact_name}
                         errorMessage={form.formErrors?.contact_name}
                         placeholder={t('Contact name')}
+                        required={false}
+                        label={t('Contact name')}
                     />
                 </div>
 
                 <div className="form-group col-6">
-                    <label>{t('Email')}</label>
                     <InputForm
                         name="email"
                         handleChange={form.handleChange}
                         value={form.formData?.email}
                         errorMessage={form.formErrors?.email}
                         placeholder={t('Email')}
+                        required={false}
+                        label={t('Email')}
                     />
                 </div>
             </div>
 
             <div className="row mt-2">
                 <div className="form-group col-6">
-                    <label>{t('Phone')}</label>
                     <InputForm
                         name="phone"
                         handleChange={form.handleChange}
                         value={form.formData?.phone}
                         errorMessage={form.formErrors?.phone}
-                        placeholder={t('Phone number')}
+                        placeholder={t('phone_placeholder')}
+                        required={true}
+                        label={t('Phone')}
                     />
                 </div>
 
                 <div className="form-group col-6">
-                    <label>{t('Tax code')}</label>
                     <InputForm
                         name="tax_code"
                         handleChange={form.handleChange}
                         value={form.formData?.tax_code}
                         errorMessage={form.formErrors?.tax_code}
                         placeholder={t('Tax code')}
+                        required={false}
+                        label={t('Tax code')}
                     />
                 </div>
             </div>
 
             <div className="form-group mt-2">
-                <label>{t('Bank name')}</label>
                 <InputForm
                     name="bank_name"
                     handleChange={form.handleChange}
                     value={form.formData?.bank_name}
                     errorMessage={form.formErrors?.bank_name}
                     placeholder={t('Bank name')}
+                    required={false}
+                    label={t('Bank name')}
                 />
             </div>
 
             <div className="form-group mt-2">
-                <label>{t('Bank account')}</label>
                 <InputForm
                     name="bank_account"
                     handleChange={form.handleChange}
                     value={form.formData?.bank_account}
                     errorMessage={form.formErrors?.bank_account}
                     placeholder={t('Bank account')}
+                    required={false}
+                    label={t('Bank account')}
                 />
             </div>
 
             <div className="row mt-2">
                 <div className="form-group col-6">
-                    <label>{t('Type')}</label>
                     <Select
                         name="type"
                         handleChange={form.handleChange}
@@ -126,11 +132,12 @@ export default function CustomerForm({
                             { value: 'individual', label: t('Individual') },
                             { value: 'company', label: t('Company') },
                         ]}
+                        required={true}
+                        label={t('Type')}
                     />
                 </div>
 
                 <div className="form-group col-6">
-                    <label>{t('Group')}</label>
                     <SearchSelect
                         name="group"
                         value={form.formData?.group}
@@ -142,23 +149,25 @@ export default function CustomerForm({
                         }))}
                         changeValue={form.handleChangeByKey}
                         defaultKeywords={form.formData?.group_name}
+                        required={true}
+                        label={t('Group')}
                     />
                 </div>
             </div>
 
             <div className="form-group mt-2">
-                <label>{t('Address')}</label>
                 <TextArea
                     name="address"
                     handleChange={form.handleChange}
                     value={form.formData?.address}
                     errorMessage={form.formErrors?.address}
                     placeholder={t('Address')}
+                    required={false}
+                    label={t('Address')}
                 />
             </div>
 
             <div className="form-group mt-2">
-                <label>{t('Active')}</label>
                 <InputForm
                     name="active"
                     width={20}
@@ -166,10 +175,12 @@ export default function CustomerForm({
                     handleChange={form.handleChange}
                     value={form.formData?.active}
                     errorMessage={form.formErrors?.active}
+                    required={false}
+                    label={t('Active')}
                 />
                 <span className="d-block mt-1">
                     {t(
-                        'This means the customer can place orders'
+                        'customer_active'
                     )}
                 </span>
             </div>

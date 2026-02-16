@@ -174,7 +174,7 @@ export default function ListGroup() {
             {showAdd && (
                 <PopupLayout
                     loading={form.loading}
-                    confirmText={t('Save')}
+                    confirmText={t('Save changes')}
                     onConfirm={form.isEdit ? update : submit}
                     onClose={() => {
                         setShowAdd(false)
@@ -187,13 +187,14 @@ export default function ListGroup() {
                     }
                 >
                     <div className="form-group">
-                        <label>{t('Name')}</label>
                         <InputForm
                             name="name"
                             handleChange={form.handleChange}
                             value={form.formData?.name}
                             errorMessage={form.formErrors?.name}
                             placeholder={t('Group name')}
+                            required={true}
+                            label={t('Name')}
                         />
                     </div>
                 </PopupLayout>

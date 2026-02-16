@@ -1,17 +1,12 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import CommonDataTable from '../CommonDataTable'
 import useTable from '../../libraries/handleTable'
 import { useForm } from '../../libraries/handleInput'
 import { usePopup } from '../popups/PopupContext'
-import { Select } from '../UI/Input/Select'
-import SearchInput from '../UI/Input/SearchInput'
 import { PopupLayout } from '../../layouts/PopupLayout'
 import CustomerService from '../../services/CustomerService'
 import CustomerForm from './ListCustomer/CustomerForm'
 import StatusBadge from '../StatusBadge'
 import RenderFormTableByList from '../RenderFieldTableByList'
-import ButtonPrimary from '../../components/UI/Buttons/PrimaryButton'
-import { RenderTableSearch } from '../RenderTableSearch'
 import { useI18n } from '../../../i18n/useI18n'
 import { useSelector } from 'react-redux'
 import PERMISSIONS from '../../common/permission'
@@ -154,16 +149,7 @@ export default function ListCustomer() {
                 label: t('Type'),
                 key: 'type',
                 render: (value) => (
-                    <span
-                        className={
-                            'badge text-uppercase ' +
-                            (value === 'company'
-                                ? 'bg-primary'
-                                : 'bg-secondary')
-                        }
-                    >
-                        {t(value === 'company' ? 'Company' : 'Individual')}
-                    </span>
+                    <StatusBadge status={value}/>
                 ),
             },
             {
@@ -219,7 +205,7 @@ export default function ListCustomer() {
             {showAdd && (
                 <PopupLayout
                     loading={form.loading}
-                    confirmText={t('Save')}
+                    confirmText={t('Save changes')}
                     onConfirm={form.isEdit ? update : submit}
                     onClose={() => {
                         setShowAdd(false)

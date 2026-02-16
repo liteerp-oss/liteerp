@@ -204,7 +204,7 @@ export default function Warehouse() {
             {showPopup && (
                 <PopupLayout
                     loading={form.loading}
-                    confirmText={t('Save')}
+                    confirmText={t('Save changes')}
                     title={
                         !form.isEdit
                             ? t('New warehouse')
@@ -217,44 +217,47 @@ export default function Warehouse() {
                     onConfirm={!form.isEdit ? submit : edit}
                 >
                     <div className="form-group">
-                        <label>{t('Name')}</label>
                         <InputForm
                             name="name"
                             value={form.formData?.name}
                             handleChange={form.handleChange}
                             errorMessage={form.formErrors?.name}
                             placeholder={t('Warehouse name')}
+                            required={true}
+                            label={t('Name')}
                         />
                     </div>
 
                     <div className="form-group mt-3">
-                        <label>{t('Address')}</label>
                         <InputForm
                             name="address"
                             value={form.formData?.address}
                             handleChange={form.handleChange}
                             errorMessage={form.formErrors?.address}
                             placeholder={t('Warehouse address')}
+                            required={true}
+                            label={t('Address')}
                         />
                     </div>
 
                     <div className="form-group mt-3">
-                        <label>{t('Active')}</label>
                         <div className="d-flex">
                             <InputForm
-                                width={10}
+                                width={20}
                                 type="checkbox"
                                 name="active"
                                 value={form.formData?.active}
                                 handleChange={form.handleChange}
                                 errorMessage={form.formErrors?.active}
+                                required={false}
+                                label={t('Active')}
                             />
-                            <span className="mx-2">
-                                {t(
-                                    'If inactive, products cannot be moved to this warehouse'
-                                )}
-                            </span>
                         </div>
+                            <i className="">
+                                {t(
+                                    'warehouse_active'
+                                )}
+                            </i>
                     </div>
                 </PopupLayout>
             )}
