@@ -62,7 +62,7 @@ body,.label, h1, h2, h3, h4, h5, h6 {
     border: 1px solid var(--bs-form-invalid-border-color);
     border-radius: 7px;
 }
-.badge-pending,.badge-draft,.badge-pending, .badge-other {
+.badge-pending,.badge-draft,.badge-pending, .badge-other,.badge-individual {
     background-color: var(--bs-secondary)!important;
 }
 .badge-cancelled, .badge-cod, .badge-delete,.badge-inactive {
@@ -73,7 +73,7 @@ body,.label, h1, h2, h3, h4, h5, h6 {
     .badge-summary, .badge-active {
     background-color: var(--bs-success)!important;
 }
-.badge-requested,.badge-shipped, .badge-cash, .badge-update {
+.badge-requested,.badge-shipped, .badge-cash, .badge-update,.badge-company {
     background-color: var(--bs-warning)!important;
     color: var(--bs-gray-900)!important;
 }
