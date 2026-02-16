@@ -4,7 +4,6 @@ import { Select } from '../UI/Input/Select'
 import { InputForm } from '../UI/Input/InputForm'
 import { useForm } from '../../libraries/handleInput'
 import useTable from '../../libraries/handleTable'
-import SearchInput from '../UI/Input/SearchInput'
 import { PopupLayout } from '../../layouts/PopupLayout'
 import { usePopup } from '../popups/PopupContext'
 import SearchSelect from '../UI/Input/SearchSelect'
@@ -16,8 +15,6 @@ import { useI18n } from '../../../i18n/useI18n'
 import PERMISSIONS from '../../common/permission'
 import RenderFieldTableByList from '../RenderFieldTableByList'
 import RenderFormFieldByList from '../RenderFormFieldByList'
-import { RenderTableSearch } from '../RenderTableSearch'
-import PrimaryButton from '../UI/Buttons/PrimaryButton'
 import CommonDataTableV2 from '../CommonDataTableV2'
 export default function ListProducts() {
     const { t } = useI18n()
@@ -231,31 +228,33 @@ export default function ListProducts() {
                     }
                 >
                     <div className="form-group">
-                        <label>{t('Name')}</label>
                         <InputForm
                             name="name"
                             handleChange={form.handleChange}
                             value={form.formData?.name}
                             errorMessage={form.formErrors?.name}
+                            required={true}
+                            label={t('Name')}
                         />
                     </div>
 
                     <div className="form-group">
-                        <label>{t('SKU')}</label>
                         <InputForm
                             name="sku"
                             handleChange={form.handleChange}
                             value={form.formData?.sku}
                             errorMessage={form.formErrors?.sku}
+                            required={true}
+                            label={t('SKU')}
                         />
                     </div>
 
                     <div className="form-group">
-                        <label>{t('Unit')}</label>
                         <Select
                             name="unit"
                             handleChange={form.handleChange}
                             value={form.formData?.unit}
+                            errorMessage={form.formErrors?.unit}
                             options={[
                                 { value: 'pcs', label: 'pcs' },
                                 { value: 'set', label: 'set' },
@@ -265,11 +264,12 @@ export default function ListProducts() {
                                 { value: 'pack', label: 'pack' },
                                 { value: 'roll', label: 'roll' },
                             ]}
+                            required={true}
+                            label={t('Unit')}
                         />
                     </div>
 
                     <div className="form-group mt-3">
-                        <label>{t('Category')}</label>
                         <SearchSelect
                             name="category_id"
                             changeValue={form.handleChangeByKey}
@@ -279,25 +279,32 @@ export default function ListProducts() {
                                 value: item.id,
                                 label: item.name,
                             }))}
+                            errorMessage={form.formErrors?.category_id}
+                            required={true}
+                            label={t('Category')}
                         />
                     </div>
 
                     <div className="form-group mt-3">
-                        <label>{t('Thumbnail')}</label>
                         <UploadImage
                             name="image"
                             handleChangeByKey={form.handleChangeByKey}
                             value={form.formData?.image}
+                            errorMessage={form.formErrors?.image}
+                            required={false}
+                            label={t('Thumbnail')}
                         />
                     </div>
 
                     <div className="form-group mt-3">
-                        <label>{t('Description')}</label>
                         <TextArea
                             name="description"
                             handleChange={form.handleChange}
                             value={form.formData?.description}
                             placeholder={t('Description')}
+                            errorMessage={form.formErrors?.description}
+                            required={true}
+                            label={t('Description')}
                         />
                     </div>
                     {form.hookRender.map((item, index) => {

@@ -211,9 +211,7 @@ export default function Suppliers() {
             <PageHead
                 containerClass="mx-4"
                 title={t('Suppliers')}
-                subtitle={t(
-                    'List of suppliers for materials, accessories, and goods.'
-                )}
+                subtitle={t('supplier_desc')}
             />
 
             <div className="m-4">
@@ -266,112 +264,122 @@ export default function Suppliers() {
                         }}
                     >
                         <div className="form-group">
-                            <label>{t('Name')}</label>
                             <InputForm
                                 name="unit_name"
                                 value={form.formData?.unit_name}
                                 handleChange={form.handleChange}
                                 errorMessage={form.formErrors?.unit_name}
                                 placeholder={t('Unit name')}
+                                label={t("Name")}
+                                required={true}
                             />
                         </div>
 
                         <div className="row mt-1">
                             <div className="form-group col-6">
-                                <label>{t('Email')}</label>
                                 <InputForm
                                     name="email"
                                     value={form.formData?.email}
                                     handleChange={form.handleChange}
                                     errorMessage={form.formErrors?.email}
+                                    label={t("Email")}
+                                    required={false}
                                 />
                             </div>
 
                             <div className="form-group col-6">
-                                <label>{t('Phone')}</label>
                                 <InputForm
                                     name="phone"
                                     value={form.formData?.phone}
                                     handleChange={form.handleChange}
                                     errorMessage={form.formErrors?.phone}
+                                    label={t("Phone")}
+                                    required={true}
                                 />
                             </div>
                         </div>
 
                         <div className="form-group mt-1">
-                            <label>{t('Address')}</label>
                             <TextArea
                                 name="address"
                                 value={form.formData?.address}
                                 handleChange={form.handleChange}
                                 errorMessage={form.formErrors?.address}
+                                label={t("Address")}
+                                required={true}
                             />
                         </div>
 
                         <div className="form-group mt-1">
-                            <label>{t('Tax code')}</label>
                             <InputForm
                                 name="tax_code"
                                 value={form.formData?.tax_code}
                                 handleChange={form.handleChange}
                                 errorMessage={form.formErrors?.tax_code}
+                                label={t("Tax code")}
+                                required={true}
                             />
                         </div>
 
                         <div className="row mt-1">
                             <div className="form-group col-6">
-                                <label>{t('Bank name')}</label>
                                 <InputForm
                                     name="bank_name"
                                     value={form.formData?.bank_name}
                                     handleChange={form.handleChange}
                                     errorMessage={form.formErrors?.bank_name}
+                                    label={t("Bank name")}
+                                    required={false}
                                 />
                             </div>
 
                             <div className="form-group col-6">
-                                <label>{t('Bank account')}</label>
                                 <InputForm
                                     name="bank_account"
                                     value={form.formData?.bank_account}
                                     handleChange={form.handleChange}
                                     errorMessage={form.formErrors?.bank_account}
+                                    label={t("Bank account")}
+                                    required={false}
                                 />
                             </div>
                         </div>
 
                         <div className="form-group mt-1">
-                            <label>{t('Website')}</label>
                             <InputForm
                                 name="website"
                                 value={form.formData?.website}
                                 handleChange={form.handleChange}
                                 errorMessage={form.formErrors?.website}
+                                label={t("Website")}
+                                    required={false}
                             />
                         </div>
 
                         <div className="form-group mt-1">
-                            <label>{t('Note')}</label>
                             <TextArea
                                 name="note"
                                 value={form.formData?.note ?? ''}
                                 handleChange={form.handleChange}
                                 errorMessage={form.formErrors?.note}
+                                label={t("Note")}
+                                required={false}
                             />
                         </div>
 
-                        <div className="form-group mt-1">
-                            <label>{t('Active')}</label>
+                        <div className="form-group mt-3">
                             <InputForm
                                 width={20}
                                 type="checkbox"
                                 name="active"
                                 value={form.formData?.active}
                                 handleChange={form.handleChange}
+                                label={t("Active")}
+                                required={false}
                             />
                             <span className="d-block mt-1">
                                 {t(
-                                    'If inactive, this supplier cannot be selected in purchases'
+                                    'supplier_checkbox'
                                 )}
                             </span>
                         </div>

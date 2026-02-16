@@ -36,7 +36,7 @@ export function PopupLayout({ onClose = null,
 
           <div className="modal-footer border-secondary">
             <SecondaryButton loading={loading} label={t(cancelText)} onClick={onClose} />
-            {onConfirm ?<SuccessButton loading={loading} onClick={onConfirm} label={confirmText} /> : null }
+            {onConfirm ?<SuccessButton loading={loading} onClick={onConfirm} label={t(confirmText)} /> : null }
           </div>
         </div>
       </div>

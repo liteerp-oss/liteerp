@@ -1,7 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import CommonDataTable from '../CommonDataTable'
 import ProductService from '../../services/ProductService'
-import SearchInput from '../UI/Input/SearchInput'
 import { useForm } from '../../libraries/handleInput'
 import useTable from '../../libraries/handleTable'
 import { PopupLayout } from '../../layouts/PopupLayout'
@@ -14,8 +12,6 @@ import Currency from '../../components/Currencies'
 import { useSelector } from 'react-redux'
 import RenderFormFieldByList from '../RenderFormFieldByList'
 import RenderFieldTableByList from '../RenderFieldTableByList'
-import { RenderTableSearch } from '../RenderTableSearch'
-import PrimaryButton from '../UI/Buttons/PrimaryButton'
 import { useI18n } from '../../../i18n/useI18n'
 import PERMISSIONS from '../../common/permission'
 import CommonDataTableV2 from '../CommonDataTableV2'
@@ -222,7 +218,7 @@ export default function PriceList() {
             {showAdd && (
                 <PopupLayout
                     loading={form.loading}
-                    confirmText={t('Save')}
+                    confirmText={t('Save changes')}
                     onConfirm={form.isEdit ? update : submit}
                     onClose={() => setShowAdd(false)}
                     title={
@@ -232,18 +228,18 @@ export default function PriceList() {
                     }
                 >
                     <div className="form-group">
-                        <label>{t('Price')}</label>
                         <InputForm
                             type="numeric"
                             name="price"
                             value={form.formData?.price}
                             handleChange={form.handleChange}
                             errorMessage={form.formErrors?.price}
+                            required={true}
+                            label={t('Price')}
                         />
                     </div>
 
                     <div className="form-group mt-3">
-                        <label>{t('Product')}</label>
                         <SearchSelect
                             name="product_id"
                             search={getProducts}
@@ -255,11 +251,12 @@ export default function PriceList() {
                                 label: item.name,
                             }))}
                             defaultKeywords={form.formData?.name}
+                            required={true}
+                            label={t('Product')}
                         />
                     </div>
 
                     <div className="form-group mt-3">
-                        <label>{t('Customer Group')}</label>
                         <SearchSelect
                             name="customer_group_id"
                             search={getGroup}
@@ -271,6 +268,8 @@ export default function PriceList() {
                                 label: item.name,
                             }))}
                             defaultKeywords={form.formData?.group}
+                            required={true}
+                            label={t('Customer Group')}
                         />
                     </div>
 

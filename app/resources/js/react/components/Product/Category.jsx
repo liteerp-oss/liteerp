@@ -226,33 +226,36 @@ export default function Category() {
                     }
                 >
                     <div className="form-group">
-                        <label>{t('Name')}</label>
                         <InputForm
                             name="name"
                             value={form.formData?.name}
                             handleChange={form.handleChange}
                             errorMessage={form.formErrors?.name}
+                            required={true}
+                            label={t('Name')}
                         />
                     </div>
 
                     <div className="form-group mt-3">
-                        <label>{t('Tax (%)')}</label>
                         <InputForm
                             name="tax"
                             type="number"
                             value={form.formData?.tax}
                             handleChange={form.handleChange}
                             errorMessage={form.formErrors?.tax}
+                            required={true}
+                            label={t('Tax') + ' (%)'}
                         />
                     </div>
 
                     <div className="form-group mt-3">
-                        <label>{t('Description')}</label>
                         <TextArea
                             name="description"
                             value={form.formData?.description}
                             handleChange={form.handleChange}
                             errorMessage={form.formErrors?.description}
+                            required={true}
+                            label={t('Description')}
                         />
                     </div>
 
