@@ -216,6 +216,7 @@ export default {
     "Purchase status": "Purchase status",
     "Approver": "Approver",
     "Received": "Received",
+    "received": "Received",
     "Search by invoice no": "Search by invoice no",
     "Quantity": "Quantity",
     "Order status": "Order status",
@@ -377,5 +378,10 @@ export default {
     "Company":"Company",
     "Add customer":"Add customer",
     "Update customer":"Update customer",
-    "Extras filter":"Extras filter"
+    "Extras filter":"Extras filter",
+    "Detail stock in":"Detail stock in",
+    "stockin_desc":"Manage and track details of the process of importing goods into the warehouse",
+    "Stock information":"Stock information",
+    "Purchase items":"Purchase items",
+    "Stock In ID":"Stock In ID"
 };

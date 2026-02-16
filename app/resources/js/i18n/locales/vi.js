@@ -216,6 +216,7 @@ export default {
     "Purchase status": "Trạng thái nhập hàng",
     "Approver": "Người phê duyệt",
     "Received": "Đã nhận",
+    "received": "Đã nhận",
     "Search by invoice no": "Tìm theo số hóa đơn",
     "Quantity": "Số lượng",
     "Order status": "Trạng thái đơn hàng",
@@ -376,5 +377,11 @@ export default {
     "Company": "Công ty",
     "Add customer": "Thêm khách hàng",
     "Update customer": "Cập nhật khách hàng",
-    "Extras filter": "Bộ lọc nâng cao"
+    "Extras filter": "Bộ lọc nâng cao",
+    "stockin_desc":"Manage and track details of the process of importing goods into the warehouse",
+    "Detail stock in": "Chi tiết nhập kho",
+    "stockin_desc": "Quản lý và theo dõi chi tiết quá trình nhập hàng vào kho",
+    "Stock information": "Thông tin tồn kho",
+    "Purchase items": "Hàng mua",
+    "Stock In ID": "Mã nhập kho"
 };

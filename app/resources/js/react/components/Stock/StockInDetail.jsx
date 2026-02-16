@@ -21,6 +21,7 @@ import LoadingBox from '../LoadingBox'
 import RenderFormFieldByList from '../RenderFormFieldByList'
 import { ExtraCard } from "../ExtraCard";
 import { useI18n } from "../../../i18n/useI18n";
+import StatusBadge from "../StatusBadge";
 export default function StockInDetail() {
     const { t } = useI18n();
     const [loading, setLoading] = useState(false);
@@ -194,17 +195,17 @@ export default function StockInDetail() {
     return (
         <div className="min-vh-100">
             <PageHead
-                title="Detail stock in"
-                subtitle="Manage and track details of the process of importing goods into the warehouse"
+                title={t("Detail stock in")}
+                subtitle={t("stockin_desc")}
             />
             <div className="container mt-3">
                 {loading ? <LoadingBox /> :
                     <div>
                         <div className="row g-3 mb-4">
-                            <InfoBox label="Import voucher code" value={'PO' + form.formData?.purchase_id} />
-                            <InfoBox label="Order code" value="PO-2024-001" />
-                            <InfoBox label="Actual import date" value={isoToDateTime(form.formData?.import_date)} />
-                            <InfoBox label="Expected date" value={form.formData?.due_date ?? '-'} />
+                            <InfoBox label={t("Purchase ID")} value={'PO' + form.formData?.purchase_id} />
+                            <InfoBox label={t("Stock In ID")} value={form.formData?.id} />
+                            <InfoBox label={t("Import date")} value={isoToDateTime(form.formData?.import_date)} />
+                            <InfoBox label={t("Expected date")} value={form.formData?.due_date ?? '-'} />
                         </div>
 
                         <div className="row g-4">
@@ -226,11 +227,7 @@ export default function StockInDetail() {
                                         label={t("Staff")}
                                         left={form.formData?.purchase_approved_name ?? '-'}
                                         rightLabel={t("Status")}
-                                        right={form.formData?.status === 'received'
-                                            ? <span className="badge bg-success text-uppercase">{form.formData?.status}</span>
-                                            : <span className="badge bg-warning 
-                                            text-dark text-uppercase">{form.formData?.status}</span>
-                                        }
+                                        right={<StatusBadge status={form.formData?.status ?? ''}/>}
                                     />
 
                                     <div className="mt-3">

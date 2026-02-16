@@ -216,6 +216,7 @@ export default {
     "Purchase status": "仕入れステータス",
     "Approver": "承認者",
     "Received": "入荷済み",
+    "received": "入荷済み",
     "Search by invoice no": "請求書番号で検索",
     "Quantity": "数量",
     "Order status": "注文ステータス",
@@ -376,5 +377,11 @@ export default {
     "Company": "会社",
     "Add customer": "顧客を追加",
     "Update customer": "顧客を更新",
-    "Extras filter": "詳細フィルター"
+    "Extras filter": "詳細フィルター",
+    "stockin_desc":"Manage and track details of the process of importing goods into the warehouse",
+    "Detail stock in": "入庫詳細",
+    "stockin_desc": "商品の入庫プロセスを管理・追跡します",
+    "Stock information": "在庫情報",
+    "Purchase items": "仕入商品",
+    "Stock In ID": "入庫ID"
 };
