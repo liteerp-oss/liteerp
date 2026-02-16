@@ -17,6 +17,7 @@ import Currencies from "../../Currencies";
 import UploadImage from "../../UI/Input/UploadImage";
 import RenderFormFieldByList from '../../RenderFormFieldByList'
 import { useI18n } from "../../../../i18n/useI18n";
+import StatusBadge from "../../StatusBadge";
 export default function InvoiceInDetail() {
     const { t } = useI18n();
     const [loading, setLoading] = useState(false);
@@ -148,8 +149,8 @@ const confirmApproved = useCallback(() => {
     return (
         <div className="min-vh-100">
             <PageHead
-                title="Detail purchase invoice"
-                subtitle="Check and manage detailed purchase invoice information"
+                title={t("Detail purchase invoice")}
+                subtitle={t("invoice_purchase_desc")}
             />
             <div className="container mt-3">
                 {loading ? <LoadingBox /> : <div>
@@ -277,15 +278,11 @@ const confirmApproved = useCallback(() => {
                                 <h5 className="fw-semibold mb-3">{t("Payment information")}</h5>
                                 <div className="mb-2">
                                     <div className="theme-title small">{t("Payment method")}</div>
-                                    <div className="theme-title badge bg-primary text-white text-uppercase">
-                                        {form.formData?.payment_method}
-                                    </div>
+                                    <StatusBadge status={form.formData?.payment_method ?? ''}/>
                                 </div>
                                 <div className="mb-2">
                                     <div className="theme-title small">{t("Payment status")}</div>
-                                    <div className={`theme-title badge text-white text-uppercase ${form.formData?.payment_status === 'pending' ? 'bg-warning' : 'bg-success'}`}>
-                                        {form.formData?.payment_status}
-                                    </div>
+                                    <StatusBadge status={form.formData?.payment_status ?? ''}/>
                                 </div>
 
                                 <div className="mt-3 theme-title small">
@@ -348,7 +345,7 @@ const confirmApproved = useCallback(() => {
             </div>
             {showEdit ? (
                 <PopupLayout
-                    confirmText={t("Save change")}
+                    confirmText={t("Save changes")}
                     loading={form.loading}
                     onClose={() => setShowEdit(false)}
                     title={t("Update invoice")}
@@ -358,7 +355,6 @@ const confirmApproved = useCallback(() => {
                 >
                     <div>
                         <div className="form-group">
-                            <label>{t("Invoice Number")}</label>
                             <InputForm
                                 errorMessage={form.formErrors?.document_no}
                                 handleChange={form.handleChange}
@@ -366,10 +362,11 @@ const confirmApproved = useCallback(() => {
                                 type="text"
                                 name="document_no"
                                 placeholder={t("Enter invoice number")}
+                                required={true}
+                                label={t("Invoice number")}
                             />
                         </div>
                         <div className="form-group mt-3">
-                            <label>{t("Invoice Date")}</label>
                             <InputForm
                                 errorMessage={form.formErrors?.invoice_date}
                                 handleChange={form.handleChange}
@@ -377,10 +374,11 @@ const confirmApproved = useCallback(() => {
                                 type="date"
                                 name="invoice_date"
                                 placeholder={t("Enter invoice date")}
+                                required={true}
+                                label={t("Invoice date")}
                             />
                         </div>
                         <div className="form-group mt-3">
-                            <label>{t("Due Date")}</label>
                             <InputForm
                                 errorMessage={form.formErrors?.due_date}
                                 handleChange={form.handleChange}
@@ -388,10 +386,11 @@ const confirmApproved = useCallback(() => {
                                 type="date"
                                 name="due_date"
                                 placeholder={t("Enter due date")}
+                                required={true}
+                                label={t("Due date")}
                             />
                         </div>
                         <div className="form-group mt-3">
-                            <label>{t("Payment status")}</label>
                             <Select
                                 errorMessage={form.formErrors?.payment_status}
                                 handleChange={form.handleChange}
@@ -402,15 +401,18 @@ const confirmApproved = useCallback(() => {
                                     { value: 'paid', label: t('Paid') },
                                     { value: 'partial_payment', label: t('Partial payment') }
                                 ]}
+                                required={true}
+                                label={t("Payment status")}
                             />
                         </div>
                         <div className="form-group mt-3">
-                            <label>{t("Amount paid")}</label>
                             <InputForm
                                 errorMessage={form.formErrors?.amount_paid}
                                 handleChange={form.handleChange}
                                 value={form.formData?.amount_paid}
                                 name="amount_paid"
+                                required={false}
+                                label={t("Amount paid")}
                             />
                         </div>
                         <div className="form-group mt-3">

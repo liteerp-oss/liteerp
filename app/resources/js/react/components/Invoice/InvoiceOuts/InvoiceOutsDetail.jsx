@@ -19,6 +19,7 @@ import UploadImage from '../../UI/Input/UploadImage'
 import RenderFormFieldByList from "../../RenderFormFieldByList";
 import { ExtraCard } from '../../ExtraCard'
 import { useI18n } from "../../../../i18n/useI18n";
+import StatusBadge from "../../StatusBadge";
 export default function InvoiceOutDetail() {
     const { t } = useI18n();
     const [loading, setLoading] = useState(false)
@@ -156,8 +157,8 @@ export default function InvoiceOutDetail() {
         <div className="text-light min-vh-100">
             <PageHead
                 containerClass="mx-4"
-                title="Detail order invoice"
-                subtitle="Check and manage detailed order invoice information"
+                title={t("Detail order invoice")}
+                subtitle={t("detail_order_invoice_desc")}
             />
             <div className="mx-4 mt-3">
                 {loading ? <LoadingBox /> : <div>
@@ -334,13 +335,11 @@ export default function InvoiceOutDetail() {
                                 <h5 className="fw-semibold mb-3">{t("Payment information")}</h5>
                                 <div className="mb-2">
                                     <div className="theme-title small">{t("Payment method")}</div>
-                                    <div className="theme-title badge bg-primary text-white text-uppercase">{form.formData?.payment_method}</div>
+                                    <StatusBadge status={form.formData?.payment_method ?? ''}/>
                                 </div>
                                 <div className="mb-2">
                                     <div className="theme-title small">{t("Payment status")}</div>
-                                    <div className={`theme-title badge text-white text-uppercase ${form.formData?.payment_status === 'pending' ? 'bg-warning' : 'bg-success'}`}>
-                                        {form.formData?.payment_status}
-                                    </div>
+                                    <StatusBadge status={form.formData?.payment_status ?? ''}/>
                                 </div>
                             </div>
 
@@ -384,6 +383,7 @@ export default function InvoiceOutDetail() {
                                                 width={'auto'}
                                             />
                                             <PrimaryButton
+                                                width={'auto'}
                                                 disabled={form.formData?.approved}
                                                 onClick={confirmApproved}
                                                 label={t("Take approved")}
@@ -407,7 +407,6 @@ export default function InvoiceOutDetail() {
                 >
                     <div>
                         <div className="form-group">
-                            <label>{t("Invoice Number")}</label>
                             <InputForm
                                 errorMessage={form.formErrors?.document_no}
                                 handleChange={form.handleChange}
@@ -415,10 +414,11 @@ export default function InvoiceOutDetail() {
                                 type="text"
                                 name="document_no"
                                 placeholder={t("Enter invoice number")}
+                                required={true}
+                                label={t("Invoice number")}
                             />
                         </div>
                         <div className="form-group mt-3">
-                            <label>{t("Invoice Date")}</label>
                             <InputForm
                                 errorMessage={form.formErrors?.invoice_date}
                                 handleChange={form.handleChange}
@@ -426,10 +426,11 @@ export default function InvoiceOutDetail() {
                                 type="date"
                                 name="invoice_date"
                                 placeholder={t("Enter invoice date")}
+                                required={true}
+                                label={t("Invoice date")}
                             />
                         </div>
                         <div className="form-group mt-3">
-                            <label>{t("Due Date")}</label>
                             <InputForm
                                 errorMessage={form.formErrors?.due_date}
                                 handleChange={form.handleChange}
@@ -437,10 +438,11 @@ export default function InvoiceOutDetail() {
                                 type="date"
                                 name="due_date"
                                 placeholder={t("Enter due date")}
+                                required={false}
+                                label={t("Due date")}
                             />
                         </div>
                         <div className="form-group mt-3">
-                            <label>{t("Payment status")}</label>
                             <Select
                                 errorMessage={form.formErrors?.payment_status}
                                 handleChange={form.handleChange}
@@ -451,15 +453,18 @@ export default function InvoiceOutDetail() {
                                     { value: 'paid', label: t('Paid') },
                                     { value: 'partial_payment', label: t('Partial payment') }
                                 ]}
+                                required={true}
+                                label={t("Payment status")}
                             />
                         </div>
                         <div className="form-group mt-3">
-                            <label>{t("Amount paid")}</label>
                             <InputForm
                                 errorMessage={form.formErrors?.amount_paid}
                                 handleChange={form.handleChange}
                                 value={form.formData?.amount_paid}
                                 name="amount_paid"
+                                required={false}
+                                label={t("Amount paid")}
                             />
                         </div>
                         <div className="form-group mt-3">
@@ -468,6 +473,8 @@ export default function InvoiceOutDetail() {
                                 errorMessage={form.formErrors?.image}
                                 handleChangeByKey={form.handleChangeByKey}
                                 value={form.formData?.image}
+                                required={false}
+                                label={t("Image")}
                             />
                         </div>
                         {form.hookRender.map((item, index) => {

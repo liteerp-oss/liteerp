@@ -9,7 +9,9 @@ import InvoiceOutDetail from "../components/Invoice/InvoiceOuts/InvoiceOutsDetai
 import PageHead from "../components/PageHead";
 import CustomInvoiceOuts from "../components/Invoice/CustomInvoiceOuts";
 import CustomInvoiceIns from "../components/Invoice/CustomInvoiceIns";
+import { useI18n } from "@/i18n/useI18n";
 export default function Invoice() {
+  const {t} = useI18n();
   const [searchParams] = useSearchParams();
   return (
     <DashboardLayout>
@@ -19,16 +21,16 @@ export default function Invoice() {
       </div> : <div>
         <PageHead
                       containerClass='mx-4'
-                      title='Invoices'
-                      subtitle='List of invoices and accounting details'
+                      title={t('Invoices')}
+                      subtitle={t('invoice_desc')}
                       />
         <div className="m-4">
 
           <TabsCommon navs={[
-            { key: 'InvoiceIn', label: 'Invoice Ins' },
-            { key: 'InvoiceOut', label: 'Invoice Outs' },
-            { key: 'CustomInvoiceOut', label: 'Custom Invoice Outs' },
-            { key: 'CustomInvoiceIn', label: 'Custom Invoice Ins' }
+            { key: 'InvoiceIn', label: t('Invoice Ins') },
+            { key: 'InvoiceOut', label: t('Invoice Outs') },
+            { key: 'CustomInvoiceOut', label: t('Custom Invoice Outs') },
+            { key: 'CustomInvoiceIn', label: t('Custom Invoice Ins') }
           ]} contents={[<InvoiceIns />,
             <InvoiceOuts />,
             <CustomInvoiceOuts />,

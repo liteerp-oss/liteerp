@@ -237,7 +237,6 @@ export default function User() {
                     >
                         <div>
                             <div className="form-group">
-                                <label>{t('Email')}</label>
                                 <InputForm
                                     name="email"
                                     errorMessage={
@@ -247,11 +246,12 @@ export default function User() {
                                     handleChange={
                                         form.handleChange
                                     }
+                                    required={true}
+                                    label={t('Email')}
                                 />
                             </div>
 
                             <div className="form-group mt-2">
-                                <label>{t('Role')}</label>
                                 <Select
                                     name="role"
                                     errorMessage={
@@ -287,6 +287,8 @@ export default function User() {
                                             label: t('Admin'),
                                         },
                                     ]}
+                                    required={true}
+                                    label={t('Role')}
                                 />
                             </div>
                         </div>

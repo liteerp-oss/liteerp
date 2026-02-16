@@ -24,6 +24,7 @@ import OrderItemService from "../../services/OrderItemService";
 import { ExtraCard } from "../ExtraCard";
 import RenderFormFieldByList from "../RenderFormFieldByList";
 import { useI18n } from "../../../i18n/useI18n";
+import StatusBadge from "../StatusBadge";
 export default function StockOutDetail() {
     const { t } = useI18n();
     const [loading, setLoading] = useState(false)
@@ -216,17 +217,17 @@ export default function StockOutDetail() {
         <div className="min-vh-100">
             <PageHead
                 containerClass="m-4"
-                title="Detail stock out"
-                subtitle="Manage and track details of the process of exporting goods from the warehouse"
+                title={t("Detail stock out")}
+                subtitle={t("stock_out_desc")}
             />
             <div className="m-4 mt-3">
 
                 {loading ? <LoadingBox /> : <div>
                     <div className="row g-3 mb-4">
-                        <InfoBox label="Import voucher code" value={'OD' + form.formData?.order_id} />
-                        <InfoBox label="Order code" value={form.formData?.order_no} />
-                        <InfoBox label="Order date" value={isoToDateTime(form.formData?.order_date)} />
-                        <InfoBox label="expected delivery date" value={form.formData?.expected_delivery_date ?? '-'} />
+                        <InfoBox label={t("Order ID")} value={'OD' + form.formData?.order_id} />
+                        <InfoBox label={t("Order code")} value={form.formData?.order_no} />
+                        <InfoBox label={t("Order date")} value={isoToDateTime(form.formData?.order_date)} />
+                        <InfoBox label={t("Expected delivery date")} value={form.formData?.expected_delivery_date ?? '-'} />
                     </div>
 
                     <div className="row g-4">
@@ -241,12 +242,7 @@ export default function StockOutDetail() {
                                     label={t("Employee")}
                                     left={form.formData?.approved_name ?? '-'}
                                     rightLabel={t('Status')}
-                                    right={form.formData?.status === 'received'
-                                        ? <span className="badge bg-success text-uppercase">
-                                            {form.formData?.status}</span>
-                                        : <span className="badge bg-warning text-dark text-uppercase">
-                                            {form.formData?.status}</span>
-                                    }
+                                    right={<StatusBadge status={form.formData?.status ?? ''}/>}
                                 />
 
                                 <div className="mt-3">
@@ -328,6 +324,7 @@ export default function StockOutDetail() {
                                     <div className="col-6">
                                         {detail?.status === 'pending' && (
                                             <PrimaryButton
+                                                width={'100%'}
                                                 onClick={confirmSent}
                                                 label={t("Shipped")}
                                             />
@@ -341,6 +338,7 @@ export default function StockOutDetail() {
                                         )}
                                         {detail?.status === 'completed' && (
                                             <PrimaryButton
+                                                width={'100%'}
                                                 disabled={true}
                                                 label={t("Completed")}
                                             />
@@ -371,18 +369,18 @@ export default function StockOutDetail() {
             </div>
             {showForm ? <PopupLayout
                 loading={shippingForm.loading}
-                confirmText="Save change"
+                confirmText={t("Save changes")}
                 onClose={() => setShowForm(false)}
-                title="Update shipping" onConfirm={() => updateShipping()}>
+                title={t("Update shipping")} onConfirm={() => updateShipping()}>
                 <div>
                     <FormUpdate form={shippingForm} />
                 </div>
             </PopupLayout> : null}
             {showExtraForm ? <PopupLayout
                 loading={form.loading}
-                confirmText="Save change"
+                confirmText={t("Save changes")}
                 onClose={() => setExtraShowForm(false)}
-                title="Update Extras" onConfirm={() => update()}>
+                title={t("Update Extras")} onConfirm={() => update()}>
                 <div>
                     {form.hookRender.map((item, index) => {
                         return <div key={index}>

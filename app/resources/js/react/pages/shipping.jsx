@@ -264,7 +264,6 @@ export default function Shipping() {
                     >
                         <div>
                             <div className="form-group mt-3">
-                                <label>{t('Name')}</label>
                                 <InputForm
                                     name="name"
                                     handleChange={
@@ -275,11 +274,12 @@ export default function Shipping() {
                                     }
                                     value={form.formData?.name}
                                     placeholder={t('Name')}
+                                    required={true}
+                                    label={t('Name')}
                                 />
                             </div>
 
                             <div className="form-group mt-3">
-                                <label>{t('Code')}</label>
                                 <InputForm
                                     name="code"
                                     handleChange={
@@ -290,11 +290,12 @@ export default function Shipping() {
                                     }
                                     value={form.formData?.code}
                                     placeholder={t('Code')}
+                                    required={true}
+                                    label={t('Code')}
                                 />
                             </div>
 
                             <div className="form-group mt-3">
-                                <label>{t('Logo')}</label>
                                 <UploadImage
                                     name="logo"
                                     handleChangeByKey={
@@ -304,15 +305,13 @@ export default function Shipping() {
                                         form.formErrors?.logo
                                     }
                                     value={form.formData?.logo}
+                                    required={false}
+                                    label={t('Logo')}
                                 />
                             </div>
 
                             <div className="form-group mt-3">
-                                <label>
-                                    {t(
-                                        'This shipping provider is active'
-                                    )}
-                                </label>
+                                
                                 <InputForm
                                     width={20}
                                     name="active"
@@ -324,7 +323,13 @@ export default function Shipping() {
                                         form.formErrors?.active
                                     }
                                     type="checkbox"
+                                    label={t('Active')}
                                 />
+                                <label>
+                                    {t(
+                                        'This shipping provider is active'
+                                    )}
+                                </label>
                             </div>
 
                             {form.hookRender.map(

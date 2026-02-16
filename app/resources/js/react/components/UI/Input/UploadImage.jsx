@@ -38,14 +38,15 @@ export default function UploadImage({
         setMessage(errorMessage)
     }, [errorMessage])
     return <div>
+        {label ? <label>
+          {label}
+          {required ? <span className='text-danger'>*</span> : null}
+        </label> : null}
         <div className='uploadimage-component d-flex justify-content-center align-items-center' style={{
             width: width,
             height: height
         }}>
-            {label ? <label>
-          {label}
-          {required ? <span className='text-danger'>*</span> : null}
-        </label> : null}
+                
             <LoadImage
                 ref={imageRef}
                 onClick={() => {

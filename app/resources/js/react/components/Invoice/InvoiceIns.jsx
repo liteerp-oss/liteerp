@@ -2,17 +2,12 @@ import React from 'react'
 import { useCallback, useEffect, useState } from "react";
 import { useForm } from "../../libraries/handleInput";
 import InvoiceInService from "../../services/InvoiceInService";
-import CommonDataTable from "../CommonDataTable";
-import SearchInput from "../UI/Input/SearchInput";
 import useTable from "../../libraries/handleTable";
 import { usePopup } from "../popups/PopupContext";
-import { Select } from '../UI/Input/Select';
 import { useNavigate } from 'react-router-dom';
 import Currencies from '../../components/Currencies'
 import StatusBadge from '../StatusBadge'
 import RenderFieldTableByList from '../RenderFieldTableByList'
-import { RenderTableSearch } from '../RenderTableSearch';
-import PrimaryButton from '../UI/Buttons/PrimaryButton';
 import { useI18n } from '../../../i18n/useI18n';
 import { useSelector } from 'react-redux';
 import PERMISSIONS from '../../common/permission';

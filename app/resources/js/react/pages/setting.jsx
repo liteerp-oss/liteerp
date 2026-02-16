@@ -87,7 +87,6 @@ export default function Setting() {
 
                         <div className="row">
                             <div className="form-group col-6">
-                                <label>{t('Company name')}</label>
                                 <InputForm
                                     name="name"
                                     errorMessage={
@@ -97,11 +96,12 @@ export default function Setting() {
                                     handleChange={
                                         form.handleChange
                                     }
+                                    required={true}
+                                    label={t('Company name')}
                                 />
                             </div>
 
                             <div className="form-group col-6">
-                                <label>{t('Company address')}</label>
                                 <InputForm
                                     name="address"
                                     errorMessage={
@@ -111,13 +111,14 @@ export default function Setting() {
                                     handleChange={
                                         form.handleChange
                                     }
+                                    required={true}
+                                    label={t('Company address')}
                                 />
                             </div>
                         </div>
 
                         <div className="row mt-1">
                             <div className="form-group col-4">
-                                <label>{t('Phone')}</label>
                                 <InputForm
                                     name="phone"
                                     errorMessage={
@@ -127,11 +128,12 @@ export default function Setting() {
                                     handleChange={
                                         form.handleChange
                                     }
+                                    required={true}
+                                    label={t('Phone')}
                                 />
                             </div>
 
                             <div className="form-group col-4">
-                                <label>{t('Email')}</label>
                                 <InputForm
                                     name="email"
                                     errorMessage={
@@ -141,11 +143,12 @@ export default function Setting() {
                                     handleChange={
                                         form.handleChange
                                     }
+                                    required={true}
+                                    label={t('Email')}
                                 />
                             </div>
 
                             <div className="form-group col-4">
-                                <label>{t('Tax code')}</label>
                                 <InputForm
                                     name="tax_code"
                                     errorMessage={
@@ -155,13 +158,14 @@ export default function Setting() {
                                     handleChange={
                                         form.handleChange
                                     }
+                                    required={true}
+                                    label={t('Tax code')}
                                 />
                             </div>
                         </div>
 
                         <div className="row mt-1">
                             <div className="form-group col-4">
-                                <label>{t('Bank name')}</label>
                                 <InputForm
                                     name="bank_name"
                                     errorMessage={
@@ -171,13 +175,12 @@ export default function Setting() {
                                     handleChange={
                                         form.handleChange
                                     }
+                                    required={true}
+                                    label={t('Bank name')}
                                 />
                             </div>
 
                             <div className="form-group col-4">
-                                <label>
-                                    {t('Bank account number')}
-                                </label>
                                 <InputForm
                                     name="bank_account_number"
                                     errorMessage={
@@ -191,13 +194,12 @@ export default function Setting() {
                                     handleChange={
                                         form.handleChange
                                     }
+                                    required={true}
+                                    label={t('Bank account number')}
                                 />
                             </div>
 
                             <div className="form-group col-4">
-                                <label>
-                                    {t('Bank account name')}
-                                </label>
                                 <InputForm
                                     name="bank_account_name"
                                     errorMessage={
@@ -211,6 +213,8 @@ export default function Setting() {
                                     handleChange={
                                         form.handleChange
                                     }
+                                    required={true}
+                                    label={t('Bank account name')}
                                 />
                             </div>
                         </div>
@@ -225,6 +229,8 @@ export default function Setting() {
                                 handleChangeByKey={
                                     form.handleChangeByKey
                                 }
+                                required={false}
+                                label={t('Logo')}
                             />
                         </div>
 
