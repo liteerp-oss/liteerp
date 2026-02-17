@@ -12,17 +12,14 @@ import PaymentMethod from '../PaymentMethod';
 import ContentOnTable from '../ContentOnTable';
 import RenderFormTableByList from '../RenderFieldTableByList';
 import { useI18n } from '../../../i18n/useI18n';
-import { useSelector } from 'react-redux';
-import PERMISSIONS from '../../common/permission';
 import CommonDataTableV2 from '../CommonDataTableV2';
 
 export default function ListPurchases() {
-    const { t } = useI18n();
+    const { t,lang } = useI18n();
     const navigate = useNavigate();
     const { openPopup } = usePopup();
     const search = useForm();
     const table = useTable();
-    const roles = useSelector((state) => state.businessRole.role);
     const view = useCallback(() => {
         PurchaseService.view()
             .then((resp) => {
@@ -41,7 +38,7 @@ export default function ListPurchases() {
             });
     }, []);
 
-    const handleEdit = (row) => {
+    const handleShow = (row) => {
         navigate('/purchases?form=edit&id=' + row.id);
     };
 
@@ -70,9 +67,131 @@ export default function ListPurchases() {
     );
 
     useEffect(() => {
+        table.setColums([
+            {
+                label: t('ID'),
+                key: 'id',
+                render: (id) => {
+                    return <div style={{
+                        width: 50
+                    }}>PU{id}</div>
+                },
+            },
+            {
+                label: t('Supplier'),
+                key: 'supplier_name',
+                render: (value) => {
+                    return <div style={{
+                        width: 120
+                    }}>
+                        <ContentOnTable value={value} max={15} />
+                    </div>
+                },
+            },
+            {
+                label: t('Purchase date'),
+                key: 'purchase_date',
+                render: (date) => {
+                    return <div style={{
+                        width: 120
+                    }}>{isoToDateTime(date)}</div>
+                },
+            },
+            {
+                label: t('Expected date'),
+                key: 'expected_date',
+                render: (date) => {
+                    return <div style={{
+                        width: 120
+                    }}>{isoToDateTime(date)}</div>
+                },
+            },
+            {
+                label: t('Shipping fee'),
+                key: 'shipping_fee',
+                render: (value) => (
+                    <div style={{
+                        width: 120
+                    }}>
+                        <strong><Currencies amount={value} /></strong>
+                    </div>
+                ),
+            },
+            {
+                label: t('Payment method'),
+                key: 'payment_method',
+                render: (value) => {
+                    return <div style={{
+                        width: 200
+                    }}>
+                        <PaymentMethod value={value} />
+                    </div>
+                },
+            },
+            {
+                label: t('Buy'), key: 'buy_quantity', render: (value) => {
+                    return <div style={{
+                        width: 70
+                    }}>{value}</div>
+                }
+            },
+            {
+                label: t('Compensation'), key: 'compensation_quantity', render: (value) => {
+                    return <div style={{
+                        width: 70
+                    }}>{value}</div>
+                }
+            },
+            {
+                label: t('Conversion'), key: 'conversion_quantity', render: (value) => {
+                    return <div style={{
+                        width: 100
+                    }}>{value}</div>
+                }
+            },
+            {
+                label: t('Gift'), key: 'gift_quantity', render: (value) => {
+                    return <div style={{
+                        width: 70
+                    }}>{value}</div>
+                }
+            },
+            {
+                label: t('Tax'),
+                key: 'tax',
+                render: (value) => (
+                    <strong>
+                        <Currencies amount={value} />
+                    </strong>
+                ),
+            },
+            {
+                label: t('Status'),
+                key: 'status',
+                render: (value) => <StatusBadge status={value} />,
+            },
+            {
+                label: t('Approved by'),
+                key: 'approved_name',
+                render: (value) => (
+                    <span className="badge bg-primary text-uppercase">
+                        {value}
+                    </span>
+                ),
+            },
+            {
+                label: t('Created by'),
+                key: 'created_name',
+                render: (value) => (
+                    <span className="badge bg-primary text-uppercase">
+                        {value}
+                    </span>
+                ),
+            },
+        ])
         getPurchases();
         view();
-    }, []);
+    }, [lang]);
 
     return (
         <div>
@@ -86,6 +205,7 @@ export default function ListPurchases() {
 
             <div className="m-4">
                 <CommonDataTableV2
+                    type={'purchase'}
                     config={{
                         default: [{
                             key: "order_by",
@@ -106,126 +226,11 @@ export default function ListPurchases() {
                         }]
                     }}
                     search={search}
-                    add={roles?.includes(PERMISSIONS.PURCHASE.CREATE)
-                        ? () => navigate('/purchases?form=add') : null}
-                    columns={[
-                        {
-                            label: t('ID'),
-                            key: 'id',
-                            render: (id) => {
-                                return <div style={{
-                                    width: 50
-                                }}>PU{id}</div>
-                            },
-                        },
-                        {
-                            label: t('Supplier'),
-                            key: 'supplier_name',
-                            render: (value) => {
-                                return <div style={{
-                                    width: 120
-                                }}>
-                                    <ContentOnTable value={value} max={15} />
-                                </div>
-                            },
-                        },
-                        {
-                            label: t('Purchase date'),
-                            key: 'purchase_date',
-                            render: (date) => {
-                                return <div style={{
-                                    width: 120
-                                }}>{isoToDateTime(date)}</div>
-                            },
-                        },
-                        {
-                            label: t('Expected date'),
-                            key: 'expected_date',
-                            render: (date) => {
-                                return <div style={{
-                                    width: 120
-                                }}>{isoToDateTime(date)}</div>
-                            },
-                        },
-                        {
-                            label: t('Shipping fee'),
-                            key: 'shipping_fee',
-                            render: (value) => (
-                                <div style={{
-                                    width: 120
-                                }}>
-                                    <strong><Currencies amount={value} /></strong>
-                                </div>
-                            ),
-                        },
-                        {
-                            label: t('Payment method'),
-                            key: 'payment_method',
-                            render: (value) => {
-                                return <div style={{
-                                    width: 200
-                                }}>
-                                    <PaymentMethod value={value} />
-                                </div>
-                            },
-                        },
-                        { label: t('Buy'), key: 'buy_quantity', render: (value) => {
-                            return <div style={{
-                                width: 70
-                            }}>{value}</div>
-                        } },
-                        { label: t('Compensation'), key: 'compensation_quantity', render: (value) => {
-                            return <div style={{
-                                width: 70
-                            }}>{value}</div>
-                        } },
-                        { label: t('Conversion'), key: 'conversion_quantity', render: (value) => {
-                            return <div style={{
-                                width: 100
-                            }}>{value}</div>
-                        }  },
-                        { label: t('Gift'), key: 'gift_quantity', render: (value) => {
-                            return <div style={{
-                                width: 70
-                            }}>{value}</div>
-                        }  },
-                        {
-                            label: t('Tax'),
-                            key: 'tax',
-                            render: (value) => (
-                                <strong>
-                                    <Currencies amount={value} />
-                                </strong>
-                            ),
-                        },
-                        {
-                            label: t('Status'),
-                            key: 'status',
-                            render: (value) => <StatusBadge status={value} />,
-                        },
-                        {
-                            label: t('Approved by'),
-                            key: 'approved_name',
-                            render: (value) => (
-                                <span className="badge bg-primary text-uppercase">
-                                    {value}
-                                </span>
-                            ),
-                        },
-                        {
-                            label: t('Created by'),
-                            key: 'created_name',
-                            render: (value) => (
-                                <span className="badge bg-primary text-uppercase">
-                                    {value}
-                                </span>
-                            ),
-                        },
-                    ]}
+                    add={() => navigate('/purchases?form=add')}
+                    columns={table.colums}
                     data={table.data}
                     links={table.links}
-                    onEdit={roles?.includes(PERMISSIONS.PURCHASE.SHOW)
-                        ? handleEdit : null}
+                    onShow={handleShow}
                     callback={getPurchases}
                     loading={table.loading}
                 />

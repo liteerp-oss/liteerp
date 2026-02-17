@@ -7,9 +7,9 @@ use App\Supports\Hooks\HookContext;
 use App\Supports\Hooks\HookDispatcher;
 use App\Supports\Hooks\HookPhase;
 use App\Supports\Hooks\HookTiming;
-use Core\Order\Application\UseCases\FindOrderOneById;
 use Core\OrderShipping\Application\DTOs\CreateOrderShippingRequest;
 use Core\OrderShipping\Domain\Services\OrderShippingService;
+use Illuminate\Support\Facades\Event;
 
 class CreateOrderShipping
 {
@@ -41,6 +41,11 @@ class CreateOrderShipping
                 module: 'OrderShipping'
             )
         );
+        Event::dispatch('erp.ordershipping.create',[
+            ...$data,
+            'business_id' => $dto->business_id,
+            'user_id' => $dto->created_by
+        ]);
         return $data;
     }
 }

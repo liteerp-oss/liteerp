@@ -21,11 +21,6 @@ export default function ListGroup() {
     const { openPopup } = usePopup()
     const [showAdd, setShowAdd] = useState(false)
 
-    const columns = [
-        { label: t('ID'), key: 'id' },
-        { label: t('Name'), key: 'name' },
-    ]
-
     const handleEdit = (row) => {
         form.setIsEdit(true)
         form.setFormData(row)
@@ -136,19 +131,23 @@ export default function ListGroup() {
 
     useEffect(() => {
         getGroup()
+        table.setColums([
+            { label: t('ID'), key: 'id' },
+            { label: t('Name'), key: 'name' },
+        ])
     }, [])
 
     return (
         <div>
             <CommonDataTableV2
-                add={ roles?.includes(PERMISSIONS.CUSTOMER_GROUP.CREATE) ? () => setShowAdd(true) : null}
+                add={() => setShowAdd(true)}
                 loading={table.loading}
                 callback={getGroup}
-                columns={columns}
+                columns={table.colums}
                 data={table.data}
                 links={table.links}
-                onEdit={roles?.includes(PERMISSIONS.CUSTOMER_GROUP.UPDATE) ?handleEdit : null}
-                onDelete={roles?.includes(PERMISSIONS.CUSTOMER_GROUP.DELETE) ? handleDelete : null}
+                onEdit={handleEdit}
+                onDelete={handleDelete}
                 config={{
                     default: [{
                         key: "order_by",
@@ -160,7 +159,7 @@ export default function ListGroup() {
                         type: "select",
                         label: t("Order by"),
                         col: "col-6"
-                    },{
+                    }, {
                         key: "keywords",
                         placeholder: t("Keywords"),
                         type: "text",
@@ -169,6 +168,7 @@ export default function ListGroup() {
                     }]
                 }}
                 search={search}
+                type='customergroup'
             />
 
             {showAdd && (

@@ -23,6 +23,8 @@ import BootstrapAlert from '../BootstrapAlert'
 import { useDispatch, useSelector } from 'react-redux';
 import { setSummary } from '../../redux/order/summarySlice';
 import { useI18n } from '../../../i18n/useI18n';
+import ApproveButton from '../UI/PermissionButtons/ApproveButton';
+import CancelButton from '../UI/PermissionButtons/CancelButton';
 export default function EditOrder() {
     const {t} = useI18n();
     const dispatch = useDispatch();
@@ -286,10 +288,10 @@ export default function EditOrder() {
                                 <div className='row'>
                                     <div className='col-6'>
                                         {detail?.status !== 'cancelled' ?
-                                            <DangerButton 
+                                            <CancelButton 
                                             width={150}
                                             loading={form.loading || shippingForm.loading} onClick={confirmCancelled} 
-                                            label={t('Take Cancel')} />
+                                            label={t('Take Cancel')} type={'order'} />
                                             : null}
                                     </div>
                                     <div className='col-6'>
@@ -299,7 +301,7 @@ export default function EditOrder() {
                                             : null}
 
                                         {currentStep === 3 && detail?.status === 'pending'
-                                            ? <PrimaryButton width={120} loading={form.loading} onClick={confirmApprove} 
+                                            ? <ApproveButton type={'order'} width={120} loading={form.loading} onClick={confirmApprove} 
                                             label={t('Approved')} />
                                             : null}
                                     </div>

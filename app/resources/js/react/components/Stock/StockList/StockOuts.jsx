@@ -1,25 +1,17 @@
 import React, { useCallback, useEffect } from 'react'
 import StockOutService from '../../../services/StockOutService'
 import useTable from '../../../libraries/handleTable'
-import CommonDataTable from '../../CommonDataTable'
 import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from '../../../libraries/handleInput'
-import { Select } from '../../UI/Input/Select'
-import SearchInput from '../../UI/Input/SearchInput'
 import { usePopup } from '../../popups/PopupContext'
 import Currencies from '../../Currencies'
 import StatusBadge from '../../StatusBadge'
 import RenderFieldTableByList from '../../RenderFieldTableByList'
-import { RenderTableSearch } from '../../RenderTableSearch'
-import PrimaryButton from '../../UI/Buttons/PrimaryButton'
 import { useI18n } from '../../../../i18n/useI18n'
-import { useSelector } from 'react-redux'
-import PERMISSIONS from '../../../common/permission'
 import CommonDataTableV2 from '../../CommonDataTableV2'
 
 export default function StockOuts() {
-    const { t } = useI18n()
-    const roles = useSelector((state) => state.businessRole.role);
+    const { t, lang } = useI18n()
     const navigate = useNavigate()
     const search = useForm()
     const table = useTable()
@@ -119,7 +111,7 @@ export default function StockOuts() {
 
         getListStockOut()
         view()
-    }, [])
+    }, [lang])
 
     return (
         <div className="mt-3">
@@ -128,12 +120,9 @@ export default function StockOuts() {
                 columns={table.colums}
                 data={table.data}
                 links={table.links}
-                iconEdit={<i className="bi bi-eye"></i>}
-                onEdit={roles?.includes(PERMISSIONS.STOCK_OUT.SHOW) ? (row) => {
+                onShow={(row) => {
                     navigate(`/stocks?stockout=${row.id}`)
-                } : null
-
-                }
+                }}
                 config={{
                     default: [{
                         key: "order_by",
@@ -155,6 +144,7 @@ export default function StockOuts() {
                 }}
                 search={search}
                 callback={getListStockOut}
+                type={'stockout'}
             />
         </div>
     )

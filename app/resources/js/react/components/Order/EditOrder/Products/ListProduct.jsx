@@ -1,10 +1,10 @@
 import React, { useCallback, useEffect } from "react";
-import CommonDataTable from "../../../CommonDataTable";
 import Currencies from "../../../Currencies";
 import useTable from "../../../../libraries/handleTable";
 import { useForm } from "../../../../libraries/handleInput";
 import InventoryService from '../../../../services/InventoryService'
 import { useI18n } from "@/i18n/useI18n";
+import CommonDataTableV2 from "@/react/components/CommonDataTableV2";
 export default function ListProduct({
     add = (product) => { },
     loading = false,
@@ -51,7 +51,26 @@ export default function ListProduct({
     },[detail?.customer_group_id])
     return <div className="mt-3">
         <h4 className="h5">{t("Inventory")}</h4>
-        <CommonDataTable
+        <CommonDataTableV2
+            config={{
+                        default: [{
+                            key: "order_by",
+                            placeholder: t("Order by"),
+                            options: [
+                                { value: 'ASC', label: t('Oldest') },
+                                { value: 'DESC', label: t('Newest') },
+                            ],
+                            type: "select",
+                            label: t("Order by"),
+                            col: "col-6"
+                        }, {
+                            key: "keywords",
+                            placeholder: t("Keywords"),
+                            type: "text",
+                            label: t("Search"),
+                            col: "col-6"
+                        }]
+                    }}
             loading={table.loading}
             columns={columns}
             data={table?.data}
@@ -60,6 +79,7 @@ export default function ListProduct({
             onEdit={(row) => {
                 add(row)
             }}
+            type={'orderitem'}
         />
     </div>
 }

@@ -8,13 +8,10 @@ import CustomerForm from './ListCustomer/CustomerForm'
 import StatusBadge from '../StatusBadge'
 import RenderFormTableByList from '../RenderFieldTableByList'
 import { useI18n } from '../../../i18n/useI18n'
-import { useSelector } from 'react-redux'
-import PERMISSIONS from '../../common/permission'
 import CommonDataTableV2 from '../CommonDataTableV2'
 
 export default function ListCustomer() {
-    const { t } = useI18n()
-    const roles = useSelector((state) => state.businessRole.role);
+    const { t, lang } = useI18n()
     const table = useTable()
     const search = useForm()
     const form = useForm()
@@ -165,21 +162,19 @@ export default function ListCustomer() {
 
         renderForm()
         getCustomers()
-    }, [])
+    }, [lang])
 
     return (
         <div>
             <CommonDataTableV2
-                add={ roles?.includes(PERMISSIONS.CUSTOMER.CREATE) 
-                    ? () => setShowAdd(true)
-                    : null}
+                add={ () => setShowAdd(true)}
                 loading={table.loading}
                 callback={getCustomers}
                 columns={table.colums}
                 data={table.data}
                 links={table.links}
-                onEdit={roles?.includes(PERMISSIONS.CUSTOMER.UPDATE) ? handleEdit : null}
-                onDelete={ roles?.includes(PERMISSIONS.CUSTOMER.DELETE) ? handleDelete : null}
+                onEdit={handleEdit}
+                onDelete={ handleDelete}
                 config={{
                     default: [{
                         key: "order_by",
@@ -200,6 +195,7 @@ export default function ListCustomer() {
                     }]
                 }}
                 search={search}
+                type={'customer'}
             />
 
             {showAdd && (

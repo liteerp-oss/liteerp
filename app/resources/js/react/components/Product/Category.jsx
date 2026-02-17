@@ -6,16 +6,13 @@ import { PopupLayout } from '../../layouts/PopupLayout'
 import { InputForm } from '../UI/Input/InputForm'
 import TextArea from '../UI/Input/Textarea'
 import { usePopup } from '../popups/PopupContext'
-import { useSelector } from 'react-redux'
 import RenderFieldTableByList from '../RenderFieldTableByList'
 import RenderFormFieldByList from '../RenderFormFieldByList'
 import { useI18n } from '../../../i18n/useI18n'
-import PERMISSIONS from '../../common/permission'
 import CommonDataTableV2 from '../CommonDataTableV2'
 
 export default function Category() {
-    const { t } = useI18n()
-    const roles = useSelector((state) => state.businessRole.role);
+    const { t,lang } = useI18n()
 
     const [attributes, setAttributes] = useState([])
     const [showAdd, setShowAdd] = useState(false)
@@ -170,7 +167,7 @@ export default function Category() {
                 render: (name) => <span className="badge bg-primary">{name}</span>,
             },
         ])
-    }, [])
+    }, [lang])
 
     return (
         <div className="mt-3">
@@ -197,17 +194,16 @@ export default function Category() {
                 }}
                 search={search}
                 callback={getCategorires}
-                add={
-                    roles?.includes(PERMISSIONS.CATEGORY_PRODUCT.CREATE) ? () => {
+                add={() => {
                               setShowAdd(true)
                               form.setIsEdit(false)
-                          } : null
-                }
+                          }}
                 columns={tableCategory.colums}
                 data={tableCategory.data}
                 links={tableCategory.links}
-                onEdit={roles?.includes(PERMISSIONS.CATEGORY_PRODUCT.UPDATE) ? handleEdit : null}
-                onDelete={roles?.includes(PERMISSIONS.CATEGORY_PRODUCT.DELETE) ? handleDelete : null}
+                onEdit={handleEdit}
+                onDelete={handleDelete}
+                type={'categoryproduct'}
             />
 
             {showAdd && (

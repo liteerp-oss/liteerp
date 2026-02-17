@@ -9,17 +9,14 @@ import Currencies from '../Currencies';
 import StatusBadge from '../StatusBadge';
 import RenderFieldTableByList from '../RenderFieldTableByList'
 import { useI18n } from '../../../i18n/useI18n';
-import { useSelector } from 'react-redux';
-import PERMISSIONS from '../../common/permission';
 import CommonDataTableV2 from '../CommonDataTableV2';
 
 export default function InvoiceOuts() {
-    const { t } = useI18n();
+    const { t,lang } = useI18n();
     const navigate = useNavigate();
     const search = useForm();
     const table = useTable();
     const { openPopup } = usePopup();
-    const roles = useSelector((state) => state.businessRole.role);
     const getInvoices = useCallback((page = 0) => {
         table.setLoading(true);
         InvoiceOutService.list({
@@ -80,7 +77,7 @@ export default function InvoiceOuts() {
                 },
             },
             {
-                label: t("Invoice no"), // Sử dụng Invoice no thay cho Document no để đồng bộ
+                label: t("Invoice no"), 
                 key: "document_no",
                 render: (value) => value ?? <span className="text-muted fst-italic">{value}</span>,
             },
@@ -95,7 +92,7 @@ export default function InvoiceOuts() {
                 render: (value) => <span><Currencies amount={value} /></span>,
             },
             {
-                label: t("Total price"), // Đồng bộ với key Total price trong i18n
+                label: t("Total price"), 
                 key: "total_adjusted",
                 render: (value) => <strong><Currencies amount={value} /></strong>,
             },
@@ -107,7 +104,7 @@ export default function InvoiceOuts() {
                 }
             },
             {
-                label: t("Order date"), // Đồng bộ với key Order date trong i18n
+                label: t("Order date"), 
                 key: "invoice_date",
                 render: (value) =>
                     value ? isoToDateTime(value) : "",
@@ -136,7 +133,7 @@ export default function InvoiceOuts() {
         ])
         getInvoices();
         view();
-    }, [])
+    }, [lang])
 
     return <div>
         <CommonDataTableV2
@@ -164,8 +161,9 @@ export default function InvoiceOuts() {
             columns={table.colums}
             data={table.data}
             links={table.links}
-            onEdit={roles?.includes(PERMISSIONS.INVOICE_OUT.SHOW) ? onEdit : null}
+            onShow={onEdit}
             callback={getInvoices}
+            type={'invoiceout'}
         />
     </div>
 }

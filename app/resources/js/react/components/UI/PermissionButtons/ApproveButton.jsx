@@ -1,0 +1,26 @@
+import React from "react";
+import PrimaryButton from "../Buttons/PrimaryButton";
+import { useSelector } from "react-redux";
+import SuccessButton from "../Buttons/SuccessButton";
+
+export default function ApproveButton({
+    label = "Primary Button",
+    onClick = null,
+    disabled = false,
+    loading = false,
+    width = 70,
+    height = 35,
+    type = null
+}) {
+    const roles = useSelector((state) => state.businessRole.role);
+    const permission = roles?.includes("erp." + type + ".approved");
+    return <SuccessButton
+        label={label}
+        onClick={onClick}
+        disabled={disabled || !permission}
+        loading={loading}
+        width={width}
+        height={height}
+        type={type}
+    />;
+}

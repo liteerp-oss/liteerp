@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import { usePopup } from '../popups/PopupContext';
 import CustomerInformation from './EditOrder/CustomerInformation';
 import { useI18n } from '../../../i18n/useI18n';
+import CreateButton from '../UI/PermissionButtons/CreateButton';
 
 export default function AddOrder() {
     const { t } = useI18n();
@@ -84,11 +85,12 @@ export default function AddOrder() {
                         <SecondaryButton label={t('Back')} />
                     </div>
                     <div className="col-2 ms-auto text-end">
-                        <PrimaryButton
+                        <CreateButton
                             loading={form.loading}
                             onClick={create}
                             label={t('Next')}
                             width={100}
+                            type={'order'}
                         />
                     </div>
                 </div>

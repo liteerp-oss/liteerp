@@ -21,6 +21,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setPurchaseDetail } from '../../redux/purchase/detailSlice';
 import BootstrapAlert from '../BootstrapAlert';
 import { useI18n } from '../../../i18n/useI18n';
+import ApproveButton from '../UI/PermissionButtons/ApproveButton';
+import CancelButton from '../UI/PermissionButtons/CancelButton';
 
 export default function EditPurchase() {
     const { t } = useI18n();
@@ -224,11 +226,12 @@ export default function EditPurchase() {
                         <div className="row">
                             <div className="col-6">
                                 {detail?.status !== 'cancelled' && (
-                                    <DangerButton
+                                    <CancelButton
                                         width={170}
                                         loading={form.loading}
                                         onClick={confirmUpdateToCancelled}
                                         label={t('Cancel purchase')}
+                                        type={'purchase'}
                                     />
                                 )}
                             </div>
@@ -255,11 +258,12 @@ export default function EditPurchase() {
 
                                 {currentStep === 2 &&
                                     detail?.status === 'requested' && (
-                                        <PrimaryButton
+                                        <ApproveButton
                                             width={100}
                                             loading={form.loading}
                                             onClick={confirmUpdateToApprove}
                                             label={t('Approve')}
+                                            type={'purchase'}
                                         />
                                     )}
                             </div>

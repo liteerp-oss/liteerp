@@ -9,17 +9,13 @@ import PriceListService from '../../services/PriceListService'
 import SearchSelect from '../UI/Input/SearchSelect'
 import CustomerGroupService from '../../services/CustomerGroupService'
 import Currency from '../../components/Currencies'
-import { useSelector } from 'react-redux'
 import RenderFormFieldByList from '../RenderFormFieldByList'
 import RenderFieldTableByList from '../RenderFieldTableByList'
 import { useI18n } from '../../../i18n/useI18n'
-import PERMISSIONS from '../../common/permission'
 import CommonDataTableV2 from '../CommonDataTableV2'
 
 export default function PriceList() {
-    const { t } = useI18n()
-    const roles = useSelector((state) => state.businessRole.role);
-    const business = useSelector((state) => state.business.data)
+    const { t, lang } = useI18n()
     const { openPopup } = usePopup()
 
     const [showAdd, setShowAdd] = useState(false)
@@ -164,12 +160,7 @@ export default function PriceList() {
             },
             { label: t('Customer Group'), key: 'group' },
         ])
-    }, [])
-
-    const hasPermission = useMemo(
-        () => business.role === 'manager' || business.role === 'admin',
-        [business]
-    )
+    }, [lang])
 
     return (
         <div className="mt-3">
@@ -196,23 +187,20 @@ export default function PriceList() {
                 }}
                 search={search}
                 callback={getPriceList}
-                add={
-                    roles?.includes(PERMISSIONS.PRICE_LIST.CREATE) ? () => {
+                add={() => {
                               setShowAdd(true)
                               form.setIsEdit(false)
-                          } : null
-                }
+                          }}
                 columns={table.colums}
                 data={table.data}
                 links={table.links}
-                onEdit={
-                    roles?.includes(PERMISSIONS.PRICE_LIST.UPDATE) ? (row) => {
+                onEdit={(row) => {
                               form.setIsEdit(true)
                               form.setFormData(row)
                               setShowAdd(true)
-                          } : null
-                }
-                onDelete={roles?.includes(PERMISSIONS.PRICE_LIST.DELETE) ? handleDelete : null}
+                          }}
+                onDelete={handleDelete}
+                type={'pricelist'}
             />
 
             {showAdd && (

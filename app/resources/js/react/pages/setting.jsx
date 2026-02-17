@@ -11,6 +11,7 @@ import { setBusinessInfo } from '../redux/businessInfoSlice'
 import UploadImage from '../components/UI/Input/UploadImage'
 import { useI18n } from '../../i18n/useI18n'
 import PERMISSIONS from '../common/permission'
+import UpdateButton from '../components/UI/PermissionButtons/UpdateButton'
 
 export default function Setting() {
     const { t } = useI18n()
@@ -235,11 +236,12 @@ export default function Setting() {
                         </div>
 
                         <div className='mt-3'>
-                            <PrimaryButton
+                            <UpdateButton
                                 width={150}
-                                loading={form.loading || !roles?.includes(PERMISSIONS.BUSINESS.UPDATE)}
+                                loading={form.loading}
                                 onClick={update}
                                 label={t('Save changes')}
+                                type={'business'}
                             />
                         </div>
                     </div>

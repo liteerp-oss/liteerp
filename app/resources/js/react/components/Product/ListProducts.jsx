@@ -17,7 +17,7 @@ import RenderFieldTableByList from '../RenderFieldTableByList'
 import RenderFormFieldByList from '../RenderFormFieldByList'
 import CommonDataTableV2 from '../CommonDataTableV2'
 export default function ListProducts() {
-    const { t } = useI18n()
+    const { t,lang } = useI18n()
     const roles = useSelector((state) => state.businessRole.role);
     const { openPopup } = usePopup()
 
@@ -176,7 +176,7 @@ export default function ListProducts() {
         ])
         getProducts()
         view();
-    }, [])
+    }, [lang])
 
     return (
         <div className="mt-3">
@@ -212,8 +212,9 @@ export default function ListProducts() {
                 columns={table.colums}
                 data={table.data}
                 links={table.links}
-                onEdit={roles?.includes(PERMISSIONS.PRODUCT.UPDATE) ? handEdit : null}
-                onDelete={roles?.includes(PERMISSIONS.PRODUCT.DELETE) ? handleDelete : null}
+                onEdit={handEdit}
+                onDelete={handleDelete}
+                type={'product'}
             />
 
             {showForm && (

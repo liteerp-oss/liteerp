@@ -9,13 +9,10 @@ import Currencies from '../../components/Currencies'
 import StatusBadge from '../StatusBadge'
 import RenderFieldTableByList from '../RenderFieldTableByList'
 import { useI18n } from '../../../i18n/useI18n';
-import { useSelector } from 'react-redux';
-import PERMISSIONS from '../../common/permission';
 import CommonDataTableV2 from '../CommonDataTableV2';
 
 export default function InvoiceIns() {
-    const { t } = useI18n();
-    const roles = useSelector((state) => state.businessRole.role);
+    const { t,lang } = useI18n();
     const navigate = useNavigate();
     const { openPopup } = usePopup();
     const table = useTable();
@@ -65,8 +62,6 @@ export default function InvoiceIns() {
     }, []);
 
     useEffect(() => {
-        listInvoice();
-        view();
         table.setColums([
             {
                 label: t("Supplier"),
@@ -81,7 +76,7 @@ export default function InvoiceIns() {
                 },
             },
             {
-                label: t("Invoice no"), // Đổi từ Document no để khớp với các key trước đó của bạn
+                label: t("Invoice no"), 
                 key: "document_no",
                 render: (value) => value ?? <span className="text-muted fst-italic">{value}</span>,
             },
@@ -98,7 +93,7 @@ export default function InvoiceIns() {
                 render: (value) => <span><Currencies amount={value} /></span>,
             },
             {
-                label: t("Total price"), // Đổi từ Total paid để khớp key t("Total price")
+                label: t("Total price"), 
                 key: "total",
                 render: (value) => <strong><Currencies amount={value} /></strong>,
             },
@@ -110,7 +105,7 @@ export default function InvoiceIns() {
                 },
             },
             {
-                label: t("Import date"), // Đổi từ Invoice date để khớp key t("Import date")
+                label: t("Import date"),
                 key: "invoice_date",
                 render: (value) =>
                     value ?? "",
@@ -137,7 +132,10 @@ export default function InvoiceIns() {
                 }
             },
         ])
-    }, []);
+        listInvoice();
+        view();
+        
+    }, [lang]);
 
     return <div>
         <CommonDataTableV2
@@ -165,8 +163,9 @@ export default function InvoiceIns() {
             columns={table.colums}
             data={table.data}
             links={table.links}
-            onEdit={ roles?.includes(PERMISSIONS.INVOICE_IN.SHOW) ? handleEdit : null}
+            onShow={ handleEdit}
             callback={listInvoice}
+            type={'invoicein'}
         />
     </div>
 }

@@ -156,6 +156,7 @@ export default function Products({
             .then((resp) => {
                 table.setData(resp.message.data);
                 table.setLoading(false);
+                table.setLinks(resp.message.links);
             })
             .catch((error) => {
 

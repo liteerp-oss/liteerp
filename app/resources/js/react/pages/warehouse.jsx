@@ -16,7 +16,7 @@ import PERMISSIONS from '../common/permission'
 import CommonDataTableV2 from '../components/CommonDataTableV2'
 
 export default function Warehouse() {
-    const { t } = useI18n()
+    const { t, lang } = useI18n()
     const { openPopup } = usePopup()
     const roles = useSelector((state) => state.businessRole.role);
     const table = useTable()
@@ -29,8 +29,7 @@ export default function Warehouse() {
         (page = 0) => {
             table.setLoading(true)
             WarehouseService.list({
-                active: search.formData?.active ?? '',
-                keywords: search.formData?.keywords ?? '',
+                ...search.formData,
                 page,
             })
                 .then((resp) => {
@@ -71,7 +70,7 @@ export default function Warehouse() {
             },
         ])
         getList()
-    }, [search.formData?.active])
+    }, [lang])
 
     const submit = useCallback(() => {
         form.setLoading(true)
@@ -172,12 +171,12 @@ export default function Warehouse() {
                     columns={table.colums}
                     data={table.data}
                     links={table.links}
-                    onEdit={roles?.includes(PERMISSIONS.WAREHOUSE.UPDATE) ? (row) => {
+                    onEdit={(row) => {
                         setShowPopup(true)
                         form.setFormData(row)
                         form.setIsEdit(true)
-                    } : null}
-                    onDelete={roles?.includes(PERMISSIONS.WAREHOUSE.DELETE) ? handleDelete : null}
+                    }}
+                    onDelete={handleDelete}
                     config={{
                     default: [{
                         key: "order_by",
@@ -198,6 +197,7 @@ export default function Warehouse() {
                     }]
                 }}
                 search={search}
+                type={'warehouse'}
                 />
             </div>
 

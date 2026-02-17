@@ -1,33 +1,26 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import DashboardLayout from '../layouts/DashboardLayout'
-import CommonDataTable from '../components/CommonDataTable'
-import PrimaryButton from '../components/UI/Buttons/PrimaryButton'
 import { PopupLayout } from '../layouts/PopupLayout'
 import { InputForm } from '../components/UI/Input/InputForm'
 import ShippingService from '../services/ShippingService'
 import { usePopup } from '../components/popups/PopupContext'
 import useTable from '../libraries/handleTable'
 import { useForm } from '../libraries/handleInput'
-import SearchInput from '../components/UI/Input/SearchInput'
 import PageHead from '../components/PageHead'
 import FlatIcon32 from '../components/UI/FlatIcons/FlatIcon32'
 import UploadImage from '../components/UI/Input/UploadImage'
 import RenderFormTableByList from '../components/RenderFieldTableByList'
 import RenderFormFieldByList from '../components/RenderFormFieldByList'
-import { RenderTableSearch } from '../components/RenderTableSearch'
 import { useI18n } from '../../i18n/useI18n'
-import { useSelector } from 'react-redux'
-import PERMISSIONS from '../common/permission'
 import CommonDataTableV2 from '../components/CommonDataTableV2'
 
 export default function Shipping() {
-    const { t } = useI18n()
+    const { t, lang } = useI18n()
     const { openPopup } = usePopup()
     const table = useTable()
     const form = useForm()
     const search = useForm()
     const [showAdd, setShowAdd] = useState(false)
-    const roles = useSelector((state) => state.businessRole.role);
     const handEdit = (row) => {
         form.setFormData(row)
         form.setIsEdit(true)
@@ -161,8 +154,6 @@ export default function Shipping() {
     }
 
     useEffect(() => {
-        getShippings()
-        getView()
         table.setColums([
             {
                 label: t('Logo'),
@@ -197,7 +188,9 @@ export default function Shipping() {
                     ),
             },
         ])
-    }, [])
+        getShippings()
+        getView()
+    }, [lang])
 
     return (
         <DashboardLayout>
@@ -211,17 +204,17 @@ export default function Shipping() {
 
                 <div className="container mt-4">
                     <CommonDataTableV2
-                        add={roles?.includes(PERMISSIONS.SHIPPING.CREATE) ? () => {
+                        add={() => {
                             setShowAdd(true)
                             form.setIsEdit(false)
-                        } : null}
+                        }}
                         loading={table.loading}
                         callback={getShippings}
                         data={table.data}
                         links={table.links}
                         columns={table.colums}
-                        onEdit={roles?.includes(PERMISSIONS.SHIPPING.UPDATE) ? handEdit : null}
-                        onDelete={roles?.includes(PERMISSIONS.SHIPPING.DELETE) ? handleDelete : null}
+                        onEdit={handEdit}
+                        onDelete={handleDelete}
                         config={{
                             default: [{
                                 key: "order_by",
@@ -242,6 +235,7 @@ export default function Shipping() {
                             }]
                         }}
                         search={search}
+                        type={'shipping'}
                     />
                 </div>
 

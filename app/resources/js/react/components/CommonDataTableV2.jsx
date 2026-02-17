@@ -7,7 +7,7 @@ import PrimaryButton from "./UI/Buttons/PrimaryButton";
 import SecondaryButton from "./UI/Buttons/SecondaryButton";
 import { PopupLayout } from "../layouts/PopupLayout";
 import RenderFormFieldByList from "./RenderFormFieldByList";
-
+import { useSelector } from "react-redux";
 export default function CommonDataTableV2({
     columns = [],
     data = [],
@@ -30,10 +30,20 @@ export default function CommonDataTableV2({
         default: [],
         extras: []
     },
-    callback = () => {}
+    callback = () => {},
+    // table type for custom render table, example: order, customer, invoice,... for use in render function with condition like if(
+    type = null,
+    onShow = null
 }) {
     const { t } = useI18n();
     const [showExtras,setShowExtras] = useState(false)
+    const roles = useSelector((state) => state.businessRole.role);
+    const permission = {
+        canEdit: type ? roles?.includes('erp.' + type + '.update') : false,
+        canDelete: type ? roles?.includes('erp.' + type + '.delete') : false,
+        canAdd: type ? roles?.includes('erp.' + type + '.create') : false,
+        canShow: type ? roles?.includes('erp.' + type + '.show') : false,
+    }
     return (
         <div className={`card rounded-3 p-4 shadow-sm theme-sidebar-bg theme-title`}>
             <div className="d-flex justify-content-between">
@@ -70,7 +80,7 @@ export default function CommonDataTableV2({
                         </div>
                         <div className="col-1 pt-4">
                             <SecondaryButton
-                                width={70}
+                                width={50}
                                 label={
                                     <div>
                                         <i className="bi bi-gear-wide-connected"></i>
@@ -85,7 +95,7 @@ export default function CommonDataTableV2({
                     </div>
                     {filter}
                 </div>
-                {add ? <span style={{
+                {add && permission.canAdd ? <span style={{
                     height: 25
                 }} onClick={add} className="badge bg-primary text-right btn">{t('Add new')}</span> : null}
 
@@ -131,28 +141,45 @@ export default function CommonDataTableV2({
                                         </td>
                                     ))}
 
-                                    {(onEdit || onDelete) && (
+                                    {(onEdit || onDelete || onShow) && (
                                         <td style={{
-                                            width: onEdit && onDelete ? 100 : 50
+                                            width: 150
                                         }}>
                                             <div className="d-flex gap-2">
-                                                {onEdit && (
+                                                {onEdit && permission.canEdit ? (
                                                     <button
+                                                        style={{
+                                                            width: 50
+                                                        }}
                                                         className="btn btn-sm btn-outline-primary"
                                                         onClick={() => onEdit(row)}
                                                     >
                                                         {iconEdit ?? <i className="bi bi-pencil-square"></i>}
 
                                                     </button>
-                                                )}
-                                                {onDelete && (
+                                                ) : null}
+                                                {onDelete && permission.canDelete ? (
                                                     <button
+                                                        style={{
+                                                            width: 50
+                                                        }}
                                                         className="btn btn-sm btn-outline-danger"
                                                         onClick={() => onDelete(row)}
                                                     >
                                                         <i className="bi bi-trash"></i>
                                                     </button>
-                                                )}
+                                                ) : null}
+                                                {onShow && permission.canShow ? (
+                                                    <button
+                                                        style={{
+                                                            width: 50
+                                                        }}
+                                                        className="btn btn-sm btn-outline-secondary"
+                                                        onClick={() => onShow(row)}
+                                                    >
+                                                        <i className="bi bi-eye"></i>
+                                                    </button>
+                                                ) : null}
                                             </div>
                                         </td>
                                     )}

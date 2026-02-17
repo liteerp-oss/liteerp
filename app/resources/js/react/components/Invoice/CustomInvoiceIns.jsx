@@ -16,13 +16,10 @@ import ContentOnTable from '../ContentOnTable'
 import RenderFieldTableByList from '../RenderFieldTableByList';
 import RenderFormFieldByList from '../RenderFormFieldByList';
 import { useI18n } from '../../../i18n/useI18n';
-import { useSelector } from 'react-redux';
-import PERMISSIONS from '../../common/permission';
 import CommonDataTableV2 from '../CommonDataTableV2';
 
 export default function CustomInvoiceIns() {
-    const { t } = useI18n();
-    const roles = useSelector((state) => state.businessRole.role);
+    const { t, lang } = useI18n();
     const [suppliers, setSuppliers] = useState([]);
     const search = useForm();
     const form = useForm();
@@ -177,7 +174,6 @@ export default function CustomInvoiceIns() {
     }, [])
 
     useEffect(() => {
-        getInvoices();
         table.setColums([
             {
                 label: t("ID"),
@@ -224,14 +220,15 @@ export default function CustomInvoiceIns() {
                 }
             }
         ])
+        getInvoices();
         view();
-    }, [])
+    }, [lang])
 
     return <div>
         <CommonDataTableV2
-            add={ roles?.includes(PERMISSIONS.CUSTOM_INVOICE_IN.CREATE) ? () => {
+            add={ () => {
                 setShowForm(true)
-            } : null}
+            }}
             config={{
                     default: [{
                         key: "order_by",
@@ -256,9 +253,10 @@ export default function CustomInvoiceIns() {
             columns={table.colums}
             data={table.data}
             links={table.links}
-            onEdit={ roles?.includes(PERMISSIONS.CUSTOM_INVOICE_IN.UPDATE) ? onEdit : null}
+            onShow={onEdit}
             callback={getInvoices}
-            onDelete={ roles?.includes(PERMISSIONS.CUSTOM_INVOICE_IN.DELETE) ? onDelete : null}
+            onDelete={ onDelete}
+            type={'custominvoicein'}
         />
         {showForm ? <PopupLayout
             loading={form.loading}

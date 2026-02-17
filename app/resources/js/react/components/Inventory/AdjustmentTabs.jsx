@@ -1,8 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import useTable from '../../libraries/handleTable'
 import InventoryAdjustmentService from '../../services/InventoryAdjustmentService'
-import CommonDataTable from '../CommonDataTable'
-import SearchInput from '../UI/Input/SearchInput'
 import ProductService from '../../services/ProductService'
 import WarehouseService from '../../services/WarehouseService'
 import { PopupLayout } from '../../layouts/PopupLayout'
@@ -13,17 +11,14 @@ import { usePopup } from '../popups/PopupContext'
 import TextArea from '../UI/Input/Textarea'
 import { isoToDateTime } from '../../libraries/common'
 import { useI18n } from '../../../i18n/useI18n'
-import PERMISSIONS from '../../common/permission'
-import { useSelector } from 'react-redux'
 import CommonDataTableV2 from '../CommonDataTableV2'
 
 export default function AdjustmentTabs() {
-    const { t } = useI18n()
+    const { t, lang } = useI18n()
     const table = useTable()
     const form = useForm()
     const search = useForm()
     const { openPopup } = usePopup()
-    const roles = useSelector((state) => state.businessRole.role);
     const [products, setProducts] = useState([])
     const [warehouses, setWarehouses] = useState([])
     const [showForm, setShowForm] = useState(false)
@@ -93,40 +88,7 @@ export default function AdjustmentTabs() {
     }, [form.formData])
 
     useEffect(() => {
-        getAdjustment()
-    }, [])
-
-    return (
-        <div>
-            <CommonDataTableV2
-                loading={table.loading}
-                callback={getAdjustment}
-                data={table.data}
-                links={table.links}
-                add={ roles?.includes(PERMISSIONS.INVENTORY.ADJUSTMENT_CREATE) 
-                    ? () => setShowForm(true)
-                    : null}
-                config={{
-                    default: [{
-                        key: "order_by",
-                        placeholder: t("Order by"),
-                        options: [
-                            { value: 'ASC', label: t('Oldest') },
-                            { value: 'DESC', label: t('Newest') },
-                        ],
-                        type: "select",
-                        label: t("Order by"),
-                        col: "col-6"
-                    },{
-                        key: "keywords",
-                        placeholder: t("Keywords"),
-                        type: "text",
-                        label: t("Search"),
-                        col: "col-6"
-                    }]
-                }}
-                search={search}
-                columns={[
+        table.setColums([
                     { key: 'id', label: t('ID') },
                     { key: 'product_name', label: t('Product') },
                     {
@@ -165,7 +127,40 @@ export default function AdjustmentTabs() {
                             </span>
                         ),
                     },
-                ]}
+                ])
+        getAdjustment()
+    }, [lang])
+
+    return (
+        <div>
+            <CommonDataTableV2
+                loading={table.loading}
+                callback={getAdjustment}
+                data={table.data}
+                links={table.links}
+                add={ () => setShowForm(true)}
+                config={{
+                    default: [{
+                        key: "order_by",
+                        placeholder: t("Order by"),
+                        options: [
+                            { value: 'ASC', label: t('Oldest') },
+                            { value: 'DESC', label: t('Newest') },
+                        ],
+                        type: "select",
+                        label: t("Order by"),
+                        col: "col-6"
+                    },{
+                        key: "keywords",
+                        placeholder: t("Keywords"),
+                        type: "text",
+                        label: t("Search"),
+                        col: "col-6"
+                    }]
+                }}
+                search={search}
+                columns={table.colums}
+                type={'inventoryadjustment'}
             />
 
             {showForm && (

@@ -1,25 +1,17 @@
 import React, { useCallback, useEffect } from 'react'
 import StockInService from '../../../services/StockInService'
 import useTable from '../../../libraries/handleTable'
-import CommonDataTable from '../../CommonDataTable'
 import { Link, useNavigate } from 'react-router-dom'
 import { isoToDateTime } from '../../../libraries/common'
 import { useForm } from '../../../libraries/handleInput'
-import { Select } from '../../UI/Input/Select'
-import SearchInput from '../../UI/Input/SearchInput'
 import { usePopup } from '../../popups/PopupContext'
 import StatusBadge from '../../StatusBadge'
 import RenderFieldTableByList from '../../RenderFieldTableByList'
-import { RenderTableSearch } from '../../RenderTableSearch'
-import PrimaryButton from '../../UI/Buttons/PrimaryButton'
 import { useI18n } from '../../../../i18n/useI18n'
-import { useSelector } from 'react-redux'
-import PERMISSIONS from '../../../common/permission'
 import CommonDataTableV2 from '../../CommonDataTableV2'
 
 export default function StockIns() {
-    const { t } = useI18n()
-    const roles = useSelector((state) => state.businessRole.role);
+    const { t, lang } = useI18n()
     const navigate = useNavigate()
     const search = useForm()
     const table = useTable()
@@ -128,7 +120,7 @@ export default function StockIns() {
             },
         ])
         view()
-    }, [])
+    }, [lang])
 
     return (
         <div className="mt-3">
@@ -137,11 +129,9 @@ export default function StockIns() {
                 columns={table.colums}
                 data={table.data}
                 links={table.links}
-                iconEdit={<i className="bi bi-eye"></i>}
-                onEdit={ roles?.includes(PERMISSIONS.STOCK_IN.SHOW) ? (row) => {
+                onShow={ (row) => {
                     navigate(`/stocks?stockin=${row.id}`)
-                    } : null
-                }
+                    }}
                 config={{
                     default: [{
                         key: "order_by",
@@ -163,6 +153,7 @@ export default function StockIns() {
                 }}
                 search={search}
                 callback={getListStockIn}
+                type={'stockin'}
             />
         </div>
     )

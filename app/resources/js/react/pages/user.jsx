@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import DashboardLayout from '../layouts/DashboardLayout'
 import PageHead from '../components/PageHead'
-import CommonDataTable from '../components/CommonDataTable'
 import UserService from '../services/UserService'
 import useTable from '../libraries/handleTable'
 import { useForm } from '../libraries/handleInput'
@@ -10,19 +9,16 @@ import { InputForm } from '../components/UI/Input/InputForm'
 import { usePopup } from '../components/popups/PopupContext'
 import { Select } from '../components/UI/Input/Select'
 import { useI18n } from '../../i18n/useI18n'
-import { useSelector } from 'react-redux'
-import PERMISSIONS from '../common/permission'
 import ContentOnTable from '../components/ContentOnTable'
 import CommonDataTableV2 from '../components/CommonDataTableV2'
 
 export default function User() {
-    const { t } = useI18n()
+    const { t, lang } = useI18n()
     const { openPopup } = usePopup()
     const table = useTable()
     const form = useForm()
     const search = useForm();
     const [showForm, setShowForm] = useState(false)
-    const roles = useSelector((state) => state.businessRole.role);
     const getUsers = useCallback(() => {
         table.setLoading(true)
         UserService.list({
@@ -176,7 +172,7 @@ export default function User() {
             },
         ])
         getUsers()
-    }, [])
+    }, [lang])
 
     return (
         <DashboardLayout>
@@ -212,12 +208,13 @@ export default function User() {
                         callback={getUsers}
                         search={search}
                         loading={table.loading}
-                        add={roles?.includes(PERMISSIONS.USER.CREATE) ? () => setShowForm(true) : null}
+                        add={() => setShowForm(true)}
                         columns={table.colums}
                         data={table.data}
                         links={table.links}
-                        onEdit={roles?.includes(PERMISSIONS.USER.UPDATE) ? handleEdit : null}
-                        onDelete={roles?.includes(PERMISSIONS.USER.DELETE) ? handleDelete : null}
+                        onEdit={handleEdit}
+                        onDelete={handleDelete}
+                        type={'user'}
                     />
                 </div>
 

@@ -1,30 +1,22 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import DashboardLayout from '../layouts/DashboardLayout'
-import CommonDataTable from '../components/CommonDataTable'
 import { PopupLayout } from '../layouts/PopupLayout'
 import { InputForm } from '../components/UI/Input/InputForm'
 import SupplierService from '../services/SupplierService'
-import SearchInput from '../components/UI/Input/SearchInput'
 import { useForm } from '../libraries/handleInput'
 import useTable from '../libraries/handleTable'
-import { Select } from '../components/UI/Input/Select'
 import TextArea from '../components/UI/Input/Textarea'
 import { usePopup } from '../components/popups/PopupContext'
 import PageHead from '../components/PageHead'
 import { substring } from '../libraries/common'
 import StatusBadge from '../components/StatusBadge'
 import RenderFormFieldByList from '../components/RenderFormFieldByList'
-import PrimaryButton from '../components/UI/Buttons/PrimaryButton'
 import RenderFormTableByList from '../components/RenderFieldTableByList'
-import { RenderTableSearch } from '../components/RenderTableSearch'
 import { useI18n } from '../../i18n/useI18n'
-import { useSelector } from 'react-redux'
-import PERMISSIONS from '../common/permission'
 import CommonDataTableV2 from '../components/CommonDataTableV2'
 
 export default function Suppliers() {
-    const { t } = useI18n()
-    const roles = useSelector((state) => state.businessRole.role);
+    const { t, lang } = useI18n()
     const { openPopup } = usePopup()
 
     const [addShow, setAddShow] = useState(false)
@@ -204,7 +196,7 @@ export default function Suppliers() {
                 ),
             },
         ])
-    }, [])
+    }, [lang])
 
     return (
         <DashboardLayout>
@@ -240,13 +232,14 @@ export default function Suppliers() {
                         }]
                     }}
                     search={search}
-                    add={roles?.includes(PERMISSIONS.SUPPLIER.CREATE) ? () => {
+                    add={() => {
                         setAddShow(true)
                         form.setIsEdit(false)
-                    } : null}
-                    onEdit={roles?.includes(PERMISSIONS.SUPPLIER.UPDATE) ? handleEdit : null}
-                    onDelete={roles?.includes(PERMISSIONS.SUPPLIER.DELETE) ? handleDelete : null}
+                    }}
+                    onEdit={handleEdit}
+                    onDelete={handleDelete}
                     callback={getSupliers}
+                    type={'supplier'}
                 />
 
                 {addShow && (

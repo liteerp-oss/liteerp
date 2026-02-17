@@ -1,32 +1,26 @@
 import React, { useCallback, useEffect } from 'react';
-import CommonDataTable from '../CommonDataTable';
 import { useNavigate } from 'react-router-dom';
-import { Select } from "../UI/Input/Select";
 import OrderService from '../../services/OrderService';
 import { usePopup } from '../popups/PopupContext';
 import { useForm } from '../../libraries/handleInput';
 import useTable from '../../libraries/handleTable';
-import SearchInput from '../UI/Input/SearchInput';
 import PageHead from '../PageHead';
 import StatusBadge from '../StatusBadge';
 import ContentOnTable from '../ContentOnTable';
 import PaymentMethod from '../PaymentMethod';
 import RenderFieldTableByList from '../RenderFieldTableByList';
-import { RenderTableSearch } from '../RenderTableSearch';
-import PrimaryButton from '../UI/Buttons/PrimaryButton';
 import { useI18n } from '../../../i18n/useI18n';
-import PERMISSIONS from '../../common/permission';
 import { useSelector } from 'react-redux';
 import CommonDataTableV2 from '../CommonDataTableV2';
 
 export default function ListOrder() {
-    const { t } = useI18n();
+    const { t,lang } = useI18n();
     const navigate = useNavigate();
     const { openPopup } = usePopup();
     const table = useTable();
     const search = useForm();
     const roles = useSelector((state) => state.businessRole.role);
-    const handleEdit = (row) => {
+    const handleShow = (row) => {
         navigate('/orders?form=edit&id=' + row.id);
     };
 
@@ -64,7 +58,7 @@ export default function ListOrder() {
                 });
                 search.setHookRender(resp.message.search);
             })
-            .catch(() => {});
+            .catch(() => { });
     }, []);
 
     useEffect(() => {
@@ -126,7 +120,7 @@ export default function ListOrder() {
             },
         ]);
         view();
-    }, []);
+    }, [lang]);
 
     return (
         <div>
@@ -139,34 +133,33 @@ export default function ListOrder() {
             <div className="m-4">
                 <CommonDataTableV2
                     config={{
-                    default: [{
-                        key: "order_by",
-                        placeholder: t("Order by"),
-                        options: [
-                            { value: 'ASC', label: t('Oldest') },
-                            { value: 'DESC', label: t('Newest') },
-                        ],
-                        type: "select",
-                        label: t("Order by"),
-                        col: "col-6"
-                    },{
-                        key: "keywords",
-                        placeholder: t("Keywords"),
-                        type: "text",
-                        label: t("Search"),
-                        col: "col-6"
-                    }]
-                }}
-                search={search}
-                    add={ roles?.includes(PERMISSIONS.ORDER.CREATE) 
-                        ? () => navigate('/orders?form=add')
-                        : null}
+                        default: [{
+                            key: "order_by",
+                            placeholder: t("Order by"),
+                            options: [
+                                { value: 'ASC', label: t('Oldest') },
+                                { value: 'DESC', label: t('Newest') },
+                            ],
+                            type: "select",
+                            label: t("Order by"),
+                            col: "col-6"
+                        }, {
+                            key: "keywords",
+                            placeholder: t("Keywords"),
+                            type: "text",
+                            label: t("Search"),
+                            col: "col-6"
+                        }]
+                    }}
+                    search={search}
+                    add={() => navigate('/orders?form=add')}
                     columns={table.colums}
                     data={table?.data}
                     links={table?.links}
-                    onEdit={ roles?.includes(PERMISSIONS.ORDER.SHOW) ? handleEdit : null}
+                    onShow={handleShow}
                     loading={table.loading}
                     callback={getOrders}
+                    type={'order'}
                 />
             </div>
         </div>

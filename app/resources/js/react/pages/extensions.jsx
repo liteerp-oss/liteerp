@@ -7,6 +7,7 @@ import {usePopup} from '../components/popups/PopupContext'
 import LoadingBox from '../components/LoadingBox'
 import EmptyBox from '../components/Emptybox'
 import { useI18n } from '../../i18n/useI18n';
+import CreateButton from '../components/UI/PermissionButtons/CreateButton';
 export default function Extensions() {
     const {t} = useI18n();
     let fileRef = useRef(null);
@@ -63,11 +64,10 @@ export default function Extensions() {
                         <div className='row mb-2 pt-3 pb-2 px-1'>
                             <div className='col-8'>
                                 <div className='d-flex'>
-                                    <h4>{t('All extensions')}</h4>
-                                    <small className='mt-1 mx-3 badge bg-primary text-white'
-                                        style={{
-                                            height: 20
-                                        }} onClick={upload} >{t('Upload')}</small>
+                                    <h4 style={{
+                                        marginRight: 20
+                                    }}>{t('All extensions')}</h4>
+                                    <CreateButton height={25} type={'extension'} onClick={upload} label={t('Upload')} />
                                         <input onChange={uploadExtension} ref={fileRef} type='file' id='file' style={{
                                             display: 'none'
                                         }} />

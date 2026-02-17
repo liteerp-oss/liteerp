@@ -19,7 +19,6 @@ return [
             'erp.customer.create',
             'erp.customer.update',
             'erp.customer.delete',
-            'erp.customer.creatordershipping',
 
             // CUSTOMER GROUP 
             'erp.customergroup.index',
@@ -220,7 +219,6 @@ return [
             'erp.customer.create',
             'erp.customer.update',
             'erp.customer.delete',
-            'erp.customer.creatordershipping',
 
             // CUSTOMER GROUP 
             'erp.customergroup.index',
@@ -416,7 +414,6 @@ return [
             'erp.customer.create',
             'erp.customer.update',
             'erp.customer.delete',
-            'erp.customer.creatordershipping',
 
             // CUSTOMER GROUP 
             'erp.customergroup.index',

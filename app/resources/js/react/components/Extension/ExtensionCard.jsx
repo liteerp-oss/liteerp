@@ -6,6 +6,8 @@ import { useI18n } from "../../../i18n/useI18n";
 import BusinessRoleService from "@/react/services/BusinessRoleService";
 import { setBusinessNav, setBusinessRole } from "@/react/redux/businessRoleSlice";
 import { useDispatch } from "react-redux";
+import DeleteButton from "../UI/PermissionButtons/DeleteButton";
+import UpdateButton from "../UI/PermissionButtons/UpdateButton";
 export default function ExtensionCard({
   item = {
     icon: "bi bi-box",
@@ -125,15 +127,12 @@ export default function ExtensionCard({
 
       {/* Actions */}
       <div className="mt-auto d-flex gap-2">
-        <button
+        <UpdateButton
           disabled={form.loading}
           onClick={update}
-          className={`btn btn-sm ${form.formData?.status ? "btn-danger" : "btn-success"
-            }`}
-        >
-          <i className={`bi ${form.formData?.status ? "bi-x-circle" : "bi-check-circle"} me-1`} />
-          {form.formData?.status ? t("Disable") : t("Enable")}
-        </button>
+            label={form.formData?.status ? t("Disable") : t("Enable")}
+            type={'extension'}
+        />
         {form.formData?.setting_link ? <a
           href={form.formData?.setting_link}
           target="_blank"
@@ -144,13 +143,11 @@ export default function ExtensionCard({
           {t("Settings")}
         </a> : null}
 
-        <button
+        <DeleteButton
+          type={'extension'}
           onClick={confirmDelete}
-          className="btn btn-sm btn-outline-danger ms-auto"
-          title={t("Delete")}
-        >
-          <i className="bi bi-trash" />
-        </button>
+          label={t("Delete")}
+        />
       </div>
     </div>
   </div> : null

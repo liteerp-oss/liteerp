@@ -21,7 +21,7 @@ import PERMISSIONS from '../../common/permission';
 import CommonDataTableV2 from '../CommonDataTableV2';
 
 export default function CustomInvoiceOuts() {
-    const { t } = useI18n();
+    const { t, lang } = useI18n();
     const roles = useSelector((state) => state.businessRole.role);
     const [customers, setCustomers] = useState([]);
     const search = useForm();
@@ -186,7 +186,6 @@ export default function CustomInvoiceOuts() {
     }, []);
 
     useEffect(() => {
-        getInvoices();
         table.setColums([
             {
                 label: t("ID"),
@@ -233,41 +232,43 @@ export default function CustomInvoiceOuts() {
                 }
             }
         ])
+        getInvoices();
         view();
-    }, [])
+    }, [lang])
 
     return <div>
         <CommonDataTableV2
-            add={ roles?.includes(PERMISSIONS.CUSTOM_INVOICE_OUT.CREATE) ? () => {
+            add={() => {
                 setShowForm(true)
-            } : null}
+            }}
             config={{
-                    default: [{
-                        key: "order_by",
-                        placeholder: t("Order by"),
-                        options: [
-                            { value: 'ASC', label: t('Oldest') },
-                            { value: 'DESC', label: t('Newest') },
-                        ],
-                        type: "select",
-                        label: t("Order by"),
-                        col: "col-6"
-                    },{
-                        key: "keywords",
-                        placeholder: t("Keywords"),
-                        type: "text",
-                        label: t("Search"),
-                        col: "col-6"
-                    }]
-                }}
-                search={search}
+                default: [{
+                    key: "order_by",
+                    placeholder: t("Order by"),
+                    options: [
+                        { value: 'ASC', label: t('Oldest') },
+                        { value: 'DESC', label: t('Newest') },
+                    ],
+                    type: "select",
+                    label: t("Order by"),
+                    col: "col-6"
+                }, {
+                    key: "keywords",
+                    placeholder: t("Keywords"),
+                    type: "text",
+                    label: t("Search"),
+                    col: "col-6"
+                }]
+            }}
+            search={search}
             loading={table.loading}
             columns={table.colums}
             data={table.data}
             links={table.links}
-            onEdit={ roles?.includes(PERMISSIONS.CUSTOM_INVOICE_OUT.UPDATE) ? onEdit : null}
+            onShow={onEdit}
             callback={getInvoices}
-            onDelete={roles?.includes(PERMISSIONS.CUSTOM_INVOICE_OUT.DELETE) ?onDelete : null}
+            onDelete={onDelete}
+            type={'custominvoiceout'}
         />
         {showForm ? <PopupLayout
             loading={form.loading}
