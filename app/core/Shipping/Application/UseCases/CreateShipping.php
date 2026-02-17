@@ -20,16 +20,19 @@ class CreateShipping
     public function handle(array $data)
     {
         DB::beginTransaction();
+        $dto = CreateShippingRequest::fromArray($data);
         $data = $this->dispatch->dispatch(
             new HookContext(
                 action: HookAction::CREATE,
                 phase: HookPhase::RESPONSE,
                 timing: HookTiming::BEFORE,
-                payload: $data,
+                payload: [
+                    ...$data,
+                    ...$dto->toArray()
+                ],
                 module: 'Shipping'
             )
         );
-        $dto = CreateShippingRequest::fromArray($data);
         $create = $this->service->create($dto->toArray());
         $data = $this->dispatch->dispatch(
             new HookContext(
@@ -37,18 +40,16 @@ class CreateShipping
                 phase: HookPhase::RESPONSE,
                 timing: HookTiming::AFTER,
                 payload: [
-                    ...$create->toArray(),
-                    ...$data
+                    ...$data,
+                    ...$create->toArray()
                 ],
                 module: 'Shipping'
             )
         );
         Event::dispatch("erp.shipping.create", [
-            ...$data,
-            'user_id' => $dto->created_by,
-            'business_id' => $dto->business_id
+            ...$data
         ]);
         DB::commit();
-        return $create;
+        return $data;
     }
 }

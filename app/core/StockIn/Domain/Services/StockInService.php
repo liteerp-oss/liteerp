@@ -8,7 +8,6 @@ use Core\StockIn\Domain\Entities\StockIn;
 interface StockInService
 {
     public function create(array $data): StockIn | BadException;
-    public function index(array $data) : array;
     public function show(array $data) : array | BadException;
     public function update(array $data) : StockIn | BadException;
     public function findById(array $data) : StockIn | BadException;

@@ -20,16 +20,19 @@ class UpdateProduct
     public function handle(array $data)
     {
         DB::beginTransaction();
+        $dto = CreateProductRequest::fromArray($data);
         $data = $this->hooks->dispatch(
             new HookContext(
                 action: HookAction::UPDATE,
                 phase: HookPhase::RESPONSE,
                 timing: HookTiming::BEFORE,
-                payload: $data,
+                payload: [
+                    ...$data,
+                    ...$dto->toArray()
+                ],
                 module: 'Product'
             )
         );
-        $dto = CreateProductRequest::fromArray($data);
         $update = $this->service->update($dto->toArray());
         $data = $this->hooks->dispatch(
             new HookContext(
@@ -44,9 +47,7 @@ class UpdateProduct
             )
         );
         Event::dispatch("erp.product.update", [
-            ...$data,
-            'user_id' => $dto->created_by,
-            'business_id' => $dto->business_id
+            ...$data
         ]);
         DB::commit();
         return $data;

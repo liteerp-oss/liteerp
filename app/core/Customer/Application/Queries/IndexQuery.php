@@ -3,7 +3,6 @@
 namespace Core\Customer\Application\Queries;
 
 use App\Contracts\Queries\QueryInterface;
-use App\Exceptions\BadException;
 use App\Models\CustomerModel;
 use App\Supports\Hooks\HookAction;
 use App\Supports\Hooks\HookContext;
@@ -40,15 +39,9 @@ class IndexQuery implements QueryInterface
             )
         );
         $list = $hooks['query'];
-        if ($dto->type) {
-            $list = $list->where('customers.type', $dto->type);
-        }
         if ($dto->keywords) {
-            $list = $list->where('customers.name', 'like', '%' . $dto->keywords . '%');
+            $list = $list->whereAny(['customers.name', 'customers.email'], 'like', '%' . $dto->keywords . '%');
         }
-        if ($dto->active) {
-            $list = $list->where('customers.active', $dto->active);
-        }
-        return $list->paginate(15)->toArray();
+        return $list->orderBy('customers.id', $dto->order_by)->paginate(15)->toArray();
     }
 }

@@ -10,6 +10,4 @@ interface StockMovementOutRepositoryInterface
     public function update(StockMovementOut $entity): StockMovementOut;
     public function findById(array $data): ?StockMovementOut;
     public function findExists(array $data): ?StockMovementOut;
-    public function index(array $data): array;
-    public function indexWithLimit(array $data): array;
 }

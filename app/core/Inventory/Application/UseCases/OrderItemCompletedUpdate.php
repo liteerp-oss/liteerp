@@ -20,10 +20,10 @@ class OrderItemCompletedUpdate
         private HookDispatcher $hooks
     ) {}
 
-    public function handle(OrderItemCompletedUpdateRequest $dto)
+    public function handle(array $data)
     {
         DB::beginTransaction();
-
+        $dto = OrderItemCompletedUpdateRequest::fromArray($data);
         foreach($dto->list as $key => $value) {
             $quantity = (float) ($value['buy_quantity']
             + $value['gift_quantity']
@@ -42,7 +42,11 @@ class OrderItemCompletedUpdate
                     action: HookAction::UPDATE,
                     phase: HookPhase::RESPONSE,
                     timing: HookTiming::BEFORE,
-                    payload: $adapter->toArray(),
+                    payload: [
+                        ...$data,
+                        ...$value,
+                        ...$adapter->toArray()
+                    ],
                     module: 'Inventory'
                 )
             );
@@ -60,8 +64,6 @@ class OrderItemCompletedUpdate
                 )
             );
             Event::dispatch('erp.inventory.update', [
-                'user_id' => $dto->created_by,
-                'business_id' => $dto->business_id,
                 ...$data
             ]);
         }

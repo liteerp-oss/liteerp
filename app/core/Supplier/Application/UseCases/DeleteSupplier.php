@@ -20,22 +20,25 @@ class DeleteSupplier
     public function handle(array $data)
     {
         DB::beginTransaction();
+        $dto = DeleteSupplierRequest::fromArray($data); 
         $data = $this->hooks->dispatch(
             new HookContext(
                 action: HookAction::DELETE,
                 phase: HookPhase::RESPONSE,
                 timing: HookTiming::BEFORE,
-                payload: $data,
+                payload: [
+                    ...$data,
+                    ...$dto->toArray()
+                ],
                 module: 'Supplier'
             )
         );
-        $dto = DeleteSupplierRequest::fromArray($data); 
         $delete = $this->service->delete($dto->toArray());
         $data = $this->hooks->dispatch(
             new HookContext(
                 action: HookAction::DELETE,
                 phase: HookPhase::RESPONSE,
-                timing: HookTiming::BEFORE,
+                timing: HookTiming::AFTER,
                 payload: [
                     ...$data,
                     ...$delete->toArray()
@@ -44,11 +47,9 @@ class DeleteSupplier
             )
         );
         Event::dispatch("erp.supplier.delete", [
-            ...$delete->toArray(),
-            'user_id' => $dto->created_by,
-            'business_id' => $dto->business_id
+            ...$data,
         ]);
         DB::commit();
-        return $delete;
+        return $data;
     }
 }

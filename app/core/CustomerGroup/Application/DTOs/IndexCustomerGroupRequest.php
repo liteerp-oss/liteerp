@@ -8,6 +8,7 @@ class IndexCustomerGroupRequest
         public int $business_id,
         public ?string $keywords = null,
         public int $created_by,
+        public ?string $order_by = null
     ) {}
 
     public static function fromArray(array $data): self
@@ -16,6 +17,7 @@ class IndexCustomerGroupRequest
             business_id: $data['business_id'],
             keywords: $data['keywords'] ?? null,
             created_by: $data['user_id'],
+            order_by: $data['order_by'] ?? 'DESC'
         );
     }
 
@@ -24,7 +26,8 @@ class IndexCustomerGroupRequest
         return [
             'business_id' => $this->business_id,
             'keywords' => $this->keywords,
-            'created_by' => $this->created_by
+            'created_by' => $this->created_by,
+            'order_by' => $this->order_by
         ];
     }
 }

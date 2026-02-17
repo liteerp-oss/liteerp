@@ -8,6 +8,6 @@ use Core\StockMovementIn\Domain\Entities\StockMovementIn;
 interface StockMovementInService
 {
     public function create(array $data): StockMovementIn | BadException;
-    public function index(array $data) : array;
     public function update(array $data): StockMovementIn | BadException;
+    public function index(array $data): array;
 }

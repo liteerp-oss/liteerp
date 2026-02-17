@@ -16,35 +16,6 @@ class EloquentStockInRepository implements StockInRepositoryInterface
         $entity->id = $create['id'];
         return $entity;
     }
-    public function index(array $data): array
-    {
-        $list = StockInModel::select(
-            "stock_ins.*",
-            DB::raw('count(stock_ins.id) as total_product'),
-            "users.name as approved_name",
-            "suppliers.unit_name as supplier_name",
-            "invoice_ins.document_no as document_no",
-            "purchases.id as purchase_id",
-            "invoice_ins.due_date as due_date",
-            "purchases.status as purchase_status"
-        )
-            ->join("invoice_ins", "invoice_ins.id", "=", "stock_ins.invoice_in_id")
-            ->join("purchases", "purchases.id", "=", "invoice_ins.purchase_id")
-            ->join("purchase_items", "purchase_items.purchase_id", "=", "purchases.id")
-            ->leftJoin("users", "users.id", "=", "stock_ins.approved_by")
-            ->join("products", "products.id", "=", "purchase_items.product_id")
-            ->join("suppliers", "suppliers.id", "=", "purchases.supplier_id")
-            ->groupBy("stock_ins.id")
-            ->where('purchases.deleted_at', NULL)
-            ->where('stock_ins.business_id', $data['business_id']);
-        if (!empty($data['status'])) {
-            $list = $list->where('stock_ins.status', $data['status']);
-        }
-        if (!empty($data['keywords'])) {
-            $list = $list->where('invoice_ins.document_no', 'like', '%' . $data['keywords'] . '%');
-        }
-        return $list->orderBy("stock_ins.id",$data['order_by'])->paginate(15)->toArray();
-    }
     public function findById(array $data): ?StockIn
     {
         $model = StockInModel::where('business_id', $data['business_id'])

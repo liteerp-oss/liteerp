@@ -19,8 +19,9 @@ class UpdateInventoryByStockMovementIn
         private HookDispatcher $hooks
     ) {}
 
-    public function handle(UpdateInventoryByStockMovementInRequest $dto)
+    public function handle(array $data)
     {
+        $dto = UpdateInventoryByStockMovementInRequest::fromArray($data);
         foreach ($dto->list as $key => $value) {
             $find = new GetInventoryByProductWarehouseRequest(
                 product_id: $value['product_id'],
@@ -42,7 +43,10 @@ class UpdateInventoryByStockMovementIn
                         action: HookAction::CREATE,
                         phase: HookPhase::RESPONSE,
                         timing: HookTiming::BEFORE,
-                        payload: $adapter->toArray(),
+                        payload: [
+                            ...$value,
+                            ...$adapter->toArray()
+                        ],
                         module: 'Inventory'
                     )
                 );
@@ -65,7 +69,10 @@ class UpdateInventoryByStockMovementIn
                         action: HookAction::UPDATE,
                         phase: HookPhase::RESPONSE,
                         timing: HookTiming::BEFORE,
-                        payload: $adapter->toArray(),
+                        payload: [
+                            ...$value,
+                            ...$adapter->toArray()
+                        ],
                         module: 'Inventory'
                     )
                 );
@@ -74,7 +81,7 @@ class UpdateInventoryByStockMovementIn
                     new HookContext(
                         action: HookAction::UPDATE,
                         phase: HookPhase::RESPONSE,
-                        timing: HookTiming::BEFORE,
+                        timing: HookTiming::AFTER,
                         payload: [
                             ...$data,
                             ...$update->toArray()

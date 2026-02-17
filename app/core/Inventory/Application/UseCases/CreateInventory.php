@@ -44,8 +44,6 @@ class CreateInventory
             )
         );
         Event::dispatch('erp.inventory.create',[
-            'user_id' => $dto->created_by,
-            'business_id' => $dto->business_id,
             ...$data
         ]);
         DB::commit();

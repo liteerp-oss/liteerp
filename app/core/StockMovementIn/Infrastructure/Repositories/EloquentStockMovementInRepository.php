@@ -15,33 +15,6 @@ class EloquentStockMovementInRepository implements StockMovementInRepositoryInte
         $entity->id = $create['id'];
         return $entity;
     }
-    public function index(array $data): array
-    {
-        $rows = StockMovementInModel::select("stock_movements_in.*",
-            "suppliers.unit_name as unit_name",
-            "products.name as name",
-            "products.unit as unit",
-            "products.sku as sku",
-            "category_product.name as category",
-            "warehouses.name as warehouse")
-        ->join("stock_ins","stock_ins.id"
-            ,"=","stock_movements_in.stock_in_id")
-        ->join("invoice_ins","invoice_ins.id"
-            ,"=","stock_ins.invoice_in_id")
-        ->join("products","products.id"
-            ,"=","stock_movements_in.product_id")
-        ->join("warehouses","warehouses.id"
-            ,"=","stock_movements_in.warehouse_id")
-        ->join("purchases","purchases.id"
-            ,"=","invoice_ins.purchase_id")
-        ->join("suppliers","suppliers.id"
-            ,"=","purchases.supplier_id")
-        ->join("category_product","category_product.id"
-            ,"=","products.category_id")
-        ->where('invoice_ins.business_id',$data['business_id'])
-        ->where('stock_movements_in.stock_in_id',$data['stock_in_id']);
-        return $rows->paginate($data['limit'] ?? 300)->toArray();
-    }
     public function update(StockMovementIn $entity): ?StockMovementIn
     {
         StockMovementInModel::where('id',$entity->id)
@@ -71,5 +44,16 @@ class EloquentStockMovementInRepository implements StockMovementInRepositoryInte
             return $row;
         }
         return StockMovementIn::fromArray($data);
+    }
+    public function index(array $data): array
+    {
+        $rows = StockMovementInModel::select("stock_movements_in.*")
+        ->join("stock_ins","stock_ins.id"
+            ,"=","stock_movements_in.stock_in_id")
+        ->join("invoice_ins","invoice_ins.id"
+            ,"=","stock_ins.invoice_in_id")
+        ->where('invoice_ins.business_id',$data['business_id'])
+        ->where('stock_movements_in.stock_in_id',$data['stock_in_id']);
+        return $rows->paginate($data['limit'] ?? 300)->toArray();
     }
 }

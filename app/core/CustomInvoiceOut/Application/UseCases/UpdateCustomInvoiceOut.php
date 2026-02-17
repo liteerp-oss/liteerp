@@ -9,8 +9,8 @@ use App\Supports\Hooks\HookPhase;
 use App\Supports\Hooks\HookTiming;
 use Core\CustomInvoiceOut\Application\DTOs\CreateCustomInvoiceOutRequest;
 use Core\CustomInvoiceOut\Domain\Services\CustomInvoiceOutService;
-use Core\CustomInvoiceOut\Infrastructure\Events\CustomInvoiceOutEvent;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Event;
 
 class UpdateCustomInvoiceOut
 {
@@ -20,16 +20,20 @@ class UpdateCustomInvoiceOut
     public function handle(array $data)
     {
         DB::beginTransaction();
+        $dto = CreateCustomInvoiceOutRequest::fromArray($data);
         $data = $this->hooks->dispatch(
             new HookContext(
                 action: HookAction::UPDATE,
                 phase: HookPhase::RESPONSE,
                 timing: HookTiming::BEFORE,
-                payload: $data,
+                payload: [
+                    ...$data,
+                    ...$dto->toArray()
+                ],
                 module: 'CustomInvoiceOut'
             )
         );
-        $dto = CreateCustomInvoiceOutRequest::fromArray($data);
+        
         $update = $this->service->update($dto->toArray());
         $data = $this->hooks->dispatch(
             new HookContext(
@@ -43,7 +47,7 @@ class UpdateCustomInvoiceOut
                 module: 'CustomInvoiceOut'
             )
         );
-        CustomInvoiceOutEvent::handle('update', [
+        Event::dispatch('erp.custominvoiceout.update', [
             ...$data
         ]);
         DB::commit();

@@ -37,7 +37,10 @@ class UpdateInventoryByStockMovementOut
                     action: HookAction::UPDATE,
                     phase: HookPhase::RESPONSE,
                     timing: HookTiming::BEFORE,
-                    payload: $updateData->toArray(),
+                    payload: [
+                        ...$value,
+                        ...$updateData->toArray()
+                    ],
                     module: 'Inventory'
                 )
             );
@@ -55,8 +58,6 @@ class UpdateInventoryByStockMovementOut
                 )
             );
             Event::dispatch('erp.inventory.update',[
-                'user_id' => $dto->created_by,
-                'business_id' => $dto->business_id,
                 ...$data
             ]);
         }

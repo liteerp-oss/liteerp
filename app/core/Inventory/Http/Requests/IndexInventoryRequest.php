@@ -10,7 +10,7 @@ class IndexInventoryRequest extends FormRequest
     {
         return [
             'keywords' => 'nullable|string|max:150',
-            'customer_group_id' => 'nullable|numeric|exists:customer_group,id'
+            'order_by' => 'nullable|in:ASC,DESC'
         ];
     }
 

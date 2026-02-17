@@ -18,16 +18,19 @@ class CreateOrderShipping
 
     public function handle(array $data)
     {
+        $dto = CreateOrderShippingRequest::fromArray($data);
         $data = $this->hooks->dispatch(
             new HookContext(
                 action: HookAction::CREATE,
                 phase: HookPhase::RESPONSE,
                 timing: HookTiming::BEFORE,
-                payload: $data,
+                payload: [
+                    ...$data,
+                    ...$dto->toArray()
+                ],
                 module: 'OrderShipping'
             )
         );
-        $dto = CreateOrderShippingRequest::fromArray($data);
         $create = $this->service->create($dto->toArray());
         $data = $this->hooks->dispatch(
             new HookContext(
@@ -42,9 +45,7 @@ class CreateOrderShipping
             )
         );
         Event::dispatch('erp.ordershipping.create',[
-            ...$data,
-            'business_id' => $dto->business_id,
-            'user_id' => $dto->created_by
+            ...$data
         ]);
         return $data;
     }

@@ -10,6 +10,4 @@ interface UserService
     public function findById(array $data): User | BadException;
     public function getByEmail(array $data): ?User;
     public function findByEmailOnSystem(array $data): ?User;
-    public function index(array $data) : array;
-    public function all(array $data) : array;
 }

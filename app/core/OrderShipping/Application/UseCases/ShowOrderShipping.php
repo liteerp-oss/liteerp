@@ -17,16 +17,19 @@ class ShowOrderShipping
 
     public function handle(array $data)
     {
+        $dto = ShowOrderShippingRequest::fromArray($data);
         $data = $this->hooks->dispatch(
             new HookContext(
                 action: HookAction::SHOW,
                 phase: HookPhase::RESPONSE,
                 timing: HookTiming::BEFORE,
-                payload: $data,
+                payload: [
+                    ...$data,
+                    ...$dto->toArray()
+                ],
                 module: 'OrderShipping'
             )
         );
-        $dto = ShowOrderShippingRequest::fromArray($data);
         $show = $this->service->show($dto->toArray());
         $data = $this->hooks->dispatch(
             new HookContext(

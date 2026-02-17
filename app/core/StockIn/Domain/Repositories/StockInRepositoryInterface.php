@@ -7,7 +7,6 @@ use Core\StockIn\Domain\Entities\StockIn;
 interface StockInRepositoryInterface
 {
     public function create(StockIn $entity): StockIn;
-    public function index(array $data): array;
     public function findById(array $data) : ?StockIn;
     public function findByInvoiceInId(array $data) : ?StockIn;
     public function show(array $data) : ?array;

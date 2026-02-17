@@ -36,7 +36,6 @@ class IndexQuery implements QueryInterface {
             ->join("products", "products.id", "=", "purchase_items.product_id")
             ->join("suppliers", "suppliers.id", "=", "purchases.supplier_id")
             ->groupBy("stock_ins.id")
-            ->where('purchases.deleted_at', NULL)
             ->where('stock_ins.business_id', $dto->business_id);
         $data = $this->hooks->dispatch(
             new HookContext(
@@ -52,11 +51,10 @@ class IndexQuery implements QueryInterface {
         );
         $list = $data['query'];
         $data = $data['data'];
-        if ($dto->status) {
-            $list = $list->where('stock_ins.status', $dto->status);
-        }
         if ($dto->keywords) {
-            $list = $list->where('invoice_ins.document_no', 'like', '%' . $dto->keywords . '%');
+            $list = $list->whereAny(['invoice_ins.document_no',
+                'users.name',
+                'suppliers.unit_name'], 'like', '%' . $dto->keywords . '%');
         }
         return $list->orderBy("stock_ins.id",$dto->order_by)->paginate(15)->toArray();
     }

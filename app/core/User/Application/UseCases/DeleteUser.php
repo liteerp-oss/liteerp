@@ -7,26 +7,54 @@ use Core\User\Application\DTOs\DeleteUserRequest;
 use Core\User\Domain\Services\UserService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
-
+use App\Supports\Hooks\HookAction;
+use App\Supports\Hooks\HookContext;
+use App\Supports\Hooks\HookDispatcher;
+use App\Supports\Hooks\HookPhase;
+use App\Supports\Hooks\HookTiming;
 class DeleteUser
 {
-    public function __construct(private UserService $service) {}
+    public function __construct(private UserService $service,
+        private HookDispatcher $hooks) {}
 
     public function handle(array $data)
     {
         DB::beginTransaction();
         $dto = DeleteUserRequest::fromArray($data);
+        $data = $this->hooks->dispatch(
+            new HookContext(
+                action: HookAction::DELETE,
+                phase: HookPhase::RESPONSE,
+                timing: HookTiming::BEFORE,
+                payload: [
+                    ...$data,
+                    ...$dto->toArray()
+                ],
+                module: 'User'
+            )
+        );
         $account = $this->service->findById($dto->toArray());
         if($dto->created_by === $account->id) {
             throw new BadException(__("user::messages.cannot_delete_self"));
         }
+        $data = $this->hooks->dispatch(
+            new HookContext(
+                action: HookAction::DELETE,
+                phase: HookPhase::RESPONSE,
+                timing: HookTiming::AFTER,
+                payload: [
+                    ...$data,
+                    ...$account->toArray()
+                ],
+                module: 'User'
+            )
+        );
         Event::dispatch("erp.user.delete", [
+            ...$data,
             ...$account->toArray(),
             'role_user_id'   => $account->id,
-            'user_id'   => $dto->created_by,
-            'business_id' => $dto->business_id
         ]);
         DB::commit();
-        return $account;
+        return $data;
     }
 }

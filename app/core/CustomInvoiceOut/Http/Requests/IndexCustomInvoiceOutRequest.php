@@ -25,7 +25,8 @@ class IndexCustomInvoiceOutRequest extends FormRequest
         return [
             ...$hooks,
             'approved'       => 'nullable|boolean',
-            'payment_status' => 'nullable|in:paid,partial_payment,pending',
+            'keywords' => 'nullable|string|max:150',
+            'order_by' => 'nullable|in:ASC,DESC'
         ];
     }
 

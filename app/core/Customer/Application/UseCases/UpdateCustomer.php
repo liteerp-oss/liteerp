@@ -20,41 +20,36 @@ class UpdateCustomer
     public function handle(array $data)
     {
         DB::beginTransaction();
-        $hooks = $this->hooks->dispatch(
+        $dto = CreateCustomerRequest::fromArray($data);
+        $data = $this->hooks->dispatch(
             new HookContext(
                 action: HookAction::UPDATE,
                 phase: HookPhase::RESPONSE,
                 timing: HookTiming::BEFORE,
-                payload: $data,
+                payload: [
+                    ...$data,
+                    ...$dto->toArray()
+                ],
                 module: 'Customer'
             )
         );
-        $dto = CreateCustomerRequest::fromArray($hooks);
         $update = $this->service->update($dto->toArray());
-        $hooks = $this->hooks->dispatch(
+        $data = $this->hooks->dispatch(
             new HookContext(
                 action: HookAction::UPDATE,
                 phase: HookPhase::RESPONSE,
                 timing: HookTiming::AFTER,
-                payload: $update->toArray(),
+                payload: [
+                    ...$data,
+                    ...$update->toArray()
+                ],
                 module: 'Customer'
             )
         );
         Event::dispatch("erp.customer.update", [
-            ...$hooks,
-            'user_id' => $dto->created_by,
-            'business_id' => $dto->business_id
+            ...$data
         ]);
-        $hooks = $this->hooks->dispatch(
-            new HookContext(
-                action: HookAction::UPDATE,
-                phase: HookPhase::RESPONSE,
-                timing: HookTiming::AFTER,
-                payload: $hooks,
-                module: 'Customer'
-            )
-        );
         DB::commit();
-        return $hooks;
+        return $data;
     }
 }

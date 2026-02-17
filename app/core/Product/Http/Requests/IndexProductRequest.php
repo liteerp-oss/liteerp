@@ -24,7 +24,8 @@ class IndexProductRequest extends FormRequest
         );
         return [
             ...$hooks,
-            'keywords' => 'nullable|string|max:150'
+            'keywords' => 'nullable|string|max:150',
+            'order_by' => 'nullable|in:ASC,DESC'
         ];
     }
 

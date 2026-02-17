@@ -21,17 +21,6 @@ class EloquentWarehouseRepository implements WarehouseRepositoryInterface
         ->where('business_id',$entity->business_id);
         return $exists->count() == false ? false : true;
     }
-    public function index(array $data) : array {
-        $exists = WarehouseModel::select("warehouses.*")
-        ->where('warehouses.business_id',$data['business_id']);
-        if(!empty($data['keywords'])) {
-            $exists = $exists->where('warehouses.name','like','%'.$data['keywords'].'%');
-        }
-        if(isset($data['active'])) {
-            $exists = $exists->where('warehouses.active',$data['active']);
-        }
-        return $exists->paginate(15)->toArray();
-    }
     public function findById(array $data): ?Warehouse
     {
         $exists = WarehouseModel::where('id',$data['id'])

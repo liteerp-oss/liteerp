@@ -2,10 +2,8 @@
 
 namespace Core\Inventory\Infrastructure\Listeners;
 
-use Core\Inventory\Application\DTOs\AdjustmentUpdateInventoryRequest;
 use Core\Inventory\Application\DTOs\OrderItemCancelledUpdateRequest;
 use Core\Inventory\Application\DTOs\OrderItemCompletedUpdateRequest;
-use Core\Inventory\Application\DTOs\UpdateInventoryByIdRequest;
 use Core\Inventory\Application\DTOs\UpdateInventoryByStockMovementInRequest;
 use Core\Inventory\Application\UseCases\OrderItemCompletedUpdate;
 use Core\Inventory\Application\UseCases\AdjustmentUpdateInventory;
@@ -29,8 +27,7 @@ class InventoryListener
                 $UpdateInventoryByStockMovementIn
             ) {
                 if ($eventName === 'erp.stockmovementin.completed') {
-                    $dto = UpdateInventoryByStockMovementInRequest::fromArray($data);
-                    $UpdateInventoryByStockMovementIn->handle($dto);
+                    $UpdateInventoryByStockMovementIn->handle($data);
                 }
             }
         );
@@ -39,7 +36,10 @@ class InventoryListener
             function (string $eventName, array $data) use($AdjustmentUpdateInventory) {
                 if($eventName === 'erp.inventoryadjustment.create') {
                     $AdjustmentUpdateInventory
-                        ->handle(AdjustmentUpdateInventoryRequest::fromArray($data));
+                        ->handle([
+                            ...$data,
+                            'quantity' => $data['qty_adjusted']
+                        ]);
                 }
             }
         );
@@ -51,21 +51,22 @@ class InventoryListener
                     $OrderItemCancelledUpdate) {
                 if($eventName === 'erp.orderitem.completed') {
                    $OrderItemCompletedUpdate
-                    ->handle(OrderItemCompletedUpdateRequest::fromArray($data));
+                    ->handle($data);
                 }
                 if($eventName === 'erp.orderitem.cancelled') {
+                   logs()->info("Order item cancelled event received in InventoryListener", $data);
                    $OrderItemCancelledUpdate
-                    ->handle(OrderItemCancelledUpdateRequest::fromArray($data));
+                    ->handle($data);
                 }
                 if($eventName === 'erp.orderitem.create' || $eventName === 'erp.orderitem.delete'
                 || $eventName === 'erp.orderitem.update') {
                    $UpdateInventoryById
-                    ->handle(UpdateInventoryByIdRequest::fromArray([
+                    ->handle([
                         'id' => $data['inventory_id'],
                         'reserved_qty' => $data['qty_change'],
                         'user_id' => $data['user_id'],
                         'business_id' => $data['business_id']
-                    ]));
+                    ]);
                 } 
             });
     }

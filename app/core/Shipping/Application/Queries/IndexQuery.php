@@ -18,13 +18,8 @@ class IndexQuery implements QueryInterface
     public function handle(array $data): array
     {
         $dto = IndexShippingRequest::fromArray($data);
-        Event::dispatch("erp.shipping.index", [
-            ...$dto->toArray(),
-            'user_id' => $dto->created_by,
-            'business_id' => $dto->business_id
-        ]);
         $index = ShippingProviderModel::select("shipping_providers.*")
-        ->where('shipping_providers.business_id', $data['business_id']);
+            ->where('shipping_providers.business_id', $dto->business_id);
         $hooks = $this->dispatch->dispatch(
             new HookContext(
                 action: HookAction::INDEX,
@@ -32,19 +27,22 @@ class IndexQuery implements QueryInterface
                 timing: HookTiming::ON,
                 payload: [
                     'query' => $index,
-                    'data' => $data
+                    'data' => [
+                        ...$data,
+                        ...$dto->toArray()
+                    ]
                 ],
                 module: 'Shipping'
             )
         );
         $data = $hooks['data'];
         $index = $hooks['query'];
-        if (!empty($data['keywords'])) {
-            $index->where('shipping_providers.name', 'like', '%' . $data['keywords'] . '%');
+        if (!empty($dto->keywords)) {
+            $index->whereAny(['shipping_providers.name','shipping_providers.code'], 'like', '%' . $dto->keywords . '%');
         }
-        if (isset($data['active'])) {
-            $index->where('shipping_providers.active', $data['active']);
-        }
-        return $index->paginate(15)->toArray();
+        Event::dispatch("erp.shipping.index", [
+            ...$data
+        ]);
+        return $index->orderBy('shipping_providers.id', $dto->order_by)->paginate(15)->toArray();
     }
 }

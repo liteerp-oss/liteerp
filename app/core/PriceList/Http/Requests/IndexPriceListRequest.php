@@ -9,7 +9,8 @@ class IndexPriceListRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'keywords' => 'nullable|string|max:150'
+            'keywords' => 'nullable|string|max:150',
+            'order_by' => 'nullable|in:ASC,DESC'
         ];
     }
 

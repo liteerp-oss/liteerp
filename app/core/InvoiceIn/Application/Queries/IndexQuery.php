@@ -48,10 +48,9 @@ class IndexQuery implements QueryInterface
         $list = $data['query'];
         $data = $data['data'];
         if ($dto->keywords) {
-            $list = $list->where('invoice_ins.document_no', 'like', '%' . $dto->keywords . '%');
-        }
-        if ($dto->payment_status) {
-            $list = $list->where('invoice_ins.payment_status', $dto->payment_status);
+            $list = $list->whereAny(['invoice_ins.document_no',
+            'suppliers.unit_name',
+            'suppliers.email'], 'like', '%' . $dto->keywords . '%');
         }
         return $list->orderBy("invoice_ins.id", $dto->order_by)->paginate(15)->toArray();
     }

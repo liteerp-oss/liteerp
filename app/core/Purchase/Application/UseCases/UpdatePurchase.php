@@ -2,78 +2,71 @@
 
 namespace Core\Purchase\Application\UseCases;
 
-use App\Exceptions\BadException;
 use App\Supports\Hooks\HookAction;
 use App\Supports\Hooks\HookContext;
 use App\Supports\Hooks\HookDispatcher;
 use App\Supports\Hooks\HookPhase;
 use App\Supports\Hooks\HookTiming;
 use Core\Purchase\Application\DTOs\UpdatePurchaseRequest;
-use Core\PurchaseItem\Application\UseCases\IndexPurchaseItem;
 use Core\Purchase\Domain\Services\PurchaseService;
 use Core\Purchase\Domain\Entities\Purchase;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
-use Illuminate\Support\Facades\Log;
 
 class UpdatePurchase
 {
     public function __construct(private PurchaseService $service,
     private HookDispatcher $hooks) {}
 
-    public function handle(array $data): Purchase
+    public function handle(array $data): array
     {
         DB::beginTransaction();
+        $dto = UpdatePurchaseRequest::fromArray($data);
         $data = $this->hooks->dispatch(
             new HookContext(
                 action: HookAction::UPDATE,
                 phase: HookPhase::RESPONSE,
                 timing: HookTiming::BEFORE,
-                payload: $data,
+                payload: [
+                    ...$data,
+                    ...$dto->toArray()
+                ],
                 module: 'Purchase'
             )
         );
-        $dto = UpdatePurchaseRequest::fromArray($data);
         $update = $this->service->update($dto->toArray());
         $data = $this->hooks->dispatch(
             new HookContext(
                 action: HookAction::UPDATE,
                 phase: HookPhase::RESPONSE,
                 timing: HookTiming::AFTER,
-                payload: $data,
+                payload: [
+                    ...$data,
+                    ...$update->toArray()
+                ],
                 module: 'Purchase'
             )
         );
         if($update->isApproved()) {
             $forInvoice = $this->service->show($dto->toArray());
             $updateData = [
-                'user_id' => $dto->created_by,
-                'business_id' => $dto->business_id,
-                ...$update->toArray(),
+                ...$data,
                 ...$forInvoice
             ];
             Event::dispatch("erp.purchase.approved", $updateData);
         } else if($update->isDraft()) {
             $updateData = [
-                'user_id' => $dto->created_by,
-                'business_id' => $dto->business_id,
-                ...$update->toArray()
+                ...$data,
             ];
             Event::dispatch("erp.purchase.update", $updateData);
         } else if($update->isRequested()) {
             $updateData = [
-                'user_id' => $dto->created_by,
-                'business_id' => $dto->business_id,
-                ...$update->toArray()
+                ...$data,
             ];
             Event::dispatch("erp.purchase.requested", $updateData);
         } else if($update->isCancelled()){
             $updateData = [
-                'reason' => $dto->reason,
-                'user_id' => $dto->created_by,
-                'business_id' => $dto->business_id,
-                'purchase_id' => $update->id,
-                ...$update->toArray()
+                ...$data,
             ];
             Event::dispatch("erp.purchase.cancelled", $updateData);
         }
@@ -95,6 +88,6 @@ class UpdatePurchase
             'chanels' => ['db']
         ]);
         DB::commit();
-        return $update;
+        return $data;
     }
 }

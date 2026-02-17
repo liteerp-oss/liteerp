@@ -10,7 +10,6 @@ use App\Supports\Hooks\HookDispatcher;
 use App\Supports\Hooks\HookPhase;
 use App\Supports\Hooks\HookTiming;
 use Core\Supplier\Application\DTOs\IndexSupplierRequest;
-use Illuminate\Support\Facades\Event;
 
 class IndexQuery implements QueryInterface
 {
@@ -21,11 +20,6 @@ class IndexQuery implements QueryInterface
     {
         
         $dto = IndexSupplierRequest::fromArray($data);
-        Event::dispatch("erp.supplier.index", [
-            ...$dto->toArray(),
-            'user_id' => $dto->created_by,
-            'business_id' => $dto->business_id
-        ]);
         $list = SupplierModel::select("suppliers.*")
         ->where('suppliers.business_id', $dto->business_id);
         $data = $this->hooks->dispatch(
@@ -35,17 +29,19 @@ class IndexQuery implements QueryInterface
                 timing: HookTiming::ON,
                 payload: [
                     'query' => $list,
-                    'data' => $data
+                    'data' => [
+                        ...$data,
+                        ...$dto->toArray()
+                    ]
                 ],
                 module: 'Supplier'
             )
         );
         $list = $data['query'];
-        if (isset($dto->active)) {
-            $list = $list->where('suppliers.active', $dto->active);
-        }
-        if (!empty($dto->keywords)) {
-            $list = $list->where('suppliers.unit_name', 'like', '%' . $dto->keywords . '%');
+        if ($dto->keywords) {
+            $list = $list->whereAny(['suppliers.unit_name',
+                'suppliers.email',
+                'suppliers.phone'], 'like', '%' . $dto->keywords . '%');
         }
         
         return $list->orderBy('suppliers.id', $dto->order_by)->paginate(15)->toArray();

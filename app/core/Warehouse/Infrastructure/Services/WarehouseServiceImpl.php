@@ -20,10 +20,6 @@ class WarehouseServiceImpl implements WarehouseService
         }
         return $this->repo->create($entity);
     }
-    public function index(array $data): array
-    {
-        return $this->repo->index($data);
-    }
     public function show(array $data): Warehouse
     {
         $data = $this->repo->findById($data);

@@ -19,18 +19,6 @@ class StockMovementOutServiceImpl implements StockMovementOutService
         $entity = StockMovementOut::fromArray($data);
         return $this->repo->create($entity);
     }
-    public function show(array $data): StockMovementOut
-    {
-        throw new \Exception('Not implemented');
-    }
-    public function index(array $data): array
-    {
-        return $this->repo->index($data);
-    }
-    public function indexWithLimit(array $data): array
-    {
-        return $this->repo->indexWithLimit($data);
-    }
     public function update(array $data): StockMovementOut
     {
         $entity = $this->repo->findById($data);

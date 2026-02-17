@@ -11,6 +11,7 @@ use Core\CustomInvoiceOut\Application\DTOs\DeleteCustomInvoiceOutRequest;
 use Core\CustomInvoiceOut\Domain\Services\CustomInvoiceOutService;
 use Core\CustomInvoiceOut\Infrastructure\Events\CustomInvoiceOutEvent;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Event;
 
 class DeleteCustomInvoiceOut
 {
@@ -20,16 +21,19 @@ class DeleteCustomInvoiceOut
     public function handle(array $data)
     {
         DB::beginTransaction();
+        $dto = DeleteCustomInvoiceOutRequest::fromArray($data);
         $data = $this->hooks->dispatch(
             new HookContext(
                 action: HookAction::DELETE,
                 phase: HookPhase::RESPONSE,
                 timing: HookTiming::BEFORE,
-                payload: $data,
+                payload: [
+                    ...$data,
+                    ...$dto->toArray()
+                ],
                 module: 'CustomInvoiceOut'
             )
         );
-        $dto = DeleteCustomInvoiceOutRequest::fromArray($data);
         $delete = $this->service->delete($dto->toArray());
         $data = $this->hooks->dispatch(
             new HookContext(
@@ -43,7 +47,7 @@ class DeleteCustomInvoiceOut
                 module: 'CustomInvoiceOut'
             )
         );
-        CustomInvoiceOutEvent::handle('delete', [
+        Event::dispatch('erp.custominvoiceout.delete', [
             ...$data
         ]);
         DB::commit();

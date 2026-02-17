@@ -2,15 +2,20 @@
 
 namespace Core\OrderItem\Http\Requests;
 
+use App\Supports\Hooks\HookAction;
+use App\Supports\Hooks\HookContext;
+use App\Supports\Hooks\HookDispatcher;
+use App\Supports\Hooks\HookPhase;
+use App\Supports\Hooks\HookTiming;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateOrderItemRequest extends FormRequest
 {
-     public function rules(): array
+     public function rules(HookDispatcher $hooks): array
     {
         return [
             'order_id'               => 'required|integer|exists:orders,id',
-            'inventory_id'             => 'required|integer|exists:inventories,id',
+            'inventory_id'           => 'required|integer|exists:inventories,id',
             'discount'               => 'nullable|numeric|min:0',
 
             'buy_quantity'           => 'nullable|numeric|min:0',
@@ -20,6 +25,15 @@ class UpdateOrderItemRequest extends FormRequest
 
             'price'                  => 'required|numeric|min:0',
             'tax'                    => 'required|numeric|min:0',
+            ...$hooks->dispatch(
+                new HookContext(
+                    action: HookAction::UPDATE,
+                    phase: HookPhase::VALIDATE,
+                    timing: HookTiming::ON,
+                    payload: [],
+                    module: 'OrderItem'
+                )
+            )
         ];
     }
 

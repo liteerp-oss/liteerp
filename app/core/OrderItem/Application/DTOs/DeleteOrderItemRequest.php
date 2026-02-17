@@ -6,7 +6,7 @@ class DeleteOrderItemRequest
 {
     public function __construct(
         public int $business_id,
-        public int $user_id,
+        public int $created_by,
         public int $id 
     ) {}
 
@@ -17,7 +17,7 @@ class DeleteOrderItemRequest
     {
         return new self(
             business_id: $data['business_id'],
-            user_id: $data['user_id'],
+            created_by: $data['user_id'],
             id: $data['id'] 
         );
     }
@@ -29,7 +29,7 @@ class DeleteOrderItemRequest
     {
         return [
             'business_id' => $this->business_id,
-            'user_id' => $this->user_id,
+            'created_by' => $this->created_by,
             'id'      => $this->id
         ];
     }

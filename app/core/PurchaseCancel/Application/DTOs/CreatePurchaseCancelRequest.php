@@ -13,7 +13,7 @@ class CreatePurchaseCancelRequest
     public static function fromArray(array $data): self
     {
         return new self(
-            purchase_id: $data['purchase_id'],
+            purchase_id: $data['id'],
             reason: $data['reason'] ?? null,
             created_by: $data['user_id'] 
         );

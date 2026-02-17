@@ -9,6 +9,7 @@ use App\Supports\Hooks\HookContext;
 use App\Supports\Hooks\HookDispatcher;
 use App\Supports\Hooks\HookPhase;
 use App\Supports\Hooks\HookTiming;
+use Core\OrderShipping\Application\DTOs\IndexOrderShippingRequest;
 
 class IndexQuery implements QueryInterface
 {
@@ -18,6 +19,8 @@ class IndexQuery implements QueryInterface
     }
     function handle(array $data): array
     {
+        $dto = IndexOrderShippingRequest::fromArray($data);
+
         $list = ShippingModel::select(
             "shippings.*",
             "shipping_providers.name as shipping_provider_name"
@@ -29,7 +32,7 @@ class IndexQuery implements QueryInterface
                 "=",
                 "shippings.preferred_unit"
             )
-            ->where('orders.business_id', $data['business_id']);
+            ->where('orders.business_id', $dto->business_id);
         $data = $this->hooks->dispatch(
             new HookContext(
                 action: HookAction::INDEX,
@@ -44,7 +47,11 @@ class IndexQuery implements QueryInterface
         );
         $list = $data['query'];
         $data = $data['data'];
-        return $list->paginate(15)
+        if($dto->keywords) {
+            $list = $list->whereAny(['shippings.tracking_number','shipping_providers.name'],
+            'like', '%' . $dto->keywords . '%');
+        }
+        return $list->orderBy('shippings.id', $dto->order_by)->paginate(15)
             ->toArray();
     }
 }

@@ -1,24 +1,26 @@
 <?php
 
 namespace Core\OrderItem\Application\UseCases;
+
+use App\Supports\Hooks\HookDispatcher;
 use Core\OrderItem\Domain\Services\OrderItemService;
 use Core\OrderItem\Application\DTOs\CompletedOrderItemRequest;
 use Illuminate\Support\Facades\Event;
-use Illuminate\Support\Facades\Log;
 
 class CompletedOrderItem
 {
-    public function __construct(private OrderItemService $service) {}
+    public function __construct(private OrderItemService $service, private HookDispatcher $hooks) {}
 
-    public function handle(CompletedOrderItemRequest $dto)
+    public function handle(array $data)
     {
+
+        $dto = CompletedOrderItemRequest::fromArray($data);
         $list = $this->service->indexForStockMovementOut($dto->toArray());
+
         Event::dispatch('erp.orderitem.completed',[
-            'business_id' => $dto->business_id,
-            'user_id'   => $dto->created_by,
-            'order_id'  => $dto->order_id,
+            ...$data,
+            ...$dto->toArray(),
             'list' => $list,
-            'stock_out_id' => $dto->stock_out_id
         ]);
     }
 }

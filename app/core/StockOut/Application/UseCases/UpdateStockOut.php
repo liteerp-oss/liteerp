@@ -22,16 +22,19 @@ class UpdateStockOut
     public function handle(array $data): array
     {
         DB::beginTransaction();
+        $dto = CreateStockOutRequest::fromArray($data);
         $data = $this->hooks->dispatch(
             new HookContext(
                 action: HookAction::UPDATE,
                 phase: HookPhase::RESPONSE,
                 timing: HookTiming::BEFORE,
-                payload: $data,
+                payload: [
+                    ...$data,
+                    ...$dto->toArray()
+                ],
                 module: 'StockOut'
             )
         );
-        $dto = CreateStockOutRequest::fromArray($data);
         $update = $this->service->update($dto->toArray());
         $data = $this->hooks->dispatch(
             new HookContext(
@@ -48,11 +51,7 @@ class UpdateStockOut
         $statusNotify = 'updated';
         if($update->isCompleted()) {
             Event::dispatch("erp.stockout.completed", [
-                ...$data,
-                'user_id' => $dto->created_by,
-                'business_id' => $dto->business_id,
-                'order_id' => $dto->order_id,
-                'stock_out_id' => $update->id
+                ...$data
             ]);
             $statusNotify = 'completed';
         } else if($update->isShipped()) {

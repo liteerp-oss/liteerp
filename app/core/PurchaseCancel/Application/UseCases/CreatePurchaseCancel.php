@@ -9,8 +9,9 @@ class CreatePurchaseCancel
 {
     public function __construct(private PurchaseCancelService $service) {}
 
-    public function handle(CreatePurchaseCancelRequest $dto)
+    public function handle(array $data)
     {
+        $dto = CreatePurchaseCancelRequest::fromArray($data);
         return $this->service->create($dto->toArray());
     }
 }

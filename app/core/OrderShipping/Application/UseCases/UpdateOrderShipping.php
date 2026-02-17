@@ -27,7 +27,10 @@ class UpdateOrderShipping
                 action: HookAction::UPDATE,
                 phase: HookPhase::RESPONSE,
                 timing: HookTiming::BEFORE,
-                payload: $data,
+                payload: [
+                    ...$data,
+                    ...$dto->toArray()
+                ],
                 module: 'OrderShipping'
             )
         );
@@ -46,11 +49,9 @@ class UpdateOrderShipping
             )
         );
         Event::dispatch('erp.ordershipping.update',[
-            ...$update->toArray(),
+            ...$data,
             'shipping_fee_estimated' => $oldData->shipping_fee_estimated,
-            'old_shipping_fee_actual' => $oldData->shipping_fee_actual,
-            'business_id' => $dto->business_id,
-            'user_id' => $dto->created_by
+            'old_shipping_fee_actual' => $oldData->shipping_fee_actual
         ]);
         DB::commit();
         return $data;

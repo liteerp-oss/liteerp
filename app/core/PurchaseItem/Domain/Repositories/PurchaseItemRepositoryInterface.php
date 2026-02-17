@@ -7,7 +7,6 @@ use Core\PurchaseItem\Domain\Entities\PurchaseItem;
 interface PurchaseItemRepositoryInterface
 {
     public function create(PurchaseItem $entity): PurchaseItem;
-    public function index(array $data): array;
     public function findByPurchaseIdAndProductId(array $data): ?PurchaseItem;
     public function findById(array $data): ?PurchaseItem;
     public function update(PurchaseItem $entity): PurchaseItem;

@@ -6,7 +6,6 @@ class IndexStockOutRequest
 {
     public function __construct(
         public int $business_id,
-        public ?string $status = null,
         public int $created_by,
         public ?string $keywords,
         public ?string $order_by = null
@@ -18,7 +17,6 @@ class IndexStockOutRequest
             business_id: $data['business_id'],
             keywords: $data['keywords'] ?? null,
             created_by: $data['user_id'],
-            status: $data['status'] ?? null,
             order_by: $data['order_by'] ?? 'DESC'
         );
     }
@@ -27,7 +25,6 @@ class IndexStockOutRequest
     {
         return [
             'business_id'    => $this->business_id,
-            'status'         => $this->status,
             'created_by'     => $this->created_by,
             'keywords'  => $this->keywords,
             'order_by'  => $this->order_by

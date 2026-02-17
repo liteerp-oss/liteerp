@@ -18,30 +18,35 @@ class DeleteShipping
 
     public function handle(array $data)
     {
-        $data = $this->dispatch->dispatch(
-            new HookContext(
-                action: HookAction::DELETE,
-                phase: HookPhase::RESPONSE,
-                timing: HookTiming::BEFORE,
-                payload: $data,
-                module: 'Shipping'
-            )
-        );
         $dto = DeleteShippingRequest::fromArray($data);
         $data = $this->dispatch->dispatch(
             new HookContext(
                 action: HookAction::DELETE,
                 phase: HookPhase::RESPONSE,
+                timing: HookTiming::BEFORE,
+                payload: [
+                    ...$data,
+                    ...$dto->toArray()
+                ],
+                module: 'Shipping'
+            )
+        );
+        $delete = $this->service->delete($dto->toArray());
+        $data = $this->dispatch->dispatch(
+            new HookContext(
+                action: HookAction::DELETE,
+                phase: HookPhase::RESPONSE,
                 timing: HookTiming::AFTER,
-                payload: $data,
+                payload: [
+                    ...$data,
+                    ...$delete->toArray()
+                ],
                 module: 'Shipping'
             )
         );
         Event::dispatch("erp.shipping.delete", [
-            ...$dto->toArray(),
-            'user_id' => $dto->created_by,
-            'business_id' => $dto->business_id
+            ...$data
         ]);
-        return $this->service->delete($dto->toArray());
+        return $data;
     }
 }

@@ -24,9 +24,10 @@ class OrderItemListener
                function (string $eventName, array $data)
                use ($CompletedOrderItem) {
                     if ($eventName === 'erp.stockout.completed') {
-                         $CompletedOrderItem->handle(
-                              CompletedOrderItemRequest::fromArray($data)
-                         );
+                         $CompletedOrderItem->handle([
+                              ...$data,
+                              'stock_out_id' => $data['id']
+                         ]);
                     }
                }
           );
@@ -35,9 +36,7 @@ class OrderItemListener
                function (string $eventName, array $data)
                use ($CancelledOrderItem,$CheckExistsOrderItem,$getSummaryOrderItem) {
                     if ($eventName === 'erp.order.cancelled') {
-                         $CancelledOrderItem->handle(
-                              CancelledOrderItemRequest::fromArray($data)
-                         );
+                         $CancelledOrderItem->handle($data);
                     } else if ($eventName === 'erp.order.approved') {
                          $CheckExistsOrderItem->handle(
                               CheckExistsOrderItemRequest::fromArray($data)

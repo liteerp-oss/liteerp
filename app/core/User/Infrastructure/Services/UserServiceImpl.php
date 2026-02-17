@@ -20,16 +20,8 @@ class UserServiceImpl implements UserService
     {
         return $this->repo->findByEmail($data);
     }
-    public function index(array $data): array
-    {
-        return $this->repo->index($data);
-    }
     public function findByEmailOnSystem(array $data): ?User
     {
         return $this->repo->findByEmailOnSystem($data);
-    }
-    public function all(array $data): array
-    {
-        return $this->repo->all($data);
     }
 }

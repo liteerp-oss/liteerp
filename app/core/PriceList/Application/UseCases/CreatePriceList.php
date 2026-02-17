@@ -20,36 +20,39 @@ class CreatePriceList
     public function handle(array $data)
     {
         DB::beginTransaction();
-        $hooks = $this->hooks->dispatch(
+        $dto = CreatePriceListRequest::fromArray($data);
+        $data = $this->hooks->dispatch(
             new HookContext(
                 action: HookAction::CREATE,
                 phase: HookPhase::RESPONSE,
                 timing: HookTiming::BEFORE,
-                payload: $data,
+                payload: [
+                    ...$data,
+                    ...$dto->toArray()
+                ],
                 module: 'PriceList'
             )
         );
-        
-        $dto = CreatePriceListRequest::fromArray($hooks);
         $create = $this->service->create($dto->toArray());
         
-        $hooks = $this->hooks->dispatch(
+        $data = $this->hooks->dispatch(
             new HookContext(
                 action: HookAction::CREATE,
                 phase: HookPhase::RESPONSE,
                 timing: HookTiming::AFTER,
-                payload: $create->toArray(),
+                payload: [
+                    ...$data,
+                    ...$create->toArray()
+                ],
                 module: 'PriceList'
             )
         );
         
         Event::dispatch("erp.pricelist.create", [
-            ...$hooks,
-            'user_id' => $dto->created_by,
-            'business_id' => $dto->business_id
+            ...$data
         ]);
         
         DB::commit();
-        return $hooks;
+        return $data;
     }
 }

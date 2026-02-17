@@ -16,6 +16,7 @@ class IndexShippingRequest extends FormRequest
         return [
             'keywords' => 'nullable|string|max:150',
             'active'   => 'nullable|numeric|min:0|max:1',
+            'order_by' => 'nullable|in:ASC,DESC',
             ...$dispatch->dispatch(
                 new HookContext(
                     action: HookAction::INDEX,

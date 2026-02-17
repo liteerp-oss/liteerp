@@ -29,9 +29,9 @@ class CustomerServiceProvider extends ServiceProvider
 
     protected function mergeModuleConfig(): void
     {
-        $path = __DIR__ . '/../config/' . strtolower('Customers') . '.php';
+        $path = __DIR__ . '/../config/' . strtolower('Customer') . '.php';
         if (file_exists($path)) {
-            $this->mergeConfigFrom($path, strtolower('Customers'));
+            $this->mergeConfigFrom($path, strtolower('Customer'));
         }
     }
 
@@ -39,7 +39,7 @@ class CustomerServiceProvider extends ServiceProvider
     {
         $langPath = __DIR__ . '/../lang';
         if (is_dir($langPath)) {
-            $this->loadTranslationsFrom($langPath, strtolower('Customers'));
+            $this->loadTranslationsFrom($langPath, strtolower('Customer'));
         }
     }
 

@@ -21,10 +21,6 @@ class StockMovementInServiceImpl implements StockMovementInService
 
         return $this->repo->create($entity);
     }
-    public function index(array $data): array
-    {
-        return $this->repo->index($data);
-    }
     public function update(array $data): StockMovementIn
     {
         $entity = $this->repo->findById($data);
@@ -33,5 +29,9 @@ class StockMovementInServiceImpl implements StockMovementInService
         }
         $entity->qty_change = $data['qty_change'];
         return $this->repo->update($entity);
+    }
+    public function index(array $data): array
+    {
+        return $this->repo->index($data);
     }
 }

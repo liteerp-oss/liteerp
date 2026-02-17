@@ -19,7 +19,8 @@ class DeletePriceList
     public function handle(array $data)
     {
         DB::beginTransaction();
-        $hooks = $this->hooks->dispatch(
+        $dto = DeletePriceListRequest::fromArray($data);
+        $data = $this->hooks->dispatch(
             new HookContext(
                 action: HookAction::DELETE,
                 phase: HookPhase::RESPONSE,
@@ -28,17 +29,24 @@ class DeletePriceList
                 module: 'PriceList'
             )
         );
-        
-        $dto = DeletePriceListRequest::fromArray($hooks);
         $delete = $this->service->delete($dto->toArray());
-        
+        $data = $this->hooks->dispatch(
+            new HookContext(
+                action: HookAction::DELETE,
+                phase: HookPhase::RESPONSE,
+                timing: HookTiming::AFTER,
+                payload: [
+                    ...$data,
+                    ...$delete->toArray()
+                ],
+                module: 'PriceList'
+            )
+        );
         Event::dispatch("erp.pricelist.delete", [
-            ...$delete->toArray(),
-            'user_id' => $dto->created_by,
-            'business_id' => $dto->business_id
+            ...$data
         ]);
         
         DB::commit();
-        return $delete;
+        return $data;
     }
 }

@@ -20,32 +20,36 @@ class UpdateShipping
     public function handle(array $data)
     {
         DB::beginTransaction();
+        $dto = CreateShippingRequest::fromArray($data);
         $data = $this->dispatch->dispatch(
             new HookContext(
                 action: HookAction::UPDATE,
                 phase: HookPhase::RESPONSE,
                 timing: HookTiming::BEFORE,
-                payload: $data,
+                payload: [
+                    ...$data,
+                    ...$dto->toArray()
+                ],
                 module: 'Shipping'
             )
         );
-        $dto = CreateShippingRequest::fromArray($data);
         $update = $this->service->update($dto->toArray());
         $data = $this->dispatch->dispatch(
             new HookContext(
                 action: HookAction::UPDATE,
                 phase: HookPhase::RESPONSE,
                 timing: HookTiming::AFTER,
-                payload: $data,
+                payload: [
+                    ...$data,
+                    ...$update->toArray()
+                ],
                 module: 'Shipping'
             )
         );
         Event::dispatch("erp.shipping.update", [
-            ...$update->toArray(),
-            'user_id' => $dto->created_by,
-            'business_id' => $dto->business_id
+            ...$data
         ]);
         DB::commit();
-        return $update;
+        return $data;
     }
 }

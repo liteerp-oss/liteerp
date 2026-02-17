@@ -19,23 +19,20 @@ class ShowPurchase
 
     public function handle(array $data): array
     {
-        
+        $dto = ShowPurchaseRequest::fromArray($data);
         $data = $this->hooks->dispatch(
             new HookContext(
                 action: HookAction::SHOW,
                 phase: HookPhase::RESPONSE,
                 timing: HookTiming::BEFORE,
-                payload: $data,
+                payload: [
+                    ...$data,
+                    ...$dto->toArray()
+                ],
                 module: 'Purchase'
             )
         );
-        $dto = ShowPurchaseRequest::fromArray($data);
         $show = $this->service->show($data);
-        Event::dispatch("erp.purchase.show", [
-            ...$show,
-            'user_id' => $dto->created_by,
-            'business_id' => $dto->business_id
-        ]);
         $data = $this->hooks->dispatch(
             new HookContext(
                 action: HookAction::SHOW,
@@ -48,6 +45,9 @@ class ShowPurchase
                 module: 'Purchase'
             )
         );
+        Event::dispatch("erp.purchase.show", [
+            ...$data
+        ]);
         return $data;
     }
 }

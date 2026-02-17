@@ -7,7 +7,6 @@ class IndexOrderRequest
     public function __construct(
         public int $business_id,
         public ?string $keywords = null,
-        public ?string $status = null,
         public ?string $order_by = null,
         public int $created_by
     ) {}
@@ -21,7 +20,6 @@ class IndexOrderRequest
             business_id: $data['business_id'],
             created_by: $data['user_id'],
             keywords: $data['keywords'] ?? null,
-            status: $data['status'] ?? null,
             order_by: $data['order_by'] ?? 'DESC'
         );
     }
@@ -35,7 +33,6 @@ class IndexOrderRequest
             'business_id'            => $this->business_id,
             'created_by' => $this->created_by,
             'keywords' => $this->keywords,
-            'status' => $this->status,
             'order_by' => $this->order_by
         ];
     }

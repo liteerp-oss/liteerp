@@ -33,9 +33,9 @@ class OrderServiceProvider extends ServiceProvider
 
     protected function mergeModuleConfig(): void
     {
-        $path = __DIR__ . '/../config/' . strtolower('Orders') . '.php';
+        $path = __DIR__ . '/../config/' . strtolower('Order') . '.php';
         if (file_exists($path)) {
-            $this->mergeConfigFrom($path, strtolower('Orders'));
+            $this->mergeConfigFrom($path, strtolower('order'));
         }
     }
 
@@ -43,7 +43,7 @@ class OrderServiceProvider extends ServiceProvider
     {
         $langPath = __DIR__ . '/../lang';
         if (is_dir($langPath)) {
-            $this->loadTranslationsFrom($langPath, strtolower('Orders'));
+            $this->loadTranslationsFrom($langPath, strtolower('order'));
         }
     }
 

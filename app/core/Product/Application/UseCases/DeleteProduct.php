@@ -21,16 +21,19 @@ class DeleteProduct
     public function handle(array $data)
     {
         DB::beginTransaction();
+        $dto = DeleteProductRequest::fromArray($data);
         $data = $this->hooks->dispatch(
             new HookContext(
                 action: HookAction::DELETE,
                 phase: HookPhase::RESPONSE,
                 timing: HookTiming::BEFORE,
-                payload: $data,
+                payload: [
+                    ...$data,
+                    ...$dto->toArray()
+                ],
                 module: 'Product'
             )
         );
-        $dto = DeleteProductRequest::fromArray($data);
         $delete = $this->service->delete($dto->toArray());
         $data = $this->hooks->dispatch(
             new HookContext(
@@ -45,9 +48,7 @@ class DeleteProduct
             )
         );
         Event::dispatch("erp.product.delete", [
-            ...$data,
-            'user_id' => $dto->created_by,
-            'business_id' => $dto->business_id
+            ...$data
         ]);
         DB::commit();
         return $data;

@@ -39,8 +39,9 @@ class IndexQuery implements QueryInterface {
         );
         $rows = $hooks['query'];
         if($dto->keywords) {
-            $rows = $rows->where('products.name','like','%'.$dto->keywords.'%');
+            $rows = $rows->whereAny(['products.name','customer_group.name'],
+            'like', '%' . $dto->keywords . '%');
         }
-        return $rows->paginate(15)->toArray();
+        return $rows->orderBy('price_list.id', $dto->order_by)->paginate(15)->toArray();
     }
 }

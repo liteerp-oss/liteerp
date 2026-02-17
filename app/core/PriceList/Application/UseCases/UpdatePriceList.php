@@ -19,40 +19,39 @@ class UpdatePriceList
     public function handle(array $data)
     {
         DB::beginTransaction();
-        
-        $hooks = $this->hooks->dispatch(
+        $dto = CreatePriceListRequest::fromArray($data);
+        $data = $this->hooks->dispatch(
             new HookContext(
                 action: HookAction::UPDATE,
                 phase: HookPhase::RESPONSE,
                 timing: HookTiming::BEFORE,
-                payload: $data,
+                payload: [
+                    ...$data,
+                    ...$dto->toArray()
+                ],
                 module: 'PriceList'
             )
         );
-        
-        $dto = CreatePriceListRequest::fromArray($hooks);
         $update = $this->service->update($dto->toArray());
         
-        $hooks = $this->hooks->dispatch(
+        $data = $this->hooks->dispatch(
             new HookContext(
                 action: HookAction::UPDATE,
                 phase: HookPhase::RESPONSE,
                 timing: HookTiming::AFTER,
                 payload: [
+                    ...$data,
                     ...$update->toArray(),
-                    ...$hooks
                 ],
                 module: 'PriceList'
             )
         );
         
         Event::dispatch("erp.pricelist.update", [
-            ...$hooks,
-            'user_id' => $dto->created_by,
-            'business_id' => $dto->business_id
+            ...$data
         ]);
         
         DB::commit();
-        return $hooks;
+        return $data;
     }
 }

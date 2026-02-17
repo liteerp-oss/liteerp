@@ -24,6 +24,7 @@ class IndexCategoryProductRequest extends FormRequest
                     module: 'CategoryProduct'
                 )
             ),
+            'order_by' => 'nullable|in:ASC,DESC',
         ];
     }
     public function authorize(): bool

@@ -20,16 +20,19 @@ class DeleteCustomer
     public function handle(array $data)
     {
         DB::beginTransaction();
+        $dto = DeleteCustomerRequest::fromArray($data);
         $data = $this->hooks->dispatch(
             new HookContext(
                 action: HookAction::DELETE,
                 phase: HookPhase::RESPONSE,
                 timing: HookTiming::BEFORE,
-                payload: $data,
+                payload: [
+                    ...$data,
+                    ...$dto->toArray()
+                ],
                 module: 'Customer'
             )
         );
-        $dto = DeleteCustomerRequest::fromArray($data);
         $update = $this->service->delete($dto->toArray());
         $data = $this->hooks->dispatch(
             new HookContext(
@@ -44,11 +47,9 @@ class DeleteCustomer
             )
         );
         Event::dispatch("erp.customer.delete", [
-            ...$update->toArray(),
-            'user_id' => $dto->created_by,
-            'business_id' => $dto->business_id
+            ...$data
         ]);
         DB::commit();
-        return $update;
+        return $data;
     }
 }

@@ -37,7 +37,6 @@ class IndexQuery implements QueryInterface {
             ->leftJoin("users as approved_user", "approved_user.id", "=", "orders.approved_by")
             ->leftJoin("order_items", "order_items.order_id", "=", "orders.id")
             ->groupBy("orders.id")
-            ->orderBy("orders.id",$dto->order_by)
             ->where('orders.business_id',$dto->business_id);
         $data = $this->hooks->dispatch(
             new HookContext(
@@ -45,7 +44,10 @@ class IndexQuery implements QueryInterface {
                 phase: HookPhase::QUERY,
                 timing: HookTiming::ON,
                 payload: [
-                    'data' => $data,
+                    'data' => [
+                        ...$data,
+                        ...$dto->toArray()
+                    ],
                     'query' => $list
                 ],
                 module: 'Order'
@@ -53,12 +55,11 @@ class IndexQuery implements QueryInterface {
         );
         $list = $data['query'];
         $data = $data['data'];
-        if ($dto->status) {
-            $list = $list->where('orders.status', $dto->status);
-        }
         if ($dto->keywords) {
-            $list = $list->where('orders.order_no', 'like', '%' . $dto->keywords . '%');
+            $list = $list->whereAny(['orders.order_no',
+            'customers.name',
+            'customers.email'], 'like', '%' . $dto->keywords . '%');        
         }
-        return $list->paginate(15)->toArray();
+        return $list->orderBy("orders.id", $dto->order_by)->paginate(15)->toArray();
     }
 }

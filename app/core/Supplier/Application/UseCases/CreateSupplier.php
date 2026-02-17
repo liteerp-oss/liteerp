@@ -18,16 +18,19 @@ class CreateSupplier
     public function handle(array $data)
     {
         DB::beginTransaction();
+        $dto = CreateSupplierRequest::fromArray($data); 
         $data = $this->hooks->dispatch(
             new HookContext(
                 action: HookAction::CREATE,
                 phase: HookPhase::RESPONSE,
                 timing: HookTiming::BEFORE,
-                payload: $data,
+                payload: [
+                    ...$data,
+                    ...$dto->toArray()
+                ],
                 module: 'Supplier'
             )
         );
-        $dto = CreateSupplierRequest::fromArray($data); 
         $create = $this->service->create($dto->toArray());
         $data = $this->hooks->dispatch(
             new HookContext(
@@ -35,18 +38,16 @@ class CreateSupplier
                 phase: HookPhase::RESPONSE,
                 timing: HookTiming::AFTER,
                 payload: [
-                    ...$create->toArray(),
-                    ...$data
+                    ...$data,
+                    ...$create->toArray()
                 ],
                 module: 'Supplier'
             )
         );
         Event::dispatch("erp.supplier.create", [
-            ...$data,
-            'user_id' => $dto->created_by,
-            'business_id' => $dto->business_id
+            ...$data
         ]);
         DB::commit();
-        return $create;
+        return $data;
     }
 }

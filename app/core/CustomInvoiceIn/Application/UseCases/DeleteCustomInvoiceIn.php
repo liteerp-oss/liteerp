@@ -9,8 +9,8 @@ use App\Supports\Hooks\HookPhase;
 use App\Supports\Hooks\HookTiming;
 use Core\CustomInvoiceIn\Application\DTOs\DeleteCustomInvoiceInRequest;
 use Core\CustomInvoiceIn\Domain\Services\CustomInvoiceInService;
-use Core\CustomInvoiceIn\Infrastructure\Events\CustomInvoiceInEvent;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Event;
 
 class DeleteCustomInvoiceIn
 {
@@ -20,16 +20,20 @@ class DeleteCustomInvoiceIn
     public function handle(array $data)
     {
         DB::beginTransaction();
+        $dto = DeleteCustomInvoiceInRequest::fromArray($data);
         $data = $this->hooks->dispatch(
             new HookContext(
                 action: HookAction::DELETE,
                 phase: HookPhase::RESPONSE,
                 timing: HookTiming::BEFORE,
-                payload: $data,
+                payload: [
+                    ...$data,
+                    ...$dto->toArray()
+                ],
                 module: 'CustomInvoiceIn'
             )
         );
-        $dto = DeleteCustomInvoiceInRequest::fromArray($data);
+        
         $delete = $this->service->delete($dto->toArray());
         $data = $this->hooks->dispatch(
             new HookContext(
@@ -43,7 +47,7 @@ class DeleteCustomInvoiceIn
                 module: 'CustomInvoiceIn'
             )
         );
-        CustomInvoiceInEvent::handle('delete',[
+        Event::dispatch('erp.custominvoicein.delete', [
             ...$data
         ]);
         DB::commit();

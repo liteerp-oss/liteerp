@@ -55,6 +55,7 @@ class IndexQuery implements QueryInterface {
                 module: 'Inventory'
             )
         );
+        $data = $hooks['data'];
         $index = $hooks['query'];
         if (!empty($data['keywords'])) {
             $index = $index->whereAny(
@@ -63,7 +64,7 @@ class IndexQuery implements QueryInterface {
                 '%' . $data['keywords'] . '%'
             );
         }
-        $index = $index->paginate(15)->toArray();
+        $index = $index->orderBy('inventories.id', $data['order_by'])->paginate(15)->toArray();
         return $index;
     }
 }

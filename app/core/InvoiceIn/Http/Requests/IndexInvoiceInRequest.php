@@ -14,7 +14,6 @@ class IndexInvoiceInRequest extends FormRequest
     public function rules(HookDispatcher $hooks): array
     {
         return [
-            'payment_status' => 'nullable|in:pending,partial_payment,paid',
             'keywords' => 'nullable|string|max:150',
             'order_by' => 'nullable|in:DESC,ASC',
             ...$hooks->dispatch(

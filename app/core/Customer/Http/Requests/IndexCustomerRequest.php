@@ -25,9 +25,7 @@ class IndexCustomerRequest extends FormRequest
         return [
             ...$hooks,
             'keywords' => 'nullable|string|max:150',
-            'type'     => 'nullable|in:company,individual',
             'order_by' => 'nullable|in:ASC,DESC',
-            'active' => 'nullable|numeric|min:0|max:1'
         ];
     }
 

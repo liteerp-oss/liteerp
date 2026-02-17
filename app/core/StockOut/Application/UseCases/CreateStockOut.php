@@ -20,16 +20,19 @@ class CreateStockOut
     public function handle(array $data) : array
     {
         DB::beginTransaction();
+        $dto = CreateStockOutRequest::fromArray($data);
         $data = $this->hooks->dispatch(
             new HookContext(
                 action: HookAction::CREATE,
                 phase: HookPhase::RESPONSE,
                 timing: HookTiming::BEFORE,
-                payload: $data,
+                payload: [
+                    ...$data,
+                    ...$dto->toArray()
+                ],
                 module: 'StockOut'
             )
         );
-        $dto = CreateStockOutRequest::fromArray($data);
         $create = $this->service->create($dto->toArray());
         $data = $this->hooks->dispatch(
             new HookContext(
@@ -44,10 +47,7 @@ class CreateStockOut
             )
         );
         Event::dispatch("erp.stockout.create", [
-            ...$data,
-            'user_id' => $dto->created_by,
-            'business_id' => $dto->business_id,
-            'order_id' => $dto->order_id
+            ...$data
         ]);
         Event::dispatch("erp.notification.many", [
             'user_id' => $dto->created_by,

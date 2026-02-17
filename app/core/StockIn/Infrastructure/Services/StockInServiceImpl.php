@@ -17,10 +17,6 @@ class StockInServiceImpl implements StockInService
         $entity->markPending();
         return $this->repo->create($entity);
     }
-    public function index(array $data): array
-    {
-        return $this->repo->index($data);
-    }
     public function show(array $data): array | BadException
     {
         return $this->repo->show($data) ?? throw new BadException(__("stockin::messages.inventory_not_found"));

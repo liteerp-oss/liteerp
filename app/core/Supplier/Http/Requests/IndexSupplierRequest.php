@@ -15,7 +15,6 @@ class IndexSupplierRequest extends FormRequest
     {
         return [
             'keywords' => 'nullable|string|max:150',
-            'active' => 'nullable|boolean',
             'order_by' => 'nullable|in:ASC,DESC',
             ...$hooks->dispatch(
                 new HookContext(

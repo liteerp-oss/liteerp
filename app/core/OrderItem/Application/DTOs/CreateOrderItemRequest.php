@@ -6,7 +6,7 @@ class CreateOrderItemRequest
 {
     public function __construct(
         public ?int $business_id = null,
-        public ?int $user_id = null,
+        public ?int $created_by = null,
         public int $order_id,
         public int $inventory_id,
         public float $discount = 0,
@@ -34,7 +34,7 @@ class CreateOrderItemRequest
             compensation_quantity:  (float)($data['compensation_quantity'] ?? 0),
             conversion_quantity:    (float)($data['conversion_quantity'] ?? 0),
             business_id: (int) $data['business_id'] ?? null,
-            user_id: (int) $data['user_id'] ?? null,
+            created_by: (int) $data['user_id'] ?? null,
             price: (float) $data['price'],
             id: $data['id'] ?? null 
         );
@@ -55,7 +55,7 @@ class CreateOrderItemRequest
             'compensation_quantity' => $this->compensation_quantity,
             'conversion_quantity'   => $this->conversion_quantity,
             'business_id' => $this->business_id,
-            'user_id' => $this->user_id,
+            'created_by' => $this->created_by,
             'price'   => $this->price,
             'id'      => $this->id
         ];
@@ -64,6 +64,6 @@ class CreateOrderItemRequest
         return $this->buy_quantity
         + $this->gift_quantity
         + $this->compensation_quantity
-        + $this->compensation_quantity;
+        + $this->conversion_quantity;
     }
 }

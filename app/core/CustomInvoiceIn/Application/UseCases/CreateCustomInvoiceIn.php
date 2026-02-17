@@ -11,25 +11,32 @@ use Core\CustomInvoiceIn\Application\DTOs\CreateCustomInvoiceInRequest;
 use Core\CustomInvoiceIn\Domain\Services\CustomInvoiceInService;
 use Core\CustomInvoiceIn\Infrastructure\Events\CustomInvoiceInEvent;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Event;
 
 class CreateCustomInvoiceIn
 {
-    public function __construct(private CustomInvoiceInService $service,
-        private HookDispatcher $hooks) {}
+    public function __construct(
+        private CustomInvoiceInService $service,
+        private HookDispatcher $hooks
+    ) {}
 
     public function handle(array $data)
     {
         DB::beginTransaction();
+        $dto = CreateCustomInvoiceInRequest::fromArray($data);
         $data = $this->hooks->dispatch(
             new HookContext(
                 action: HookAction::CREATE,
                 phase: HookPhase::RESPONSE,
                 timing: HookTiming::BEFORE,
-                payload: $data,
+                payload: [
+                    ...$data,
+                    ...$dto->toArray()
+                ],
                 module: 'CustomInvoiceIn'
             )
         );
-        $dto = CreateCustomInvoiceInRequest::fromArray($data);
+
         $create = $this->service->create($dto->toArray());
         $data = $this->hooks->dispatch(
             new HookContext(
@@ -43,7 +50,7 @@ class CreateCustomInvoiceIn
                 module: 'CustomInvoiceIn'
             )
         );
-        CustomInvoiceInEvent::handle('create',[
+        Event::dispatch('erp.custominvoicein.create', [
             ...$data
         ]);
         DB::commit();

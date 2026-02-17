@@ -18,20 +18,19 @@ class ShowInvoiceOut
 
     public function handle(array $data)
     {
+        $dto = ShowInvoiceOutRequest::fromArray($data);
         $data = $this->hooks->dispatch(
             new HookContext(
                 action: HookAction::SHOW,
                 phase: HookPhase::RESPONSE,
                 timing: HookTiming::BEFORE,
-                payload: $data,
+                payload: [
+                    ...$data,
+                    ...$dto->toArray()
+                ],
                 module: 'InvoiceOut'
             )
         );
-        $dto = ShowInvoiceOutRequest::fromArray($data);
-        Event::dispatch('erp.invoiceout.index',[
-            ...$dto->toArray(),
-            'user_id' => $dto->created_by
-        ]);
         $show =  $this->service->show($dto->toArray());
         $data = $this->hooks->dispatch(
             new HookContext(
@@ -45,6 +44,9 @@ class ShowInvoiceOut
                 module: 'InvoiceOut'
             )
         );
+        Event::dispatch('erp.invoiceout.index',[
+            ...$data
+        ]);
         return $data;
     }
 }

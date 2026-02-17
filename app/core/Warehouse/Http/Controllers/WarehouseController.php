@@ -7,6 +7,7 @@ use Core\Warehouse\Application\DTOs\CreateWarehouseRequest;
 use Core\Warehouse\Application\DTOs\DeleteWarehouseRequest as DTOsDeleteWarehouseRequest;
 use Core\Warehouse\Application\DTOs\IndexWarehouseRequest as DTOsIndexWarehouseRequest;
 use Core\Warehouse\Application\DTOs\ShowWarehouseRequest as DTOsShowWarehouseRequest;
+use Core\Warehouse\Application\Queries\IndexQuery;
 use Core\Warehouse\Application\UseCases\DeleteWarehouse;
 use Core\Warehouse\Application\UseCases\IndexWarehouse;
 use Core\Warehouse\Application\UseCases\ShowWarehouse;
@@ -25,31 +26,26 @@ class WarehouseController
     }
     public function store(FormRequest $request,CreateWarehouse $useCase)
     {
-        $dto = CreateWarehouseRequest::fromArray($request->all());
-        $entity = $useCase->handle($dto);
+        $entity = $useCase->handle($request->all());
         return response()->json(['message' => $entity]);
     }
-    public function index(IndexWarehouseRequest $request,IndexWarehouse $useCase){
-        $dto = DTOsIndexWarehouseRequest::fromArray($request->all());
-        $entity = $useCase->handle($dto);
+    public function index(IndexWarehouseRequest $request,IndexQuery $useCase){
+        $entity = $useCase->handle($request->all());
         return response()->json(['message' => $entity]);
     }
     public function show(string $id, ShowWarehouse $useCase, ShowWarehouseRequest $request) {
         $request->merge(['id' => $id]);
-        $dto = DTOsShowWarehouseRequest::fromArray($request->all());
-        $entity = $useCase->handle($dto);
+        $entity = $useCase->handle($request->all());
         return response()->json(['message' => $entity]);
     }
     public function update(string $id,UpdateWarehouse $useCase,UpdateWarehouseRequest $request) {
         $request->merge(['id' => $id]);
-        $dto = CreateWarehouseRequest::fromArray($request->all());
-        $entity = $useCase->handle($dto);
+        $entity = $useCase->handle($request->all());
         return response()->json(['message' => $entity]);
     }
     public function destroy(string $id,DeleteWarehouse $useCase,DeleteWarehouseRequest $request) {
         $request->merge(['id' => $id]);
-        $dto = DTOsDeleteWarehouseRequest::fromArray($request->all());
-        $entity = $useCase->handle($dto);
+        $entity = $useCase->handle($request->all());
         return response()->json(['message' => $entity]);
     }
 }

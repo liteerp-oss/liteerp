@@ -20,10 +20,6 @@ class IndexQuery implements QueryInterface {
     function handle(array $data): array
     {
         $dto = IndexPurchaseRequest::fromArray($data);
-        Event::dispatch("erp.purchase.index", [
-            'user_id' => $dto->created_by,
-            'business_id' => $dto->business_id
-        ]);
         $list = PurchaseModel::select(
             "purchases.*",
             "suppliers.unit_name as supplier_name",
@@ -57,12 +53,13 @@ class IndexQuery implements QueryInterface {
         );
         $list = $data['query'];
         $data = $data['data'];
-        if ($dto->status) {
-            $list->where('purchases.status', $dto->status);
-        }
         if ($dto->keywords) {
-            $list->where('suppliers.unit_name', 'like', '%' . $dto->keywords . '%');
+            $list->whereAny(['suppliers.unit_name','created_users.name'], 'like', '%' . $dto->keywords . '%');
         }
+        Event::dispatch("erp.purchase.index", [
+            ...$data,
+            ...$dto->toArray(),
+        ]);
         return $list->paginate(15)->toArray();
     }
 }

@@ -19,15 +19,19 @@ class UpdateInventoryById
         private HookDispatcher $hooks
     ) {}
 
-    public function handle(UpdateInventoryByIdRequest $dto)
+    public function handle(array $data)
     {
         DB::beginTransaction();
+        $dto = UpdateInventoryByIdRequest::fromArray($data);
         $data = $this->hooks->dispatch(
             new HookContext(
                 action: HookAction::UPDATE,
                 phase: HookPhase::RESPONSE,
                 timing: HookTiming::BEFORE,
-                payload: $dto->toArray(),
+                payload: [
+                    ...$data,
+                    ...$dto->toArray()
+                ],
                 module: 'Inventory'
             )
         );
@@ -45,8 +49,6 @@ class UpdateInventoryById
             )
         );
         Event::dispatch('erp.inventory.update', [
-            'user_id' => $dto->created_by,
-            'business_id' => $dto->business_id,
             ...$data
         ]);
         DB::commit();

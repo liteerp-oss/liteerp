@@ -63,14 +63,11 @@ class IndexQuery implements QueryInterface
         $index = $data['query'];
         $data = $data['data'];
         if ($dto->keywords) {
-            $index = $index->where(
-                'invoice_outs.document_no',
+            $index = $index->whereAny(
+                ['invoice_outs.document_no', 'customers.name', 'products.name'],
                 'like',
                 '%' . $dto->keywords . '%'
             );
-        }
-        if ($dto->status) {
-            $index = $index->where('stock_outs.status', $dto->status);
         }
         return $index->orderBy("stock_outs.id", $dto->order_by)->paginate(15)->toArray();
     }

@@ -17,17 +17,19 @@ class ShowStockOut
 
     public function handle(array $data) : array
     {
+        $dto = ShowStockOutRequest::fromArray($data);
         $data = $this->hooks->dispatch(
             new HookContext(
                 action: HookAction::SHOW,
                 phase: HookPhase::RESPONSE,
                 timing: HookTiming::BEFORE,
-                payload: $data,
+                payload: [
+                    ...$data,
+                    ...$dto->toArray()
+                ],
                 module: 'StockOut'
             )
         );
-        $dto = ShowStockOutRequest::fromArray($data);
-        
         $show = $this->service->show($dto->toArray());
         $data = $this->hooks->dispatch(
             new HookContext(

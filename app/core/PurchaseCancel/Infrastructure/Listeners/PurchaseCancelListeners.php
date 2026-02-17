@@ -9,7 +9,8 @@ class PurchaseCancelListeners {
     public function handle(CreatePurchaseCancel $CreatePurchaseCancel){
         Event::listen('erp.purchase.*',function(string $eventName, array $data) use($CreatePurchaseCancel) {
             if($eventName === 'erp.purchase.cancelled') {
-                $CreatePurchaseCancel->handle(CreatePurchaseCancelRequest::fromArray($data));
+                logs()->info("Handling event: $eventName with data: " . json_encode($data));
+                $CreatePurchaseCancel->handle($data);
             }
         });
     }

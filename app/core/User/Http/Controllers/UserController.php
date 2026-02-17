@@ -2,9 +2,9 @@
 
 namespace Core\User\Http\Controllers;
 
+use Core\User\Application\Queries\IndexQuery;
 use Core\User\Application\UseCases\CreateUser;
 use Core\User\Application\UseCases\DeleteUser;
-use Core\User\Application\UseCases\IndexUser;
 use Core\User\Application\UseCases\UpdateUser;
 use Core\User\Http\Requests\CreateUserRequest as CreateFormRequest;
 use Core\User\Http\Requests\DeleteUserRequest;
@@ -13,7 +13,7 @@ use Core\User\Http\Requests\UpdateUserRequest;
 
 class UserController
 {
-    public function index(IndexUser $useCase,IndexUserRequest $request)
+    public function index(IndexQuery $useCase,IndexUserRequest $request)
     {
         return response(['message' => $useCase->handle($request->all())]);
     }

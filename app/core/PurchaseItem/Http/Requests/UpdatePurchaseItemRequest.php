@@ -2,11 +2,16 @@
 
 namespace Core\PurchaseItem\Http\Requests;
 
+use App\Supports\Hooks\HookAction;
+use App\Supports\Hooks\HookContext;
+use App\Supports\Hooks\HookDispatcher;
+use App\Supports\Hooks\HookPhase;
+use App\Supports\Hooks\HookTiming;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdatePurchaseItemRequest extends FormRequest
 {
-    public function rules(): array
+    public function rules(HookDispatcher $hooks): array
     {
         return [
             'discount'                => 'nullable|integer|min:0',
@@ -16,7 +21,16 @@ class UpdatePurchaseItemRequest extends FormRequest
             'gift_quantity'           => 'nullable|integer|min:0',
             'compensation_quantity'   => 'nullable|integer|min:0',
             'conversion_quantity'     => 'nullable|integer|min:0',
-            'unit_cost'               => 'nullable|integer|min:0'
+            'unit_cost'               => 'nullable|integer|min:0',
+            ...$hooks->dispatch(
+                new HookContext(
+                    action: HookAction::UPDATE,
+                    phase: HookPhase::VALIDATE,
+                    timing: HookTiming::ON,
+                    payload: [],
+                    module: 'PurchaseItem'
+                )
+            )
         ];
     }
 

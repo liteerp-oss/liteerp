@@ -19,9 +19,10 @@ class AdjustmentUpdateInventory
         private HookDispatcher $hooks
     ) {}
 
-    public function handle(AdjustmentUpdateInventoryRequest $dto)
+    public function handle(array $data)
     {
         DB::beginTransaction();
+        $dto = AdjustmentUpdateInventoryRequest::fromArray($data);
         $row = $this->service->getByOneByProductAndWarehouse($dto->toArray());
         if($row) {
             $data = $this->hooks->dispatch(
@@ -29,7 +30,10 @@ class AdjustmentUpdateInventory
                     action: HookAction::UPDATE,
                     phase: HookPhase::RESPONSE,
                     timing: HookTiming::BEFORE,
-                    payload: $dto->toArray(),
+                    payload: [
+                        ...$data,
+                        ...$dto->toArray(),
+                    ],
                     module: 'Inventory'
                 )
             );
@@ -38,7 +42,7 @@ class AdjustmentUpdateInventory
                 new HookContext(
                     action: HookAction::UPDATE,
                     phase: HookPhase::RESPONSE,
-                    timing: HookTiming::BEFORE,
+                    timing: HookTiming::AFTER,
                     payload: [
                         ...$data,
                         ...$update->toArray()
@@ -47,8 +51,6 @@ class AdjustmentUpdateInventory
                 )
             );
             Event::dispatch('erp.inventory.update', [
-                'user_id' => $dto->created_by,
-                'business_id' => $dto->business_id,
                 ...$data
             ]);
         } else {
@@ -57,7 +59,10 @@ class AdjustmentUpdateInventory
                     action: HookAction::CREATE,
                     phase: HookPhase::RESPONSE,
                     timing: HookTiming::BEFORE,
-                    payload: $dto->toArray(),
+                    payload: [
+                        ...$data,
+                        ...$dto->toArray(),
+                    ],
                     module: 'Inventory'
                 )
             );
@@ -75,8 +80,6 @@ class AdjustmentUpdateInventory
                 )
             );
             Event::dispatch('erp.inventory.create', [
-                'user_id' => $dto->created_by,
-                'business_id' => $dto->business_id,
                 ...$data
             ]);
         }

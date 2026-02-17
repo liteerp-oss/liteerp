@@ -22,23 +22,7 @@ class UpdateInvoiceOut
     public function handle(array $data)
     {
         DB::beginTransaction();
-        $data = $this->hooks->dispatch(
-            new HookContext(
-                action: HookAction::UPDATE,
-                phase: HookPhase::RESPONSE,
-                timing: HookTiming::BEFORE,
-                payload: $data,
-                module: 'InvoiceOut'
-            )
-        );
         $dto = CreateInvoiceOutRequest::fromArray($data);
-        $arrayData = $dto->toArray();
-        $findInvoice = $this->service->findById($arrayData);
-        $update = $this->service->update([
-            ...$arrayData,
-            // block manual update total price, system will reuse old total price to sure everything is correct
-            'total' => $findInvoice->total
-        ]);
         $data = $this->hooks->dispatch(
             new HookContext(
                 action: HookAction::UPDATE,
@@ -46,23 +30,38 @@ class UpdateInvoiceOut
                 timing: HookTiming::BEFORE,
                 payload: [
                     ...$data,
+                    ...$dto->toArray()
+                ],
+                module: 'InvoiceOut'
+            )
+        );
+        
+        $findInvoice = $this->service->findById($data);
+        $update = $this->service->update([
+            ...$data,
+            // block manual update total price, system will reuse old total price to sure everything is correct
+            'total' => $findInvoice->total
+        ]);
+        $data = $this->hooks->dispatch(
+            new HookContext(
+                action: HookAction::UPDATE,
+                phase: HookPhase::RESPONSE,
+                timing: HookTiming::AFTER,
+                payload: [
+                    ...$data,
                     ...$update->toArray()
                 ],
                 module: 'InvoiceOut'
             )
         );
-        if($arrayData['approved'] === true && !$findInvoice->isApproved()) {
+        if($data['approved'] === true && !$findInvoice->isApproved()) {
             Event::dispatch("erp.invoiceout.approved", [
                 ...$data,
-                'user_id' => $dto->created_by,
-                'business_id' => $dto->business_id,
                 'invoice_out_id' => $update->id
             ]);  
         } else {
             Event::dispatch("erp.invoiceout.update", [
                 ...$data,
-                'user_id' => $dto->created_by,
-                'business_id' => $dto->business_id,
                 'invoice_out_id' => $update->id
             ]);    
         }

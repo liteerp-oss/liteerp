@@ -26,7 +26,6 @@ class IndexOrderRequest extends FormRequest
         return [
             ...$additionalRules, 
             'keywords' => 'nullable|string|max:150',
-            'status' => 'nullable|in:pending,approved,invoiced,shipped,completed,cancelled',
             'order_by' => 'nullable|in:ASC,DESC'
         ];
     }

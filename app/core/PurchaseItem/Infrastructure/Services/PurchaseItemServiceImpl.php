@@ -21,10 +21,6 @@ class PurchaseItemServiceImpl implements PurchaseItemService
 
         return $this->repo->create($entity);
     }
-    public function index(array $data): array
-    {
-        return $this->repo->index($data);
-    }
     public function update(array $data): PurchaseItem|BadException
     {
         $entity = $this->repo->findById($data);

@@ -47,7 +47,10 @@ class IndexQuery implements QueryInterface
                 phase: HookPhase::QUERY,
                 timing: HookTiming::ON,
                 payload: [
-                    'data' => $data,
+                    'data' => [
+                        ...$data,
+                        ...$dto->toArray()
+                    ],
                     'query' => $list
                 ],
                 module: 'InvoiceOut'
@@ -55,11 +58,10 @@ class IndexQuery implements QueryInterface
         );
         $list = $data['query'];
         $data = $data['data'];
-        if ($dto->payment_status) {
-            $list = $list->where('invoice_outs.payment_status', $dto->payment_status);
-        }
         if ($dto->keywords) {
-            $list = $list->where('invoice_outs.document_no', $dto->keywords);
+            $list = $list->whereAny(['invoice_outs.document_no',
+            'customers.name',
+            'customers.email'], 'like', '%' . $dto->keywords . '%');    
         }
         return $list->orderBy("invoice_outs.id", $dto->order_by)->paginate(15)->toArray();
     }

@@ -37,8 +37,8 @@ class IndexQuery implements QueryInterface {
         $data = $hooks['data'];
         $index = $hooks['query'];
         if(!empty($dto->keywords)) {
-            $index = $index->where('category_product.name','like','%' . $dto->keywords . '%');
+            $index = $index->whereAny(['category_product.name', 'category_product.description'], 'like', '%' . $dto->keywords . '%');
         }
-        return $index->paginate(15)->toArray();
+        return $index->orderBy('category_product.id', $dto->order_by)->paginate(15)->toArray();
     }
 }

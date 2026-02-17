@@ -8,7 +8,6 @@ class IndexStockInRequest
         public int $business_id,
         public int $created_by,
         public ?string $keywords,
-        public ?string $status,
         public ?string $order_by = null 
     ) {}
 
@@ -16,7 +15,6 @@ class IndexStockInRequest
     {
         return new self(
             business_id: (int) $data['business_id'],
-            status : $data['status'] ?? null,
             created_by: $data['user_id'],
             keywords: $data['keywords'] ?? null,
             order_by: $data['order_by'] ?? 'DESC' 
@@ -28,7 +26,6 @@ class IndexStockInRequest
         return [
             'business_id' => $this->business_id,
             'keywords' => $this->keywords,
-            'status'      => $this->status,
             'created_by'  => $this->created_by,
             'order_by'  => $this->order_by
         ];

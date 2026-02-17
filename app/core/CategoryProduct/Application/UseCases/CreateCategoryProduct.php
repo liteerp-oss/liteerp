@@ -22,16 +22,19 @@ class CreateCategoryProduct
     public function handle(array $data)
     {
         DB::beginTransaction();
+        $dto = CreateCategoryProductRequest::fromArray($data);
         $data = $this->hooks->dispatch(
             new HookContext(
                 action: HookAction::CREATE,
                 phase: HookPhase::RESPONSE,
                 timing: HookTiming::BEFORE,
-                payload: $data,
+                payload: [
+                    ...$data,
+                    ...$dto->toArray()
+                ],
                 module: 'CategoryProduct'
             )
         );
-        $dto = CreateCategoryProductRequest::fromArray($data);
         
         $create = $this->service->create($dto->toArray());
         $data = $this->hooks->dispatch(
@@ -40,19 +43,16 @@ class CreateCategoryProduct
                 phase: HookPhase::RESPONSE,
                 timing: HookTiming::AFTER,
                 payload: [
+                    ...$data,
                     ...$create->toArray(),
-                    ...$data
                 ],
                 module: 'CategoryProduct'
             )
         );
         Event::dispatch("erp.categoryproduct.create", [
-            ...$create->toArray(),
-            'user_id' => $dto->created_by,
-            'business_id' => $dto->business_id,
-            'category_id' => $create->id
+            ...$data
         ]);
         DB::commit();
-        return $create;
+        return $data;
     }
 }

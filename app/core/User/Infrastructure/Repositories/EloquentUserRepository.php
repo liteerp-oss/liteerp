@@ -9,29 +9,6 @@ use Illuminate\Support\Facades\Cache;
 
 class EloquentUserRepository implements UserRepositoryInterface
 {
-
-    public function index(array $data): array
-    {
-        $rows = ModelsUser::select("users.*","business_role.role as role")
-        ->join("business_role","business_role.user_id","=","users.id")
-        ->where("business_role.business_id",$data['business_id']);
-        if(!empty($data['keywords'])) {
-            $rows = $rows->where('users.name','like','%'. $data['keywords'] .'%');
-        }
-        $rows = $rows->paginate(15)->toArray();
-        return $rows;
-    }
-    public function all(array $data): array
-    {
-        $rows = ModelsUser::select("users.*","business_role.role as role"
-        ,"business_role.business_id as business_id"
-        ,"business.name as business_name"
-        ,"business.address as business_address")
-        ->join("business_role","business_role.user_id","=","users.id")
-        ->join("business","business.id","=","business_role.business_id");
-        $rows = $rows->get()->toArray();
-        return $rows;
-    }
     public function findById(array $data): ?User
     {
         $row = ModelsUser::select("users.*","business_role.role as role")

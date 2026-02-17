@@ -2,7 +2,6 @@
 
 namespace Core\PurchaseItem\Infrastructure\Listeners;
 
-use App\Exceptions\BadException;
 use Core\PurchaseItem\Application\DTOs\CheckForPurchaseRequestedRequest;
 use Core\PurchaseItem\Application\DTOs\CheckForStockMovementInRequest;
 use Core\PurchaseItem\Application\UseCases\CheckForPurchaseRequested;

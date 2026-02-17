@@ -20,16 +20,19 @@ class UpdateSupplier
     public function handle(array $data)
     {
         DB::beginTransaction();
+        $dto = CreateSupplierRequest::fromArray($data); 
         $data = $this->hooks->dispatch(
             new HookContext(
                 action: HookAction::UPDATE,
                 phase: HookPhase::RESPONSE,
                 timing: HookTiming::BEFORE,
-                payload: $data,
+                payload: [
+                    ...$data,
+                    ...$dto->toArray()
+                ],
                 module: 'Supplier'
             )
         );
-        $dto = CreateSupplierRequest::fromArray($data); 
         $update = $this->service->update($dto->toArray());
         $data = $this->hooks->dispatch(
             new HookContext(
@@ -37,18 +40,16 @@ class UpdateSupplier
                 phase: HookPhase::RESPONSE,
                 timing: HookTiming::AFTER,
                 payload: [
-                    ...$update->toArray(),
-                    ...$data
+                    ...$data,
+                    ...$update->toArray()
                 ],
                 module: 'Supplier'
             )
         );
         Event::dispatch("erp.supplier.update", [
-            ...$update->toArray(),
-            'user_id' => $dto->created_by,
-            'business_id' => $dto->business_id
+            ...$data
         ]);
         DB::commit();
-        return $update;
+        return $data;
     }
 }

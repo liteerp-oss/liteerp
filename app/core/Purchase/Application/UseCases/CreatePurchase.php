@@ -12,7 +12,6 @@ use Core\Purchase\Domain\Services\PurchaseService;
 use Core\Purchase\Domain\Entities\Purchase;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
-use Illuminate\Support\Facades\Log;
 
 class CreatePurchase
 {
@@ -21,19 +20,22 @@ class CreatePurchase
         private HookDispatcher $hooks
     ) {}
 
-    public function handle(array $data): Purchase
+    public function handle(array $data): array
     {
         DB::beginTransaction();
+        $dto = CreatePurchaseRequest::fromArray($data);
         $data = $this->hooks->dispatch(
             new HookContext(
                 action: HookAction::CREATE,
                 phase: HookPhase::RESPONSE,
                 timing: HookTiming::BEFORE,
-                payload: $data,
+                payload: [
+                    ...$data,
+                    ...$dto->toArray()
+                ],
                 module: 'Purchase'
             )
         );
-        $dto = CreatePurchaseRequest::fromArray($data);
         $create = $this->service->create($dto->toArray());
         $data = $this->hooks->dispatch(
             new HookContext(
@@ -48,9 +50,7 @@ class CreatePurchase
             )
         );
         Event::dispatch("erp.purchase.create", [
-            ...$create->toArray(),
-            'user_id' => $dto->created_by,
-            'business_id' => $dto->business_id
+            ...$data
         ]);
         Event::dispatch("erp.notification.many", [
             'user_id' => $dto->created_by,
@@ -70,6 +70,6 @@ class CreatePurchase
             'chanels' => ['db']
         ]);
         DB::commit();
-        return $create;
+        return $data;
     }
 }

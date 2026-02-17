@@ -10,7 +10,8 @@ class IndexStockMovementInRequest extends FormRequest
     {
         return [
             'stock_in_id'  => 'required|numeric|exists:stock_ins,id',
-            'limit' => 'nullable|numeric|min:15|max:300'
+            'keywords'     => 'nullable|string|max:150',
+            'order_by'     => 'nullable|in:ASC,DESC'
         ];
     }
 

@@ -5,8 +5,8 @@ namespace Core\PurchaseItem\Http\Controllers;
 use Core\PurchaseItem\Application\UseCases\CreatePurchaseItem;
 use Core\PurchaseItem\Application\DTOs\CreatePurchaseItemRequest;
 use Core\PurchaseItem\Application\DTOs\DeletePurchaseItemRequest as DTOsDeletePurchaseItemRequest;
+use Core\PurchaseItem\Application\Queries\IndexQuery;
 use Core\PurchaseItem\Application\UseCases\DeletePurchaseItem;
-use Core\PurchaseItem\Application\UseCases\IndexPurchaseItem;
 use Core\PurchaseItem\Application\UseCases\UpdatePurchaseItem;
 use Core\PurchaseItem\Http\Requests\CreatePurchaseItemRequest as FormRequest;
 use Core\PurchaseItem\Http\Requests\DeletePurchaseItemRequest;
@@ -17,11 +17,10 @@ class PurchaseItemController
 {
     public function store(FormRequest $request, CreatePurchaseItem $useCase)
     {
-        $dto = CreatePurchaseItemRequest::fromArray($request->all());
-        $entity = $useCase->handle($dto);
+        $entity = $useCase->handle($request->all());
         return response()->json(['message' => $entity]);
     }
-    public function index(IndexPurchaseItemRequest $request, IndexPurchaseItem $useCase)
+    public function index(IndexPurchaseItemRequest $request, IndexQuery $useCase)
     {
         $entity = $useCase->handle($request->all());
         return response()->json(['message' => $entity]);
@@ -32,8 +31,7 @@ class PurchaseItemController
         UpdatePurchaseItem $useCase
     ) {
         $request->merge(['id' => $id]);
-        $dto = CreatePurchaseItemRequest::fromArray($request->all());
-        $entity = $useCase->handle($dto);
+        $entity = $useCase->handle($request->all());
         return response()->json(['message' => $entity]);
     }
     public function destroy(
@@ -42,8 +40,7 @@ class PurchaseItemController
         DeletePurchaseItem $useCase
     ) {
         $request->merge(['id' => $id]);
-        $dto = DTOsDeletePurchaseItemRequest::fromArray($request->all());
-        $entity = $useCase->handle($dto);
+        $entity = $useCase->handle($request->all());
         return response()->json(['message' => $entity]);
     }
 }

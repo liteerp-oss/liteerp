@@ -22,18 +22,20 @@ class UpdateOrder
     public function handle(array $data)
     {
         DB::beginTransaction();
+        $dto = UpdateOrderRequest::fromArray($data);
         $data = $this->hooks->dispatch(
             new HookContext(
                 action: HookAction::UPDATE,
                 phase: HookPhase::RESPONSE,
                 timing: HookTiming::BEFORE,
                 payload: [
-                    ...$data
+                    ...$data,
+                    ...$dto->toArray()
                 ],
                 module: 'Order'
             )
         );
-        $dto = UpdateOrderRequest::fromArray($data);
+        
         $update = $this->service->update($dto->toArray());
         $data = $this->hooks->dispatch(
             new HookContext(
@@ -48,29 +50,20 @@ class UpdateOrder
             )
         );
         $notificationStatus = 'update';
+        logs()->info("Order updated", $data);
         if($update->isApproved()) {
             Event::dispatch("erp.order.approved", [
-                'user_id' => $dto->created_by,
-                'business_id' => $dto->business_id,
-                'id' => $update->id,
-                'order_id'     => $update->id,
+                ...$data
             ]);  
             $notificationStatus = "approved";
         } else if($update->isCancelled()) {
             Event::dispatch("erp.order.cancelled", [
-                'user_id' => $dto->created_by,
-                'business_id' => $dto->business_id,
-                'id' => $update->id,
-                'order_id'     => $update->id,
-                'reason' => $dto->reason
+                ...$data
             ]);
             $notificationStatus = "cancelled";
         } else {
             Event::dispatch("erp.order.update", [
-                'user_id' => $dto->created_by,
-                'business_id' => $dto->business_id,
-                'id' => $update->id,
-                'order_id'     => $update->id,
+                ...$data
             ]);
         }
         Event::dispatch("erp.notification.many", [

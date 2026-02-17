@@ -9,27 +9,33 @@ use App\Supports\Hooks\HookPhase;
 use App\Supports\Hooks\HookTiming;
 use Core\CustomInvoiceOut\Application\DTOs\CreateCustomInvoiceOutRequest;
 use Core\CustomInvoiceOut\Domain\Services\CustomInvoiceOutService;
-use Core\CustomInvoiceOut\Infrastructure\Events\CustomInvoiceOutEvent;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Event;
 
 class CreateCustomInvoiceOut
 {
-    public function __construct(private CustomInvoiceOutService $service,
-        private HookDispatcher $hooks) {}
+    public function __construct(
+        private CustomInvoiceOutService $service,
+        private HookDispatcher $hooks
+    ) {}
 
     public function handle(array $data)
     {
         DB::beginTransaction();
+        $dto = CreateCustomInvoiceOutRequest::fromArray($data);
         $data = $this->hooks->dispatch(
             new HookContext(
                 action: HookAction::CREATE,
                 phase: HookPhase::RESPONSE,
                 timing: HookTiming::BEFORE,
-                payload: $data,
+                payload: [
+                    ...$data,
+                    ...$dto->toArray()
+                ],
                 module: 'CustomInvoiceOut'
             )
         );
-        $dto = CreateCustomInvoiceOutRequest::fromArray($data);
+
         $create = $this->service->create($dto->toArray());
         $data = $this->hooks->dispatch(
             new HookContext(
@@ -43,7 +49,7 @@ class CreateCustomInvoiceOut
                 module: 'CustomInvoiceOut'
             )
         );
-        CustomInvoiceOutEvent::handle('create', [
+        Event::dispatch('erp.custominvoiceout.create', [
             ...$data
         ]);
         DB::commit();

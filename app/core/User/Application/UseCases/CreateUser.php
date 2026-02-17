@@ -7,35 +7,62 @@ use Core\User\Application\DTOs\CreateUserRequest;
 use Core\User\Domain\Services\UserService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
+use App\Supports\Hooks\HookAction;
+use App\Supports\Hooks\HookContext;
+use App\Supports\Hooks\HookDispatcher;
+use App\Supports\Hooks\HookPhase;
+use App\Supports\Hooks\HookTiming;
 /**
  * This usecase mean is add user into business
  * It's not create new user
  */
 class CreateUser
 {
-    public function __construct(private UserService $service) {}
+    public function __construct(private UserService $service,
+        private HookDispatcher $hooks) {}
 
     public function handle(array $data)
     {
         DB::beginTransaction();
         $dto = CreateUserRequest::fromArray($data);
+        $data = $this->hooks->dispatch(
+            new HookContext(
+                action: HookAction::CREATE,
+                phase: HookPhase::RESPONSE,
+                timing: HookTiming::BEFORE,
+                payload: [
+                    ...$data,
+                    ...$dto->toArray()
+                ],
+                module: 'User'
+            )
+        );
         $checkExists = $this->service->getByEmail($dto->toArray());
-        if($checkExists) {
+        if ($checkExists) {
             throw new BadException(__("user::messages.is_exists_on_business"));
         }
         $account = $this->service->findByEmailOnSystem($dto->toArray());
-        if ($account) {
-            Event::dispatch("erp.user.create", [
-                ...$account->toArray(),
-                'user_id'   => $dto->created_by,
-                'role_user_id'   => $account->id,
-                'business_id' => $dto->business_id,
-                'role' => $dto->role
-            ]);
-             DB::commit();
-            return $account;
-        } else {
+        if (!$account) {
             throw new BadException(__("user::messages.not_exists"));
         }
+        $data = $this->hooks->dispatch(
+            new HookContext(
+                action: HookAction::CREATE,
+                phase: HookPhase::RESPONSE,
+                timing: HookTiming::AFTER,
+                payload: [
+                    ...$data,
+                    ...$account->toArray()
+                ],
+                module: 'User'
+            )
+        );
+        Event::dispatch("erp.user.create", [
+            ...$data,
+            ...$account->toArray(),
+            'role_user_id'   => $account->id
+        ]);
+        DB::commit();
+        return $data;
     }
 }

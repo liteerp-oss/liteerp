@@ -20,7 +20,6 @@ class IndexStockInRequest extends FormRequest
     {
         return [
             'keywords' => 'nullable|string|max:150',
-            'status' => 'nullable|in:received,pending,cancelled',
             'order_by' => 'nullable|in:ASC,DESC',
             ...$dispatch->dispatch(
                 new HookContext(

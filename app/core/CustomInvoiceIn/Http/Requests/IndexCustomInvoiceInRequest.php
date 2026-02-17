@@ -30,8 +30,7 @@ class IndexCustomInvoiceInRequest extends FormRequest
         return [
             ...$hooks,
             'keywords' => 'nullable|string|max:150',
-            'order_by' => 'nullable|in:ASC,DESC',
-            'payment_status' => 'nullable|in:paid,partial_payment,pending',
+            'order_by' => 'nullable|in:ASC,DESC'
         ];
     }
 }

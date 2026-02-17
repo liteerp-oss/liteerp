@@ -4,7 +4,7 @@ namespace Core\StockMovementOut\Http\Controllers;
 
 use Core\StockMovementOut\Application\UseCases\CreateStockMovementOut;
 use Core\StockMovementOut\Application\DTOs\CreateStockMovementOutRequest;
-use Core\StockMovementOut\Application\UseCases\IndexStockMovementOut;
+use Core\StockMovementOut\Application\Queries\IndexQuery;
 use Core\StockMovementOut\Application\UseCases\UpdateStockMovementOut;
 use Core\StockMovementOut\Http\Requests\CreateStockMovementOutRequest as FormRequest;
 use Core\StockMovementOut\Http\Requests\IndexStockMovementOutRequest;
@@ -28,7 +28,7 @@ class StockMovementOutController
         return response()->json(['message' => $entity]);
     }
     public function index(IndexStockMovementOutRequest $request,
-        IndexStockMovementOut $useCase) {
+        IndexQuery $useCase) {
             $entity = $useCase->handle($request->all());
             return response()->json(['message' => $entity]);
         }

@@ -22,41 +22,37 @@ class CreateCustomer
     public function handle(array $data)
     {
         DB::beginTransaction();
-        $hooks = $this->hooks->dispatch(
+        $dto = CreateCustomerRequest::fromArray($data);
+        $data = $this->hooks->dispatch(
             new HookContext(
                 action: HookAction::CREATE,
                 phase: HookPhase::RESPONSE,
                 timing: HookTiming::BEFORE,
-                payload: $data,
+                payload: [
+                    ...$data,
+                    ...$dto->toArray()
+                ],
                 module: 'Customer'
             )
         );
-        $dto = CreateCustomerRequest::fromArray($hooks);
         $create = $this->service->create($dto->toArray());
-        $hooks = $this->hooks->dispatch(
+        $data = $this->hooks->dispatch(
             new HookContext(
                 action: HookAction::CREATE,
                 phase: HookPhase::RESPONSE,
                 timing: HookTiming::BEFORE,
-                payload: $create->toArray(),
+                payload: [
+                    ...$data,
+                    ...$create->toArray()
+                ],
                 module: 'Customer'
             )
         );
+
         Event::dispatch("erp.customer.create", [
-            ...$hooks,
-            'user_id' => $dto->created_by,
-            'business_id' => $dto->business_id
+            ...$data
         ]);
-        $hooks = $this->hooks->dispatch(
-            new HookContext(
-                action: HookAction::CREATE,
-                phase: HookPhase::RESPONSE,
-                timing: HookTiming::BEFORE,
-                payload: $hooks,
-                module: 'Customer'
-            )
-        );
         DB::commit();
-        return $hooks;
+        return $data;
     }
 }

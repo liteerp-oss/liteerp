@@ -20,16 +20,19 @@ class UpdateStockIn
     public function handle(array $data)
     {
         DB::beginTransaction();
+        $dto = CreateStockInRequest::fromArray($data);
         $data = $this->hooks->dispatch(
             new HookContext(
                 action: HookAction::UPDATE,
                 phase: HookPhase::RESPONSE,
                 timing: HookTiming::BEFORE,
-                payload: $data,
+                payload: [
+                    ...$data,
+                    ...$dto->toArray()
+                ],
                 module: 'StockIn'
             )
         );
-        $dto = CreateStockInRequest::fromArray($data);
         $update = $this->service->update($dto->toArray());
         $data = $this->hooks->dispatch(
             new HookContext(
@@ -45,15 +48,11 @@ class UpdateStockIn
         );
         if ($update->isReceived()) {
             Event::dispatch("erp.stockin.received", [
-                ...$update->toArray(),
-                'user_id' => $dto->created_by,
-                'business_id' => $dto->business_id
+                ...$data
             ]);
         } else {
             Event::dispatch("erp.stockin.update", [
-                ...$update->toArray(),
-                'user_id' => $dto->created_by,
-                'business_id' => $dto->business_id
+                ...$data
             ]);
         }
         Event::dispatch("erp.notification.many", [
@@ -74,6 +73,6 @@ class UpdateStockIn
             'chanels' => ['db']
         ]);
         DB::commit();
-        return $update;
+        return $data;
     }
 }
