@@ -27,7 +27,7 @@ export default function AdjustmentTabs() {
         (page = 0) => {
             table.setLoading(true)
             InventoryAdjustmentService.list({
-                keywords: search.formData?.keywords ?? '',
+                ...search.formData,
                 page,
             }).then((resp) => {
                 table.setLoading(false)
@@ -35,7 +35,7 @@ export default function AdjustmentTabs() {
                 table.setLinks(resp.message.links)
             })
         },
-        [search.formData?.keywords]
+        [search.formData]
     )
 
     const getProducts = useCallback((keywords = '', callback = null) => {

@@ -14,9 +14,10 @@ import { useI18n } from '@/i18n/useI18n'
 export default function Products({
     detail = null
 }) {
-    const {t} = useI18n();
+    const { t } = useI18n();
     const dispatch = useDispatch();
     const form = useForm();
+    const searchOrderItem = useForm();
     const [showForm, setShowForm] = useState(false);
     const [searchParams] = useSearchParams();
     const { openPopup } = usePopup();
@@ -151,7 +152,8 @@ export default function Products({
         table.setLoading(true);
         OrderItemService.list({
             order_id: searchParams.get('id'),
-            page: page
+            page: page,
+            ...searchOrderItem.formData
         })
             .then((resp) => {
                 table.setData(resp.message.data);
@@ -159,15 +161,22 @@ export default function Products({
                 table.setLinks(resp.message.links);
             })
             .catch((error) => {
-
+                table.setLoading(false);
+                if (error.response.data?.message) {
+                    openPopup({
+                        type: 'error',
+                        message: error.response.data?.message
+                    })
+                }
             })
-    }, [searchParams]);
+    }, [searchParams, searchOrderItem.formData]);
 
     useEffect(() => {
         getOrderItem();
     }, [])
     return <div>
-        <ProductAdded onDelete={confirmDelete} table={table} form={form} setShowForm={setShowForm} />
+        <ProductAdded onDelete={confirmDelete} search={searchOrderItem} callback={getOrderItem} table={table}
+            form={form} setShowForm={setShowForm} />
         <ListProduct detail={detail} add={add} />
         <div>
             {showForm ? <PopupLayout

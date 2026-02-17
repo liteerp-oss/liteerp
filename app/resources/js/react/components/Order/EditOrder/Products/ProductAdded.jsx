@@ -3,16 +3,17 @@ import Currencies from '../../../Currencies';
 import { useI18n } from "@/i18n/useI18n";
 import CommonDataTableV2 from "@/react/components/CommonDataTableV2";
 
-export default function ProductAdded({ 
-    table = null, 
-    form=null, 
-    movePage = (page) => {}, 
-    loading = false, 
+export default function ProductAdded({
+    table = null,
+    form = null,
+    loading = false,
     disabled = false,
-    setShowForm = (status) => {}, 
-    onDelete = (value) => {}
-    }) {
-    const {t} = useI18n();
+    setShowForm = (status) => { },
+    onDelete = (value) => { },
+    search = null,
+    callback = () => { }
+}) {
+    const { t } = useI18n();
     const columns = [
         { label: t("Name"), key: "name" },
         { label: t("Unit"), key: "unit" },
@@ -20,7 +21,7 @@ export default function ProductAdded({
             label: t('Price'),
             key: "price",
             render: (value) => {
-                return <Currencies amount={value}/>
+                return <Currencies amount={value} />
             }
         },
 
@@ -65,38 +66,39 @@ export default function ProductAdded({
             <h4 className="h5">{t("Added to order")}</h4>
             <CommonDataTableV2
                 config={{
-                        default: [{
-                            key: "order_by",
-                            placeholder: t("Order by"),
-                            options: [
-                                { value: 'ASC', label: t('Oldest') },
-                                { value: 'DESC', label: t('Newest') },
-                            ],
-                            type: "select",
-                            label: t("Order by"),
-                            col: "col-6"
-                        }, {
-                            key: "keywords",
-                            placeholder: t("Keywords"),
-                            type: "text",
-                            label: t("Search"),
-                            col: "col-6"
-                        }]
-                    }}
+                    default: [{
+                        key: "order_by",
+                        placeholder: t("Order by"),
+                        options: [
+                            { value: 'ASC', label: t('Oldest') },
+                            { value: 'DESC', label: t('Newest') },
+                        ],
+                        type: "select",
+                        label: t("Order by"),
+                        col: "col-6"
+                    }, {
+                        key: "keywords",
+                        placeholder: t("Keywords"),
+                        type: "text",
+                        label: t("Search"),
+                        col: "col-6"
+                    }]
+                }}
+                search={search}
                 columns={columns}
                 data={table?.data}
                 links={table?.links}
-                movePage={movePage}
-                onEdit={ disabled ? null : (row) => {
+                onEdit={disabled ? null : (row) => {
                     form.setFormData(row);
                     form.setIsEdit(true);
                     setShowForm(true)
                 }}
-                onDelete={disabled ? null :(row) => {
+                onDelete={disabled ? null : (row) => {
                     onDelete(row)
                 }}
-                loading={loading}
+                loading={table.loading}
                 type={'orderitem'}
+                callback={callback}
             />
         </div>
     );

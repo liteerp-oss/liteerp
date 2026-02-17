@@ -111,7 +111,10 @@ export default function ListCustomer() {
     const getCustomers = useCallback(
         (page = 0) => {
             table.setLoading(true)
-            CustomerService.list(search.formData)
+            CustomerService.list({
+                ...search.formData,
+                page,
+            })
                 .then((resp) => {
                     table.setData(resp.message.data)
                     table.setLinks(resp.message.links)

@@ -22,7 +22,7 @@ export default function User() {
     const getUsers = useCallback(() => {
         table.setLoading(true)
         UserService.list({
-            keywords: '',
+            ...search.formData,
             page: 0,
         })
             .then((resp) => {
@@ -31,7 +31,7 @@ export default function User() {
                 table.setLinks(resp.message.links)
             })
             .catch(() => { })
-    }, [])
+    }, [search.formData])
 
     const handleEdit = (row) => {
         form.setIsEdit(true)

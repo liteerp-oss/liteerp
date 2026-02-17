@@ -15,7 +15,6 @@ import Summary from './EditOrder/Summary';
 import OrderItemService from '../../services/OrderItemService';
 import Completed from './EditOrder/Completed';
 import BeforeApprove from './EditOrder/BeforeApprove';
-import DangerButton from '../UI/Buttons/DangerButton';
 import { PopupLayout } from '../../layouts/PopupLayout';
 import TextArea from '../UI/Input/Textarea';
 import Cancelled from './EditOrder/Cancelled';

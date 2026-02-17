@@ -1,20 +1,15 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import CommonDataTable from '../CommonDataTable'
 import useTable from '../../libraries/handleTable'
 import { useForm } from '../../libraries/handleInput'
 import { usePopup } from '../popups/PopupContext'
-import SearchInput from '../UI/Input/SearchInput'
 import { PopupLayout } from '../../layouts/PopupLayout'
 import { InputForm } from '../UI/Input/InputForm'
 import CustomerGroupService from '../../services/CustomerGroupService'
 import { useI18n } from '../../../i18n/useI18n'
-import { useSelector } from 'react-redux'
-import PERMISSIONS from '../../common/permission'
 import CommonDataTableV2 from '../CommonDataTableV2'
 
 export default function ListGroup() {
     const { t } = useI18n()
-    const roles = useSelector((state) => state.businessRole.role);
     const table = useTable()
     const search = useForm()
     const form = useForm()
@@ -87,7 +82,7 @@ export default function ListGroup() {
         (page = 0) => {
             table.setLoading(true)
             CustomerGroupService.list({
-                keywords: search.formData?.keywords ?? '',
+                ...search.formData,
                 page,
             })
                 .then((resp) => {

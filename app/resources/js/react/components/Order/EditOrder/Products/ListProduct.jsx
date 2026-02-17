@@ -7,7 +7,6 @@ import { useI18n } from "@/i18n/useI18n";
 import CommonDataTableV2 from "@/react/components/CommonDataTableV2";
 export default function ListProduct({
     add = (product) => { },
-    loading = false,
     detail = null 
 }) {
     const {t} = useI18n();
@@ -32,7 +31,7 @@ export default function ListProduct({
     const getInventories = useCallback((page = 0) => {
         table.setLoading(true);
         InventoryService.list({
-            keywords: search.formData?.keywords ?? '',
+            ...search.formData,
             page: page,
             customer_group_id: detail?.customer_group_id
         })
@@ -45,7 +44,7 @@ export default function ListProduct({
             .catch((error) => {
 
             })
-    }, [search.formData?.keywords,detail]);
+    }, [search.formData,detail]);
     useEffect(() => {
         getInventories();
     },[detail?.customer_group_id])
@@ -80,6 +79,8 @@ export default function ListProduct({
                 add(row)
             }}
             type={'orderitem'}
+            search={search}
+            callback={getInventories}
         />
     </div>
 }

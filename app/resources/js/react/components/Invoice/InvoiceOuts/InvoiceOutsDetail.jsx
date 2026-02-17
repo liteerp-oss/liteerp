@@ -180,7 +180,7 @@ export default function InvoiceOutDetail() {
                             <div className="p-3 rounded border">
                                 <div className="theme-title small">{t("Order ID")}</div>
                                 <div className="fw-semibold theme-title">
-                                    OD{form.formData?.id ?? '-'}
+                                    OD{form.formData?.order_id ?? '-'}
                                 </div>
                             </div>
                         </div>

@@ -13,7 +13,7 @@ export default function InventoryTabs() {
         (page = 0) => {
             table.setLoading(true)
             InventoryService.list({
-                keywords: search.formData?.keywords ?? '',
+                ...search.formData,
                 page,
             }).then((resp) => {
                 table.setLoading(false)
@@ -21,7 +21,7 @@ export default function InventoryTabs() {
                 table.setLinks(resp.message.links)
             })
         },
-        [search.formData?.keywords]
+        [search.formData]
     )
 
     useEffect(() => {

@@ -173,7 +173,7 @@ const confirmApproved = useCallback(() => {
                             <div className="p-3 rounded border">
                                 <div className="theme-title small">{t("Purchase ID")}</div>
                                 <div className="fw-semibold theme-title">
-                                    PO{form.formData?.id ?? '-'}
+                                    PO{form.formData?.purchase_id ?? '-'}
                                 </div>
                             </div>
                         </div>
