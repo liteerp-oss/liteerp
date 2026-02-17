@@ -3,7 +3,8 @@
 namespace Tests\Unit;
 
 use App\Exceptions\BadException;
-use Core\User\Application\DTOs\CreateUserRequest;
+use App\Supports\Hooks\HookContext;
+use App\Supports\Hooks\HookDispatcher;
 use Core\User\Application\UseCases\CreateUser;
 use Core\User\Domain\Entities\User;
 use Core\User\Domain\Services\UserService;
@@ -15,6 +16,7 @@ use Illuminate\Support\Facades\DB;
 class CreateUserTest extends TestCase
 {
     protected $serviceMock;
+    protected $hooksMock;
     protected $useCase;
 
     protected function setUp(): void
@@ -22,7 +24,8 @@ class CreateUserTest extends TestCase
         parent::setUp();
         Event::fake();
         $this->serviceMock = Mockery::mock(UserService::class);
-        $this->useCase = new CreateUser($this->serviceMock);
+        $this->hooksMock = Mockery::mock(HookDispatcher::class);
+        $this->useCase = new CreateUser($this->serviceMock, $this->hooksMock);
     }
 
     protected function tearDown(): void
@@ -41,6 +44,11 @@ class CreateUserTest extends TestCase
             'id' => 1
         ];
         $existingUser = new User(1, 'test@example.com', 'admin', 123);
+
+        $this->hooksMock->shouldReceive('dispatch')
+            ->once()
+            ->with(Mockery::type(HookContext::class))
+            ->andReturn($data);
 
         $this->serviceMock->shouldReceive('getByEmail')->andReturn($existingUser);
 
@@ -61,7 +69,7 @@ class CreateUserTest extends TestCase
             'created_by' => 1,
         ];
 
-        $systemUser = new User(
+        $systemUser = new \Core\User\Domain\Entities\User(
             id: 1,
             email: 'test@example.com',
             role: null,
@@ -78,6 +86,14 @@ class CreateUserTest extends TestCase
             ->once()
             ->andReturn($systemUser);
 
+        $this->hooksMock->shouldReceive('dispatch')
+            ->twice()
+            ->with(Mockery::type(HookContext::class))
+            ->andReturn(
+                $data,
+                [...$data, ...$systemUser->toArray()]
+            );
+
         DB::shouldReceive('beginTransaction')->once();
         DB::shouldReceive('commit')->once();
 
@@ -85,7 +101,8 @@ class CreateUserTest extends TestCase
 
         $result = $this->useCase->handle($data);
 
-        $this->assertInstanceOf(User::class, $result);
+        $this->assertIsArray($result);
+        $this->assertSame('test@example.com', $result['email']);
     }
 
 
@@ -98,6 +115,11 @@ class CreateUserTest extends TestCase
             'role' => 'admin',
             'id' => 1
         ];
+
+        $this->hooksMock->shouldReceive('dispatch')
+            ->once()
+            ->with(Mockery::type(HookContext::class))
+            ->andReturn($data);
 
         $this->serviceMock->shouldReceive('getByEmail')->andReturn(null);
         $this->serviceMock->shouldReceive('findByEmailOnSystem')->andReturn(null);

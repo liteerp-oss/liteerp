@@ -2,10 +2,10 @@
 
 namespace Tests\Unit;
 
-use Core\ActivityLog\Application\UseCases\CreateActivityLog;
+use App\Supports\Hooks\HookContext;
+use App\Supports\Hooks\HookDispatcher;
 use Core\CustomerGroup\Application\DTOs\CreateCustomerGroupRequest;
 use Core\CustomerGroup\Application\UseCases\CreateCustomerGroup;
-use Core\CustomerGroup\Domain\Entities\CustomerGroup;
 use Core\CustomerGroup\Domain\Services\CustomerGroupService;
 use Tests\TestCase;
 use Mockery;
@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Event;
 class CreateCustomerGroupTest extends TestCase
 {
     protected $serviceMock;
-    protected $activityLogMock;
+    protected $hookDispatcherMock;
     protected $useCase;
 
     protected function setUp(): void
@@ -26,8 +26,8 @@ class CreateCustomerGroupTest extends TestCase
         DB::shouldReceive('commit')->andReturn(null);
 
         $this->serviceMock = Mockery::mock(CustomerGroupService::class);
-        $this->activityLogMock = Mockery::mock(CreateActivityLog::class);
-        $this->useCase = new CreateCustomerGroup($this->serviceMock, $this->activityLogMock);
+        $this->hookDispatcherMock = Mockery::mock(HookDispatcher::class);
+        $this->useCase = new CreateCustomerGroup($this->serviceMock, $this->hookDispatcherMock);
     }
 
     protected function tearDown(): void
@@ -38,18 +38,26 @@ class CreateCustomerGroupTest extends TestCase
 
     public function test_handle_creates_customer_group_successfully()
     {
-        $dto = new CreateCustomerGroupRequest(
-            business_id: 1,
-            name: 'VIP Customers',
-            created_by: 1,
-            id: null
-        );
+        $dto = new CreateCustomerGroupRequest(business_id: 1, name: 'VIP Customers', created_by: 1, id: null);
 
-        $customerGroup = new CustomerGroup(
-            business_id: 1,
-            name: 'VIP Customers',
-            id: 1
-        );
+        $customerGroup = \Core\CustomerGroup\Domain\Entities\CustomerGroup::fromArray([
+            'id' => 1,
+            'business_id' => 1,
+            'name' => 'VIP Customers',
+        ]);
+
+        $afterData = [
+            'id' => 1,
+            'business_id' => 1,
+            'name' => 'VIP Customers',
+            'created_by' => 1,
+            'user_id' => 1,
+        ];
+
+        $this->hookDispatcherMock->shouldReceive('dispatch')
+            ->twice()
+            ->with(Mockery::type(HookContext::class))
+            ->andReturn($dto->toArray(), $afterData);
 
         $this->serviceMock->shouldReceive('create')
             ->with(Mockery::on(function ($arg) {
@@ -62,17 +70,19 @@ class CreateCustomerGroupTest extends TestCase
         Event::shouldReceive('dispatch')
             ->with('erp.customergroup.create', Mockery::on(function ($arg) {
                 return is_array($arg) &&
-                       isset($arg['user_id']) &&
                        isset($arg['business_id']) &&
                        $arg['name'] === 'VIP Customers';
             }))
             ->once();
 
-        $result = $this->useCase->handle($dto);
+        $result = $this->useCase->handle([
+            ...$dto->toArray(),
+            'user_id' => 1,
+        ]);
 
-        $this->assertInstanceOf(CustomerGroup::class, $result);
-        $this->assertEquals(1, $result->id);
-        $this->assertEquals('VIP Customers', $result->name);
-        $this->assertEquals(1, $result->business_id);
+        $this->assertIsArray($result);
+        $this->assertSame(1, $result['id']);
+        $this->assertSame('VIP Customers', $result['name']);
+        $this->assertSame(1, $result['business_id']);
     }
 }

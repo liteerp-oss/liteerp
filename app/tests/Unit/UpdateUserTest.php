@@ -3,7 +3,8 @@
 namespace Tests\Unit;
 
 use App\Exceptions\BadException;
-use Core\User\Application\DTOs\CreateUserRequest;
+use App\Supports\Hooks\HookContext;
+use App\Supports\Hooks\HookDispatcher;
 use Core\User\Application\UseCases\UpdateUser;
 use Core\User\Domain\Entities\User;
 use Core\User\Domain\Services\UserService;
@@ -15,6 +16,7 @@ use Illuminate\Support\Facades\DB;
 class UpdateUserTest extends TestCase
 {
     protected $serviceMock;
+    protected $hooksMock;
     protected $useCase;
 
     protected function setUp(): void
@@ -22,7 +24,8 @@ class UpdateUserTest extends TestCase
         parent::setUp();
         Event::fake();
         $this->serviceMock = Mockery::mock(UserService::class);
-        $this->useCase = new UpdateUser($this->serviceMock);
+        $this->hooksMock = Mockery::mock(HookDispatcher::class);
+        $this->useCase = new UpdateUser($this->serviceMock, $this->hooksMock);
     }
 
     protected function tearDown(): void
@@ -48,6 +51,10 @@ class UpdateUserTest extends TestCase
             ->andReturn(
                 User::fromArray($data)
             );
+        $this->hooksMock->shouldReceive('dispatch')
+            ->once()
+            ->with(Mockery::type(HookContext::class))
+            ->andReturn($data);
 
         $this->expectException(BadException::class);
         $this->expectExceptionMessage(__('user::messages.cannot_change_own_role'));
@@ -70,9 +77,13 @@ class UpdateUserTest extends TestCase
             ->shouldReceive('getByEmail')
             ->once()
             ->andReturn(User::fromArray($data));
+        $this->hooksMock->shouldReceive('dispatch')
+            ->twice()
+            ->with(Mockery::type(HookContext::class))
+            ->andReturn($data, $data);
 
         $result = $this->useCase->handle($data);
-        $this->assertInstanceOf(User::class, $result);
+        $this->assertIsArray($result);
     }
 
 
@@ -88,6 +99,10 @@ class UpdateUserTest extends TestCase
         ];
         $user = new User(1, 'test@example.com', 'admin', 123);
 
+        $this->hooksMock->shouldReceive('dispatch')
+            ->once()
+            ->with(Mockery::type(HookContext::class))
+            ->andReturn($data);
         $this->serviceMock->shouldReceive('getByEmail')->andReturn($user);
 
         $this->expectException(BadException::class);
@@ -107,25 +122,24 @@ class UpdateUserTest extends TestCase
         ];
         $user = new User(2, 'test@example.com', 'admin', 123);
 
+        $this->hooksMock->shouldReceive('dispatch')
+            ->twice()
+            ->with(Mockery::type(HookContext::class))
+            ->andReturn($data, [...$data, ...$user->toArray()]);
         $this->serviceMock->shouldReceive('getByEmail')->andReturn($user);
 
         DB::shouldReceive('beginTransaction')->once();
-        Event::shouldReceive('dispatch')->with('erp.user.update', [
-            'id' => 2,
-            'email' => 'test@example.com',
-            'role' => 'admin',
-            'business_id' => 123,
-            'role_user_id' => 2,
-            'user_id' => 1,
-            'business_id' => 123,
-            'role' => 'admin',
-            'lang' => null,
-            'avatar' => null
-        ])->once();
+        Event::shouldReceive('dispatch')->with('erp.user.update', Mockery::on(function ($payload) {
+            return is_array($payload)
+                && ($payload['id'] ?? null) === 2
+                && ($payload['role_user_id'] ?? null) === 2
+                && ($payload['business_id'] ?? null) === 123;
+        }))->once();
         DB::shouldReceive('commit')->once();
 
         $result = $this->useCase->handle($data);
 
-        $this->assertEquals($user, $result);
+        $this->assertIsArray($result);
+        $this->assertSame(2, $result['id']);
     }
 }

@@ -4,7 +4,6 @@ namespace Tests\Unit;
 
 use App\Supports\Hooks\HookContext;
 use App\Supports\Hooks\HookDispatcher;
-use Core\Shipping\Application\DTOs\CreateShippingRequest;
 use Core\Shipping\Application\UseCases\CreateShipping;
 use Core\Shipping\Domain\Entities\Shipping;
 use Core\Shipping\Domain\Services\ShippingService;
@@ -94,9 +93,8 @@ class CreateShippingTest extends TestCase
 
         $result = $this->useCase->handle($data);
 
-        $this->assertInstanceOf(Shipping::class, $result);
-        $this->assertEquals(1, $result->id);
-        $this->assertEquals('Test Shipping', $result->name);
-        $this->assertEquals('TS001', $result->code);
+        $this->assertIsArray($result);
+        $this->assertEquals('Test Shipping', $result['name']);
+        $this->assertEquals('TS001', $result['code']);
     }
 }

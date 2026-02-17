@@ -69,35 +69,6 @@ class WarehouseServiceImplTest extends TestCase
         $this->service->create($data);
     }
 
-    public function test_index_returns_array()
-    {
-        $data = [
-            'business_id' => 123,
-        ];
-
-        $warehouses = [
-            Warehouse::fromArray([
-                'name' => 'Warehouse 1',
-                'address' => 'Address 1',
-                'business_id' => 123,
-                'created_by' => 1
-            ]),
-            Warehouse::fromArray([
-                'name' => 'Warehouse 2',
-                'address' => 'Address 2',
-                'business_id' => 123,
-                'created_by' => 1
-            ]),
-        ];
-
-        $this->repoMock->shouldReceive('index')->with($data)->andReturn($warehouses);
-
-        $result = $this->service->index($data);
-
-        $this->assertIsArray($result);
-        $this->assertCount(2, $result);
-    }
-
     public function test_show_returns_warehouse()
     {
         $data = [

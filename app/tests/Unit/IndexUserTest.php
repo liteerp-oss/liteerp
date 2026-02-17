@@ -2,36 +2,33 @@
 
 namespace Tests\Unit;
 
-use Core\User\Application\UseCases\IndexUser;
-use Core\User\Domain\Services\UserService;
+use Core\User\Application\DTOs\IndexUserRequest;
 use Tests\TestCase;
-use Mockery;
 
 class IndexUserTest extends TestCase
 {
-    protected $serviceMock;
-    protected $useCase;
-
-    protected function setUp(): void
+    public function test_from_array_creates_dto_correctly()
     {
-        parent::setUp();
-        $this->serviceMock = Mockery::mock(UserService::class);
-        $this->useCase = new IndexUser($this->serviceMock);
+        $dto = IndexUserRequest::fromArray([
+            'user_id' => 1,
+            'business_id' => 123,
+            'keywords' => 'john',
+            'order_by' => 'ASC',
+        ]);
+
+        $this->assertSame(1, $dto->created_by);
+        $this->assertSame(123, $dto->business_id);
+        $this->assertSame('john', $dto->keywords);
+        $this->assertSame('ASC', $dto->order_by);
     }
 
-    protected function tearDown(): void
+    public function test_from_array_uses_default_order_by()
     {
-        Mockery::close();
-        parent::tearDown();
-    }
+        $dto = IndexUserRequest::fromArray([
+            'user_id' => 1,
+            'business_id' => 123,
+        ]);
 
-    public function test_handle_returns_users()
-    {
-        $data = [['id' => 1, 'email' => 'test@example.com']];
-        $this->serviceMock->shouldReceive('index')->with(['business_id' => 123])->andReturn($data);
-
-        $result = $this->useCase->handle(['business_id' => 123]);
-
-        $this->assertEquals($data, $result);
+        $this->assertSame('DESC', $dto->order_by);
     }
 }

@@ -59,8 +59,8 @@ class CreateSupplierTest extends TestCase
 
         $result = $this->useCase->handle($data);
 
-        $this->assertInstanceOf(Supplier::class, $result);
-        $this->assertEquals(1, $result->id);
-        $this->assertEquals('Test Supplier', $result->unit_name);
+        $this->assertIsArray($result);
+        $this->assertEquals(1, $result['id']);
+        $this->assertEquals('Test Supplier', $result['unit_name']);
     }
 }

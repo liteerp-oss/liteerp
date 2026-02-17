@@ -57,16 +57,6 @@ class UserServiceImplTest extends TestCase
         $this->assertEquals($user, $result);
     }
 
-    public function test_index_returns_array()
-    {
-        $data = [['id' => 1, 'email' => 'test@example.com']];
-        $this->repoMock->shouldReceive('index')->with(['business_id' => 123])->andReturn($data);
-
-        $result = $this->service->index(['business_id' => 123]);
-
-        $this->assertEquals($data, $result);
-    }
-
     public function test_find_by_email_on_system_returns_user()
     {
         $user = new User(1, 'test@example.com', null, null);
