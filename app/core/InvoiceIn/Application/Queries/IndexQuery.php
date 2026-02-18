@@ -10,6 +10,7 @@ use App\Supports\Hooks\HookDispatcher;
 use App\Supports\Hooks\HookPhase;
 use App\Supports\Hooks\HookTiming;
 use Core\InvoiceIn\Application\DTOs\IndexInvoiceInRequest;
+use Illuminate\Support\Facades\Event;
 
 class IndexQuery implements QueryInterface
 {
@@ -52,6 +53,9 @@ class IndexQuery implements QueryInterface
             'suppliers.unit_name',
             'suppliers.email'], 'like', '%' . $dto->keywords . '%');
         }
+        Event::dispatch("erp.invoicein.index", [
+            ...$data
+        ]);
         return $list->orderBy("invoice_ins.id", $dto->order_by)->paginate(15)->toArray();
     }
 }

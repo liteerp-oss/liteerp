@@ -11,6 +11,7 @@ use App\Supports\Hooks\HookPhase;
 use App\Supports\Hooks\HookTiming;
 use Core\InvoiceOut\Application\DTOs\IndexInvoiceOutRequest;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Event;
 
 class IndexQuery implements QueryInterface
 {
@@ -63,6 +64,9 @@ class IndexQuery implements QueryInterface
             'customers.name',
             'customers.email'], 'like', '%' . $dto->keywords . '%');    
         }
+        Event::dispatch("erp.invoiceout.index", [
+            ...$data
+        ]);
         return $list->orderBy("invoice_outs.id", $dto->order_by)->paginate(15)->toArray();
     }
 }

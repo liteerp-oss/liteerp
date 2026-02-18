@@ -9,6 +9,7 @@ use App\Supports\Hooks\HookDispatcher;
 use App\Supports\Hooks\HookPhase;
 use App\Supports\Hooks\HookTiming;
 use Core\CustomInvoiceIn\Application\DTOs\IndexCustomInvoiceInRequest;
+use Illuminate\Support\Facades\Event;
 
 class IndexQuery implements QueryInterface {
     function __construct(private HookDispatcher $hooks)
@@ -41,6 +42,9 @@ class IndexQuery implements QueryInterface {
                 'custom_invoice_ins.description'], 'like',
                 '%'. $dto->keywords .'%');
         }
+        Event::dispatch("erp.custominvoicein.index", [
+            ...$data
+        ]);
         return $index->orderBy("custom_invoice_ins.id",$dto->order_by)->paginate(15)->toArray();
     }
 }

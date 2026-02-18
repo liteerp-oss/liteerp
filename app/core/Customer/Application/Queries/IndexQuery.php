@@ -11,6 +11,7 @@ use App\Supports\Hooks\HookPhase;
 use App\Supports\Hooks\HookTiming;
 use Core\Customer\Application\DTOs\IndexCustomerRequest;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Event;
 
 class IndexQuery implements QueryInterface
 {
@@ -42,6 +43,12 @@ class IndexQuery implements QueryInterface
         if ($dto->keywords) {
             $list = $list->whereAny(['customers.name', 'customers.email'], 'like', '%' . $dto->keywords . '%');
         }
+        if($dto->active) {
+            $list = $list->where('customers.active', $dto->active);
+        }
+        Event::dispatch("erp.customer.index", [
+            ...$data
+        ]);
         return $list->orderBy('customers.id', $dto->order_by)->paginate(15)->toArray();
     }
 }

@@ -10,6 +10,7 @@ use App\Supports\Hooks\HookPhase;
 use App\Supports\Hooks\HookTiming;
 use Core\Order\Application\DTOs\IndexOrderRequest;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Event;
 
 class IndexQuery implements QueryInterface {
     function __construct(
@@ -60,6 +61,9 @@ class IndexQuery implements QueryInterface {
             'customers.name',
             'customers.email'], 'like', '%' . $dto->keywords . '%');        
         }
+        Event::dispatch("erp.order.index", [
+            ...$data
+        ]);
         return $list->orderBy("orders.id", $dto->order_by)->paginate(15)->toArray();
     }
 }

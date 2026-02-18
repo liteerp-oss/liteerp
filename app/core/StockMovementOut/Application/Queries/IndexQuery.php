@@ -10,6 +10,7 @@ use App\Supports\Hooks\HookPhase;
 use App\Supports\Hooks\HookTiming;
 use Core\StockMovementOut\Application\DTOs\IndexStockMovementOutRequest;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Event;
 
 class IndexQuery implements QueryInterface {
     public function __construct(private HookDispatcher $hooks){}
@@ -60,6 +61,9 @@ class IndexQuery implements QueryInterface {
         );
         $list = $data['query'];
         $data = $data['data'];
+        Event::dispatch("erp.stockmovementout.index", [
+            ...$data
+        ]);
         return $list->orderBy('stock_movements_out.id', $dto->order_by)->paginate(15)->toArray();
     }
 }

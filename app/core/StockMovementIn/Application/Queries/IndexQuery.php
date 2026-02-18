@@ -9,6 +9,8 @@ use App\Supports\Hooks\HookContext;
 use App\Supports\Hooks\HookDispatcher;
 use App\Supports\Hooks\HookPhase;
 use App\Supports\Hooks\HookTiming;
+use Illuminate\Support\Facades\Event;
+
 class IndexQuery implements QueryInterface {
     public function __construct(private HookDispatcher $hooks){}
     public function handle(array $data): array {
@@ -57,6 +59,9 @@ class IndexQuery implements QueryInterface {
         );
         $rows = $data['query'];
         $data = $data['data'];
+        Event::dispatch("erp.stockmovementin.index", [
+            ...$data
+        ]);
         return $rows->orderBy('stock_movements_in.id', $dto->order_by)->paginate(15)->toArray();
     }
 }

@@ -10,6 +10,7 @@ use App\Supports\Hooks\HookDispatcher;
 use App\Supports\Hooks\HookPhase;
 use App\Supports\Hooks\HookTiming;
 use Core\Warehouse\Application\DTOs\IndexWarehouseRequest;
+use Illuminate\Support\Facades\Event;
 
 class IndexQuery implements QueryInterface
 {
@@ -40,6 +41,10 @@ class IndexQuery implements QueryInterface
             )
         );
         $list = $data['query'];
+        $data = $data['data'];
+        Event::dispatch("erp.warehouse.index", [
+            ...$data
+        ]);
         return $list->orderBy('warehouses.id', $dto->order_by)->paginate(15)->toArray();
     }
 }

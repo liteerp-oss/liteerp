@@ -8,6 +8,7 @@ use App\Supports\Hooks\HookDispatcher;
 use App\Supports\Hooks\HookPhase;
 use App\Supports\Hooks\HookTiming;
 use Core\CustomerGroup\Application\DTOs\IndexCustomerGroupRequest;
+use Illuminate\Support\Facades\Event;
 
 class IndexQuery
 {
@@ -32,6 +33,9 @@ class IndexQuery
         $data = $data['data'];
         $list = $list->where('customer_group.name', 'like', '%' . $dto->keywords . '%');
         $list = $list->orderBy('id', $dto->order_by ?? 'DESC');
+        Event::dispatch("erp.customergroup.index", [
+            ...$data
+        ]);
         return $list->paginate(15)->toArray();
     }
 }

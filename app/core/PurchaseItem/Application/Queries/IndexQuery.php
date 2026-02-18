@@ -10,6 +10,7 @@ use App\Supports\Hooks\HookDispatcher;
 use App\Supports\Hooks\HookPhase;
 use App\Supports\Hooks\HookTiming;
 use Core\PurchaseItem\Application\DTOs\IndexPurchaseItemRequest;
+use Illuminate\Support\Facades\Event;
 
 class IndexQuery implements QueryInterface {
     public function __construct(private HookDispatcher $hooks)
@@ -62,6 +63,9 @@ class IndexQuery implements QueryInterface {
             $list = $list->whereAny(['products.name', 'products.sku', 'category_product.name'],
             'like', "%{$dto->keywords}%");
         }
+        Event::dispatch("erp.purchaseitem.index", [
+            ...$data
+        ]);
         return $list->orderBy('purchase_items.id', $dto->order_by)->paginate(15)->toArray();
     }
 }

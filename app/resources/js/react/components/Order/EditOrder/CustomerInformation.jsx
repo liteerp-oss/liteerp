@@ -20,7 +20,7 @@ export default function CustomerInformation({
         CustomerService.list({
             keywords,
             page: 1,
-            type: '',
+            active: 1
         })
             .then((resp) => {
                 setCustomers(resp.message.data);

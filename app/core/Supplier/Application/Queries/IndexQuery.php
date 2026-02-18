@@ -10,6 +10,7 @@ use App\Supports\Hooks\HookDispatcher;
 use App\Supports\Hooks\HookPhase;
 use App\Supports\Hooks\HookTiming;
 use Core\Supplier\Application\DTOs\IndexSupplierRequest;
+use Illuminate\Support\Facades\Event;
 
 class IndexQuery implements QueryInterface
 {
@@ -43,7 +44,12 @@ class IndexQuery implements QueryInterface
                 'suppliers.email',
                 'suppliers.phone'], 'like', '%' . $dto->keywords . '%');
         }
-        
+        if($dto->active) {
+            $list = $list->where('suppliers.active', $dto->active);
+        }
+        Event::dispatch("erp.supplier.index", [
+            ...$data
+        ]);
         return $list->orderBy('suppliers.id', $dto->order_by)->paginate(15)->toArray();
     }
 }

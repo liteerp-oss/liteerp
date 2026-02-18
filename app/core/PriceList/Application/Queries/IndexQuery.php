@@ -9,6 +9,7 @@ use App\Supports\Hooks\HookDispatcher;
 use App\Supports\Hooks\HookPhase;
 use App\Supports\Hooks\HookTiming;
 use Core\PriceList\Application\DTOs\IndexPriceListRequest;
+use Illuminate\Support\Facades\Event;
 
 class IndexQuery implements QueryInterface {
     function __construct(private HookDispatcher $hooks)
@@ -38,10 +39,14 @@ class IndexQuery implements QueryInterface {
             )
         );
         $rows = $hooks['query'];
+        $data = $hooks['data'];
         if($dto->keywords) {
             $rows = $rows->whereAny(['products.name','customer_group.name'],
             'like', '%' . $dto->keywords . '%');
         }
+        Event::dispatch("erp.pricelist.index", [
+            ...$data
+        ]);
         return $rows->orderBy('price_list.id', $dto->order_by)->paginate(15)->toArray();
     }
 }

@@ -9,6 +9,7 @@ use App\Supports\Hooks\HookPhase;
 use App\Supports\Hooks\HookTiming;
 use Core\InventoryAdjustment\Application\DTOs\IndexInventoryAdjustmentRequest;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Event;
 
 class IndexQuery
 {
@@ -47,6 +48,9 @@ class IndexQuery
             $list = $list->whereAny(['inventory_adjustments.reason', 'products.name', 'products.sku'], 
                     'LIKE', '%' . $data['keywords'] . '%');
         }
+        Event::dispatch("erp.inventoryadjustment.index", [
+            ...$data
+        ]);
         return $list->orderBy('id',$dto->order_by)->paginate()->toArray();
     }
 }

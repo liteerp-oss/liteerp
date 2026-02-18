@@ -9,6 +9,7 @@ use App\Supports\Hooks\HookDispatcher;
 use App\Contracts\Queries\QueryInterface;
 use App\Models\InventoryModel;
 use Core\Inventory\Application\DTOs\IndexInventoryRequest;
+use Illuminate\Support\Facades\Event;
 
 class IndexQuery implements QueryInterface {
     public function __construct(private HookDispatcher $hooks) {}
@@ -64,6 +65,9 @@ class IndexQuery implements QueryInterface {
                 '%' . $data['keywords'] . '%'
             );
         }
+        Event::dispatch("erp.inventory.index", [
+            ...$data
+        ]);
         $index = $index->orderBy('inventories.id', $data['order_by'])->paginate(15)->toArray();
         return $index;
     }

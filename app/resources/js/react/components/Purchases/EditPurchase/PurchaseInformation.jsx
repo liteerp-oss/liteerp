@@ -24,6 +24,7 @@ export default function PurchaseInformation({
         SupplierService.list({
             page: 0,
             keywords: keywords,
+            active: 1 
         })
             .then((resp) => {
                 setSupplierData(resp.message?.data);

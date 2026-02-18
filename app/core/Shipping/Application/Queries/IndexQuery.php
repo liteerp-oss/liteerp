@@ -37,8 +37,11 @@ class IndexQuery implements QueryInterface
         );
         $data = $hooks['data'];
         $index = $hooks['query'];
-        if (!empty($dto->keywords)) {
+        if ($dto->keywords) {
             $index->whereAny(['shipping_providers.name','shipping_providers.code'], 'like', '%' . $dto->keywords . '%');
+        }
+        if($dto->active) {
+            $index->where('shipping_providers.active', $dto->active);
         }
         Event::dispatch("erp.shipping.index", [
             ...$data

@@ -10,6 +10,7 @@ use App\Supports\Hooks\HookDispatcher;
 use App\Supports\Hooks\HookPhase;
 use App\Supports\Hooks\HookTiming;
 use Core\CategoryProduct\Application\DTOs\IndexCategoryProductRequest;
+use Illuminate\Support\Facades\Event;
 
 class IndexQuery implements QueryInterface {
     function __construct(private HookDispatcher $hooks)
@@ -39,6 +40,9 @@ class IndexQuery implements QueryInterface {
         if(!empty($dto->keywords)) {
             $index = $index->whereAny(['category_product.name', 'category_product.description'], 'like', '%' . $dto->keywords . '%');
         }
+        Event::dispatch("erp.categoryproduct.index", [
+            ...$data
+        ]);
         return $index->orderBy('category_product.id', $dto->order_by)->paginate(15)->toArray();
     }
 }

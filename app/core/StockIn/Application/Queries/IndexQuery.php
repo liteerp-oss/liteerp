@@ -10,6 +10,7 @@ use App\Supports\Hooks\HookPhase;
 use App\Supports\Hooks\HookTiming;
 use Core\StockIn\Application\DTOs\IndexStockInRequest;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Event;
 
 class IndexQuery implements QueryInterface {
     function __construct(private HookDispatcher $hooks)
@@ -56,6 +57,9 @@ class IndexQuery implements QueryInterface {
                 'users.name',
                 'suppliers.unit_name'], 'like', '%' . $dto->keywords . '%');
         }
+        Event::dispatch("erp.stockin.index", [
+            ...$data
+        ]);
         return $list->orderBy("stock_ins.id",$dto->order_by)->paginate(15)->toArray();
     }
 }

@@ -9,6 +9,7 @@ use App\Supports\Hooks\HookDispatcher;
 use App\Supports\Hooks\HookPhase;
 use App\Supports\Hooks\HookTiming;
 use Core\CustomInvoiceOut\Application\DTOs\IndexCustomInvoiceOutRequest;
+use Illuminate\Support\Facades\Event;
 
 class IndexQuery implements QueryInterface {
     public function __construct(private HookDispatcher $hooks) {}
@@ -38,7 +39,9 @@ class IndexQuery implements QueryInterface {
                 'custom_invoice_outs.description'], 'like',
                 '%'. $dto->keywords .'%');
         }
-        
+        Event::dispatch("erp.custominvoiceout.index", [
+            ...$data
+        ]);
         return $list->orderBy('custom_invoice_outs.id', $dto->order_by)->paginate(15)->toArray();
     }
 }

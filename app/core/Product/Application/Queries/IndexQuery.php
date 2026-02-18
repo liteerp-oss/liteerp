@@ -45,6 +45,9 @@ class IndexQuery implements QueryInterface {
         );
         $rows = $hooks['query'];
         $data = $hooks['data'];
+        Event::dispatch("erp.product.index", [
+            ...$data
+        ]);
         return $rows->orderBy("products.id",$dto->order_by)
             ->paginate(15)->toArray();
     }

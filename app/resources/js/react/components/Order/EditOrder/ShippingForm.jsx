@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import React, { act, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { usePopup } from '../../popups/PopupContext';
 import { InputForm } from '../../UI/Input/InputForm';
 import SearchSelect from '../../UI/Input/SearchSelect';
@@ -21,7 +21,8 @@ export default function ShippingForm({
     const getShippings = useCallback((keywords = '', callback = null) => {
         ShippingService.list({
             page: 0,
-            keywords: keywords
+            keywords: keywords,
+            active: 1
         })
             .then((resp) => {
                 setShippings(resp.message.data);

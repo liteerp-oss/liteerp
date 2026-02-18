@@ -11,6 +11,7 @@ use App\Supports\Hooks\HookPhase;
 use App\Supports\Hooks\HookTiming;
 use Core\StockOut\Application\DTOs\IndexStockOutRequest;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Event;
 
 class IndexQuery implements QueryInterface
 {
@@ -69,6 +70,9 @@ class IndexQuery implements QueryInterface
                 '%' . $dto->keywords . '%'
             );
         }
+        Event::dispatch("erp.stockout.index", [
+            ...$data
+        ]);
         return $index->orderBy("stock_outs.id", $dto->order_by)->paginate(15)->toArray();
     }
 }

@@ -9,6 +9,7 @@ use App\Supports\Hooks\HookPhase;
 use App\Supports\Hooks\HookTiming;
 use Core\OrderItem\Application\DTOs\IndexOrderItemRequest;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Event;
 
 class IndexQuery
 {
@@ -88,6 +89,9 @@ class IndexQuery
         if( $dto->keywords) {
             $list = $list->whereAny(['products.name', 'products.sku'],'like', "%{$dto->keywords}%");
         }
+        Event::dispatch("erp.orderitem.index", [
+            ...$data
+        ]);
         return $list->orderBy('order_items.id', $dto->order_by)->paginate(15)->toArray();
     }
 }

@@ -10,6 +10,7 @@ use App\Supports\Hooks\HookDispatcher;
 use App\Supports\Hooks\HookPhase;
 use App\Supports\Hooks\HookTiming;
 use Core\User\Application\DTOs\IndexUserRequest;
+use Illuminate\Support\Facades\Event;
 
 class IndexQuery implements QueryInterface
 {
@@ -47,6 +48,9 @@ class IndexQuery implements QueryInterface
                 module: 'User'
             )
         );
+        Event::dispatch("erp.user.index", [
+            ...$data
+        ]);
         return $rows->orderBy('users.id', $dto->order_by)->paginate(15)->toArray();
     }
 }

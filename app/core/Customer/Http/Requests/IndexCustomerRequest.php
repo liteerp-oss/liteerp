@@ -26,6 +26,7 @@ class IndexCustomerRequest extends FormRequest
             ...$hooks,
             'keywords' => 'nullable|string|max:150',
             'order_by' => 'nullable|in:ASC,DESC',
+            'active'   => 'nullable|boolean',
         ];
     }
 

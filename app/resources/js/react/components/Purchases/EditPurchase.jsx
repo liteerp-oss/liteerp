@@ -12,7 +12,6 @@ import { isoToDateTime } from '../../libraries/common';
 import RequestContent from './EditPurchase/RequestContent';
 import ApproveContent from './EditPurchase/ApproveContent';
 import ApprovedContent from './EditPurchase/ApprovedContent';
-import DangerButton from '../UI/Buttons/DangerButton';
 import CancelledContent from './EditPurchase/CancelledContent';
 import PageHead from '../PageHead';
 import { PopupLayout } from '../../layouts/PopupLayout';

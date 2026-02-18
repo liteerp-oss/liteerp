@@ -15,7 +15,7 @@ class IndexShippingRequest
     public static function fromArray(array $data): self
     {
         return new self(
-            active: $data['active'] ?? false,
+            active: $data['active'] ?? null,
             business_id: $data['business_id'],
             keywords: $data['keywords'] ?? null,
             created_by: $data['user_id'],

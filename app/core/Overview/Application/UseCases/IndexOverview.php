@@ -42,9 +42,8 @@ class IndexOverview
             )
         );
         Event::dispatch("erp.overview.index", [
-            ...$data,
-            'user_id' => $dto->created_by,
-            'business_id' => $dto->business_id
+            ...$dto->toArray(),
+            ...$data
         ]);
         return $data;
     }

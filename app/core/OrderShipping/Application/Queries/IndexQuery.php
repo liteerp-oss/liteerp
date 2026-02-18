@@ -10,6 +10,7 @@ use App\Supports\Hooks\HookDispatcher;
 use App\Supports\Hooks\HookPhase;
 use App\Supports\Hooks\HookTiming;
 use Core\OrderShipping\Application\DTOs\IndexOrderShippingRequest;
+use Illuminate\Support\Facades\Event;
 
 class IndexQuery implements QueryInterface
 {
@@ -51,6 +52,9 @@ class IndexQuery implements QueryInterface
             $list = $list->whereAny(['shippings.tracking_number','shipping_providers.name'],
             'like', '%' . $dto->keywords . '%');
         }
+        Event::dispatch("erp.ordershipping.index", [
+            ...$data
+        ]);
         return $list->orderBy('shippings.id', $dto->order_by)->paginate(15)
             ->toArray();
     }
