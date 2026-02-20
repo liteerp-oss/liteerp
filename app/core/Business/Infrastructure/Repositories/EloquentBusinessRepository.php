@@ -16,9 +16,11 @@ class EloquentBusinessRepository implements BusinessRepositoryInterface
     }
     public function index(int $user_id): array
     {
-        $list = BusinessModel::select("business.*","business_role.role as role")
-        ->join("business_role","business_role.business_id","=","business.id")
-        ->where('business_role.user_id',$user_id)
+        $list = BusinessModel::select("business.*")
+        ->join("permission_groups","permission_groups.business_id","=","business.id")
+        ->join("permission_group_user","permission_groups.id","=","permission_group_user.group_id")
+        ->where('permission_group_user.account_id',$user_id)
+        ->groupBy("business.id")
         ->limit(50)->get()->toArray();
         return $list;
     }
@@ -31,18 +33,16 @@ class EloquentBusinessRepository implements BusinessRepositoryInterface
     }
     public function findByIdWithFullData(array $data) : ?array
     {
-       return BusinessModel::select("business.*",
-            "business_role.role as role",
-            "business_role.user_id as user_id")
-       ->join("business_role","business_role.business_id","=","business.id")
-        ->where('business.id',$data['business_id'])
-        ->where('business_role.user_id',$data['user_id'])->first()?->toArray();
+       return BusinessModel::select("business.*")
+        ->where('business.id',$data['business_id'])->first()?->toArray();
     }
     public function findById(array $data) : ?Business
     {
        $row = BusinessModel::select("business.*")
+        ->join("permission_groups","permission_groups.business_id","=","business.id")
+        ->join("permission_group_user","permission_groups.id","=","permission_group_user.group_id")
         ->where('business.id',$data['id'])
-        ->where('business_role.user_id',$data['user_id'])->first()?->toArray();
+        ->where('permission_group_user.account_id',$data['user_id'])->first()?->toArray();
         if(!$row) {
             return null;
         }

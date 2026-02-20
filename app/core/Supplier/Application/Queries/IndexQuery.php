@@ -39,6 +39,7 @@ class IndexQuery implements QueryInterface
             )
         );
         $list = $data['query'];
+        $data = $data['data'];
         if ($dto->keywords) {
             $list = $list->whereAny(['suppliers.unit_name',
                 'suppliers.email',

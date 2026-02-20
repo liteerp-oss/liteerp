@@ -6,14 +6,18 @@ class IndexInventoryRequest
 {
     public function __construct(
         public ?string $keywords = null,
-        public ?string $order_by = null
+        public ?string $order_by = null,
+        public int $business_id,
+        public int $created_by
     ) {}
 
     public static function fromArray(array $data): self
     {
         return new self(
             keywords: $data['keywords'] ?? null,
-            order_by: $data['order_by'] ?? 'DESC'
+            order_by: $data['order_by'] ?? 'DESC',
+            business_id: $data['business_id'],
+            created_by: $data['user_id']
         );
     }
 
@@ -21,7 +25,9 @@ class IndexInventoryRequest
     {
         return [
             'keywords' => $this->keywords,
-            'order_by' => $this->order_by
+            'order_by' => $this->order_by,
+            'business_id' => $this->business_id,
+            'created_by' => $this->created_by
         ];
     }
 }

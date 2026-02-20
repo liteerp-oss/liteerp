@@ -6,9 +6,9 @@ class CreateUserRequest
 {
     public function __construct(
         public string $email,
-        public ?int $created_by = null,
-        public ?int $business_id = null,
-        public string $role,
+        public int $created_by,
+        public int $business_id,
+        public int $group_id,
         public ?int $id
     ) {}
 
@@ -16,9 +16,9 @@ class CreateUserRequest
     {
         return new self(
             email: $data['email'],
-            created_by: $data['user_id'] ?? null,
-            business_id: $data['business_id'] ?? null,
-            role: $data['role'] ?? null,
+            created_by: $data['user_id'],
+            business_id: $data['business_id'],
+            group_id: $data['group_id'],
             id: $data['id'] ?? null 
         );
     }
@@ -28,7 +28,7 @@ class CreateUserRequest
             'email' => $this->email,
             'created_by' => $this->created_by,
             'business_id'   => $this->business_id,
-            'role'  => $this->role,
+            'group_id'  => $this->group_id,
             'id'    => $this->id
         ];
     }

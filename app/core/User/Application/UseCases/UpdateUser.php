@@ -51,15 +51,14 @@ class UpdateUser
                 timing: HookTiming::AFTER,
                 payload: [
                     ...$data,
-                    ...$account->toArray()
+                    ...$account->toArray(),
+                    'account_id' => $account->id
                 ],
                 module: 'User'
             )
         );
         Event::dispatch("erp.user.update", [
-            ...$data,
-            ...$account->toArray(),
-            'role_user_id'   => $account->id
+            ...$data
         ]);
         DB::commit();
         return $data;

@@ -22,7 +22,8 @@ class DeleteUserRequest extends FormRequest
                     payload: [],
                     module: 'User'
                 )
-            )
+            ),
+            'group_id' => 'required|exists:permission_groups,id',
         ];
     }
 

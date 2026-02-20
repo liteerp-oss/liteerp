@@ -15,7 +15,7 @@ class CreateUserRequest extends FormRequest
     {
         return [
             'email' => 'required|string|email|max:150',
-            'role' => 'required|in:manager,seller,accountanter,warehouseman,purchaser,admin',
+            'group_id' => 'required|exists:permission_groups,id',
             ...$hooks->dispatch(
                 new HookContext(
                     action: HookAction::CREATE,

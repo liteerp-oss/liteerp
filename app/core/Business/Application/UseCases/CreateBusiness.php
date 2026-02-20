@@ -18,9 +18,8 @@ class CreateBusiness
         $user = Auth::guard('sanctum')->user();
         $business = $this->service->create($dto->toArray());
         Event::dispatch('erp.business.create',[
-            'id' => $user->id,
+            'id' => $business->id,
             'business_id' => $business->id,
-            'role' => 'admin',
             'user_id' => $user->id,
             'role_user_id' => $user->id
         ]);

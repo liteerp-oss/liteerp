@@ -22,14 +22,13 @@ class IndexQuery implements QueryInterface
         $dto = IndexUserRequest::fromArray($data);
         $rows = User::select(
             "users.*",
-            "business_role.role as role",
-            "business_role.business_id as business_id",
-            "business.name as business_name",
-            "business.address as business_address"
+            "permission_groups.name as group",
+            "permission_groups.id as group_id",
+            "permission_groups.business_id as business_id"
         )
-            ->join("business_role", "business_role.user_id", "=", "users.id")
-            ->join("business", "business.id", "=", "business_role.business_id")
-            ->where('business.id', $dto->business_id);
+            ->join('permission_group_user',"permission_group_user.account_id","=","users.id")
+            ->join("permission_groups", "permission_groups.id", "=", "permission_group_user.group_id")
+            ->where('permission_groups.business_id', $dto->business_id);
         if($dto->keywords) {
             $rows = $rows->whereAny(['users.name', 'users.email'], 'like', '%' . $dto->keywords . '%');
         }
@@ -48,6 +47,8 @@ class IndexQuery implements QueryInterface
                 module: 'User'
             )
         );
+        $rows = $data['query'];
+        $data = $data['data'];
         Event::dispatch("erp.user.index", [
             ...$data
         ]);

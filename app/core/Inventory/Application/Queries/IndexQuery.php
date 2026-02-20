@@ -16,7 +16,6 @@ class IndexQuery implements QueryInterface {
     public function handle(array $data): array
     {
         $dto = IndexInventoryRequest::fromArray($data);
-        $data = $dto->toArray();
         $index = InventoryModel::select(
             "inventories.*",
             "products.name as name",
@@ -35,7 +34,8 @@ class IndexQuery implements QueryInterface {
                 "=",
                 "products.category_id"
             )
-            ->join("price_list", "price_list.product_id", "=", "products.id");
+            ->join("price_list", "price_list.product_id", "=", "products.id")
+            ->where('products.business_id', $dto->business_id);
         $index = $index->groupBy(
             "inventories.id",
             "products.id",
@@ -58,17 +58,17 @@ class IndexQuery implements QueryInterface {
         );
         $data = $hooks['data'];
         $index = $hooks['query'];
-        if (!empty($data['keywords'])) {
+        if ($dto->keywords) {
             $index = $index->whereAny(
                 ['products.name','products.sku','products.unit'],
                 'like',
-                '%' . $data['keywords'] . '%'
+                '%' . $dto->keywords . '%'
             );
         }
         Event::dispatch("erp.inventory.index", [
             ...$data
         ]);
-        $index = $index->orderBy('inventories.id', $data['order_by'])->paginate(15)->toArray();
+        $index = $index->orderBy('inventories.id', $dto->order_by)->paginate(15)->toArray();
         return $index;
     }
 }

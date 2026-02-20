@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Contracts\Events\ExtensionEvent;
+use App\Supports\Events\ExtensionEventImpl;
 use App\Supports\Hooks\HookDispatcher;
 use Core\Extension\Application\UseCases\AllExtension;
 use Illuminate\Support\Facades\File;
@@ -26,6 +28,7 @@ class AppServiceProvider extends ServiceProvider
         //
         $this->autoloadExtension($allExtension);
         $this->app->singleton(HookDispatcher::class);
+        $this->app->bind(ExtensionEvent::class,ExtensionEventImpl::class);
     }
     protected function registerCoreModules(): void
     {

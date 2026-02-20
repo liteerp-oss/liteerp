@@ -44,15 +44,14 @@ class DeleteUser
                 timing: HookTiming::AFTER,
                 payload: [
                     ...$data,
-                    ...$account->toArray()
+                    ...$account->toArray(),
+                    'account_id' => $account->id
                 ],
                 module: 'User'
             )
         );
         Event::dispatch("erp.user.delete", [
-            ...$data,
-            ...$account->toArray(),
-            'role_user_id'   => $account->id,
+            ...$data
         ]);
         DB::commit();
         return $data;

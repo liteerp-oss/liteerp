@@ -37,10 +37,6 @@ class CreateUser
                 module: 'User'
             )
         );
-        $checkExists = $this->service->getByEmail($dto->toArray());
-        if ($checkExists) {
-            throw new BadException(__("user::messages.is_exists_on_business"));
-        }
         $account = $this->service->findByEmailOnSystem($dto->toArray());
         if (!$account) {
             throw new BadException(__("user::messages.not_exists"));
@@ -52,15 +48,15 @@ class CreateUser
                 timing: HookTiming::AFTER,
                 payload: [
                     ...$data,
-                    ...$account->toArray()
+                    ...$account->toArray(),
+                    'account_id' => $account->id
                 ],
                 module: 'User'
             )
         );
+        logs()->debug("adfadf",$data);
         Event::dispatch("erp.user.create", [
-            ...$data,
-            ...$account->toArray(),
-            'role_user_id'   => $account->id
+            ...$data
         ]);
         DB::commit();
         return $data;
