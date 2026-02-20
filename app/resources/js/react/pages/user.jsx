@@ -7,10 +7,12 @@ import { useForm } from '../libraries/handleInput'
 import { PopupLayout } from '../layouts/PopupLayout'
 import { InputForm } from '../components/UI/Input/InputForm'
 import { usePopup } from '../components/popups/PopupContext'
-import { Select } from '../components/UI/Input/Select'
 import { useI18n } from '../../i18n/useI18n'
 import ContentOnTable from '../components/ContentOnTable'
 import CommonDataTableV2 from '../components/CommonDataTableV2'
+import SearchSelect from '../components/UI/Input/SearchSelect'
+import PermissionGroupService from '../services/PermissionGroupService'
+import PermissionGroupUserService from '../services/PermissionGroupUserService'
 
 export default function User() {
     const { t, lang } = useI18n()
@@ -18,7 +20,8 @@ export default function User() {
     const table = useTable()
     const form = useForm()
     const search = useForm();
-    const [showForm, setShowForm] = useState(false)
+    const [showForm, setShowForm] = useState(false);
+    const [groups, setGroups] = useState([])
     const getUsers = useCallback(() => {
         table.setLoading(true)
         UserService.list({
@@ -61,7 +64,7 @@ export default function User() {
             type: 'warning',
             message: t('Are you sure to delete?'),
             onConfirm: () => {
-                destroy(row)
+                destroy(row);
             }
         })
     }
@@ -69,7 +72,9 @@ export default function User() {
     const submit = useCallback(() => {
         form.setFormErrors(null)
         form.setLoading(true)
-        UserService.add(form.formData)
+        UserService.add({
+            ...form.formData
+        })  
             .then(() => {
                 form.setFormData(null)
                 openPopup({
@@ -97,7 +102,9 @@ export default function User() {
     const update = useCallback(() => {
         form.setFormErrors(null)
         form.setLoading(true)
-        UserService.update(form.formData)
+        UserService.update({
+            ...form.formData
+        })  
             .then(() => {
                 form.setFormData(null)
                 openPopup({
@@ -151,18 +158,11 @@ export default function User() {
             { key: 'email', label: t('Email') },
             { key: 'name', label: t('Name') },
             {
-                key: 'role',
-                label: t('Role'),
-                render: (role) => (
-                    <span
-                        className={
-                            'badge text-uppercase ' +
-                            (role === 'admin'
-                                ? 'bg-success'
-                                : 'bg-warning text-dark')
-                        }
-                    >
-                        {t(role)}
+                key: 'group',
+                label: t('Group'),
+                render: (group) => (
+                    <span>
+                        {t(group)}
                     </span>
                 ),
             },
@@ -173,6 +173,18 @@ export default function User() {
         ])
         getUsers()
     }, [lang])
+
+    const getGroup = (search, callback) => {
+        PermissionGroupService.list({
+            keywords: search,
+            page: 0
+        })
+        .then((resp) => {
+            setGroups(resp.message.data)
+            callback();
+        })
+        .catch((error) => {})
+    }     
 
     return (
         <DashboardLayout>
@@ -212,7 +224,6 @@ export default function User() {
                         columns={table.colums}
                         data={table.data}
                         links={table.links}
-                        onEdit={handleEdit}
                         onDelete={handleDelete}
                         type={'user'}
                     />
@@ -249,43 +260,20 @@ export default function User() {
                             </div>
 
                             <div className="form-group mt-2">
-                                <Select
-                                    name="role"
+                                <SearchSelect
+                                    name="group_id"
                                     errorMessage={
-                                        form.formErrors?.role
+                                        form.formErrors?.group_id
                                     }
-                                    value={form.formData?.role}
-                                    handleChange={
-                                        form.handleChange
-                                    }
-                                    options={[
-                                        {
-                                            value: 'manager',
-                                            label: t('Manager'),
-                                        },
-                                        {
-                                            value: 'seller',
-                                            label: t('Seller'),
-                                        },
-                                        {
-                                            value: 'accountanter',
-                                            label: t('Accountant'),
-                                        },
-                                        {
-                                            value: 'warehouseman',
-                                            label: t('Warehouseman'),
-                                        },
-                                        {
-                                            value: 'purchaser',
-                                            label: t('Purchaser'),
-                                        },
-                                        {
-                                            value: 'admin',
-                                            label: t('Admin'),
-                                        },
-                                    ]}
+                                    value={form.formData?.group_id}
+                                    changeValue={form.handleChangeByKey}
+                                    options={groups.map((group) => ({
+                                        value: group.id,
+                                        label: t(group.name)
+                                    }))}
                                     required={true}
-                                    label={t('Role')}
+                                    label={t('Group')}
+                                    search={getGroup}
                                 />
                             </div>
                         </div>

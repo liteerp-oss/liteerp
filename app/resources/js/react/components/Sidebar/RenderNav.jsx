@@ -1,45 +1,43 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
 import { useI18n } from '../../../i18n/useI18n'
-export default function RenderNav({
-    list = []
-}) {
-  const {t} = useI18n();
-    return list.map((item,index) => {
-        return <li className="nav-item mb-2" key={index} style={{
-          height: 40,
-          maxWidth: '100%'
-        }}>
-          {item.to ? <NavLink to={item.to} className="erp-link" style={{
-            display: 'inline-block',
-            width: '100%'
-          }}>
-            <div className='d-flex align-items-center'>
-              <div className='col-2'>
-                  <div className={item.icon}/>
-              </div>
-              <div className='col-10'>
-                <div className='ml-2'>
-                  {t(item.label)}
-                </div>
-              </div>
-            </div>
-          </NavLink> : <a href={item.link} className="erp-link" style={{
-            display: 'inline-block',
-            width: '100%'
-          }}>
-            <div className='d-flex align-items-center'>
-              <div className='col-2'>
-                  <div className={item.icon}/>
-              </div>
-              <div className='col-10'>
-                <div className='ml-2'>
-                  {t(item.label)}
-                </div>
-              </div>
-            </div>
-          </a> }
-          
-        </li>
-    })
+
+export default function RenderNav({ list = [] }) {
+  const { t } = useI18n();
+
+  return (
+    <div className="nav flex-column">
+
+      {list.map((group, index) => (
+        <div key={index} className="mb-4">
+
+          {/* ===== Group Title ===== */}
+          <div className="text-uppercase small mb-2 px-3 theme-title fw-bold">
+            {t(group.label)}
+          </div>
+
+          {/* ===== Children ===== */}
+          <div className="nav flex-column">
+
+            {group.children.map((item, i) => (
+              <NavLink
+                key={i}
+                to={item.to}
+                className={({ isActive }) =>
+                  `nav-link d-flex align-items-center px-3 py-2 rounded-3 ${
+                    isActive ? 'active bg-primary text-white' : 'theme-title'
+                  }`
+                }
+              >
+                <i className={`${item.icon} me-2`} />
+                <span>{t(item.label)}</span>
+              </NavLink>
+            ))}
+
+          </div>
+        </div>
+      ))}
+
+    </div>
+  )
 }

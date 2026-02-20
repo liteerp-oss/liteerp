@@ -5,13 +5,13 @@ import InvoiceInService from "../../services/InvoiceInService";
 import useTable from "../../libraries/handleTable";
 import { usePopup } from "../popups/PopupContext";
 import { useNavigate } from 'react-router-dom';
-import Currencies from '../../components/Currencies'
+import Currencies from '../Currencies'
 import StatusBadge from '../StatusBadge'
 import RenderFieldTableByList from '../RenderFieldTableByList'
 import { useI18n } from '../../../i18n/useI18n';
 import CommonDataTableV2 from '../CommonDataTableV2';
 
-export default function InvoiceIns() {
+export default function IndexInvoiceIns() {
     const { t,lang } = useI18n();
     const navigate = useNavigate();
     const { openPopup } = usePopup();

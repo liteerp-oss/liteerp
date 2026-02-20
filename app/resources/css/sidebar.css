@@ -1,5 +1,4 @@
 .erp-sidebar {
-  height: 100vh;
   background-color: var(--erp-sidebar-bg);
   color: var(--erp-link);
 }

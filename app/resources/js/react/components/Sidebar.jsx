@@ -12,9 +12,9 @@ export default function Sidebar() {
       </div>
 
       {/* Menu */}
-      <ul className="nav nav-pills flex-column mb-auto">
+      <div className="nav nav-pills flex-column mb-auto">
           <RenderNav list={nav ?? []}/>
-      </ul>
+      </div>
       <div className="mt-5"></div>
     </div>
   );

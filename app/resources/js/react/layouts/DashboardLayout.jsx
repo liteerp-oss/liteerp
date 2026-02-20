@@ -3,7 +3,7 @@ import Sidebar from "../components/Sidebar";
 import Topbar from "../components/Topbar";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from 'react-router-dom';
-import BusinessRoleService from '../services/BusinessRoleService'
+import PermissionService from '../services/PermissionService'
 import { setBusinessNav, setBusinessRole } from '../redux/businessRoleSlice';
 import { useI18n } from '@/i18n/useI18n';
 export default function DashboardLayout({
@@ -16,7 +16,7 @@ export default function DashboardLayout({
     const theme = useSelector((state) => state.theme.mode);
     const dispatch = useDispatch();
     const businessRole = useCallback(() => {
-        BusinessRoleService.view()
+        PermissionService.view()
             .then((resp) => {
                 dispatch(setBusinessNav(resp.message.nav))
                 dispatch(setBusinessRole(resp.message.roles))

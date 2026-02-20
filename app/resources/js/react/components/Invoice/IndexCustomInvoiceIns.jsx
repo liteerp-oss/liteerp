@@ -8,22 +8,19 @@ import { Select } from '../UI/Input/Select';
 import { usePopup } from '../popups/PopupContext'
 import Currencies from '../Currencies';
 import StatusBadge from '../StatusBadge';
-import CustomInvoiceOutService from '../../services/CustomInvoiceOutService';
 import TextArea from '../UI/Input/Textarea'
 import SearchSelect from '../UI/Input/SearchSelect'
-import CustomerService from '../../services/CustomerService';
-import ContentOnTable from '../ContentOnTable';
+import SupplierService from '../../services/SupplierService';
+import CustomInvoiceInService from '../../services/CustomInvoiceInService';
+import ContentOnTable from '../ContentOnTable'
 import RenderFieldTableByList from '../RenderFieldTableByList';
 import RenderFormFieldByList from '../RenderFormFieldByList';
 import { useI18n } from '../../../i18n/useI18n';
-import { useSelector } from 'react-redux';
-import PERMISSIONS from '../../common/permission';
 import CommonDataTableV2 from '../CommonDataTableV2';
 
-export default function CustomInvoiceOuts() {
+export default function IndexCustomInvoiceIns() {
     const { t, lang } = useI18n();
-    const roles = useSelector((state) => state.businessRole.role);
-    const [customers, setCustomers] = useState([]);
+    const [suppliers, setSuppliers] = useState([]);
     const search = useForm();
     const form = useForm();
     const table = useTable();
@@ -32,11 +29,9 @@ export default function CustomInvoiceOuts() {
 
     const getInvoices = useCallback((page = 0) => {
         table.setLoading(true);
-        CustomInvoiceOutService.list({
+        CustomInvoiceInService.list({
             page: page,
-            keywords: search?.formData?.keywords ?? '',
-            payment_status: search?.formData?.payment_status ?? '',
-            order_by: search.formData?.order_by ?? ''
+            ...search.formData
         })
             .then((resp) => {
                 table.setData(resp.message.data)
@@ -56,7 +51,7 @@ export default function CustomInvoiceOuts() {
     const update = useCallback(() => {
         form.setLoading(true)
         form.setFormErrors(null);
-        CustomInvoiceOutService.update(form.formData)
+        CustomInvoiceInService.update(form.formData)
             .then((resp) => {
                 getInvoices();
                 openPopup({
@@ -84,7 +79,7 @@ export default function CustomInvoiceOuts() {
     const add = useCallback(() => {
         form.setLoading(true)
         form.setFormErrors(null);
-        CustomInvoiceOutService.add(form.formData)
+        CustomInvoiceInService.add(form.formData)
             .then((resp) => {
                 getInvoices();
                 openPopup({
@@ -121,7 +116,7 @@ export default function CustomInvoiceOuts() {
     }
 
     const destroy = useCallback((row) => {
-        CustomInvoiceOutService.delete(row)
+        CustomInvoiceInService.delete(row)
             .then((resp) => {
                 getInvoices();
                 openPopup({
@@ -153,21 +148,21 @@ export default function CustomInvoiceOuts() {
         })
     }
 
-    const getCustomers = useCallback((keywords = '', callback = null) => {
-        CustomerService.list({
+    const getSuppliers = useCallback((keywords = '', callback = null) => {
+        SupplierService.list({
             keywords: keywords
         })
             .then((resp) => {
                 if (callback) {
                     callback();
                 }
-                setCustomers(resp.message.data)
+                setSuppliers(resp.message.data)
             })
             .catch((error) => { })
     }, [])
 
-    const view = useCallback((row) => {
-        CustomInvoiceOutService.view(row)
+    const view = useCallback(() => {
+        CustomInvoiceInService.view()
             .then((resp) => {
                 table.addColums(resp.message.index, (item, data) => {
                     return <RenderFieldTableByList item={item} data={data} />
@@ -175,15 +170,8 @@ export default function CustomInvoiceOuts() {
                 form.setHookRender(resp.message.form)
                 search.setHookRender(resp.message.search)
             })
-            .catch((error) => {
-                if (error.response.data?.message) {
-                    openPopup({
-                        type: 'error',
-                        message: error.response.data?.message
-                    })
-                }
-            })
-    }, []);
+            .catch((error) => { })
+    }, [])
 
     useEffect(() => {
         table.setColums([
@@ -192,8 +180,8 @@ export default function CustomInvoiceOuts() {
                 key: "id"
             },
             {
-                label: t("Customer"),
-                key: "customer_name"
+                label: t("Supplier"),
+                key: "unit_name"
             },
             {
                 label: t("Description"),
@@ -238,37 +226,37 @@ export default function CustomInvoiceOuts() {
 
     return <div>
         <CommonDataTableV2
-            add={() => {
+            add={ () => {
                 setShowForm(true)
             }}
             config={{
-                default: [{
-                    key: "order_by",
-                    placeholder: t("Order by"),
-                    options: [
-                        { value: 'ASC', label: t('Oldest') },
-                        { value: 'DESC', label: t('Newest') },
-                    ],
-                    type: "select",
-                    label: t("Order by"),
-                    col: "col-6"
-                }, {
-                    key: "keywords",
-                    placeholder: t("Keywords"),
-                    type: "text",
-                    label: t("Search"),
-                    col: "col-6"
-                }]
-            }}
-            search={search}
+                    default: [{
+                        key: "order_by",
+                        placeholder: t("Order by"),
+                        options: [
+                            { value: 'ASC', label: t('Oldest') },
+                            { value: 'DESC', label: t('Newest') },
+                        ],
+                        type: "select",
+                        label: t("Order by"),
+                        col: "col-6"
+                    },{
+                        key: "keywords",
+                        placeholder: t("Keywords"),
+                        type: "text",
+                        label: t("Search"),
+                        col: "col-6"
+                    }]
+                }}
+                search={search}
             loading={table.loading}
             columns={table.colums}
             data={table.data}
             links={table.links}
             onShow={onEdit}
             callback={getInvoices}
-            onDelete={onDelete}
-            type={'custominvoiceout'}
+            onDelete={ onDelete}
+            type={'custominvoicein'}
         />
         {showForm ? <PopupLayout
             loading={form.loading}
@@ -278,7 +266,7 @@ export default function CustomInvoiceOuts() {
             }}
             onConfirm={form.isEdit ? update : add}
             confirmText={form.isEdit ? t('Save change') : t('Add new')}
-            title={t('Custom invoice out')}>
+            title={t('Custom invoice in')}>
             <div>
                 <div className='row'>
                     <div className='form-group col-6'>
@@ -291,20 +279,20 @@ export default function CustomInvoiceOuts() {
                         />
                     </div>
                     <div className='form-group col-6'>
-                        <label>{t("Customer")}</label>
+                        <label>{t("Supplier")}</label>
                         <SearchSelect
-                            search={getCustomers}
-                            value={form.formData?.customer_id}
-                            errorMessage={form.formErrors?.customer_id}
-                            name='customer_id'
+                            search={getSuppliers}
+                            value={form.formData?.supplier_id}
+                            errorMessage={form.formErrors?.supplier_id}
+                            name='supplier_id'
                             changeValue={form.handleChangeByKey}
-                            options={customers.map((item) => {
+                            options={suppliers.map((item) => {
                                 return {
                                     value: item.id,
-                                    label: item.name
+                                    label: item.unit_name
                                 }
                             })}
-                            defaultKeywords={form.formData?.customer_name}
+                            defaultKeywords={form.formData?.unit_name}
                         />
                     </div>
                 </div>

@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import TabsCustom from '../TabsCustom';
-import StockIns from './StockList/StockIns';
-import StockOuts from './StockList/StockOuts';
+import StockIns from './StockList/IndexStockIns';
+import StockOuts from './StockList/IndexStockOuts';
 import PageHead from '../PageHead';
 import { useI18n } from '@/i18n/useI18n';
 export default function StockList() {

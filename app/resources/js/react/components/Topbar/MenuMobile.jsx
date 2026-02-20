@@ -6,11 +6,6 @@ export default function MenuMobile() {
   const nav = useSelector((state) => state.businessRole.nav);
   const [open, setOpen] = useState(false);
 
-  const items = useMemo(() => {
-    if (!nav) return [];
-    return nav.filter((item) => item.to || item.link);
-  }, [nav]);
-
   return (
     <>
       <i
@@ -26,43 +21,47 @@ export default function MenuMobile() {
             className="menu-mobile-grid"
             onClick={(e) => e.stopPropagation()}
           >
-            {items.map((item, index) => {
-              const content = (
-                <div
-                  className="menu-mobile-item"
-                  onClick={() => setOpen(false)}
-                >
-                  <div className="menu-mobile-icon-wrapper">
-                    <i className={`${item.icon} menu-mobile-icon`} />
-                  </div>
+            {nav.map((item, index) => {
+              
+                return item.children.map((child, i) => {
+                  const content = (
+                    <div
+                      className="menu-mobile-item"
+                      onClick={() => setOpen(false)}
+                    >
+                      <div className="menu-mobile-icon-wrapper">
+                        <i className={`${child.icon} menu-mobile-icon`} />
+                      </div>
 
-                  <div className="menu-mobile-label">
-                    {item.label}
-                  </div>
-                </div>
-              );
+                      <div className="menu-mobile-label">
+                        {child.label}
+                      </div>
+                    </div>
+                  );
 
-              if (item.to) {
-                return (
-                  <NavLink
-                    key={index}
-                    to={item.to}
-                    className="menu-mobile-link"
-                  >
-                    {content}
-                  </NavLink>
-                );
-              }
+                  if (child.to) {
+                    return (
+                      <NavLink
+                        key={i}
+                        to={child.to}
+                        className="menu-mobile-link"
+                      >
+                        {content}
+                      </NavLink>
+                    );
+                  }
 
-              return (
-                <a
-                  key={index}
-                  href={item.link}
-                  className="menu-mobile-link"
-                >
-                  {content}
-                </a>
-              );
+                  return (
+                    <a
+                      key={i}
+                      href={child.link}
+                      className="menu-mobile-link"
+                    >
+                      {content}
+                    </a>
+                  );
+                })
+              
             })}
           </div>
         </div>

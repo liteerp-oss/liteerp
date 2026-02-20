@@ -3,7 +3,7 @@ import ExtensionService from "../../services/ExtensionService";
 import { useForm } from '../../libraries/handleInput'
 import { usePopup } from '../popups/PopupContext'
 import { useI18n } from "../../../i18n/useI18n";
-import BusinessRoleService from "@/react/services/BusinessRoleService";
+import PermissionService from "@/react/services/PermissionService";
 import { setBusinessNav, setBusinessRole } from "@/react/redux/businessRoleSlice";
 import { useDispatch } from "react-redux";
 import DeleteButton from "../UI/PermissionButtons/DeleteButton";
@@ -27,7 +27,7 @@ export default function ExtensionCard({
   const form = useForm();
   const dispatch = useDispatch();
   const businessRole = useCallback(() => {
-    BusinessRoleService.view()
+    PermissionService.view()
       .then((resp) => {
         dispatch(setBusinessNav(resp.message.nav))
         dispatch(setBusinessRole(resp.message.roles))

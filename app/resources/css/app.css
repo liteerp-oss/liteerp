@@ -12,7 +12,7 @@
 @import './notification.css';
 
 .dashboard-megabox {
-  overflow-x: hidden;
+  overflow: hidden;
   background-color: var(--body);
 }
 

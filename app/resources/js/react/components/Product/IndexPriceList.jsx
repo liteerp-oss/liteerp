@@ -8,13 +8,13 @@ import { usePopup } from '../popups/PopupContext'
 import PriceListService from '../../services/PriceListService'
 import SearchSelect from '../UI/Input/SearchSelect'
 import CustomerGroupService from '../../services/CustomerGroupService'
-import Currency from '../../components/Currencies'
+import Currency from '../Currencies'
 import RenderFormFieldByList from '../RenderFormFieldByList'
 import RenderFieldTableByList from '../RenderFieldTableByList'
 import { useI18n } from '../../../i18n/useI18n'
 import CommonDataTableV2 from '../CommonDataTableV2'
 
-export default function PriceList() {
+export default function IndexPriceList() {
     const { t, lang } = useI18n()
     const { openPopup } = usePopup()
 

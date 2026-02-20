@@ -5,7 +5,7 @@ import { useForm } from '../../libraries/handleInput'
 import { useI18n } from '../../../i18n/useI18n'
 import CommonDataTableV2 from '../CommonDataTableV2'
 
-export default function InventoryTabs() {
+export default function IndexInventory() {
     const { t, lang } = useI18n()
     const table = useTable()
     const search = useForm()

@@ -10,7 +10,7 @@ import RenderFieldTableByList from '../../RenderFieldTableByList'
 import { useI18n } from '../../../../i18n/useI18n'
 import CommonDataTableV2 from '../../CommonDataTableV2'
 
-export default function StockIns() {
+export default function IndexStockIns() {
     const { t, lang } = useI18n()
     const navigate = useNavigate()
     const search = useForm()

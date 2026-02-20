@@ -13,7 +13,7 @@ import { isoToDateTime } from '../../libraries/common'
 import { useI18n } from '../../../i18n/useI18n'
 import CommonDataTableV2 from '../CommonDataTableV2'
 
-export default function AdjustmentTabs() {
+export default function IndexInventoryAdjustment() {
     const { t, lang } = useI18n()
     const table = useTable()
     const form = useForm()

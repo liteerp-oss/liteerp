@@ -13,7 +13,9 @@ import { useDispatch } from "react-redux";
 import { setBusinessInfo } from "../redux/businessInfoSlice";
 import { clearBusinessNav, clearBusinessRole } from "../redux/businessRoleSlice";
 import { cleanNotificationCount } from "../redux/NotificationSlice";
+import { useI18n } from "@/i18n/useI18n";
 export default function Business() {
+    const {t} = useI18n();
     const [loadViewDetail, setLoadingViewDetail] = useState(false)
     const dispatch = useDispatch();
     const [loading, setLoading] = useState(true);
@@ -62,7 +64,7 @@ export default function Business() {
         businessService.add(form.formData).then((data) => {
             setOpenAdd(false);
             openPopup({
-                message: "Add new company has been successfully",
+                message: t("Add new company has been successfully"),
                 type: 'success',
                 onConfirm: () => {
                     getList()
