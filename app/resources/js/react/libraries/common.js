@@ -18,3 +18,7 @@ export function isoToDateTime(isoStr) {
 export function substring(data,start = 0,end = 10) {
   return data?.toString()?.length >= 50 ? data?.toString()?.substring(start,end) + '...' : data
 }
+export function capitalizeFirstLetter(str) {
+    if (!str) return "";
+    return str.charAt(0).toUpperCase() + str.slice(1);
+}
