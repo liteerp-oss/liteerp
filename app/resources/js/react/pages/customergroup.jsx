@@ -7,7 +7,7 @@ export default function CustomerGroup() {
         <div>
             <PageHead
                 containerClass='mx-4'
-                title='Customer Group'
+                title='Customer group'
                 subtitle="page_customer_group_desc"
             />
             <div className='m-4'>

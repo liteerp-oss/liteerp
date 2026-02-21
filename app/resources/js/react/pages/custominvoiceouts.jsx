@@ -9,7 +9,7 @@ export default function CustomInvoiceOuts() {
         <div>
             <PageHead
                 containerClass='mx-4'
-                title={t('Custom Invoice Outs')}
+                title={t('Custom invoice outs')}
                 subtitle={t('custom_invoice_out_desc')}
             />
             <div className='m-4'>

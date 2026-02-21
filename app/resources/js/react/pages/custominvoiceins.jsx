@@ -9,7 +9,7 @@ export default function CustomInvoiceIns(){
         <div>
             <PageHead
                                   containerClass='mx-4'
-                                  title={t('Custom Invoice Ins')}
+                                  title={t('Custom invoice ins')}
                                   subtitle={t('custom_invoice_in_desc')}
                                   />
             <div className='m-4'>

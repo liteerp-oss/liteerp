@@ -8,7 +8,7 @@ export default function InventoryAdjustments(){
     return <DashboardLayout>
         <div>
             <PageHead
-                                title={t('Inventory Adjustment')}
+                                title={t('Inventory adjustment')}
                                 subtitle={t('inventory_adjustment_desc')}
                             />
             <div className='mt-3 container'>

@@ -15,7 +15,7 @@ export default function Invoice() {
       </div> : <div>
         <PageHead
                       containerClass='mx-4'
-                      title={t('Invoice Ins')}
+                      title={t('Invoice ins')}
                       subtitle={t('invoice_ins_desc')}
                       />
         <div className="m-4">

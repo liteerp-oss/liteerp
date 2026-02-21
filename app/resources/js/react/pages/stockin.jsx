@@ -9,8 +9,8 @@ export default function StockIns() {
     return <DashboardLayout>
         <div>
             <PageHead
-                title={t('Stock Ins')}
-                subtitle={t('stock_ins')}
+                title={t('Stock ins')}
+                subtitle={t('stock_ins_desc')}
                 containerClass='mx-4'
             />
             <div className='m-4'>

@@ -8,8 +8,8 @@ export default function StockOuts() {
     return <DashboardLayout>
         <div>
             <PageHead
-                title={t('Stock Outs')}
-                subtitle={t('stock_out')}
+                title={t('Stock outs')}
+                subtitle={t('stock_out_desc')}
                 containerClass='mx-4'
             />
             <div className="m-4">

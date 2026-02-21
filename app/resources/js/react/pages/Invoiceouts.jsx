@@ -13,7 +13,7 @@ export default function InvoiceOuts() {
       {searchParams.get('form') && searchParams.get('id') ? <InvoiceOutDetail/> : <div>
         <PageHead
                       containerClass='mx-4'
-                      title={t('Invoice Outs')}
+                      title={t('Invoice outs')}
                       subtitle={t('invoice_out_desc')}
                       />
         <div className="m-4">

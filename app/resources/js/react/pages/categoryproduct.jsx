@@ -8,8 +8,8 @@ export default function CategoryProduct() {
     return <DashboardLayout>
         <div>
             <PageHead
-                title={t('Category Product')}
-                subtitle={t('category_product')}
+                title={t('Product categories')}
+                subtitle={t('category_product_desc')}
                 containerClass='mx-4'
             />
             <div className='m-4'>
