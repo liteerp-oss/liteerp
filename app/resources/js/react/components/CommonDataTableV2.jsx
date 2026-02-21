@@ -12,8 +12,8 @@ export default function CommonDataTableV2({
     columns = [],
     data = [],
     onEdit = null,
+    onShow = null,
     onDelete = null,
-    filter = null,
     links = [],
     loading = false,
     add = null,
@@ -24,31 +24,68 @@ export default function CommonDataTableV2({
         handleChange: null,
         handleChangeByKey: null,
         hookRender: [],
-        setFormData: null 
+        setFormData: null
     },
     config = {
-        default: [],
-        extras: []
+        default: [{
+            key: "order_by",
+            placeholder: "Order by",
+            options: [
+                { value: 'ASC', label: "Oldest" },
+                { value: 'DESC', label: "Newest" },
+            ],
+            type: "select",
+            label: "Order by",
+            col: "col-6"
+        }, {
+            key: "keywords",
+            placeholder: "Keywords",
+            type: "text",
+            label: "Search",
+            col: "col-6"
+        }]
     },
-    callback = () => {},
+    callback = () => { },
     // table type for custom render table, example: order, customer, invoice,... for use in render function with condition like if(
     type = null,
-    onShow = null
+    // on cases you need custom permission, it is not like format "erp.customer.create" then you can use roles for custom
+    roles = {
+        edit: null,
+        delete: null,
+        add: null,
+        show: null
+    }
 }) {
     const { t } = useI18n();
-    const [showExtras,setShowExtras] = useState(false)
-    const roles = useSelector((state) => state.businessRole.role);
-    const permission = {
-        canEdit: type ? roles?.includes('erp.' + type + '.update') : false,
-        canDelete: type ? roles?.includes('erp.' + type + '.delete') : false,
-        canAdd: type ? roles?.includes('erp.' + type + '.create') : false,
-        canShow: type ? roles?.includes('erp.' + type + '.show') : false,
+    const [showExtras, setShowExtras] = useState(false)
+    const userRoles = useSelector((state) => state.businessRole.role);
+    let permission = {
+        canEdit: false,
+        canDelete: false,
+        canAdd: false,
+        canShow: false,
+
+    }
+    if (type) {
+        permission = {
+            canEdit: type ? userRoles?.includes('erp.' + type + '.update') : false,
+            canDelete: type ? userRoles?.includes('erp.' + type + '.delete') : false,
+            canAdd: type ? userRoles?.includes('erp.' + type + '.create') : false,
+            canShow: type ? userRoles?.includes('erp.' + type + '.show') : false,
+        }
+    } else if (roles) {
+        permission = {
+            canEdit: userRoles?.includes(roles.edit),
+            canDelete: userRoles?.includes(roles.delete),
+            canAdd: userRoles?.includes(roles.add),
+            canShow: userRoles?.includes(roles.show),
+        }
     }
     return (
         <div className={`card rounded-3 p-4 shadow-sm theme-sidebar-bg theme-title`}>
             <div className="d-flex justify-content-between">
                 <div className="col-9">
-                    <div className="row">
+                    {config?.default?.length >= 1 && search ? <div className="row">
                         <div className="col-8">
                             <div className="row">
                                 {config?.default?.map((item, index) => {
@@ -61,7 +98,7 @@ export default function CommonDataTableV2({
                                                 placeholder={item?.placeholder}
                                                 value={search.formData?.[item.key]}
                                                 required={item?.required}
-                                                label={item?.label}
+                                                label={t(item?.label)}
                                             />
                                         </div> : null}
                                         {item.type === 'text' ? <div>
@@ -85,15 +122,14 @@ export default function CommonDataTableV2({
                                     <div>
                                         <i className="bi bi-gear-wide-connected"></i>
                                     </div>
-                                } 
+                                }
                                 onClick={() => setShowExtras(true)}
-                                />
+                            />
                         </div>
                         <div className="col-2 pt-4">
                             <PrimaryButton loading={loading} width={100} onClick={() => callback()} label={t("Search")} />
                         </div>
-                    </div>
-                    {filter}
+                    </div> : null}
                 </div>
                 {add && permission.canAdd ? <span style={{
                     height: 25
@@ -217,7 +253,7 @@ export default function CommonDataTableV2({
                 </nav> : null}
 
             </div>
-            {showExtras ?<PopupLayout
+            {showExtras ? <PopupLayout
                 onClose={() => {
                     search.setFormData(null);
                     setShowExtras(false);
@@ -226,7 +262,7 @@ export default function CommonDataTableV2({
                 onConfirm={() => {
                     setShowExtras(false)
                 }}
-                cancelText={t("Close")} 
+                cancelText={t("Close")}
                 confirmText={t("Confirm")}>
                 <div>
                     {search.hookRender.map((item, index) => {
@@ -234,10 +270,10 @@ export default function CommonDataTableV2({
                             <RenderFormFieldByList item={item} form={search} />
                         </div>
                     })}
-                    {search.hookRender?.length === 0 ? <EmptyBox/> : null }
+                    {search.hookRender?.length === 0 ? <EmptyBox message={t("No extension to render")} /> : null}
                 </div>
-            </PopupLayout> : null }
-            
+            </PopupLayout> : null}
+
         </div>
     );
 }
