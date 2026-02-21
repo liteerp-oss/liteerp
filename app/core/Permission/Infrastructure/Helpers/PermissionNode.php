@@ -24,7 +24,7 @@ class PermissionNode {
     }
     public function getPermission(string $name) : string {
         
-        return "erp.$this->node.$name";
+        return "erp.$this->node.$this->node-$name";
     }
     public function compile() : array {
         $this->checkValid();
