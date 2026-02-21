@@ -78,7 +78,7 @@ At here Test is directory of extension. After that you will see your extension a
 
 ### Dashboard menu?
 
-This only way to you add new menu into dashboard. If you can add menu into dashboard then you has been knew how to hook working? Consider Extensions example to understand all, we has been created a lots of example Extension, please consider here <a href="../extension-examples">Extension example</a>
+This only way to you add new menu into dashboard. If you can add menu into dashboard then you has been knew how to hook working? Consider Extensions example to understand all, we has been created a lots of example Extension, please consider here <a href="../extension-examples/Hrm">HRM Extension</a>
 
 #### How to register new menu? 
 
@@ -86,7 +86,7 @@ To display new menu on sidebar dashboard you need use hook to register new menu.
 
         <?php
 
-        namespace Extensions\Hrm\Hooks;
+        namespace Extensions\FastMode\Hooks;
 
         use App\Supports\Hooks\HookContext;
         use App\Contracts\Hooks\HookInterface;
@@ -94,78 +94,48 @@ To display new menu on sidebar dashboard you need use hook to register new menu.
         use App\Supports\Hooks\HookPhase;
         use App\Supports\Hooks\HookResult;
         use App\Supports\Hooks\HookTiming;
-        use Core\BusinessRole\Infrastructure\Helpers\SupportUINav;
-        use Illuminate\Support\Facades\Cache;
-        use Illuminate\Support\Str;
+        use Core\Permission\Infrastructure\Helpers\PermissionNode;
+        use Core\Permission\Infrastructure\Helpers\SupportUINav;
+        use Core\Permission\Infrastructure\Helpers\UINavGroup;
+
         class AddNavMenu implements HookInterface
         {
-            private string $action = 'erp.hrm.index';
+            function __construct(
+                private PermissionNode $permissionNode,
+                private SupportUINav $supportUINav
+            ) {}
             public static function supports(HookContext $context): bool
             {
                 return $context->action === HookAction::INDEX
-                    && $context->phase === HookPhase::UI
-                    && $context->module === 'BusinessRole'
+                    && $context->phase === HookPhase::RESPONSE
+                    && $context->module === 'Permission'
                     && $context->timing === HookTiming::BEFORE;
             }
 
             public function handle(HookContext $context): HookResult
             {
-                $nav = [
-                    ...$context->payload['nav'],
-                    SupportUINav::buildNavItem([
-                        'to'        => '/hrm',
+                $this->permissionNode->setNode('fastmode')
+                    ->setGroup("fastmode.title")
+                    ->setPermission('index')
+                    ->setPermission('create');
+                $this->supportUINav->setData($context->payload['nav'])
+                    ->addItem(UINavGroup::SYSTEM, [
+                        'to'        => '/fastmode',
                         'link'      => null,
                         'icon'      => "bi bi-person-workspace",
-                        'label'     => __("extension.hrm::messages.nav"),
-                        'ability'   => $this->action,
-                    ])
-                ];
+                        'label'     => __("extension.fastmode::messages.nav"),
+                        'ability'   => $this->permissionNode->getPermission("index"),
+                    ]);
                 return HookResult::pass([
                     ...$context->payload,
-                    'roles' => [
-                        ...$context->payload['roles'],
-                        $this->action
+                    'permissions' => [
+                        ...$context->payload['permissions'],
+                        ...$this->permissionNode->compile()
                     ],
-                    'nav' => $nav
+                    'nav' => $this->supportUINav->compile()
                 ]);
             }
         }
-    
-#### How to register new menu with permission? 
-
-You can see new menu appear on dashboard sidebar, but if you need user permission:
-
-    public function __construct(private BusinessRoleService $businessRole){
-
-    }
-
-    $role = $this->businessRole>findOne([
-        'role_user_id' => $context->payload['user_id'],
-        'business_id' => $context->payload['business_id']
-    ])
-
-    $role = $this->businessRole->findOne([
-        'role_user_id' => $context->payload['user_id'],
-        'business_id' => $context->payload['business_id']
-    ]);
-
-
-    // $role->isAdmin()
-    // $role->isManager()
-    // $role->isSeller()
-    // $role->isAccountanter()
-    // $role->isWarehouseman()
-    // $role->isPurchaser()
-
-    
-    
-    if(!$role->isAdmin()){
-        return HookResult::pass([
-                ...$context->payload
-        ]); 
-    }
-
-On method handle you can check what's role user? Then implement your logic. Example if user is not admin then return `payload` come back `Hook` and no change anything.
 
 #### Load 
 
