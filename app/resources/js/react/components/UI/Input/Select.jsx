@@ -1,3 +1,4 @@
+import { useI18n } from '@/i18n/useI18n'
 import React from 'react'
 export function Select({
     className= '',
@@ -10,9 +11,10 @@ export function Select({
     label = null,
     required = false 
 }) {
+    const {t} = useI18n();
     return <div>
         {label ? <label>
-            {label} 
+            {t(label)} 
             {required ? <span className='text-danger'>*</span> : null}
         </label> : null}
         <select
