@@ -24,39 +24,14 @@ class CreateFullPermission
         DB::beginTransaction();
         $dto = CreateFullPermissionRequest::fromArray($data);
         $config = config('permission.permissions');
-        $permissions = [
-            ...$config['user'],
-            ...$config['customer'],
-            ...$config['customer_group'],
-            ...$config['supplier'],
-            ...$config['pricelist'],
-            ...$config['shipping'],
-            ...$config['order'],
-            ...$config['order_shipping'],
-            ...$config['order_item'],
-            ...$config['product'],
-            ...$config['category_product'],
-            ...$config['inventory'],
-            ...$config['inventory_adjustment'],
-            ...$config['invoice_in'],
-            ...$config['invoice_out'],
-            ...$config['custom_invoice_out'],
-            ...$config['custom_invoice_in'],
-            ...$config['purchase'],
-            ...$config['purchase_item'],
-            ...$config['purchase_tax'],
-            ...$config['stock_in'],
-            ...$config['stock_out'],
-            ...$config['stock_movement_in'],
-            ...$config['stock_movement_out'],
-            ...$config['warehouse'],
-            ...$config['business'],
-            ...$config['overview'],
-            ...$config['extension'],
-            ...$config['permission_group'],
-            ...$config['permission'],
-            ...$config['permission_group_user']
-        ];
+        $permissions = [];
+        foreach (array_keys($config) as $key => $value) {
+            $permissions = [
+                ...$permissions,
+                ...$config[$value]
+            ];
+        }
+
         $data = $this->hooks->dispatch(
             new HookContext(
                 action: HookAction::CREATE,
