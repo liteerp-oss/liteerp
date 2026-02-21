@@ -12,5 +12,6 @@ return [
         "pending"  => "Yêu cầu của bạn hiện đang ở trạng thái chờ duyệt, vui lòng đợi xử lý",
     ]
   ],
-  "nav" => "Nhân sự"
+  "nav" => "Nhân sự",
+  "not_permission" => "You have not permission"
 ];

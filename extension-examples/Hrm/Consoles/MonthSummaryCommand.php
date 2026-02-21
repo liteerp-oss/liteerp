@@ -2,9 +2,8 @@
 
 namespace Extensions\Hrm\Consoles;
 
-use App\Models\User;
 use Carbon\Carbon;
-use Core\User\Domain\Services\UserService;
+use Core\User\Application\UseCases\GetAllUser;
 use Extensions\Hrm\Models\MonthSummary;
 use Extensions\Hrm\Models\TimeAttendance;
 use Illuminate\Console\Command;
@@ -15,10 +14,10 @@ class MonthSummaryCommand extends Command
 {
     protected $signature = "extension:hrm-export";
     protected $description = "Make excel file summary";
-    public function handle(UserService $userService)
+    public function handle(GetAllUser $getAllUser)
     {
         $lastMonth = Carbon::now()->subMonth();
-        foreach ($userService->all([]) as $user) {
+        foreach ($getAllUser->handle([]) as $user) {
             $attens = TimeAttendance::select("hrm_time_attendances.*", "users.name", "users.email")
                 ->join("users", "users.id", "=", "hrm_time_attendances.user_id")
                 ->where('hrm_time_attendances.user_id', $user['id'])

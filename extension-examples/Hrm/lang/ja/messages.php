@@ -12,5 +12,6 @@ return [
         "pending"  => "現在、申請は承認待ちの状態です。処理をお待ちください",
     ]
   ],
-  "nav" => "人事管理"
+  "nav" => "人事管理",
+  "not_permission" => "You have not permission"
 ];

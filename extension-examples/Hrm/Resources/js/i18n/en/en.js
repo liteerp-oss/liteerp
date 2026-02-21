@@ -116,5 +116,19 @@ export default {
                 button: "Confirm" 
             }
         }
-    }
+    },
+    "hrm-nav": "Human Resource Management",
+    "hrm-approve-attendance": "Approve Attendance",
+    "hrm-index-attendance": "Attendance List",
+    "hrm-update-attendance": "Update Attendance",
+    "hrm-create-attendance": "Create Attendance",
+    "hrm-create-report": "Create Report",
+    "hrm-index-report": "Report List",
+    "hrm-show-report": "Report Details",
+    "hrm-create-monthly-summary": "Create Monthly Summary",
+    "hrm-index-monthly-summary": "Monthly Summary List",
+    "hrm-show-monthly-summary": "Monthly Summary Details",
+    "hrm-index-leave": "Leave Request List",
+    "hrm-create-leave": "Create Leave Request",
+    "hrm-approve-leave": "Approve Leave Request"
 };

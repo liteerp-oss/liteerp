@@ -116,5 +116,20 @@ export default {
                 button: "Xác nhận"
             }
         }
-    }
+    },
+    "permission_label_hrm": "Nhân sự",
+    "hrm-nav": "Quản lý nhân sự",
+    "hrm-approve-attendance": "Duyệt chấm công",
+    "hrm-index-attendance": "Danh sách chấm công",
+    "hrm-update-attendance": "Cập nhật chấm công",
+    "hrm-create-attendance": "Tạo chấm công",
+    "hrm-create-report": "Tạo báo cáo",
+    "hrm-index-report": "Danh sách báo cáo",
+    "hrm-show-report": "Chi tiết báo cáo",
+    "hrm-create-monthly-summary": "Tạo tổng kết tháng",
+    "hrm-index-monthly-summary": "Danh sách tổng kết tháng",
+    "hrm-show-monthly-summary": "Chi tiết tổng kết tháng",
+    "hrm-index-leave": "Danh sách đơn nghỉ phép",
+    "hrm-create-leave": "Tạo đơn nghỉ phép",
+    "hrm-approve-leave": "Duyệt đơn nghỉ phép"
 };

@@ -1,9 +1,6 @@
-.badge-Rejected {
+.badge-rejected {
     background-color: var(--bs-red);
 }
-.badge-Approved {
-    background-color: var(--bs-success); 
-}
-.badge-Pending {
+.badge-pending {
     background-color: var(--bs-secondary); 
 }

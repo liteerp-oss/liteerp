@@ -2,8 +2,11 @@
 
 namespace Extensions\Hrm\Http\Controllers\Api;
 
+use App\Contracts\Events\ExtensionEvent;
+use App\Exceptions\UnauthorizedException;
 use App\Http\Controllers\Controller;
-use Core\BusinessRole\Domain\Services\BusinessRoleService;
+use Core\Permission\Application\UseCases\GetPermission;
+use Core\Permission\Infrastructure\Helpers\PermissionNode;
 use Extensions\Hrm\Services\LeaveService;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
@@ -12,25 +15,31 @@ class LeaveRequestController extends Controller
 {
     public function __construct(
         private LeaveService $leaveService,
-        private BusinessRoleService $businessRoleService
-    ) {}
+        private GetPermission $getPermission,
+        private PermissionNode $permissionNode
+    ) {
+        $this->permissionNode->setNode('hrm');
+    }
 
     public function index(Request $request): JsonResponse
     {
-        $all = $request->all();
-        $role = $this->businessRoleService->findOne([
-            "business_id" => $all["business_id"],
-            "role_user_id" => $all["user_id"],
-        ]);
-        if ($role->isAdmin() || $role->isManager()) {
+        $validated = $request->validate([]);
+        $validated['user_id'] = $request->get('user_id');
+        $validated['business_id'] = $request->get('business_id');
+        if (
+            $this->getPermission->handle([
+                ...$validated,
+                'permission' => $this->permissionNode->getPermission("index-leave")
+            ])
+        ) {
             return response()->json([
                 'message' => [
-                    'list' => $this->leaveService->getLeaveRequestsAll($all),
+                    'list' => $this->leaveService->getLeaveRequestsAll($validated),
                     'permission' => true,
                 ],
             ]);
         }
-        $leaveRequests = $this->leaveService->getLeaveRequestsForUser($all);
+        $leaveRequests = $this->leaveService->getLeaveRequestsForUser($validated);
         return response()->json([
             'message' => [
                 'list' => $leaveRequests,
@@ -63,7 +72,14 @@ class LeaveRequestController extends Controller
         ]);
         $validated['user_id'] = $request->all('user_id');
         $validated['business_id'] = $request->all('business_id');
-
+        if (
+            $this->getPermission->handle([
+                ...$validated,
+                'permission' => $this->permissionNode->getPermission("approve-leave")
+            ])
+        ) {
+            throw new UnauthorizedException(__("extension.hrm::not_permission"));
+        }
         return response()->json(['message' => $this->leaveService->updateLeaveRequest($id, $validated)]);
     }
 }

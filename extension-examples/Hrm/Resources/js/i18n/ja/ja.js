@@ -115,6 +115,21 @@ export default {
                 },
                 button: "確認"
             }
-        }
-    }
+        },
+        permission_label_hrm: "人事管理"
+    },
+    "hrm-nav": "人事管理",
+    "hrm-approve-attendance": "勤怠承認",
+    "hrm-index-attendance": "勤怠一覧",
+    "hrm-update-attendance": "勤怠更新",
+    "hrm-create-attendance": "勤怠登録",
+    "hrm-create-report": "レポート作成",
+    "hrm-index-report": "レポート一覧",
+    "hrm-show-report": "レポート詳細",
+    "hrm-create-monthly-summary": "月次集計作成",
+    "hrm-index-monthly-summary": "月次集計一覧",
+    "hrm-show-monthly-summary": "月次集計詳細",
+    "hrm-index-leave": "休暇申請一覧",
+    "hrm-create-leave": "休暇申請作成",
+    "hrm-approve-leave": "休暇申請承認"
 };

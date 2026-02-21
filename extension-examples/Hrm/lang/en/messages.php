@@ -12,5 +12,6 @@ return [
         "pending"=> "Currently your request has been changing to pending, please waiting for process",
     ]
   ],
-  "nav"=> "HRM"
+  "nav"=> "HRM",
+  "not_permission" => "You have not permission"
 ];
