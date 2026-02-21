@@ -137,6 +137,8 @@ To display new menu on sidebar dashboard you need use hook to register new menu.
             }
         }
 
+Go to `Extension` menu on dashboard and active your extension then go to `Permission` at group admin click icon eye scroll to bottom you will see `FastMode`
+
 #### Load 
 
 You should add this class into provider to load into core, go to `Service Provider` your module and implement
