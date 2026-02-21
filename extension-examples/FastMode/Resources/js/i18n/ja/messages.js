@@ -1,7 +1,9 @@
 export default {
     fastmode: {
         title: "高速モード",
-        subtitle: "高速モード",
+        subtitle: `Fastmodeは、受注処理のワークフローを簡素化し、経理承認のステップを省略できる機能です。通常、
+                    注文は業務承認の後に経理確認を経てから倉庫へ送られます。Fastmodeを有効にすると、初期承認後に直接倉庫へ進めることができ、
+                    処理時間を短縮し業務効率を向上させます。本機能は、業務フローがシンプルで迅速な対応を求める小規模企業に最適です。`,
         submit: {
             label: "変更を保存"
         },
@@ -19,5 +21,8 @@ export default {
         success: {
             message: "変更が保存されました"
         }
-    }
+    },
+    "fastmode-index": "設定を表示",
+    "fastmode-create": "設定を保存",
+    "fastmode-test": "テスト送信"
 }

@@ -23,16 +23,24 @@ class TriggerUpdateInvoiceHook implements HookInterface
 
     public function handle(HookContext $context): HookResult
     {
-        $setting = FastModeModel::first();
-        if($setting) {
-            TriggerApproveInvoice::dispatch([
-                ...$context->payload,
-                'invoice_date' => date('Y-m-d',time()),
-                'due_date' => date('Y-m-d',time()),
-                'payment_status' => $setting->status,
-                'approved' => true
+        if (empty($context->payload['business_id'])) {
+            return HookResult::pass([
+                ...$context->payload
             ]);
         }
+        $setting = FastModeModel::where('business_id', $context->payload['business_id'])->first();
+        if (!$setting) {
+            return HookResult::pass([
+                ...$context->payload
+            ]);
+        }
+        TriggerApproveInvoice::dispatch([
+            ...$context->payload,
+            'invoice_date' => date('Y-m-d', time()),
+            'due_date' => date('Y-m-d', time()),
+            'payment_status' => $setting->status,
+            'approved' => true
+        ]);
         return HookResult::pass([
             ...$context->payload
         ]);

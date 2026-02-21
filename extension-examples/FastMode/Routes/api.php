@@ -4,7 +4,7 @@ use Extensions\FastMode\Http\Controllers\FastModeController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['business'])
-    ->prefix('api/extension/fastmode')
+    ->prefix('api/extension')
     ->group(function () {
-        Route::resource('', FastModeController::class);
+        Route::resource('fastmode', FastModeController::class);
     });

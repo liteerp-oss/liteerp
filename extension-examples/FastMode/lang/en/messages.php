@@ -1,4 +1,4 @@
 <?php 
 return [
-    "title"=> "Fast mode",
+    "nav"=> "Fast mode",
 ];

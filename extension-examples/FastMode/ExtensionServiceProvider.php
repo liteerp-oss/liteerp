@@ -28,6 +28,6 @@ class ExtensionServiceProvider extends ServiceProvider
         }
         $this->loadRoutesFrom(__DIR__.'/Routes/web.php');
         $this->loadRoutesFrom(__DIR__ . '/Routes/api.php');
-        $this->loadTranslationsFrom(__DIR__.'/lang','fastmode');
+        $this->loadTranslationsFrom(__DIR__.'/lang','extension.fastmode');
     }
 }

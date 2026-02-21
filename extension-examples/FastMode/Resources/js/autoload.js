@@ -1,11 +1,11 @@
 import Extension from '@core/Extension'
 import RegisterRoute from '@core/RegisterRoute'
-import HrmApp from './app.jsx'
+import FastModeApp from './app.jsx'
 export default class ServiceProvider extends Extension {
     register() {
         RegisterRoute({
             path: '/fastmode',
-            component: HrmApp
+            component: FastModeApp
         })
     }
     boot() {

@@ -11,6 +11,8 @@ return new class extends Migration
         Schema::create('FastMode', function (Blueprint $table) {
             $table->id();
             $table->enum('status',['paid','partial_payment','pending'])->default('pending');
+            $table->unsignedBigInteger('business_id');
+            $table->foreign('business_id')->references('id')->on('business');
             $table->timestamps();
         });
     }

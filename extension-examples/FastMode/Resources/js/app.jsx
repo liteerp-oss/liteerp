@@ -57,7 +57,6 @@ const FastModeApp = () => {
         <div className="card p-2">
           <div className="row">
             <div className="col-6">
-              <label>{t("fastmode.form.status.label")}</label>
               <Select 
               name="status"
               handleChange={form.handleChange}
@@ -68,8 +67,12 @@ const FastModeApp = () => {
                 {value: "pending",label: t("fastmode.form.status.pending")},
                 {value: "partial_payment",label: t("fastmode.form.status.partial_payment")}
               ]}
+              label={"fastmode.form.status.label"}
+              required={true}
               />
-              <PrimaryButton onClick={store} label={t("fastmode.submit.label")}/>
+              <div className="mt-3">
+                <PrimaryButton width={150} onClick={store} label={t("fastmode.submit.label")}/>
+              </div>
             </div>
             <div className="col-6">
               <p className="theme-title">{t("fastmode.desc")}</p>
