@@ -10,5 +10,6 @@ interface PermissionService
     public function create(array $data): array|BadException;
     public function show(array $data): array|BadException;
     public function findPermission(array $data): Permission|BadException;
+    public function getPermission(array $data): ?Permission;
     public function index(array $data): array|BadException;
 }

@@ -41,11 +41,15 @@ class PermissionServiceImpl implements PermissionService
     {
         $entity = $this->repo->findByPermission($data);
         if (!$entity) {
-            logs()->warning('Permission not found', ['permission' => $data]);
             throw new BadException(__('permission::messages.not_found', [
                 'permission' => $data['permission']
             ]));
         }
+        return $entity;
+    }
+    public function getPermission(array $data): ?Permission
+    {
+        $entity = $this->repo->findByPermission($data);
         return $entity;
     }
     public function index(array $data): array|BadException

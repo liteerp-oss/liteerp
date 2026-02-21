@@ -42,4 +42,15 @@ class EloquentUserRepository implements UserRepositoryInterface
         }
         return User::fromArray($row);
     }
+    public function getAll() : array {
+        return ModelsUser::select("users.*",
+            "permission_groups.name as group",
+            "permission_groups.business_id",
+            "business.name as business_name",
+            "business.address as business_address")
+        ->join("permission_group_user","permission_group_user.account_id","=","users.id")
+        ->join("permission_groups","permission_groups.id","=","permission_group_user.group_id")
+        ->join("business","business.id","=","permission_groups.business_id")
+        ->get()->toArray();
+    }
 }

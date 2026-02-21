@@ -16,6 +16,7 @@ class IndexUserRequest extends FormRequest
         return [
             'keywords' => 'nullable|string|max:150',
             'order_by' => 'nullable|in:ASC,DESC',
+            'paginate' => 'nullable|numeric|100',
             ...$hooks->dispatch(
                 new HookContext(
                     action: HookAction::INDEX,

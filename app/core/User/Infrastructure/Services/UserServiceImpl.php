@@ -24,4 +24,7 @@ class UserServiceImpl implements UserService
     {
         return $this->repo->findByEmailOnSystem($data);
     }
+    public function getAll() : array {
+        return $this->repo->getAll();
+    }
 }

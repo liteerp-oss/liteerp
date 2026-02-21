@@ -5,8 +5,9 @@ use App\Exceptions\BadException;
 
 class SupportUINav {
     public array $data = [];
-    public function setData(array $data) : void {
+    public function setData(array $data) : SupportUINav {
         $this->data = $data;
+        return $this;
     }
     public static function build(array $navs, array $roles) {
         $builds = [];
@@ -28,7 +29,7 @@ class SupportUINav {
         }
         return $builds;
     }
-    public function addItem(string $groupLabel,array $data) {
+    public function addItem(string $groupLabel,array $data) : SupportUINav {
         $index = array_search($groupLabel, array_column($this->data, 'label'));
         if(!$index) {
             throw new BadException(__("Group NAV Invalid"));
@@ -42,5 +43,9 @@ class SupportUINav {
                     'ability' => $data['ability'] ?? null,
                 ]
         ];
+        return $this;
+    }
+    public function compile() : array {
+        return $this->data;
     }
 }

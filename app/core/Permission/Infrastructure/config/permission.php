@@ -3,7 +3,7 @@
 return [
     'permissions' => [
 
-        'user' => [
+        'Employee' => [
             'erp.user.index',
             'erp.user.show',
             'erp.user.create',
@@ -11,7 +11,7 @@ return [
             'erp.user.delete',
         ],
 
-        'customer' => [
+        'Customer' => [
             'erp.customer.index',
             'erp.customer.show',
             'erp.customer.create',
@@ -20,7 +20,7 @@ return [
             'erp.customer.creatordershipping',
         ],
 
-        'customer_group' => [
+        'Customer group' => [
             'erp.customergroup.index',
             'erp.customergroup.show',
             'erp.customergroup.create',
@@ -28,7 +28,7 @@ return [
             'erp.customergroup.delete',
         ],
 
-        'supplier' => [
+        'Supplier' => [
             'erp.supplier.index',
             'erp.supplier.show',
             'erp.supplier.create',
@@ -36,7 +36,7 @@ return [
             'erp.supplier.delete',
         ],
 
-        'pricelist' => [
+        'Price list' => [
             'erp.pricelist.index',
             'erp.pricelist.show',
             'erp.pricelist.create',
@@ -44,7 +44,7 @@ return [
             'erp.pricelist.delete',
         ],
 
-        'shipping' => [
+        'Shipping' => [
             'erp.shipping.index',
             'erp.shipping.show',
             'erp.shipping.create',
@@ -52,7 +52,7 @@ return [
             'erp.shipping.delete',
         ],
 
-        'order' => [
+        'Order' => [
             'erp.order.index',
             'erp.order.show',
             'erp.order.create',
@@ -62,7 +62,7 @@ return [
             'erp.order.cancelled',
         ],
 
-        'order_shipping' => [
+        'Order shipping' => [
             'erp.ordershipping.index',
             'erp.ordershipping.show',
             'erp.ordershipping.create',
@@ -70,7 +70,7 @@ return [
             'erp.ordershipping.delete',
         ],
 
-        'order_item' => [
+        'Order item' => [
             'erp.orderitem.index',
             'erp.orderitem.show',
             'erp.orderitem.create',
@@ -81,7 +81,7 @@ return [
             'erp.orderitem.cancelled',
         ],
 
-        'product' => [
+        'Product' => [
             'erp.product.index',
             'erp.product.show',
             'erp.product.create',
@@ -89,7 +89,7 @@ return [
             'erp.product.delete',
         ],
 
-        'category_product' => [
+        'Product categories' => [
             'erp.categoryproduct.index',
             'erp.categoryproduct.show',
             'erp.categoryproduct.create',
@@ -97,7 +97,7 @@ return [
             'erp.categoryproduct.delete',
         ],
 
-        'inventory' => [
+        'Inventory' => [
             'erp.inventory.index',
             'erp.inventory.show',
             'erp.inventory.create',
@@ -105,12 +105,12 @@ return [
             'erp.inventory.delete',
         ],
 
-        'inventory_adjustment' => [
+        'Inventory adjustment' => [
             'erp.inventoryadjustment.create',
             'erp.inventoryadjustment.index',
         ],
 
-        'invoice_in' => [
+        'Invoice in' => [
             'erp.invoicein.index',
             'erp.invoicein.show',
             'erp.invoicein.create',
@@ -120,7 +120,7 @@ return [
             'erp.invoicein.approved',
         ],
 
-        'invoice_out' => [
+        'Invoice out' => [
             'erp.invoiceout.index',
             'erp.invoiceout.show',
             'erp.invoiceout.create',
@@ -130,21 +130,21 @@ return [
             'erp.invoiceout.approved',
         ],
 
-        'custom_invoice_out' => [
+        'Custom invoice out' => [
             'erp.custominvoiceout.create',
             'erp.custominvoiceout.update',
             'erp.custominvoiceout.delete',
             'erp.custominvoiceout.index',
         ],
 
-        'custom_invoice_in' => [
+        'Custom invoice in' => [
             'erp.custominvoicein.create',
             'erp.custominvoicein.update',
             'erp.custominvoicein.delete',
             'erp.custominvoicein.index',
         ],
 
-        'purchase' => [
+        'Purchase' => [
             'erp.purchase.index',
             'erp.purchase.show',
             'erp.purchase.create',
@@ -155,7 +155,7 @@ return [
             'erp.purchase.requested',
         ],
 
-        'purchase_item' => [
+        'Purchase item' => [
             'erp.purchaseitem.index',
             'erp.purchaseitem.show',
             'erp.purchaseitem.create',
@@ -163,11 +163,11 @@ return [
             'erp.purchaseitem.delete',
         ],
 
-        'purchase_tax' => [
+        'Purchase tax' => [
             'erp.purchasetax.create',
         ],
 
-        'stock_in' => [
+        'Stock in' => [
             'erp.stockin.index',
             'erp.stockin.show',
             'erp.stockin.create',
@@ -177,7 +177,7 @@ return [
             'erp.stockin.received',
         ],
 
-        'stock_out' => [
+        'Stock out' => [
             'erp.stockout.index',
             'erp.stockout.show',
             'erp.stockout.create',
@@ -187,7 +187,7 @@ return [
             'erp.stockout.shipped',
         ],
 
-        'stock_movement_in' => [
+        'Stock movement in' => [
             'erp.stockmovementin.index',
             'erp.stockmovementin.show',
             'erp.stockmovementin.create',
@@ -196,7 +196,7 @@ return [
             'erp.stockmovementin.completed',
         ],
 
-        'stock_movement_out' => [
+        'Stock movement out' => [
             'erp.stockmovementout.index',
             'erp.stockmovementout.show',
             'erp.stockmovementout.create',
@@ -204,7 +204,7 @@ return [
             'erp.stockmovementout.delete',
         ],
 
-        'warehouse' => [
+        'Warehouse' => [
             'erp.warehouse.index',
             'erp.warehouse.show',
             'erp.warehouse.create',
@@ -212,39 +212,43 @@ return [
             'erp.warehouse.delete',
         ],
 
-        'business' => [
+        'Business' => [
             'erp.business.update',
         ],
 
-        'overview' => [
+        'Overview' => [
             'erp.overview.index',
         ],
 
-        'extension' => [
+        'Extension' => [
             'erp.extension.index',
             'erp.extension.create',
             'erp.extension.update',
             'erp.extension.delete',
         ],
 
-        'permission_group' => [
+        'Permission group' => [
             'erp.permissiongroup.index',
             'erp.permissiongroup.show',
             'erp.permissiongroup.create',
             'erp.permissiongroup.update',
             'erp.permissiongroup.delete',
         ],
-        'permission' => [
+
+        'Permission' => [
             'erp.permission.index',
             'erp.permission.show',
             'erp.permission.create',
             'erp.permission.update'
         ],
-        'permission_group_user' => [
+
+        'Permission group user' => [
             'erp.permissiongroupuser.create',
             'erp.permissiongroupuser.delete'
         ]
+
     ],
+
     'nav' => [
         // ===== Dashboard =====
         [
@@ -282,31 +286,31 @@ return [
                 [
                     'to'      => '/customer-groups',
                     'icon'    => 'bi bi-people',
-                    'label'   => 'Customer Group',
+                    'label'   => 'Customer group',
                     'ability' => 'erp.customergroup.index',
                 ],
                 [
                     'to'      => '/invoice-outs',
                     'icon'    => 'bi bi-receipt',
-                    'label'   => 'Invoice Outs',
+                    'label'   => 'Invoice outs',
                     'ability' => 'erp.invoiceout.index',
                 ],
                 [
                     'to'      => '/custom-invoice-outs',
                     'icon'    => 'bi bi-receipt',
-                    'label'   => 'Custom Invoice Outs',
+                    'label'   => 'Custom invoice outs',
                     'ability' => 'erp.custominvoiceout.index',
                 ],
                 [
                     'to'      => '/shippings',
                     'icon'    => 'bi bi-truck',
-                    'label'   => 'Shipping Providers',
+                    'label'   => 'Shipping providers',
                     'ability' => 'erp.shipping.index',
                 ],
                 [
                     'to'      => '/stock-outs',
                     'icon'    => 'bi bi-file-earmark-text',
-                    'label'   => 'Stock Outs',
+                    'label'   => 'Stock outs',
                     'ability' => 'erp.stockout.index',
                 ],
             ],
@@ -333,19 +337,19 @@ return [
                 [
                     'to'      => '/invoice-ins',
                     'icon'    => 'bi bi-receipt',
-                    'label'   => 'Invoice Ins',
+                    'label'   => 'Invoice ins',
                     'ability' => 'erp.invoicein.index',
                 ],
                 [
                     'to'      => '/custom-invoice-ins',
                     'icon'    => 'bi bi-receipt',
-                    'label'   => 'Custom Invoice Ins',
+                    'label'   => 'Custom invoice ins',
                     'ability' => 'erp.custominvoicein.index',
                 ],
                 [
                     'to'      => '/stock-ins',
                     'icon'    => 'bi bi-file-earmark-text',
-                    'label'   => 'Stock Ins',
+                    'label'   => 'Stock ins',
                     'ability' => 'erp.stockin.index',
                 ],
             ],
@@ -366,13 +370,13 @@ return [
                 [
                     'to'      => '/category-product',
                     'icon'    => 'bi bi-box',
-                    'label'   => 'Category Product',
+                    'label'   => 'Product categories',
                     'ability' => 'erp.categoryproduct.index',
                 ],
                 [
                     'to'      => '/price-list',
                     'icon'    => 'bi bi-box',
-                    'label'   => 'Price List',
+                    'label'   => 'Price list',
                     'ability' => 'erp.pricelist.index',
                 ],
                 [

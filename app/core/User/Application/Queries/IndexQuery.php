@@ -52,6 +52,6 @@ class IndexQuery implements QueryInterface
         Event::dispatch("erp.user.index", [
             ...$data
         ]);
-        return $rows->orderBy('users.id', $dto->order_by)->paginate(15)->toArray();
+        return $rows->orderBy('users.id', $dto->order_by)->paginate($dto->paginate)->toArray();
     }
 }
