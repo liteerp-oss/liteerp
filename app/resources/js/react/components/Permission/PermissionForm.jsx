@@ -22,7 +22,7 @@ export default function PermissionForm({
         <div className='mb-3'>
             {saveResponse?.permissions ? Object.keys(saveResponse?.permissions)?.map((feature) => {
                 return <div key={feature} className='mb-3'>
-                    <div className='mb-1 text-uppercase badge bg-secondary'>{t(feature.replace('_', ' '))}</div>
+                    <div className='mb-1 text-uppercase'>{t(feature)}</div>
                     <div className='d-flex flex-wrap gap-2'>
                         {saveResponse?.permissions[feature]?.map((action) => {
                             return <div key={action} className='d-flex align-items-center gap-1 mt-2'>
