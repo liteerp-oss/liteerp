@@ -14,10 +14,7 @@ use Illuminate\Support\Str;
 
 class CommonNotification implements HookInterface
 {
-    public function __construct()
-    {
-        
-    }
+    public function __construct() {}
     public static function supports(HookContext $context): bool
     {
         return $context->action === HookAction::CREATE
@@ -28,10 +25,17 @@ class CommonNotification implements HookInterface
 
     public function handle(HookContext $context): HookResult
     {
-        if (SmtpModel::count() == false) {
+        if (empty($context->payload['business_id'])) {
+            if (SmtpModel::count() == false) {
+                return HookResult::pass($context->payload);
+            }
+        }
+        $business_id = $context->payload['business_id'];
+        $setting = SmtpModel::where('business_id',$business_id);
+        if ($setting->count() == false) {
             return HookResult::pass($context->payload);
         }
-        $smtp = SmtpModel::first();
+        $smtp = $setting->first();
         Config::set('mail.mailers.smtp-runtime', [
             'transport'  => 'smtp',
             'host'       => $smtp->host,

@@ -17,6 +17,8 @@ return new class extends Migration
             $table->string('encryption');
             $table->string('username');
             $table->string('password');
+            $table->unsignedBigInteger('business_id');
+            $table->foreign('business_id')->references('id')->on('business');
             $table->timestamps();
         });
     }

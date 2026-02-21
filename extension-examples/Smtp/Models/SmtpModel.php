@@ -14,7 +14,9 @@ class SmtpModel extends Model
         'port',
         'encryption',
         'username',
-        'password'
+        'password',
+        'id',
+        'business_id'
     ];
     protected $hidden = ['password'];
 }

@@ -8,41 +8,46 @@ use App\Supports\Hooks\HookAction;
 use App\Supports\Hooks\HookPhase;
 use App\Supports\Hooks\HookResult;
 use App\Supports\Hooks\HookTiming;
-use Core\BusinessRole\Infrastructure\Helpers\SupportUINav;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Str;
+use Core\Permission\Infrastructure\Helpers\PermissionNode;
+use Core\Permission\Infrastructure\Helpers\SupportUINav;
+use Core\Permission\Infrastructure\Helpers\UINavGroup;
+
 class AddNavMenu implements HookInterface
 {
-    private string $action = 'erp.smtp.index';
+    function __construct(
+        private PermissionNode $permissionNode,
+        private SupportUINav $supportUINav
+    ) {}
     public static function supports(HookContext $context): bool
     {
         return $context->action === HookAction::INDEX
-            && $context->phase === HookPhase::UI
-            && $context->module === 'BusinessRole'
+            && $context->phase === HookPhase::RESPONSE
+            && $context->module === 'Permission'
             && $context->timing === HookTiming::BEFORE;
     }
 
     public function handle(HookContext $context): HookResult
     {
-        $token = Str::random(32);
-        Cache::set($token,true);
-        $nav = [
-            ...$context->payload['nav'],
-            SupportUINav::buildNavItem([
+        $this->permissionNode->setNode('smtp')
+            ->setGroup("smtp.title")
+            ->setPermission('index')
+            ->setPermission('create')
+            ->setPermission('test');
+        $this->supportUINav->setData($context->payload['nav'])
+            ->addItem(UINavGroup::SYSTEM, [
                 'to'        => '/smtp',
                 'link'      => null,
-                'icon'      => "bi bi-gear-wide-connected",
+                'icon'      => "bi bi-person-workspace",
                 'label'     => __("extension.smtp::messages.nav"),
-                'ability'   => $this->action,
-            ])
-        ];
+                'ability'   => $this->permissionNode->getPermission("index"),
+            ]);
         return HookResult::pass([
             ...$context->payload,
-            'roles' => [
-                ...$context->payload['roles'],
-                $this->action
+            'permissions' => [
+                ...$context->payload['permissions'],
+                ...$this->permissionNode->compile()
             ],
-            'nav' => $nav
+            'nav' => $this->supportUINav->compile()
         ]);
     }
 }
