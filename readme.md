@@ -117,7 +117,6 @@ Extensions are:
 ### ✅ Production-ready Extensions
 - **HRM Extension** – time attendance, leave management
 - **SMTP Extension** – system-wide email configuration
-- **Debt Extension** – basic debt & receivable tracking
 - **Fast Mode** - simplify accounting processes
 
 ### 📚 Example & Guide Extensions
