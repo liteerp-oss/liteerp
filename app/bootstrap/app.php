@@ -25,7 +25,6 @@ return Application::configure(basePath: dirname(__DIR__))
             'app.isLogged' => IsLogged::class,
             'business.token' => BusinessToken::class,
             'app.isAdmin'   => IsAdmin::class,
-            'business.admin' => BusinessAdmin::class,
             'auth:sanctum' => EnsureFrontendRequestsAreStateful::class,
             'auth' => Authenticate::class,
             'app.language' => AppLanguage::class

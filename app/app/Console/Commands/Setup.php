@@ -79,7 +79,22 @@ class Setup extends Command
             }
         }
         $this->markErpAsInstalled();
-        $this->info("Please visit: " . env('APP_URL') . "/dashboard/login");
+        $this->info("🌍 Support the Project");
+        $this->line("");
+
+        $this->info("🇺🇸 English");
+        $this->line("⭐ If this project helped you, please give it a star on GitHub!");
+        $this->line("👉 https://github.com/liteerp-oss/liteerp");
+        $this->line("");
+
+        $this->info("🇻🇳 Tiếng Việt");
+        $this->line("⭐ Nếu dự án này hữu ích với bạn, hãy cho 1 ⭐ trên GitHub nhé!");
+        $this->line("👉 https://github.com/liteerp-oss/liteerp");
+        $this->line("");
+
+        $this->info("🇯🇵 日本語");
+        $this->line("⭐ このプロジェクトが役に立ったら、ぜひ GitHub でスターをお願いします！");
+        $this->line("👉 https://github.com/liteerp-oss/liteerp");
     }
     function markErpAsInstalled(): void
     {
