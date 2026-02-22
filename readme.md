@@ -11,11 +11,7 @@
 ---
 
 <p align="center">
-  <img src="screenshoot3.png" alt="LiteERP Screenshot" />
-</p>
-
-<p align="center">
-  <img src="screenshoot2.png" alt="LiteERP Screenshot" />
+  <img src="screenshoot.png" alt="LiteERP Screenshot" />
 </p>
 
 ---
