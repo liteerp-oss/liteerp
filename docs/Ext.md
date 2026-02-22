@@ -137,8 +137,6 @@ To display new menu on sidebar dashboard you need use hook to register new menu.
             }
         }
 
-Go to `Extension` menu on dashboard and active your extension then go to `Permission` at group admin click icon eye scroll to bottom you will see `FastMode`
-
 #### Load 
 
 You should add this class into provider to load into core, go to `Service Provider` your module and implement
@@ -152,7 +150,7 @@ You should add this class into provider to load into core, go to `Service Provid
         );
     }
 
-
+Go to `Extension` menu on dashboard and active your extension then go to `Permission` at group admin click icon eye scroll to bottom you will see `FastMode`
 
 ### Database 
 
@@ -168,7 +166,43 @@ Now you will seen your table appear on database and go to your extension folder 
 
     - http://localhost:3310/ 
 
-And username and password on `.env` of root folder.
+And username and password on `.env` of root folder. And You need register migration file on `install.php` of extension, Example:
+
+```php 
+<?php
+
+return [
+    'install' => [
+        'commands' => [
+            [
+                'name' => 'app:npmbuild',
+                'description' => 'Build frontend assets',
+                'risk' => 'low',
+            ]
+        ],
+
+        'migrations' => [
+            '2026_02_12_223808_create_fastmode_table.php',
+        ],
+    ],
+
+    'uninstall' => [
+        'commands' => [
+            [
+                'name' => 'app:npmbuild',
+                'description' => 'Rebuild frontend after uninstall',
+                'risk' => 'low',
+            ]
+        ],
+
+        'migrations' => [
+            '2026_02_12_223808_create_fastmode_table.php',
+        ],
+    ],
+];
+```
+
+
 
 ### How to register new router
 
@@ -186,7 +220,6 @@ Account middlewares:
 
 Business middlewares:
 
-    - business.admin -> check business admin 
     - business.token -> check if has logged business 
 
 And we also a middleware support language:
