@@ -2,10 +2,7 @@
 
 namespace Core\OrderItem\Infrastructure\Listeners;
 
-use Core\OrderItem\Application\DTOs\CancelledOrderItemRequest;
 use Core\OrderItem\Application\DTOs\CheckExistsOrderItemRequest;
-use Core\OrderItem\Application\DTOs\CompletedOrderItemRequest;
-use Core\OrderItem\Application\DTOs\GetSummaryOrderItemRequest;
 use Core\OrderItem\Application\UseCases\CancelledOrderItem;
 use Core\OrderItem\Application\UseCases\CheckExistsOrderItem;
 use Core\OrderItem\Application\UseCases\CompletedOrderItem;
@@ -41,11 +38,11 @@ class OrderItemListener
                          $CheckExistsOrderItem->handle(
                               CheckExistsOrderItemRequest::fromArray($data)
                          );
-                         $getSummaryOrderItem->handle(GetSummaryOrderItemRequest::fromArray([
+                         $getSummaryOrderItem->handle([
                               'business_id' => $data['business_id'],
                               'user_id' => $data['user_id'],
                               'order_id' => $data['order_id']
-                         ]));
+                         ]);
                     }
                }
           );
