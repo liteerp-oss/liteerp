@@ -303,6 +303,7 @@ export default function StockInDetail() {
                                     <div className="row g-2">
                                         <div className="col-6">
                                             <PrimaryButton
+                                                width={'100%'}
                                                 loading={form.loading}
                                                 onClick={confirmRecieve}
                                                 label={t("Received")}

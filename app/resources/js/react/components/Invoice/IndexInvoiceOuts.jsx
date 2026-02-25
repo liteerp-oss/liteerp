@@ -59,7 +59,7 @@ export default function IndexInvoiceOuts() {
     }, []);
 
     const onEdit = (row) => {
-        navigate('/invoices?form=invoiceout&id=' + row.id)
+        navigate('/invoice-outs?form=invoiceout&id=' + row.id)
     }
 
     useEffect(() => {
@@ -93,7 +93,7 @@ export default function IndexInvoiceOuts() {
             },
             {
                 label: t("Total price"), 
-                key: "total_adjusted",
+                key: "total",
                 render: (value) => <strong><Currencies amount={value} /></strong>,
             },
             {

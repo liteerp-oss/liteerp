@@ -71,7 +71,7 @@ export default function IndexStockOuts() {
                 label: t('ID'),
                 key: 'id',
                 render: (id) => (
-                    <Link to={`/stock?id=${id}`}>{id}</Link>
+                    <Link to={`/stock-outs?stockout=${id}`}>{id}</Link>
                 ),
             },
             {
@@ -121,7 +121,7 @@ export default function IndexStockOuts() {
                 data={table.data}
                 links={table.links}
                 onShow={(row) => {
-                    navigate(`/stocks?stockout=${row.id}`)
+                    navigate(`/stock-outs?stockout=${row.id}`)
                 }}
                 config={{
                     default: [{

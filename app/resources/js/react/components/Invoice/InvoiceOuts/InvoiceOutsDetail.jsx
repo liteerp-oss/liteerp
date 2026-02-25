@@ -371,7 +371,7 @@ export default function InvoiceOutDetail() {
                                         <div className="d-flex justify-content-between mt-3 fs-5 fw-semibold">
                                             <span className="theme-title">{t("Total")}:</span>
                                             <span className="text-primary">
-                                                <Currencies amount={detail?.total_adjusted} />
+                                                <Currencies amount={detail?.total} />
                                             </span>
                                         </div>
 

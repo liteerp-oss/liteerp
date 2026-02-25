@@ -248,7 +248,7 @@ export default function EditPurchase() {
                                 {currentStep === 2 &&
                                     detail?.status === 'draft' && (
                                         <PrimaryButton
-                                            width={120}
+                                            width={170}
                                             loading={form.loading}
                                             onClick={confirmUpdateToRequest}
                                             label={t('Send to request')}

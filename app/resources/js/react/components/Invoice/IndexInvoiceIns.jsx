@@ -19,7 +19,7 @@ export default function IndexInvoiceIns() {
     const search = useForm();
 
     const handleEdit = useCallback((row) => {
-        navigate('/invoices?form=invoicein&id=' + row.id)
+        navigate('/invoice-ins?form=invoicein&id=' + row.id)
     }, []);
 
     const listInvoice = useCallback((page = 0) => {
