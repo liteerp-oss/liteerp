@@ -3,33 +3,29 @@
 namespace Core\Notifications\Application\UseCases;
 
 use App\Jobs\SendMailJob;
-use Core\BusinessRole\Application\DTOs\ListUserByBusinessRoleRequest;
-use Core\BusinessRole\Application\UseCases\ListUserByBusinessRole;
 use Core\Notifications\Application\DTOs\CreateNotificationRequest;
 use Core\Notifications\Application\DTOs\InsertManyNotificationRequest;
 use Core\Notifications\Domain\Entities\Notification;
 use Core\Notifications\Domain\Services\NotificationDBService;
 use Core\Notifications\Infrastructure\Broadcasts\NewNotificationBroadcast;
+use Core\Permission\Application\UseCases\GetUsersByPermission;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\URL;
 
 class InsertManyNotification
 {
     public function __construct(private NotificationDBService $serviceDB,
-    private ListUserByBusinessRole $listUserByBusinessRole) {}
+    private GetUsersByPermission $getUsersByPermission) {}
 
     public function handle(InsertManyNotificationRequest $dto)
     {
         $create = [];
         DB::beginTransaction();
-        $users = $this->listUserByBusinessRole->handle(
-            ListUserByBusinessRoleRequest::fromArray([
-                'role' => $dto->role,
+        $users = $this->getUsersByPermission->handle([
+                'permission' => 'erp.notification.workflow',
                 'business_id' => $dto->business_id,
                 'user_id' => $dto->user_id,
-            ])
-        );
+            ]);
         foreach($users as $k => $user ) {
             foreach($dto->chanels as $key => $chanels) {
                 $adapter = new CreateNotificationRequest(
@@ -57,7 +53,6 @@ class InsertManyNotification
                         break;
                 }
             }
-            
         }
         $data = $this->serviceDB->insertMany($create);
 

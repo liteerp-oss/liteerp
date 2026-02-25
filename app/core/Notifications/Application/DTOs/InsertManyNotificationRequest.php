@@ -9,7 +9,6 @@ class InsertManyNotificationRequest
     public function __construct(
         public ?string $title = null,
         public ?string $message = null,
-        public array $role = ['admin','manager'],
         public ?string $link = null,
         public ?string $entity_type,
         public ?int $entity_id,
@@ -35,7 +34,6 @@ class InsertManyNotificationRequest
             entity_id: $data['entity_id'] ?? null,
             chanels: $data['chanels']  ?? ['db'],
             queue: $data['queue'] ?? 'low',
-            role: $data['role'] ?? ['admin', 'manager'],
             business_id: $data['business_id'] ?? null,
             type: $data['type'] ?? null,
             user_id: $data['user_id'],
@@ -54,7 +52,6 @@ class InsertManyNotificationRequest
             'entity_id' => $this->entity_id,
             'chanels' => $this->chanels,
             'queue'   => $this->queue,
-            'role' => $this->role,
             'business_id'   => $this->business_id,
             'type'  => $this->type,
             'user_id' => $this->user_id,
