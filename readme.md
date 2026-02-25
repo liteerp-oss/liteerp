@@ -265,3 +265,15 @@ If LiteERP helps you:
 - Give the project a ⭐
 - Share feedback
 - Contribute extensions or ideas
+
+## Sponsorship
+
+This project is proudly supported by **Hetzner Cloud**  
+for providing reliable infrastructure for development and deployment.
+
+
+<a href="https://www.hetzner.com/cloud/" target="_blank">
+  <img src="./Hetzner-Logo.png" width="200"/>
+</a>
+
+
