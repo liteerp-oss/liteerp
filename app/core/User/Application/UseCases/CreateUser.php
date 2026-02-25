@@ -54,7 +54,6 @@ class CreateUser
                 module: 'User'
             )
         );
-        logs()->debug("adfadf",$data);
         Event::dispatch("erp.user.create", [
             ...$data
         ]);

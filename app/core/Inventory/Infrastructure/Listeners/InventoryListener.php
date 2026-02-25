@@ -54,7 +54,6 @@ class InventoryListener
                     ->handle($data);
                 }
                 if($eventName === 'erp.orderitem.cancelled') {
-                   logs()->info("Order item cancelled event received in InventoryListener", $data);
                    $OrderItemCancelledUpdate
                     ->handle($data);
                 }

@@ -50,7 +50,6 @@ class UpdateOrder
             )
         );
         $notificationStatus = 'update';
-        logs()->info("Order updated", $data);
         if($update->isApproved()) {
             Event::dispatch("erp.order.approved", [
                 ...$data
