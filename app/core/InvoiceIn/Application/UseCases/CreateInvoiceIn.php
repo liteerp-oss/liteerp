@@ -54,8 +54,7 @@ class CreateInvoiceIn
             'type' => 'created',
             'entity_type' => 'invoicein',
             'entity_id' => $create->id,
-            'chanels' => ['db'],
-            'roles' => ['admin','manager']
+            'chanels' => ['db']
         ]);
         DB::commit();
         return $create;

@@ -76,8 +76,7 @@ class UpdatePurchase
             'type' => $update->getStatus(),
             'entity_type' => 'purchase',
             'entity_id' => $update->id,
-            'chanels' => ['db'],
-            'roles' => ['admin','manager']
+            'chanels' => ['db']
         ]);
         Event::dispatch("erp.notification.create", [
             'user_id' => $dto->created_by,

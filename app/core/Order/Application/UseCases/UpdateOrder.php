@@ -72,8 +72,7 @@ class UpdateOrder
             'type' => $notificationStatus,
             'entity_type' => 'order',
             'entity_id' => $update->id,
-            'chanels' => ['db'],
-            'roles' => ['admin','manager']
+            'chanels' => ['db']
         ]);
         Event::dispatch("erp.notification.create", [
             'user_id' => $dto->created_by,

@@ -69,8 +69,7 @@ class UpdateInvoiceIn
             'type' => $status,
             'entity_type' => 'invoicein',
             'entity_id' => $update->id,
-            'chanels' => ['db'],
-            'roles' => ['admin','manager']
+            'chanels' => ['db']
         ]);
         Event::dispatch("erp.notification.create", [
             'user_id' => $dto->created_by,

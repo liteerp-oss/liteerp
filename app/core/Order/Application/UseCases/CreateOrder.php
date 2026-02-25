@@ -55,8 +55,7 @@ class CreateOrder
             'type' => 'created',
             'entity_type' => 'order',
             'entity_id' => $create->id,
-            'chanels' => ['db'],
-            'roles' => ['admin','manager']
+            'chanels' => ['db']
         ]);
         Event::dispatch("erp.notification.create", [
             'user_id' => $dto->created_by,

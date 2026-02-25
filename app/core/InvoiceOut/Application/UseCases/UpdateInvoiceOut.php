@@ -72,8 +72,7 @@ class UpdateInvoiceOut
             'type' => 'updated',
             'entity_type' => 'invoiceout',
             'entity_id' => $update->id,
-            'chanels' => ['db'],
-            'roles' => ['admin','manager']
+            'chanels' => ['db']
         ]);
         
         Event::dispatch("erp.notification.create", [

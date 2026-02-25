@@ -61,8 +61,7 @@ class UpdateStockIn
             'type' => $update->isReceived() ? 'received' : 'updated',
             'entity_type' => 'stockin',
             'entity_id' => $update->id,
-            'chanels' => ['db'],
-            'roles' => ['admin','manager']
+            'chanels' => ['db']
         ]);
         Event::dispatch("erp.notification.create", [
             'user_id' => $dto->created_by,
