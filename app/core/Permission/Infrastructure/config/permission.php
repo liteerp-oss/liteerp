@@ -245,8 +245,10 @@ return [
         'Permission group user' => [
             'erp.permissiongroupuser.create',
             'erp.permissiongroupuser.delete'
+        ],
+        'Workflow Notification' => [
+            'erp.notification.workflow',
         ]
-
     ],
 
     'nav' => [

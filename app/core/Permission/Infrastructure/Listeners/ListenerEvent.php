@@ -15,7 +15,7 @@ class ListenerEvent
         Event::listen('erp.*.*', function (string $event,array $data) {
             if($event === 'erp.business.create'
             || $event === 'erp.notification.create'
-            || $event === 'erp.notification.createMany'
+            || $event === 'erp.notification.many'
             || $event === "erp.authencation.create_admin") {
                 return;
             }

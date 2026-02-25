@@ -10,4 +10,5 @@ interface PermissionRepositoryInterface
     public function show(array $data): ?array;
     public function findByPermission(array $data): ?Permission;
     public function index(array $data): array;
+    public function getUsersByPermission(array $data) : array;
 }

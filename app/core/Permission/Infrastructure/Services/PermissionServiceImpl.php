@@ -56,4 +56,8 @@ class PermissionServiceImpl implements PermissionService
     {
         return $this->repo->index($data);
     }
+    public function getUsersByPermission(array $data): array
+    {
+        return $this->repo->getUsersByPermission($data);
+    }
 }

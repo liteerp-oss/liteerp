@@ -17,9 +17,10 @@ class EloquentPermissionRepository implements PermissionRepositoryInterface
 
     public function show(array $data): array
     {
-        $row = PermissionModel::select('permissions.*')->where('permissions.group_id', $data['group_id'])
+        $row = PermissionModel::select('permissions.*')
             ->join('permission_groups', 'permission_groups.id', '=', 'permissions.group_id')
             ->where('permission_groups.business_id', $data['business_id'])
+            ->where('permissions.group_id', $data['group_id'])
             ->pluck('permissions.permission')->toArray();
         return $row;
     }
@@ -28,8 +29,9 @@ class EloquentPermissionRepository implements PermissionRepositoryInterface
     {
         $row = PermissionModel::select('permissions.*')
             ->join('permission_groups', 'permission_groups.id', '=', 'permissions.group_id')
+            ->join('permission_group_user', 'permission_group_user.group_id', '=', 'permission_groups.id')
             ->where('permission_groups.business_id', $data['business_id'])
-            ->where('permission_groups.user_id', $data['user_id'])
+            ->where('permission_group_user.account_id', $data['user_id'])
             ->where('permissions.permission', $data['permission'])
             ->first()?->toArray();
         if (!$row) {
@@ -42,10 +44,24 @@ class EloquentPermissionRepository implements PermissionRepositoryInterface
     {
         $list = PermissionModel::select('permissions.*')
             ->join('permission_groups', 'permission_groups.id', '=', 'permissions.group_id')
+            ->join('permission_group_user', 'permission_group_user.group_id', '=', 'permission_groups.id')
             ->where('permission_groups.business_id', $data['business_id'])
-            ->where('permission_groups.user_id', $data['user_id'])
+            ->where('permission_group_user.account_id', $data['user_id'])
+            //->where('permission_groups.user_id', $data['user_id'])
             ->pluck('permissions.permission')
             ->toArray();
         return $list;
+    }
+    public function getUsersByPermission(array $data): array
+    {
+        return PermissionModel::select('permissions.*','users.name as user_name','users.email','users.lang')
+            ->join('permission_groups', 'permission_groups.id', '=', 'permissions.group_id')
+            ->join('permission_group_user', 'permission_group_user.group_id', '=', 'permission_groups.id')
+            ->join('users', 'users.id', '=', 'permission_groups.user_id')
+            ->where('permission_groups.business_id', $data['business_id'])
+            ->where('permissions.permission', $data['permission'])
+            ->where('permission_group_user.account_id','!=', $data['user_id'])
+            ->groupBy("permissions.id","permissions.permission")
+            ->toArray();
     }
 }
