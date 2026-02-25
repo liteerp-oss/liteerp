@@ -36,8 +36,4 @@ class UpdateInvoiceOutByShippingFeeRequest
             'old_shipping_fee_actual' => $this->old_shipping_fee_actual
         ];
     }
-    public function valueUpdateTotalPrice(float $total):float {
-        $total = $total - $this->shipping_fee_estimated + ($this->shipping_fee_actual - $this->old_shipping_fee_actual); 
-        return floatval($total);
-    }
 }

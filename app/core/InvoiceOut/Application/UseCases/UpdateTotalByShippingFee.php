@@ -30,9 +30,8 @@ class UpdateTotalByShippingFee
              */
             return;
         }
-        $findInvoice->total = $dto->valueUpdateTotalPrice($findInvoice->total);
         DB::beginTransaction();
-        $update = $this->service->update($findInvoice->toArray());
+        $update = $this->service->changeShippingFee($dto->toArray());
         DB::commit();
         return $update;
     }
