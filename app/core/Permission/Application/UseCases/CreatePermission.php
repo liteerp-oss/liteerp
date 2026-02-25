@@ -36,9 +36,18 @@ class CreatePermission
                 module: 'Permission'
             )
         );
-
+        $config = config('permission.permissions');
+        if(!empty($data['permissions'])) {
+            $data['permissions'] = [
+                ...$data['permissions'],
+                ...$config['Notification']
+            ];
+        } else {
+            $data['permissions'] = [
+                ...$config['Notification']
+            ];
+        }
         $create = $this->service->create($data);
-
         $data = $this->hooks->dispatch(
             new HookContext(
                 action: HookAction::CREATE,
@@ -52,7 +61,7 @@ class CreatePermission
             )
         );
 
-        Event::dispatch('erp.permission.create', [...$data]);
+        Event::dispatch('erp.permission.create', $data);
         DB::commit();
 
         return $data;

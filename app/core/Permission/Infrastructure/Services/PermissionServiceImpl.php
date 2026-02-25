@@ -15,7 +15,9 @@ class PermissionServiceImpl implements PermissionService
     {
         $permessions = [
             'group_id' => $data['group_id'],
-            'permissions' => $data['permissions'],
+            'permissions' => [
+                ...$data['permissions']
+            ],
         ];
         $arrayPermissions = [];
         foreach ($data['permissions'] as $key => $permission) {
