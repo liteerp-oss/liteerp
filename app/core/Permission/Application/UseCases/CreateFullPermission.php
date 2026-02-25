@@ -9,6 +9,7 @@ use App\Supports\Hooks\HookPhase;
 use App\Supports\Hooks\HookTiming;
 use Core\Permission\Application\DTOs\CreateFullPermissionRequest;
 use Core\Permission\Domain\Services\PermissionService;
+use Core\Permission\Infrastructure\Helpers\PermissionBuilder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
 
@@ -16,22 +17,15 @@ class CreateFullPermission
 {
     public function __construct(
         private PermissionService $service,
-        private HookDispatcher $hooks
+        private HookDispatcher $hooks,
+        private PermissionBuilder $builder
     ) {}
 
     public function handle(array $data)
     {
         DB::beginTransaction();
         $dto = CreateFullPermissionRequest::fromArray($data);
-        $config = config('permission.permissions');
-        $permissions = [];
-        foreach (array_keys($config) as $key => $value) {
-            $permissions = [
-                ...$permissions,
-                ...$config[$value]
-            ];
-        }
-
+        $permissions = $this->builder->addFull()->buildListItem();
         $data = $this->hooks->dispatch(
             new HookContext(
                 action: HookAction::CREATE,

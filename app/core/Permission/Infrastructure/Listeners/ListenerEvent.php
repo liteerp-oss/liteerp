@@ -4,6 +4,7 @@ namespace Core\Permission\Infrastructure\Listeners;
 use Core\Permission\Application\UseCases\CheckPermission;
 use Core\Permission\Application\UseCases\CreateFullPermission;
 use Core\Permission\Application\UseCases\CreatePermission;
+use Core\Permission\Infrastructure\Helpers\PermissionBuilder;
 use Illuminate\Support\Facades\Event;
 
 class ListenerEvent
@@ -11,17 +12,15 @@ class ListenerEvent
     public function __construct(
         private CreateFullPermission $createFull,
         private CreatePermission $create,
-        private CheckPermission $checkPermission
+        private CheckPermission $checkPermission,
+        private PermissionBuilder $builder
     ) {}
     public function handle(){
         Event::listen('erp.*.*', function (string $event,array $data) {
-            if($event === 'erp.business.create'
-            || $event === 'erp.notification.create'
-            || $event === 'erp.notification.many'
-            || $event === "erp.authencation.create_admin") {
+            if( in_array($event,$this->builder->buildByPass())) {
                 return;
             }
-            if($event == 'erp.permissiongroup.create_admin') {
+            if($event === 'erp.permissiongroup.create_admin') {
                 $this->createFull->handle($data);
                 return;
             }

@@ -9,13 +9,15 @@ use App\Supports\Hooks\HookPhase;
 use App\Supports\Hooks\HookTiming;
 use Core\Permission\Application\DTOs\IndexPermissionRequest;
 use Core\Permission\Domain\Services\PermissionService;
+use Core\Permission\Infrastructure\Helpers\PermissionBuilder;
 use Illuminate\Support\Facades\Event;
 use Core\Permission\Infrastructure\Helpers\SupportUINav;
 class IndexPermission
 {
     public function __construct(
         private PermissionService $service,
-        private HookDispatcher $hooks
+        private HookDispatcher $hooks,
+        private PermissionBuilder $builder
     ) {}
 
     public function handle(array $data)
@@ -23,7 +25,7 @@ class IndexPermission
         
         $dto = IndexPermissionRequest::fromArray($data);
         $nav = config('permission.nav');
-        $permissions = config('permission.permissions');
+        $permissions = $this->builder->addFull()->build();
         $data = $this->hooks->dispatch(
             new HookContext(
                 action: HookAction::INDEX,

@@ -9,6 +9,7 @@ use App\Supports\Hooks\HookPhase;
 use App\Supports\Hooks\HookTiming;
 use Core\Permission\Application\DTOs\CreatePermissionRequest;
 use Core\Permission\Domain\Services\PermissionService;
+use Core\Permission\Infrastructure\Helpers\PermissionBuilder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
 
@@ -16,7 +17,8 @@ class CreatePermission
 {
     public function __construct(
         private PermissionService $service,
-        private HookDispatcher $hooks
+        private HookDispatcher $hooks,
+        private PermissionBuilder $builder
     ) {}
 
     public function handle(array $data)
@@ -36,15 +38,14 @@ class CreatePermission
                 module: 'Permission'
             )
         );
-        $config = config('permission.permissions');
         if(!empty($data['permissions'])) {
             $data['permissions'] = [
                 ...$data['permissions'],
-                ...$config['Notification']
+                ...$this->builder->addNotification()->buildListItem()
             ];
         } else {
             $data['permissions'] = [
-                ...$config['Notification']
+                ...$this->builder->addNotification()->buildListItem()
             ];
         }
         $create = $this->service->create($data);
