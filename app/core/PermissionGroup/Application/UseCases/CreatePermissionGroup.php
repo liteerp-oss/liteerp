@@ -47,12 +47,13 @@ class CreatePermissionGroup
                 payload: [
                     ...$data,
                     ...$create->toArray(),
+                    'group_id' => $create->id
                 ],
                 module: 'PermissionGroup'
             )
         );
 
-        Event::dispatch('erp.permissiongroup.create', [...$data]);
+        Event::dispatch('erp.permissiongroup.create', $data);
         DB::commit();
 
         return $data;
