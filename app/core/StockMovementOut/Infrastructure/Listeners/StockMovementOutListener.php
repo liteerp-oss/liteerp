@@ -8,15 +8,17 @@ use Illuminate\Support\Facades\Event;
 
 class StockMovementOutListener
 {
-    public function handle(
-        CreateManyStockMovementOut $CreateManyStockMovementOut
-    ) {
+    function __construct(private CreateManyStockMovementOut $CreateManyStockMovementOut)
+    {
+        
+    }
+    public function handle() {
         Event::listen(
             'erp.orderitem.*',
-            function (string $eventName, array $orderItems) use ($CreateManyStockMovementOut) {
+            function (string $eventName, array $orderItems) {
 
                 if ($eventName === 'erp.orderitem.completed') {
-                    $CreateManyStockMovementOut->handle(
+                    $this->CreateManyStockMovementOut->handle(
                         CreateManyStockMovementOutRequest::fromArray($orderItems)
                     );
                 }

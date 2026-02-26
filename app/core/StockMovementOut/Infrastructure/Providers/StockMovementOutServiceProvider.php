@@ -19,12 +19,11 @@ class StockMovementOutServiceProvider extends ServiceProvider
         $this->mergeModuleConfig();
     }
 
-    public function boot(CreateManyStockMovementOut $CreateManyStockMovementOut)
+    public function boot(StockMovementOutListener $listener)
     {
         $this->loadModuleRoutes();
         $this->loadModuleTranslations();
-        $listener = new StockMovementOutListener();
-        $listener->handle($CreateManyStockMovementOut);
+        $listener->handle();
     }
 
     protected function mergeModuleConfig(): void
