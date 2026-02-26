@@ -11,17 +11,20 @@ use Illuminate\Support\Facades\Event;
 
 class OrderItemListener
 {
-     public function handle(CompletedOrderItem $CompletedOrderItem,
-          CancelledOrderItem $CancelledOrderItem,
-          CheckExistsOrderItem $CheckExistsOrderItem,
-          GetSummaryOrderItem $getSummaryOrderItem)
+     function __construct(private CompletedOrderItem $CompletedOrderItem,
+          private CancelledOrderItem $CancelledOrderItem,
+          private CheckExistsOrderItem $CheckExistsOrderItem,
+          private GetSummaryOrderItem $getSummaryOrderItem)
+     {
+          
+     }
+     public function handle()
      {
           Event::listen(
                'erp.stockout.*',
-               function (string $eventName, array $data)
-               use ($CompletedOrderItem) {
+               function (string $eventName, array $data){
                     if ($eventName === 'erp.stockout.completed') {
-                         $CompletedOrderItem->handle([
+                         $this->CompletedOrderItem->handle([
                               ...$data,
                               'stock_out_id' => $data['id']
                          ]);
@@ -30,15 +33,14 @@ class OrderItemListener
           );
           Event::listen(
                'erp.order.*',
-               function (string $eventName, array $data)
-               use ($CancelledOrderItem,$CheckExistsOrderItem,$getSummaryOrderItem) {
+               function (string $eventName, array $data) {
                     if ($eventName === 'erp.order.cancelled') {
-                         $CancelledOrderItem->handle($data);
+                         $this->CancelledOrderItem->handle($data);
                     } else if ($eventName === 'erp.order.approved') {
-                         $CheckExistsOrderItem->handle(
+                         $this->CheckExistsOrderItem->handle(
                               CheckExistsOrderItemRequest::fromArray($data)
                          );
-                         $getSummaryOrderItem->handle([
+                         $this->getSummaryOrderItem->handle([
                               'business_id' => $data['business_id'],
                               'user_id' => $data['user_id'],
                               'order_id' => $data['order_id']

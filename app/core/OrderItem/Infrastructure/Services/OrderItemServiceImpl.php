@@ -72,7 +72,7 @@ class OrderItemServiceImpl implements OrderItemService
         }
         return $entity;
     }
-    public function summary(array $data): array {
+    public function summary(array $data): ?array {
         return $this->repo->summary($data);
     }
     public function indexForStockMovementOut(array $data) : array {

@@ -13,6 +13,6 @@ interface OrderItemService
     public function update(array $data) : OrderItem;
     public function delete(array $data) : OrderItem | BadException;
     public function findById(array $data) : OrderItem | BadException;
-    public function summary(array $data): array;
+    public function summary(array $data): ?array;
     public function indexForStockMovementOut(array $data) : array;
 }

@@ -2,10 +2,6 @@
 
 namespace Core\OrderItem\Infrastructure\Providers;
 
-use Core\OrderItem\Application\UseCases\CancelledOrderItem;
-use Core\OrderItem\Application\UseCases\CheckExistsOrderItem;
-use Core\OrderItem\Application\UseCases\CompletedOrderItem;
-use Core\OrderItem\Application\UseCases\GetSummaryOrderItem;
 use Illuminate\Support\ServiceProvider;
 use Core\OrderItem\Domain\Repositories\OrderItemRepositoryInterface;
 use Core\OrderItem\Infrastructure\Repositories\EloquentOrderItemRepository;
@@ -22,25 +18,18 @@ class OrderItemServiceProvider extends ServiceProvider
         $this->mergeModuleConfig();
     }
 
-    public function boot(CompletedOrderItem $CompletedOrderItem,
-        CancelledOrderItem $CancelledOrderItem,
-          CheckExistsOrderItem $CheckExistsOrderItem,
-          GetSummaryOrderItem $getSummaryOrderItem)
+    public function boot(OrderItemListener $listener)
     {
         $this->loadModuleRoutes();
         $this->loadModuleTranslations();
-        $listener = new OrderItemListener();
-        $listener->handle($CompletedOrderItem,
-        $CancelledOrderItem,
-        $CheckExistsOrderItem,
-        $getSummaryOrderItem);
+        $listener->handle();
     }
 
     protected function mergeModuleConfig(): void
     {
-        $path = __DIR__ . '/../config/' . strtolower('OrderItems') . '.php';
+        $path = __DIR__ . '/../config/' . strtolower('OrderItem') . '.php';
         if (file_exists($path)) {
-            $this->mergeConfigFrom($path, strtolower('OrderItems'));
+            $this->mergeConfigFrom($path, strtolower('OrderItem'));
         }
     }
 
@@ -48,7 +37,7 @@ class OrderItemServiceProvider extends ServiceProvider
     {
         $langPath = __DIR__ . '/../lang';
         if (is_dir($langPath)) {
-            $this->loadTranslationsFrom($langPath, strtolower('OrderItems'));
+            $this->loadTranslationsFrom($langPath, strtolower('OrderItem'));
         }
     }
 
