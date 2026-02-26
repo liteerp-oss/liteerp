@@ -12,7 +12,7 @@ import { useI18n } from '../../../i18n/useI18n';
 import CommonDataTableV2 from '../CommonDataTableV2';
 
 export default function IndexInvoiceOuts() {
-    const { t,lang } = useI18n();
+    const { t, lang } = useI18n();
     const navigate = useNavigate();
     const search = useForm();
     const table = useTable();
@@ -77,7 +77,7 @@ export default function IndexInvoiceOuts() {
                 },
             },
             {
-                label: t("Invoice no"), 
+                label: t("Invoice no"),
                 key: "document_no",
                 render: (value) => value ?? <span className="text-muted fst-italic">{value}</span>,
             },
@@ -92,7 +92,7 @@ export default function IndexInvoiceOuts() {
                 render: (value) => <span><Currencies amount={value} /></span>,
             },
             {
-                label: t("Total price"), 
+                label: t("Total price"),
                 key: "total",
                 render: (value) => <strong><Currencies amount={value} /></strong>,
             },
@@ -104,7 +104,7 @@ export default function IndexInvoiceOuts() {
                 }
             },
             {
-                label: t("Order date"), 
+                label: t("Order date"),
                 key: "invoice_date",
                 render: (value) =>
                     value ? isoToDateTime(value) : "",
@@ -137,26 +137,7 @@ export default function IndexInvoiceOuts() {
 
     return <div>
         <CommonDataTableV2
-            config={{
-                    default: [{
-                        key: "order_by",
-                        placeholder: t("Order by"),
-                        options: [
-                            { value: 'ASC', label: t('Oldest') },
-                            { value: 'DESC', label: t('Newest') },
-                        ],
-                        type: "select",
-                        label: t("Order by"),
-                        col: "col-6"
-                    },{
-                        key: "keywords",
-                        placeholder: t("Keywords"),
-                        type: "text",
-                        label: t("Search"),
-                        col: "col-6"
-                    }]
-                }}
-                search={search}
+            search={search}
             loading={table.loading}
             columns={table.colums}
             data={table.data}

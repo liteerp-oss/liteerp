@@ -23,6 +23,17 @@ export default function IndexInventory() {
         },
         [search.formData]
     )
+    const getView = useCallback(
+        () => {
+            InventoryService.view().then((resp) => {
+                table.addColums(resp.message.index, (item, data) => (
+                    <RenderFormTableByList item={item} data={data} />
+                ))
+                search.setHookRender(resp.message?.search ?? [])
+            })
+        },
+        [table]
+    )
 
     useEffect(() => {
         table.setColums([
@@ -36,6 +47,7 @@ export default function IndexInventory() {
             { key: 'category', label: t('Category') },
         ])
         getInventory()
+        getView();
     }, [lang])
 
     return (
@@ -45,25 +57,6 @@ export default function IndexInventory() {
                 callback={getInventory}
                 data={table.data}
                 links={table.links}
-                config={{
-                    default: [{
-                        key: "order_by",
-                        placeholder: t("Order by"),
-                        options: [
-                            { value: 'ASC', label: t('Oldest') },
-                            { value: 'DESC', label: t('Newest') },
-                        ],
-                        type: "select",
-                        label: t("Order by"),
-                        col: "col-6"
-                    }, {
-                        key: "keywords",
-                        placeholder: t("Keywords"),
-                        type: "text",
-                        label: t("Search"),
-                        col: "col-6"
-                    }]
-                }}
                 search={search}
                 columns={table.colums}
 

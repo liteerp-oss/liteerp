@@ -115,7 +115,24 @@ export default function ListGroup() {
                 }
             })
     }, [])
-
+    const getView = useCallback(() => {
+        CustomerGroupService.view()
+            .then((resp) => {
+                form.setHookRender(resp.message?.form)
+                table.addColums(resp.message.index, (item, data) => (
+                    <RenderFormTableByList item={item} data={data} />
+                ))
+                search.setHookRender(resp.message?.search ?? [])
+            })
+            .catch((error) => {
+                if (error.response?.data?.message) {
+                    openPopup({
+                        type: 'error',
+                        message: error.response.data.message,
+                    })
+                }
+            })
+    }, []);
     const handleDelete = (row) => {
         openPopup({
             type: 'warning',
@@ -130,6 +147,7 @@ export default function ListGroup() {
             { label: t('ID'), key: 'id' },
             { label: t('Name'), key: 'name' },
         ])
+        getView();
     }, [])
 
     return (
@@ -143,25 +161,6 @@ export default function ListGroup() {
                 links={table.links}
                 onEdit={handleEdit}
                 onDelete={handleDelete}
-                config={{
-                    default: [{
-                        key: "order_by",
-                        placeholder: t("Order by"),
-                        options: [
-                            { value: 'ASC', label: t('Oldest') },
-                            { value: 'DESC', label: t('Newest') },
-                        ],
-                        type: "select",
-                        label: t("Order by"),
-                        col: "col-6"
-                    }, {
-                        key: "keywords",
-                        placeholder: t("Keywords"),
-                        type: "text",
-                        label: t("Search"),
-                        col: "col-6"
-                    }]
-                }}
                 search={search}
                 type='customergroup'
             />

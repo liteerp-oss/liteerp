@@ -10,7 +10,6 @@ import ContentOnTable from '../ContentOnTable';
 import PaymentMethod from '../PaymentMethod';
 import RenderFieldTableByList from '../RenderFieldTableByList';
 import { useI18n } from '../../../i18n/useI18n';
-import { useSelector } from 'react-redux';
 import CommonDataTableV2 from '../CommonDataTableV2';
 
 export default function ListOrder() {
@@ -19,7 +18,6 @@ export default function ListOrder() {
     const { openPopup } = usePopup();
     const table = useTable();
     const search = useForm();
-    const roles = useSelector((state) => state.businessRole.role);
     const handleShow = (row) => {
         navigate('/orders?form=edit&id=' + row.id);
     };
@@ -62,7 +60,6 @@ export default function ListOrder() {
     }, []);
 
     useEffect(() => {
-        getOrders();
         table.setColums([
             { label: t('ID'), key: 'id' },
             {
@@ -119,6 +116,7 @@ export default function ListOrder() {
                 ),
             },
         ]);
+        getOrders();
         view();
     }, [lang]);
 
@@ -132,25 +130,6 @@ export default function ListOrder() {
 
             <div className="m-4">
                 <CommonDataTableV2
-                    config={{
-                        default: [{
-                            key: "order_by",
-                            placeholder: t("Order by"),
-                            options: [
-                                { value: 'ASC', label: t('Oldest') },
-                                { value: 'DESC', label: t('Newest') },
-                            ],
-                            type: "select",
-                            label: t("Order by"),
-                            col: "col-6"
-                        }, {
-                            key: "keywords",
-                            placeholder: t("Keywords"),
-                            type: "text",
-                            label: t("Search"),
-                            col: "col-6"
-                        }]
-                    }}
                     search={search}
                     add={() => navigate('/orders?form=add')}
                     columns={table.colums}

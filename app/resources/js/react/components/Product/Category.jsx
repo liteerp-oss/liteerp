@@ -173,25 +173,7 @@ export default function Category() {
         <div className="mt-3">
             <CommonDataTableV2
                 loading={tableCategory.loading}
-                config={{
-                    default: [{
-                        key: "order_by",
-                        placeholder: t("Order by"),
-                        options: [
-                            { value: 'ASC', label: t('Oldest') },
-                            { value: 'DESC', label: t('Newest') },
-                        ],
-                        type: "select",
-                        label: t("Order by"),
-                        col: "col-6"
-                    },{
-                        key: "keywords",
-                        placeholder: t("Keywords"),
-                        type: "text",
-                        label: t("Search"),
-                        col: "col-6"
-                    }]
-                }}
+                
                 search={search}
                 callback={getCategorires}
                 add={() => {

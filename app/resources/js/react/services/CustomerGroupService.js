@@ -10,5 +10,6 @@ import api from "../common/api";
   delete: (data) => api.delete("/business-access/customer-groups/" + data.id,{
     params: data
   }),
+  view: () => api.get("/business-access/view/customer-groups"),
 };
 export default CustomerGroupService;

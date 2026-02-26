@@ -7,5 +7,6 @@ const InventoryService = {
         params: data
     }),
     update: (data) => api.put("/business-access/inventory/" + data.id, data),
+    view: () => api.get("/business-access/view/inventory")
 };
 export default InventoryService;

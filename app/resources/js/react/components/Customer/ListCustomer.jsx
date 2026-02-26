@@ -135,7 +135,7 @@ export default function ListCustomer() {
             ))
             search.setHookRender(resp.message?.search ?? [])
         })
-    }, [])
+    }, [table])
 
     useEffect(() => {
         table.setColums([
@@ -178,25 +178,6 @@ export default function ListCustomer() {
                 links={table.links}
                 onEdit={handleEdit}
                 onDelete={ handleDelete}
-                config={{
-                    default: [{
-                        key: "order_by",
-                        placeholder: t("Order by"),
-                        options: [
-                            { value: 'ASC', label: t('Oldest') },
-                            { value: 'DESC', label: t('Newest') },
-                        ],
-                        type: "select",
-                        label: t("Order by"),
-                        col: "col-6"
-                    },{
-                        key: "keywords",
-                        placeholder: t("Keywords"),
-                        type: "text",
-                        label: t("Search"),
-                        col: "col-6"
-                    }]
-                }}
                 search={search}
                 type={'customer'}
             />

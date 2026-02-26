@@ -1,12 +1,9 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import DashboardLayout from '../layouts/DashboardLayout'
-import CommonDataTable from '../components/CommonDataTable'
 import { PopupLayout } from '../layouts/PopupLayout'
 import { InputForm } from '../components/UI/Input/InputForm'
 import WarehouseService from '../services/WarehouseService'
-import { Select } from '../components/UI/Input/Select'
 import { usePopup } from '../components/popups/PopupContext'
-import SearchInput from '../components/UI/Input/SearchInput'
 import { useForm } from '../libraries/handleInput'
 import useTable from '../libraries/handleTable'
 import PageHead from '../components/PageHead'
@@ -43,8 +40,24 @@ export default function Warehouse() {
         },
         [search.formData]
     )
-
+    const getView = useCallback(() => {
+        WarehouseService.view()
+            .then((resp) => {
+                form.setHookRender(resp.message?.form)
+                search.setHookRender(resp.message?.search)
+                table.addColums(resp.message.index, (item, data) => (
+                    <RenderFormTableByList item={item} data={data} />
+                ))
+            })
+            .catch((error) => {
+                if (error.response?.data?.errors) {
+                    form.setFormErrors(error.response.data.errors)
+                }
+                form.setLoading(false)
+            })
+    }, []);
     useEffect(() => {
+        getView();
         table.setColums([
             { label: t('ID'), key: 'id' },
             { label: t('Name'), key: 'name' },
@@ -60,8 +73,8 @@ export default function Warehouse() {
                 render: (value) => (
                     <span
                         className={`badge rounded-pill px-3 py-2 ${value === 1
-                                ? 'bg-success bg-opacity-75'
-                                : 'bg-secondary'
+                            ? 'bg-success bg-opacity-75'
+                            : 'bg-secondary'
                             }`}
                     >
                         {value === 1 ? t('Active') : t('Inactive')}
@@ -177,27 +190,9 @@ export default function Warehouse() {
                         form.setIsEdit(true)
                     }}
                     onDelete={handleDelete}
-                    config={{
-                    default: [{
-                        key: "order_by",
-                        placeholder: t("Order by"),
-                        options: [
-                            { value: 'ASC', label: t('Oldest') },
-                            { value: 'DESC', label: t('Newest') },
-                        ],
-                        type: "select",
-                        label: t("Order by"),
-                        col: "col-6"
-                    },{
-                        key: "keywords",
-                        placeholder: t("Keywords"),
-                        type: "text",
-                        label: t("Search"),
-                        col: "col-6"
-                    }]
-                }}
-                search={search}
-                type={'warehouse'}
+
+                    search={search}
+                    type={'warehouse'}
                 />
             </div>
 
@@ -253,11 +248,11 @@ export default function Warehouse() {
                                 label={t('Active')}
                             />
                         </div>
-                            <i className="">
-                                {t(
-                                    'warehouse_active'
-                                )}
-                            </i>
+                        <i className="">
+                            {t(
+                                'warehouse_active'
+                            )}
+                        </i>
                     </div>
                 </PopupLayout>
             )}

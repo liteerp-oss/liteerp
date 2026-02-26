@@ -87,48 +87,58 @@ export default function IndexInventoryAdjustment() {
             })
     }, [form.formData])
 
+    const getView = useCallback(() => {
+        InventoryAdjustmentService.view().then((resp) => {
+            table.addColums(resp.message.index, (item, data) => (
+                <RenderFormTableByList item={item} data={data} />
+            ))
+            search.setHookRender(resp.message?.search ?? [])
+        })
+    }, [table])
+
     useEffect(() => {
         table.setColums([
-                    { key: 'id', label: t('ID') },
-                    { key: 'product_name', label: t('Product') },
-                    {
-                        key: 'qty_adjusted',
-                        label: t('Quantity'),
-                        render: (quantity) =>
-                            quantity >= 1 ? (
-                                <span>
-                                    <i className="bi bi-arrow-up-short text-success"></i>{' '}
-                                    +{quantity}
-                                </span>
-                            ) : (
-                                <span>
-                                    <i className="bi bi-arrow-down-short text-danger"></i>{' '}
-                                    {quantity}
-                                </span>
-                            ),
-                    },
-                    { key: 'reason', label: t('Reason') },
-                    { key: 'warehouse', label: t('Warehouse') },
-                    {
-                        key: 'created_by',
-                        label: t('Created by'),
-                        render: (name) => (
-                            <span className="badge bg-primary">
-                                {name}
-                            </span>
-                        ),
-                    },
-                    {
-                        key: 'created_at',
-                        label: t('Created at'),
-                        render: (date) => (
-                            <span className="badge bg-warning text-dark">
-                                {isoToDateTime(date)}
-                            </span>
-                        ),
-                    },
-                ])
+            { key: 'id', label: t('ID') },
+            { key: 'product_name', label: t('Product') },
+            {
+                key: 'qty_adjusted',
+                label: t('Quantity'),
+                render: (quantity) =>
+                    quantity >= 1 ? (
+                        <span>
+                            <i className="bi bi-arrow-up-short text-success"></i>{' '}
+                            +{quantity}
+                        </span>
+                    ) : (
+                        <span>
+                            <i className="bi bi-arrow-down-short text-danger"></i>{' '}
+                            {quantity}
+                        </span>
+                    ),
+            },
+            { key: 'reason', label: t('Reason') },
+            { key: 'warehouse', label: t('Warehouse') },
+            {
+                key: 'created_by',
+                label: t('Created by'),
+                render: (name) => (
+                    <span className="badge bg-primary">
+                        {name}
+                    </span>
+                ),
+            },
+            {
+                key: 'created_at',
+                label: t('Created at'),
+                render: (date) => (
+                    <span className="badge bg-warning text-dark">
+                        {isoToDateTime(date)}
+                    </span>
+                ),
+            },
+        ])
         getAdjustment()
+        getView();
     }, [lang])
 
     return (
@@ -138,26 +148,8 @@ export default function IndexInventoryAdjustment() {
                 callback={getAdjustment}
                 data={table.data}
                 links={table.links}
-                add={ () => setShowForm(true)}
-                config={{
-                    default: [{
-                        key: "order_by",
-                        placeholder: t("Order by"),
-                        options: [
-                            { value: 'ASC', label: t('Oldest') },
-                            { value: 'DESC', label: t('Newest') },
-                        ],
-                        type: "select",
-                        label: t("Order by"),
-                        col: "col-6"
-                    },{
-                        key: "keywords",
-                        placeholder: t("Keywords"),
-                        type: "text",
-                        label: t("Search"),
-                        col: "col-6"
-                    }]
-                }}
+                add={() => setShowForm(true)}
+
                 search={search}
                 columns={table.colums}
                 type={'inventoryadjustment'}

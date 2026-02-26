@@ -16,12 +16,10 @@ import ContentOnTable from '../ContentOnTable';
 import RenderFieldTableByList from '../RenderFieldTableByList';
 import RenderFormFieldByList from '../RenderFormFieldByList';
 import { useI18n } from '../../../i18n/useI18n';
-import { useSelector } from 'react-redux';
 import CommonDataTableV2 from '../CommonDataTableV2';
 
 export default function IndexCustomInvoiceOuts() {
     const { t, lang } = useI18n();
-    const roles = useSelector((state) => state.businessRole.role);
     const [customers, setCustomers] = useState([]);
     const search = useForm();
     const form = useForm();
