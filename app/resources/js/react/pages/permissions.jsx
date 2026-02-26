@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react'
 import DashboardLayout from '../layouts/DashboardLayout'
 import PageHead from '../components/PageHead'
-import TabsCommon from '../components/TabsCustom'
 import CommonDataTableV2 from '../components/CommonDataTableV2'
 import { useForm } from '../libraries/handleInput'
 import { useI18n } from '@/i18n/useI18n'
@@ -171,7 +170,6 @@ export default function Permissions(){
                 data={table.data}
                 links={table.links}
                 search={search}
-                
                 onEdit={onEdit}
                 onShow={onPermission}
                 onDelete={onDelete}
