@@ -20,7 +20,8 @@ class UpdateStockMovementIn
         Event::dispatch("erp.stockmovementin.update", [
             ...$update->toArray(),
             'user_id' => $dto->created_by,
-            'business_id' => $dto->business_id
+            'business_id' => $dto->business_id,
+            'purchase_item_id' => $dto->purchase_item_id
         ]);
         DB::commit();
         return $update;

@@ -22,12 +22,15 @@ import RenderFormFieldByList from '../RenderFormFieldByList'
 import { ExtraCard } from "../ExtraCard";
 import { useI18n } from "../../../i18n/useI18n";
 import StatusBadge from "../StatusBadge";
+import CommonDataTableV2 from "../CommonDataTableV2";
 export default function StockInDetail() {
     const { t } = useI18n();
     const [loading, setLoading] = useState(false);
     const [showForm, setShowForm] = useState(false);
     const [showFormInventory, setShowFormInventory] = useState(false);
     const form = useForm();
+    const searchProduct = useForm();
+    const searchInventory = useForm();
     const [detail, setDetail] = useState(null)
     const formAddInventory = useForm();
     const table = useTable();
@@ -50,10 +53,9 @@ export default function StockInDetail() {
     const getProducts = useCallback((page = 0) => {
         table.setLoading(true);
         PurchaseItemService.list({
-            keywords: '',
-            active: 0,
             page: page,
-            purchase_id: form.formData?.purchase_id
+            purchase_id: form.formData?.purchase_id,
+            ...searchProduct.formData
         })
             .then((resp) => {
                 table.setLoading(false);
@@ -64,7 +66,7 @@ export default function StockInDetail() {
             .catch((error) => {
 
             })
-    }, [form.formData?.purchase_id]);
+    }, [form.formData,searchProduct]);
     const update = useCallback(() => {
         form.setLoading(true);
         form.setFormErrors(null)
@@ -123,9 +125,13 @@ export default function StockInDetail() {
             update();
         }
     }, [form.formData?.status, detail?.status])
-    const addInventory = (row) => {
+    const handleAdd = (row) => {
         formAddInventory.setFormData(row);
-        formAddInventory.setIsEdit(false)
+        setShowFormInventory(true);
+    }
+    const handleEdit = (row) => {
+        formAddInventory.setFormData(row);
+        formAddInventory.setIsEdit(true)
         setShowFormInventory(true);
     }
     const createInventory = useCallback(() => {
@@ -157,12 +163,41 @@ export default function StockInDetail() {
                 formAddInventory.setLoading(false);
             })
     }, [formAddInventory, searchParams])
+    const updateInventory = useCallback(() => {
+        formAddInventory.setLoading(true);
+        StockMovementInService.update({
+            ...formAddInventory.formData,
+            stock_in_id: searchParams.get('stockin'),
+            purchase_item_id: formAddInventory.formData?.id
+        })
+            .then((resp) => {
+                openPopup({
+                    type: 'success',
+                    message: t('You has been added')
+                })
+                setShowFormInventory(false)
+                formAddInventory.setLoading(false);
+                getInventories();
+            })
+            .catch((error) => {
+                if (error.response.data?.message) {
+                    openPopup({
+                        type: 'error',
+                        message: error.response.data?.message
+                    })
+                }
+                if (error.response.data?.errors) {
+                    formAddInventory.setFormErrors(error.response?.data?.errors)
+                }
+                formAddInventory.setLoading(false);
+            })
+    }, [formAddInventory, searchParams])
     const getInventories = useCallback((page = 0) => {
         inventoryTable.setLoading(true);
         StockMovementInService.list({
             page: page,
-            keywords: '',
-            stock_in_id: searchParams.get('stockin')
+            stock_in_id: searchParams.get('stockin'),
+            ...searchInventory.formData
         })
             .then((resp) => {
                 inventoryTable.setLoading(false);
@@ -177,7 +212,7 @@ export default function StockInDetail() {
                     })
                 }
             })
-    }, [formAddInventory, searchParams, form.formData?.purchase_id])
+    }, [searchParams,searchInventory])
     useEffect(() => {
         if (!searchParams.get('stockin')) {
             return;
@@ -245,7 +280,7 @@ export default function StockInDetail() {
                                         <div className="theme-title small">{table.total} {t("products")}</div>
                                     </div>
 
-                                    <CommonDataTable
+                                    <CommonDataTableV2
                                         columns={[
                                             { label: t("ID"), key: "id" },
                                             { label: t("Supplier"), key: "unit_name" },
@@ -258,8 +293,11 @@ export default function StockInDetail() {
                                         data={table.data}
                                         links={table.links}
                                         loading={table.loading}
-                                        onEdit={form.formData?.status === 'pending' ? addInventory : null}
+                                        onEdit={form.formData?.status === 'pending' ? handleAdd : null}
                                         iconEdit={<i className="bi bi-plus-circle-dotted"></i>}
+                                        type="stockin"
+                                        callback={getProducts}
+                                        search={searchProduct}
                                     />
                                 </div>
 
@@ -270,8 +308,8 @@ export default function StockInDetail() {
                                         <div className="theme-title small">{table.total} {t("products")}</div>
                                     </div>
 
-                                    <CommonDataTable
-                                        movePage={getInventories}
+                                    <CommonDataTableV2
+                                        callback={getInventories}
                                         columns={[
                                             { label: t("ID"), key: "id" },
                                             { label: t("Supplier"), key: "unit_name" },
@@ -285,6 +323,9 @@ export default function StockInDetail() {
                                         data={inventoryTable.data}
                                         links={inventoryTable.links}
                                         loading={inventoryTable.loading}
+                                        type="stockin"
+                                        onEdit={form.formData?.status === 'pending' ? handleEdit : null}
+                                        search={searchInventory}
                                     />
                                 </div>
                             </div>
@@ -361,7 +402,7 @@ export default function StockInDetail() {
         title={formAddInventory.isEdit
             ? t("Update Inventory")
             : t("Add Inventory")} 
-        onConfirm={createInventory}
+        onConfirm={ formAddInventory.isEdit ? updateInventory : createInventory}
     >
         <div>
             <InventoryForm form={formAddInventory} />

@@ -31,7 +31,7 @@ class StockMovementIn
             'warehouse_id' => $this->warehouse_id,
             'qty_change' => $this->qty_change,
             'stock_in_id' => $this->stock_in_id,
-            'id' => $data['id'] ?? null,
+            'id' => $this->id,
             'created_by' => $this->created_by 
         ];
     }

@@ -3,6 +3,7 @@ import SearchSelect from '../../UI/Input/SearchSelect'
 import WarehouseService from '../../../services/WarehouseService'
 import { InputForm } from '../../UI/Input/InputForm';
 import { usePopup } from '../../popups/PopupContext';
+import { useI18n } from '@/i18n/useI18n';
 export default function InventoryForm({
     form = {
         formData: null,
@@ -11,6 +12,7 @@ export default function InventoryForm({
         formErrors: null
     }
 }){
+    const {t} = useI18n();
     const [warehouse,setWarehouse] = useState([]);
     const getWarehouses = useCallback((keywords = '',callback = null)=>{
         WarehouseService.list({
@@ -33,7 +35,7 @@ export default function InventoryForm({
             <h5>{form.formData?.name}</h5>
         </div>
         <div className='form-group'>
-            <label>Warehouse</label>
+            <label>{t('Warehouse')}</label>
             <SearchSelect
             search={getWarehouses}
             name='warehouse_id'
@@ -46,10 +48,11 @@ export default function InventoryForm({
                     label: item.name
                 }
             })}
+            defaultKeywords={form.formData?.warehouse}
             />
         </div>
         <div className='form-group'>
-            <label>Quantity</label>
+            <label>{t('Quantity')}</label>
             <InputForm
             handleChange={form.handleChange}
             name='qty_change'
