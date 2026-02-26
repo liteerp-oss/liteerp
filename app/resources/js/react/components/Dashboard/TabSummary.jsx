@@ -20,6 +20,7 @@ export function TabSummary({
     return <div className='p-3 rounded-3 mt-4 card-overview'>
         <h3 className='h5'>{t(title)}</h3>
         <TabsCommon
+        checkRole={false}
         navs={[
             {key:"Today" + title,label:t("Today")},
             {key:"Thisweek" + title,label:t("This week")},
