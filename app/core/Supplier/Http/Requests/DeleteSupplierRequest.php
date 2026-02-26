@@ -16,7 +16,7 @@ class DeleteSupplierRequest extends FormRequest
         return [
             ...$hooks->dispatch(
                 new HookContext(
-                    action: HookAction::CREATE,
+                    action: HookAction::DELETE,
                     phase: HookPhase::VALIDATE,
                     timing: HookTiming::ON,
                     payload: [],

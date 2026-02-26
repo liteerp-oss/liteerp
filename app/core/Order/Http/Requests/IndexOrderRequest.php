@@ -15,7 +15,7 @@ class IndexOrderRequest extends FormRequest
     {
         $additionalRules = $hooks->dispatch(
             new HookContext(
-                action: HookAction::SHOW,
+                action: HookAction::INDEX,
                 phase: HookPhase::VALIDATE,
                 timing: HookTiming::ON,
                 payload: [],

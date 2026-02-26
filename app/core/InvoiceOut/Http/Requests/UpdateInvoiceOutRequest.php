@@ -27,7 +27,7 @@ class UpdateInvoiceOutRequest extends FormRequest
             'amount_paid'  => 'nullable|numeric|min:0',
             ...$hooks->dispatch(
                 new HookContext(
-                    action: HookAction::CREATE,
+                    action: HookAction::UPDATE,
                     phase: HookPhase::VALIDATE,
                     timing: HookTiming::ON,
                     payload: [],

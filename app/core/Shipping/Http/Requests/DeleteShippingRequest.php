@@ -16,7 +16,7 @@ class DeleteShippingRequest extends FormRequest
         return [
             ...$dispatch->dispatch(
                 new HookContext(
-                    action: HookAction::CREATE,
+                    action: HookAction::DELETE,
                     phase: HookPhase::VALIDATE,
                     timing: HookTiming::ON,
                     payload: [],

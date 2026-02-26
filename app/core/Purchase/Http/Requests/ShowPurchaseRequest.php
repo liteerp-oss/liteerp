@@ -16,7 +16,7 @@ class ShowPurchaseRequest extends FormRequest
         return [
             ...$hooks->dispatch(
                 new HookContext(
-                    action: HookAction::INDEX,
+                    action: HookAction::SHOW,
                     phase: HookPhase::VALIDATE,
                     timing: HookTiming::ON,
                     payload: [],

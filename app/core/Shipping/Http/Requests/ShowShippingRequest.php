@@ -16,7 +16,7 @@ class ShowShippingRequest extends FormRequest
         return [
             ...$dispatch->dispatch(
                 new HookContext(
-                    action: HookAction::CREATE,
+                    action: HookAction::SHOW,
                     phase: HookPhase::VALIDATE,
                     timing: HookTiming::ON,
                     payload: [],

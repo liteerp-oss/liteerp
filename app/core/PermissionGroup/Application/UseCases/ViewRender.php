@@ -21,7 +21,7 @@ class ViewRender
                 phase: HookPhase::UI,
                 timing: HookTiming::ON,
                 payload: $data,
-                module: 'Permission'
+                module: 'PermissionGroup'
             )
         );
         $index = $this->hooks->dispatch(
@@ -30,7 +30,7 @@ class ViewRender
                 phase: HookPhase::UI,
                 timing: HookTiming::ON,
                 payload: $data,
-                module: 'Permission'
+                module: 'PermissionGroup'
             )
         );
         $search = $this->hooks->dispatch(
@@ -39,7 +39,7 @@ class ViewRender
                 phase: HookPhase::UI,
                 timing: HookTiming::ON,
                 payload: $data,
-                module: 'Permission'
+                module: 'PermissionGroup'
             )
         );
         return [
