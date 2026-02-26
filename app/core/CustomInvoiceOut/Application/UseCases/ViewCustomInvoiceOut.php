@@ -22,7 +22,7 @@ class ViewCustomInvoiceOut
                 phase: HookPhase::UI,
                 timing: HookTiming::ON,
                 payload: $data,
-                module: 'CustomInvoiceIn'
+                module: 'CustomInvoiceOut'
             )
         );
         $index = $this->hooks->dispatch(
@@ -31,7 +31,7 @@ class ViewCustomInvoiceOut
                 phase: HookPhase::UI,
                 timing: HookTiming::ON,
                 payload: $data,
-                module: 'CustomInvoiceIn'
+                module: 'CustomInvoiceOut'
             )
         );
         $search = $this->hooks->dispatch(
@@ -40,7 +40,7 @@ class ViewCustomInvoiceOut
                 phase: HookPhase::UI,
                 timing: HookTiming::ON,
                 payload: $data,
-                module: 'CustomInvoiceIn'
+                module: 'CustomInvoiceOut'
             )
         );
         return [
