@@ -3,23 +3,24 @@
 namespace Core\StockMovementIn\Application\UseCases;
 
 use App\Exceptions\BadException;
-use Core\StockMovementIn\Application\DTOs\IndexStockMovementInRequest;
+use Core\StockMovementIn\Application\DTOs\CompleteStockMovementInRequest;
 use Core\StockMovementIn\Domain\Services\StockMovementInService;
 use Illuminate\Support\Facades\Event;
 
 class CompleteStockMovementIn
 {
     public function __construct(private StockMovementInService $service) {}
-    public function handle(IndexStockMovementInRequest $data)
+    public function handle(array $data)
     {
-        $list = $this->service->index($data->toArray());
+        $dto = CompleteStockMovementInRequest::fromArray($data);
+        $list = $this->service->index($dto->toArray());
         if(intval($list['total']) === 0) {
             throw new BadException(__("stockmovementin::messages.no_inventory_added"));
         }
         Event::dispatch('erp.stockmovementin.completed', [
-            'stock_in_id' => $data->stock_in_id,
-            'business_id' => $data->business_id,
-            'user_id' => $data->created_by,
+            'stock_in_id' => $dto->stock_in_id,
+            'business_id' => $dto->business_id,
+            'user_id' => $dto->created_by,
             'list' => $list['data']
         ]);
         return $list;

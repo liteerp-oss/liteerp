@@ -9,17 +9,19 @@ use App\Supports\Hooks\HookPhase;
 use App\Supports\Hooks\HookTiming;
 use Illuminate\Foundation\Http\FormRequest;
 
-class IndexStockMovementInRequest extends FormRequest
+class UpdateStockMovementInRequest extends FormRequest
 {
     public function rules(HookDispatcher $hooks): array
     {
         return [
+            'product_id' => 'required|numeric|exists:products,id',
+            'warehouse_id' => 'required|numeric|exists:warehouses,id',
+            'qty_change'   => 'required|numeric|min:1',
             'stock_in_id'  => 'required|numeric|exists:stock_ins,id',
-            'keywords'     => 'nullable|string|max:150',
-            'order_by'     => 'nullable|in:ASC,DESC',
+            'purchase_item_id' => 'required|exists:purchase_items,id',
             ...$hooks->dispatch(
                 new HookContext(
-                    action: HookAction::INDEX,
+                    action: HookAction::UPDATE,
                     phase: HookPhase::VALIDATE,
                     timing: HookTiming::ON,
                     payload: [],
