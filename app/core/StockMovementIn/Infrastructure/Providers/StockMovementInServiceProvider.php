@@ -19,12 +19,11 @@ class StockMovementInServiceProvider extends ServiceProvider
         $this->mergeModuleConfig();
     }
 
-    public function boot(CompleteStockMovementIn $completeStockMovementIn)
+    public function boot(StockMovementInListener $listener)
     {
         $this->loadModuleRoutes();
         $this->loadModuleTranslations();
-        $listener = new StockMovementInListener();
-        $listener->handle($completeStockMovementIn);
+        $listener->handle();
     }
 
     protected function mergeModuleConfig(): void

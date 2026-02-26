@@ -2,24 +2,22 @@
 
 namespace Core\StockMovementIn\Infrastructure\Listeners;
 
-use Core\StockMovementIn\Application\DTOs\IndexStockMovementInRequest;
 use Core\StockMovementIn\Application\UseCases\CompleteStockMovementIn;
-use Core\StockMovementIn\Application\UseCases\IndexStockMovementIn;
 use Illuminate\Support\Facades\Event;
 
 class StockMovementInListener
 {
-    public function handle(CompleteStockMovementIn $completeStockMovementIn)
+    public function __construct(private CompleteStockMovementIn $completeStockMovementIn)
+    {
+        
+    }
+    public function handle()
     {
         Event::listen(
             "erp.stockin.*",
-            function (string $eventName, array $data) use ($completeStockMovementIn) {
+            function (string $eventName, array $data) {
                 if ($eventName === 'erp.stockin.received') {
-                    $completeStockMovementIn->handle(new IndexStockMovementInRequest(
-                        business_id: $data['business_id'],
-                        created_by: $data['user_id'],
-                        stock_in_id: $data['id']
-                    ));
+                    $this->completeStockMovementIn->handle($data);
                 }
             }
         );

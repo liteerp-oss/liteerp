@@ -38,7 +38,7 @@ class IndexQuery implements QueryInterface {
             ,"=","products.category_id")
         ->where('invoice_ins.business_id',$dto->business_id)
         ->where('stock_movements_in.stock_in_id',$dto->stock_in_id);
-        if (!empty($dto->keywords)) {
+        if ($dto->keywords) {
             $rows->whereAny(['products.name','products.sku','category_product.name'], 
                 'like', '%' . $dto->keywords . '%');
         } 
