@@ -62,6 +62,6 @@ class EloquentPermissionRepository implements PermissionRepositoryInterface
             ->where('permissions.permission', $data['permission'])
             ->where('permission_group_user.account_id','!=', $data['user_id'])
             ->groupBy("permissions.id","permissions.permission")
-            ->toArray();
+            ->get()->toArray();
     }
 }
