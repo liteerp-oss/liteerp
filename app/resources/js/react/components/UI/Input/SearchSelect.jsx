@@ -21,7 +21,7 @@ export default function SearchSelect({
   const [localValue, setLocalValue] = useState(null);
   const [loading, setLoading] = useState(false);
   useEffect(() => {
-    if (wait || historyKeyword.current === keywords.current) {
+    if (wait || historyKeyword.current === keywords.current || keywords.current === '') {
       return;
     }
     setLoading(true);
@@ -38,16 +38,24 @@ export default function SearchSelect({
     options.map((item) => {
       if (value === item.value) {
         setLocalValue(item);
-        keywords.current = item.label;
       }
     })
   }, [options, keywords.current])
+  /**
+   * Get current value
+   */
+  useEffect(() => {
+    setLoading(true);
+    search(defaultKeywords, () => {
+      setLoading(false);
+    });
+  }, [defaultKeywords]);
   return (
     disabled ? <div>
       {label ? <label>
-          {label}
-          {required ? <span className='text-danger'>*</span> : null}
-        </label> : null}
+        {label}
+        {required ? <span className='text-danger'>*</span> : null}
+      </label> : null}
       <InputForm disabled={true} value={localValue?.label} />
     </div> :
       <div className="erp-search-select">
