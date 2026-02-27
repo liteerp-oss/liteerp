@@ -21,7 +21,8 @@ class IndexQuery implements QueryInterface
         $dto = IndexPermissionGroupRequest::fromArray($data);
 
         $rows = PermissionGroupModel::select("permission_groups.*","users.name as created_by_name")
-        ->join("users", "users.id", "permission_groups.user_id");
+        ->join("users", "users.id", "permission_groups.user_id")
+        ->where('permission_groups.business_id',$data['business_id']);
         if($dto->keywords) {
             $rows = $rows->whereAny(['permission_groups.name','permission_groups.type'], 'like', '%' . $dto->keywords . '%');
         }
