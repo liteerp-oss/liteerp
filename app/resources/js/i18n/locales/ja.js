@@ -461,5 +461,6 @@ export default {
     "System": "システム",
     "Dashboard": "ダッシュボード",
     "No extension to render": "表示する拡張機能がありません",
-    "Edit Permission Group": "権限グループ編集"
+    "Edit Permission Group": "権限グループ編集",
+    "please_add_business": "続行するには会社を追加してください"
 };

@@ -461,5 +461,6 @@ export default {
         "System": "System",
         "Dashboard": "Dashboard",
         "No extension to render": "No extension to render",
-        "Edit Permission Group":"Edit Permission Group"
+        "Edit Permission Group":"Edit Permission Group",
+        "please_add_business": "Please add your company to continue"
 };

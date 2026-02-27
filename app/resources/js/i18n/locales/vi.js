@@ -461,5 +461,6 @@ export default {
     "System": "Hệ thống",
     "Dashboard": "Bảng điều khiển",
     "No extension to render": "Không có tiện ích mở rộng để hiển thị",
-    "Edit Permission Group": "Chỉnh sửa nhóm quyền"
+    "Edit Permission Group": "Chỉnh sửa nhóm quyền",
+    "please_add_business": "Vui lòng thêm công ty để tiếp tục"
 };
