@@ -15,9 +15,14 @@ class EloquentCategoryProductRepository implements CategoryProductRepositoryInte
         $entity->id = $create['id'];
         return $entity;
     }
-    public function checkNameExists(array $data): bool
+    public function checkNameExists(array $data): ?CategoryProduct
     {
-        return CategoryProductModel::where('name',$data['name'])->where('business_id',$data['business_id'])->count() == false ? false : true;
+        $row =  CategoryProductModel::where('name',$data['name'])
+        ->where('business_id',$data['business_id'])->first()?->toArray();
+        if(!$row) {
+            return null;
+        }
+        return CategoryProduct::fromArray($row);
     }
     public function findById(array $data): ?CategoryProduct
     {

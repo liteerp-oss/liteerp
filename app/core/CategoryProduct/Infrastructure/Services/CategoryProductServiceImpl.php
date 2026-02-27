@@ -1,6 +1,7 @@
 <?php
 
 namespace Core\CategoryProduct\Infrastructure\Services;
+
 use Illuminate\Support\Str;
 use App\Exceptions\BadException;
 use Core\CategoryProduct\Domain\Services\CategoryProductService;
@@ -13,25 +14,29 @@ class CategoryProductServiceImpl implements CategoryProductService
 
     public function create(array $data): CategoryProduct | BadException
     {
-        if($this->repo->checkNameExists($data)) {
+        if ($this->repo->checkNameExists($data)) {
             throw new BadException(__("categoryproduct::messages.name_used"));
         }
         $entity = CategoryProduct::fromArray($data);
         return $this->repo->create($entity);
     }
-    public function show(array $data) : CategoryProduct | BadException {
+    public function show(array $data): CategoryProduct | BadException
+    {
         return $this->repo->findById($data) ?? throw new BadException(__("categoryproduct::messages.not_found"));
     }
-    public function update(array $data): CategoryProduct | BadException {
+    public function update(array $data): CategoryProduct | BadException
+    {
         $entity = $this->repo->findById($data);
-        if(!$entity) {
+        if (!$entity) {
             throw new BadException(__("categoryproduct::messages.not_found"));
         }
-        if($entity->name !== $data['name']) {
-            if($this->repo->checkNameExists($data)) {
+        $exists = $this->repo->checkNameExists($data);
+        if ($exists) {
+            if ($entity->id !== $exists->id) {
                 throw new BadException(__("categoryproduct::messages.name_used"));
             }
         }
+
         $entity->name = $data['name'];
         $entity->tax = $data['tax'];
         $entity->description = $data['description'] ?? $entity->description;
@@ -40,7 +45,7 @@ class CategoryProductServiceImpl implements CategoryProductService
     public function delete(array $data): CategoryProduct|BadException
     {
         $entity = $this->repo->findById($data);
-        if(!$entity) {
+        if (!$entity) {
             throw new BadException(__("categoryproduct::messages.not_found"));
         }
         return $this->repo->delete($entity);
