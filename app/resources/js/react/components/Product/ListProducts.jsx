@@ -265,6 +265,7 @@ export default function ListProducts() {
                             errorMessage={form.formErrors?.category_id}
                             required={true}
                             label={t('Category')}
+                            defaultKeywords={form.formData?.category}
                         />
                     </div>
 

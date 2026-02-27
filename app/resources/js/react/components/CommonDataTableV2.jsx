@@ -105,10 +105,10 @@ export default function CommonDataTableV2({
                                             <InputForm
                                                 name={item.key}
                                                 handleChange={search.handleChange}
-                                                placeholder={item.placeholder}
+                                                placeholder={t(item.placeholder)}
                                                 value={search.formData?.[item.key]}
                                                 required={item?.required}
-                                                label={item?.label}
+                                                label={t(item?.label)}
                                             />
                                         </div> : null}
                                     </div>

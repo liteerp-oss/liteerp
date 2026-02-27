@@ -22,9 +22,9 @@ export function Select({
         value={value}
         name={name}
         onChange={handleChange} className={"form-control default-input " + (className ?? '') + (errorMessage ? 'is-invalid' : '')}>
-            <option value={''}>-- select</option>
+            <option value={''}>-- {t('Select')}</option>
             {options.map((item,index) => {
-                return <option key={index} value={item.value}>{item.label}</option>
+                return <option key={index} value={item.value}>{t(item.label)}</option>
             })}
         </select>
         {errorMessage ? <div className="invalid-feedback">

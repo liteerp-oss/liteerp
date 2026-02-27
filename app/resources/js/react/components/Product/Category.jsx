@@ -12,7 +12,7 @@ import { useI18n } from '../../../i18n/useI18n'
 import CommonDataTableV2 from '../CommonDataTableV2'
 
 export default function Category() {
-    const { t,lang } = useI18n()
+    const { t, lang } = useI18n()
 
     const [attributes, setAttributes] = useState([])
     const [showAdd, setShowAdd] = useState(false)
@@ -173,13 +173,12 @@ export default function Category() {
         <div className="mt-3">
             <CommonDataTableV2
                 loading={tableCategory.loading}
-                
                 search={search}
                 callback={getCategorires}
                 add={() => {
-                              setShowAdd(true)
-                              form.setIsEdit(false)
-                          }}
+                    setShowAdd(true)
+                    form.setIsEdit(false)
+                }}
                 columns={tableCategory.colums}
                 data={tableCategory.data}
                 links={tableCategory.links}
