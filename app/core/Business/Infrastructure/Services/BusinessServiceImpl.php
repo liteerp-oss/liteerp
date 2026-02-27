@@ -22,10 +22,6 @@ class BusinessServiceImpl implements BusinessService
         }
         return $this->repo->create($entity);
     }
-    public function index(int $user_id): array
-    {
-        return $this->repo->index($user_id);
-    }
     public function show(array $data): array | BadException
     {
         return $this->repo->findByIdWithFullData($data) ?? throw new BadException(__("business::messages.not_found"));

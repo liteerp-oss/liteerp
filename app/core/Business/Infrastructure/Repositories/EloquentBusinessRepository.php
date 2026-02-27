@@ -14,16 +14,6 @@ class EloquentBusinessRepository implements BusinessRepositoryInterface
         $entity->id = $business['id'];
         return $entity;
     }
-    public function index(int $user_id): array
-    {
-        $list = BusinessModel::select("business.*")
-        ->join("permission_groups","permission_groups.business_id","=","business.id")
-        ->join("permission_group_user","permission_groups.id","=","permission_group_user.group_id")
-        ->where('permission_group_user.account_id',$user_id)
-        ->groupBy("business.id")
-        ->limit(50)->get()->toArray();
-        return $list;
-    }
     public function checkExists(Business $entity): bool
     {
         $row = BusinessModel::select("business.*")

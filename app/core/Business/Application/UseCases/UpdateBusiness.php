@@ -2,24 +2,49 @@
 
 namespace Core\Business\Application\UseCases;
 
+use App\Supports\Hooks\HookAction;
+use App\Supports\Hooks\HookContext;
+use App\Supports\Hooks\HookDispatcher;
+use App\Supports\Hooks\HookPhase;
+use App\Supports\Hooks\HookTiming;
 use Core\Business\Application\DTOs\CreateBusinessRequest;
 use Core\Business\Domain\Services\BusinessService;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
 
 class UpdateBusiness
 {
-    public function __construct(private BusinessService $service) {}
+    public function __construct(private BusinessService $service,
+        private HookDispatcher $hook) {}
 
-    public function handle(CreateBusinessRequest $dto)
+    public function handle(array $data)
     {
         DB::beginTransaction();
+        $dto = CreateBusinessRequest::fromArray($data);
+        $data = $this->hook->dispatch(new HookContext(
+            action: HookAction::UPDATE,
+            phase: HookPhase::RESPONSE,
+            timing: HookTiming::BEFORE,
+            module: 'Business',
+            payload: [
+                ...$data,
+                ...$dto->toArray()
+            ]
+        ));
         $business = $this->service->update($dto->toArray());
+        $data = $this->hook->dispatch(new HookContext(
+            action: HookAction::UPDATE,
+            phase: HookPhase::RESPONSE,
+            timing: HookTiming::AFTER,
+            module: 'Business',
+            payload: [
+                ...$data,
+                ...$business->toArray()
+            ]
+        ));
         Event::dispatch('erp.business.update',[
-            'id' => $dto->id,
-            'business_id' => $business->id,
-            'user_id' => $dto->user_id
+            ...$data,
+            'business_id' => $business->id
         ]);
         DB::commit();
         return $business;

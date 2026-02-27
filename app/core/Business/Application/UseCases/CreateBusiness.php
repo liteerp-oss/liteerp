@@ -2,26 +2,52 @@
 
 namespace Core\Business\Application\UseCases;
 
+use App\Supports\Hooks\HookAction;
+use App\Supports\Hooks\HookContext;
+use App\Supports\Hooks\HookDispatcher;
+use App\Supports\Hooks\HookPhase;
+use App\Supports\Hooks\HookTiming;
 use Core\Business\Application\DTOs\CreateBusinessRequest;
 use Core\Business\Domain\Services\BusinessService;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
 
 class CreateBusiness
 {
-    public function __construct(private BusinessService $service) {}
+    public function __construct(
+        private BusinessService $service,
+        private HookDispatcher $hook
+    ) {}
 
-    public function handle(CreateBusinessRequest $dto)
+    public function handle(array $data)
     {
         DB::beginTransaction();
-        $user = Auth::guard('sanctum')->user();
+        $dto = CreateBusinessRequest::fromArray($data);
+        $data = $this->hook->dispatch(new HookContext(
+            action: HookAction::CREATE,
+            phase: HookPhase::RESPONSE,
+            timing: HookTiming::BEFORE,
+            module: 'Business',
+            payload: [
+                ...$data,
+                ...$dto->toArray()
+            ]
+        ));
         $business = $this->service->create($dto->toArray());
-        Event::dispatch('erp.business.create',[
-            'id' => $business->id,
+        $data = $this->hook->dispatch(new HookContext(
+            action: HookAction::CREATE,
+            phase: HookPhase::RESPONSE,
+            timing: HookTiming::AFTER,
+            module: 'Business',
+            payload: [
+                ...$data,
+                ...$business->toArray()
+            ]
+        ));
+        Event::dispatch('erp.business.create', [
+            ...$data,
             'business_id' => $business->id,
-            'user_id' => $user->id,
-            'role_user_id' => $user->id
+            'role_user_id' => $dto->user_id
         ]);
         DB::commit();
         return $business;
