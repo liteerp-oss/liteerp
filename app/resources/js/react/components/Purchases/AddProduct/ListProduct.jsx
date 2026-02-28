@@ -366,7 +366,7 @@ export default function ListProducts({
                             search={getProducts}
                             options={products.map((item) => ({
                                 value: item.id,
-                                label: item.name,
+                                label: `${item.name} | ${item.category} | ${item.sku}`,
                             }))}
                             defaultKeywords={form.formData?.name ?? ''}
                             label={t("Product")}
