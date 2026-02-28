@@ -29,7 +29,7 @@ export default function BusinessListItem({
           <SuccessButton width={200} label={buttonBottomText} onClick={onViewDetail} />
         </div>
       </div>
-      <div className="container">
+      <div className="container mb-3">
 
         <div className="membership-info">
           <h5 className="theme-title-highlight">{business?.name} </h5>
