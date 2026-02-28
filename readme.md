@@ -115,6 +115,8 @@ Extensions are:
 - **SMTP Extension** – system-wide email configuration
 - **Fast Mode** - simplify accounting processes
 
+This is extensions ready for production, but all other extensions to help your understand how to custom core?
+
 ### 📚 Example & Guide Extensions
 https://github.com/liteerp-oss/liteerp/tree/dev/extension-examples
 
