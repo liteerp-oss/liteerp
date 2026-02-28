@@ -2,6 +2,8 @@
 
 namespace Tests\Unit;
 
+use App\Supports\Hooks\HookContext;
+use App\Supports\Hooks\HookDispatcher;
 use Core\Business\Application\DTOs\CreateBusinessRequest;
 use Core\Business\Application\UseCases\CreateBusiness;
 use Core\Business\Domain\Entities\Business;
@@ -15,6 +17,7 @@ use Illuminate\Support\Facades\Auth;
 class CreateBusinessTest extends TestCase
 {
     protected $serviceMock;
+    protected $hooksMock;
     protected $useCase;
 
     protected function setUp(): void
@@ -37,7 +40,8 @@ class CreateBusinessTest extends TestCase
         $this->app->instance('auth', $auth);
 
         $this->serviceMock = Mockery::mock(BusinessService::class);
-        $this->useCase = new CreateBusiness($this->serviceMock);
+        $this->hooksMock = Mockery::mock(HookDispatcher::class);
+        $this->useCase = new CreateBusiness($this->serviceMock, $this->hooksMock);
     }
 
     protected function tearDown(): void
@@ -75,11 +79,18 @@ class CreateBusinessTest extends TestCase
 
         // Mock the authenticated user is already done in setUp
 
+        $this->hooksMock->shouldReceive('dispatch')
+            ->twice()
+            ->with(Mockery::type(HookContext::class))
+            ->andReturn(
+                $dto->toArray(),
+                [...$dto->toArray(), ...$business->toArray()]
+            );
         $this->serviceMock->shouldReceive('create')->andReturn($business);
 
         Event::shouldReceive('dispatch')->once();
 
-        $result = $this->useCase->handle($dto);
+        $result = $this->useCase->handle($dto->toArray());
 
         $this->assertInstanceOf(Business::class, $result);
         $this->assertEquals(1, $result->id);

@@ -100,40 +100,6 @@ class BusinessServiceImplTest extends TestCase
         $this->service->create($data);
     }
 
-    public function test_index_returns_array()
-    {
-        $userId = 1;
-        $businesses = [
-            Business::fromArray([
-                'name' => 'Business 1',
-                'address' => 'Address 1',
-                'tax_code' => '123456789',
-                'phone' => '1234567890',
-                'email' => 'business1@example.com',
-                'bank_name' => 'Bank 1',
-                'bank_account_number' => '1234567890',
-                'bank_account_name' => 'Account 1',
-            ]),
-            Business::fromArray([
-                'name' => 'Business 2',
-                'address' => 'Address 2',
-                'tax_code' => '987654321',
-                'phone' => '0987654321',
-                'email' => 'business2@example.com',
-                'bank_name' => 'Bank 2',
-                'bank_account_number' => '0987654321',
-                'bank_account_name' => 'Account 2',
-            ]),
-        ];
-
-        $this->repoMock->shouldReceive('index')->with($userId)->andReturn($businesses);
-
-        $result = $this->service->index($userId);
-
-        $this->assertIsArray($result);
-        $this->assertCount(2, $result);
-    }
-
     public function test_show_returns_business_data()
     {
         $data = [

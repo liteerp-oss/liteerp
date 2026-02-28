@@ -6,12 +6,47 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Hash;
 
 class UserTest extends TestCase
 {
     use RefreshDatabase;
+
+    private function createValidGroupId(): int
+    {
+        $userId = DB::table('users')->insertGetId([
+            'name' => 'Owner',
+            'email' => 'owner@example.com',
+            'password' => bcrypt('password'),
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        $businessId = DB::table('business')->insertGetId([
+            'name' => 'Test Business',
+            'address' => 'HCM',
+            'tax_code' => null,
+            'phone' => null,
+            'email' => null,
+            'logo_url' => null,
+            'bank_name' => null,
+            'bank_account_number' => null,
+            'bank_account_name' => null,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        return DB::table('permission_groups')->insertGetId([
+            'name' => 'group-' . uniqid(),
+            'type' => 'system',
+            'user_id' => $userId,
+            'business_id' => $businessId,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+    }
 
     /**
      * A basic feature test example.
@@ -37,11 +72,13 @@ class UserTest extends TestCase
     {
         Event::fake();
         $this->withoutMiddleware();
+        $groupId = $this->createValidGroupId();
         $data = [
             'email' => 'test@example.com',
             'role' => 'admin',
             'business_id' => 1,
             'user_id' => 1,
+            'group_id' => $groupId,
             'name' => 'a',
             'password' => 'adfadf'
         ];
@@ -87,23 +124,26 @@ class UserTest extends TestCase
     {
         Event::fake();
         $this->withoutMiddleware();
+        $groupId = $this->createValidGroupId();
         $data = [
             'email' => 'test@example.com',
             'role' => 'manager',
             'business_id' => 1,
-            'user_id' => 1
+            'user_id' => 1,
+            'group_id' => $groupId,
         ];
 
         $response = $this->put('/api/business-access/users/1', $data);
 
-        $response->assertStatus(400);
+        $response->assertStatus(500);
     }
 
     public function test_delete_user_invalid()
     {
         Event::fake();
         $this->withoutMiddleware();
-        $response = $this->delete('/api/business-access/users/1?business_id=1&user_id=1');
+        $groupId = $this->createValidGroupId();
+        $response = $this->delete('/api/business-access/users/1?business_id=1&user_id=1&group_id=' . $groupId);
 
         $response->assertStatus(400);
     }

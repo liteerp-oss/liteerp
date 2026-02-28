@@ -12,17 +12,16 @@ class UserEntityTest extends TestCase
         $data = [
             'id' => 1,
             'email' => 'test@example.com',
-            'role' => 'admin',
-            'business_id' => 123,
-            'lang' => 'en'
+            'lang' => 'en',
+            'avatar' => 'avatar.png',
         ];
 
         $user = User::fromArray($data);
 
         $this->assertEquals(1, $user->id);
         $this->assertEquals('test@example.com', $user->email);
-        $this->assertEquals('admin', $user->role);
-        $this->assertEquals(123, $user->business_id);
+        $this->assertEquals('en', $user->lang);
+        $this->assertEquals('avatar.png', $user->avatar);
     }
 
     public function test_from_array_with_null_values()
@@ -35,8 +34,8 @@ class UserEntityTest extends TestCase
 
         $this->assertNull($user->id);
         $this->assertEquals('test@example.com', $user->email);
-        $this->assertNull($user->role);
-        $this->assertNull($user->business_id);
+        $this->assertNull($user->lang);
+        $this->assertNull($user->avatar);
     }
 
     public function test_to_array_converts_correctly()
@@ -44,8 +43,6 @@ class UserEntityTest extends TestCase
         $user = new User(
             id: 1,
             email: 'test@example.com',
-            role: 'admin',
-            business_id: 123,
             lang: 'en',
             avatar: null
         );
@@ -55,8 +52,6 @@ class UserEntityTest extends TestCase
         $expected = [
             'id' => 1,
             'email' => 'test@example.com',
-            'role' => 'admin',
-            'business_id' => 123,
             'lang' => 'en',
             'avatar' => null
         ];
