@@ -8,10 +8,8 @@ export default function RenderNav({ list = [] }) {
   return (
     <div className="nav flex-column">
 
-      {list.map((group, index) => (
-        <div key={index} className="mb-4">
+      {list.map((group, index) => group.children.length >= 1 ? <div key={index} className="mb-4">
 
-          {/* ===== Group Title ===== */}
           <div className="text-uppercase small mb-2 px-3 theme-title fw-bold">
             {t(group.label)}
           </div>
@@ -24,8 +22,7 @@ export default function RenderNav({ list = [] }) {
                 key={i}
                 to={item.to}
                 className={({ isActive }) =>
-                  `nav-link d-flex align-items-center px-3 py-2 rounded-3 ${
-                    isActive ? 'active bg-primary text-white' : 'theme-title'
+                  `nav-link d-flex align-items-center px-3 py-2 rounded-3 ${isActive ? 'active bg-primary text-white' : 'theme-title'
                   }`
                 }
               >
@@ -35,8 +32,9 @@ export default function RenderNav({ list = [] }) {
             ))}
 
           </div>
-        </div>
-      ))}
+        </div> : null
+
+      )}
 
     </div>
   )
