@@ -1,0 +1,13 @@
+{
+    "name": "Custom Home Page",
+    "version": "0.0.1",
+    "description": "Custom home page extension support LiteERP",
+    "status": false,
+    "verified": true,
+    "author": "LiteERP Team",
+    "icon": null,
+    "setting_link": null,
+    "email": null,
+    "directory": "CustomHomePage",
+    "support_version": ""
+}
