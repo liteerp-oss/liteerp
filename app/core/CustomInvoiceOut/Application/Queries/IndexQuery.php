@@ -1,6 +1,8 @@
 <?php 
 namespace Core\CustomInvoiceOut\Application\Queries;
 
+use App\Supports\Permissions\Enums\Permission;
+
 use App\Contracts\Queries\QueryInterface;
 use App\Models\CustomInvoiceOutModel;
 use App\Supports\Hooks\HookAction;
@@ -39,7 +41,7 @@ class IndexQuery implements QueryInterface {
                 'custom_invoice_outs.description'], 'like',
                 '%'. $dto->keywords .'%');
         }
-        Event::dispatch("erp.custominvoiceout.index", [
+        Event::dispatch(Permission::CUSTOMINVOICEOUT_INDEX->value, [
             ...$data
         ]);
         return $list->orderBy('custom_invoice_outs.id', $dto->order_by)->paginate(15)->toArray();

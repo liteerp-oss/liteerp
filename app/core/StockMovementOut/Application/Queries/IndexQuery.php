@@ -1,6 +1,8 @@
 <?php 
 namespace Core\StockMovementOut\Application\Queries;
 
+use App\Supports\Permissions\Enums\Permission;
+
 use App\Contracts\Queries\QueryInterface;
 use App\Models\StockMovementOutModel;
 use App\Supports\Hooks\HookAction;
@@ -61,7 +63,7 @@ class IndexQuery implements QueryInterface {
         );
         $list = $data['query'];
         $data = $data['data'];
-        Event::dispatch("erp.stockmovementout.index", [
+        Event::dispatch(Permission::STOCKMOVEMENTOUT_INDEX->value, [
             ...$data
         ]);
         return $list->orderBy('stock_movements_out.id', $dto->order_by)->paginate(15)->toArray();

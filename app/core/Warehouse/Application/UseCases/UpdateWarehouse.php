@@ -2,6 +2,8 @@
 
 namespace Core\Warehouse\Application\UseCases;
 
+use App\Supports\Permissions\Enums\Permission;
+
 use App\Supports\Hooks\HookAction;
 use App\Supports\Hooks\HookContext;
 use App\Supports\Hooks\HookDispatcher;
@@ -48,7 +50,7 @@ class UpdateWarehouse
                 module: 'Warehouse'
             )
         );
-        Event::dispatch("erp.warehouse.update", [
+        Event::dispatch(Permission::WAREHOUSE_UPDATE->value, [
             ...$data
         ]);
         DB::commit();

@@ -2,6 +2,8 @@
 
 namespace Core\PermissionGroup\Application\UseCases;
 
+use App\Supports\Permissions\Enums\Permission;
+
 use App\Supports\Hooks\HookAction;
 use App\Supports\Hooks\HookContext;
 use App\Supports\Hooks\HookDispatcher;
@@ -36,7 +38,7 @@ class ShowPermissionGroup
             )
         );
 
-        Event::dispatch('erp.permissiongroup.show', [...$payload]);
+        Event::dispatch(Permission::PERMISSIONGROUP_SHOW->value, [...$payload]);
 
         return $payload;
     }

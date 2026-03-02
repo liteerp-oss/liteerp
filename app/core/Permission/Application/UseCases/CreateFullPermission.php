@@ -2,6 +2,8 @@
 
 namespace Core\Permission\Application\UseCases;
 
+use App\Supports\Permissions\Enums\Permission;
+
 use App\Supports\Hooks\HookAction;
 use App\Supports\Hooks\HookContext;
 use App\Supports\Hooks\HookDispatcher;
@@ -55,7 +57,7 @@ class CreateFullPermission
             )
         );
 
-        //Event::dispatch('erp.permission.create', [...$data]);
+        //Event::dispatch(Permission::PERMISSION_CREATE->value, [...$data]);
         DB::commit();
 
         return $data;

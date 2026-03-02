@@ -2,6 +2,8 @@
 
 namespace Core\Notifications\Application\UseCases;
 
+use App\Supports\Permissions\Enums\Permission;
+
 use Core\Notifications\Application\DTOs\DeleteNotificationRequest;
 use Core\Notifications\Domain\Services\NotificationDBService;
 use Illuminate\Support\Facades\Event;
@@ -12,7 +14,7 @@ class DeleteNotification
 
     public function handle(DeleteNotificationRequest $dto)
     {
-        Event::dispatch('erp.notification.delete',$dto->toArray());
+        Event::dispatch(Permission::NOTIFICATION_DELETE->value,$dto->toArray());
         return $this->serviceDB->delete($dto->toArray());
     }
 }

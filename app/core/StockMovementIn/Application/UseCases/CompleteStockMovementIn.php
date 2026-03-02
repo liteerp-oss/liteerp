@@ -2,6 +2,8 @@
 
 namespace Core\StockMovementIn\Application\UseCases;
 
+use App\Supports\Permissions\Enums\Permission;
+
 use App\Exceptions\BadException;
 use Core\StockMovementIn\Application\DTOs\CompleteStockMovementInRequest;
 use Core\StockMovementIn\Domain\Services\StockMovementInService;
@@ -17,7 +19,7 @@ class CompleteStockMovementIn
         if(intval($list['total']) === 0) {
             throw new BadException(__("stockmovementin::messages.no_inventory_added"));
         }
-        Event::dispatch('erp.stockmovementin.completed', [
+        Event::dispatch(Permission::STOCKMOVEMENTIN_COMPLETED->value, [
             'stock_in_id' => $dto->stock_in_id,
             'business_id' => $dto->business_id,
             'user_id' => $dto->created_by,

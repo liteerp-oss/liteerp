@@ -2,6 +2,8 @@
 
 namespace Core\User\Application\Queries;
 
+use App\Supports\Permissions\Enums\Permission;
+
 use App\Contracts\Queries\QueryInterface;
 use App\Models\User;
 use App\Supports\Hooks\HookAction;
@@ -49,7 +51,7 @@ class IndexQuery implements QueryInterface
         );
         $rows = $data['query'];
         $data = $data['data'];
-        Event::dispatch("erp.user.index", [
+        Event::dispatch(Permission::USER_INDEX->value, [
             ...$data
         ]);
         return $rows->orderBy('users.id', $dto->order_by)->paginate($dto->paginate)->toArray();

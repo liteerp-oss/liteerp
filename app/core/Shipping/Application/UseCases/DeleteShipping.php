@@ -2,6 +2,8 @@
 
 namespace Core\Shipping\Application\UseCases;
 
+use App\Supports\Permissions\Enums\Permission;
+
 use App\Supports\Hooks\HookAction;
 use App\Supports\Hooks\HookContext;
 use App\Supports\Hooks\HookDispatcher;
@@ -44,7 +46,7 @@ class DeleteShipping
                 module: 'Shipping'
             )
         );
-        Event::dispatch("erp.shipping.delete", [
+        Event::dispatch(Permission::SHIPPING_DELETE->value, [
             ...$data
         ]);
         return $data;

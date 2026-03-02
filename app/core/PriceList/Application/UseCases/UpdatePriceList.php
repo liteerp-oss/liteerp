@@ -2,6 +2,8 @@
 
 namespace Core\PriceList\Application\UseCases;
 
+use App\Supports\Permissions\Enums\Permission;
+
 use App\Supports\Hooks\HookAction;
 use App\Supports\Hooks\HookContext;
 use App\Supports\Hooks\HookDispatcher;
@@ -47,7 +49,7 @@ class UpdatePriceList
             )
         );
         
-        Event::dispatch("erp.pricelist.update", [
+        Event::dispatch(Permission::PRICELIST_UPDATE->value, [
             ...$data
         ]);
         

@@ -2,6 +2,8 @@
 
 namespace Core\StockMovementIn\Application\UseCases;
 
+use App\Supports\Permissions\Enums\Permission;
+
 use App\Supports\Hooks\HookAction;
 use App\Supports\Hooks\HookContext;
 use App\Supports\Hooks\HookDispatcher;
@@ -47,7 +49,7 @@ class CreateStockMovementIn
                     module: 'StockMovementIn'
                 )
             );
-        Event::dispatch("erp.stockmovementin.create", [
+        Event::dispatch(Permission::STOCKMOVEMENTIN_CREATE->value, [
             ...$data
         ]);
         DB::commit();

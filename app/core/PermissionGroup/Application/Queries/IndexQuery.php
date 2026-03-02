@@ -2,6 +2,8 @@
 
 namespace Core\PermissionGroup\Application\Queries;
 
+use App\Supports\Permissions\Enums\Permission;
+
 use App\Contracts\Queries\QueryInterface;
 use App\Models\PermissionGroupModel;
 use App\Supports\Hooks\HookAction;
@@ -46,7 +48,7 @@ class IndexQuery implements QueryInterface
         if($dto->keywords) {
             $rows = $rows->whereAny(['permission_groups.name','permission_groups.type'], 'like', '%' . $dto->keywords . '%');
         }
-        Event::dispatch("erp.permissiongroup.index", [
+        Event::dispatch(Permission::PERMISSIONGROUP_INDEX->value, [
             ...$data
         ]);
         return $rows->orderBy('id', $dto->order_by)->paginate(15)->toArray();

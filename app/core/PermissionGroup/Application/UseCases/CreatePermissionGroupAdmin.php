@@ -7,6 +7,7 @@ use App\Supports\Hooks\HookContext;
 use App\Supports\Hooks\HookDispatcher;
 use App\Supports\Hooks\HookPhase;
 use App\Supports\Hooks\HookTiming;
+use App\Supports\Permissions\Enums\Permission;
 use Core\PermissionGroup\Application\DTOs\CreatePermissionGroupAdminRequest;
 use Core\PermissionGroup\Domain\Services\PermissionGroupService;
 use Illuminate\Support\Facades\DB;
@@ -53,7 +54,7 @@ class CreatePermissionGroupAdmin
             )
         );
 
-        Event::dispatch('erp.permissiongroup.create_admin', [...$data]);
+        Event::dispatch(Permission::PERMISSIONGROUP_CREATE_ADMIN->value, [...$data]);
         DB::commit();
 
         return $data;

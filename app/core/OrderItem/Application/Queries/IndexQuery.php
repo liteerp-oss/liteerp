@@ -1,6 +1,8 @@
 <?php 
 namespace Core\OrderItem\Application\Queries;
 
+use App\Supports\Permissions\Enums\Permission;
+
 use App\Models\OrderItemModel;
 use App\Supports\Hooks\HookAction;
 use App\Supports\Hooks\HookContext;
@@ -89,7 +91,7 @@ class IndexQuery
         if( $dto->keywords) {
             $list = $list->whereAny(['products.name', 'products.sku'],'like', "%{$dto->keywords}%");
         }
-        Event::dispatch("erp.orderitem.index", [
+        Event::dispatch(Permission::ORDERITEM_INDEX->value, [
             ...$data
         ]);
         return $list->orderBy('order_items.id', $dto->order_by)->paginate(15)->toArray();

@@ -2,6 +2,8 @@
 
 namespace Core\StockMovementOut\Application\UseCases;
 
+use App\Supports\Permissions\Enums\Permission;
+
 use Core\StockMovementOut\Application\DTOs\CreateManyStockMovementOutRequest;
 use Core\StockMovementOut\Application\DTOs\CreateStockMovementOutRequest;
 use Core\StockMovementOut\Domain\Services\StockMovementOutService;
@@ -27,7 +29,7 @@ class CreateManyStockMovementOut
                 'qty_change' => $value['reserved_qty']
             ]);
             $create = $this->service->create($adapter->toArray());
-            Event::dispatch('erp.stockmovementout.create',[
+            Event::dispatch(Permission::STOCKMOVEMENTOUT_CREATE->value,[
                 ...$create->toArray(),
                 'business_id' => $dto->business_id,
                 'user_id' => $dto->created_by,

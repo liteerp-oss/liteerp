@@ -2,6 +2,8 @@
 
 namespace Core\User\Application\UseCases;
 
+use App\Supports\Permissions\Enums\Permission;
+
 use App\Exceptions\BadException;
 use Core\User\Application\DTOs\CreateUserRequest;
 use Core\User\Domain\Services\UserService;
@@ -54,7 +56,7 @@ class CreateUser
                 module: 'User'
             )
         );
-        Event::dispatch("erp.user.create", [
+        Event::dispatch(Permission::USER_CREATE->value, [
             ...$data
         ]);
         DB::commit();

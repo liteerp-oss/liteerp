@@ -15,7 +15,7 @@ class SupplierServiceImpl implements SupplierService
     {
         $entity = $this->repo->findByName($data);
         if($entity) {
-            throw new BadException(__("suppliers::messages.name_used"));
+            throw new BadException(__("supplier::messages.name_used"));
         }
         $entity = Supplier::fromArray($data);
 
@@ -24,11 +24,11 @@ class SupplierServiceImpl implements SupplierService
     public function update(array $data) : Supplier | BadException {
         $entity = $this->repo->findByName($data);
         if($entity && $entity->id !== $data['id']) {
-            throw new BadException(__("suppliers::messages.name_used"));
+            throw new BadException(__("supplier::messages.name_used"));
         }
         $entity = $this->repo->findById($data);
         if(!$entity) {
-            throw new BadException(__("suppliers::messages.not_found"));
+            throw new BadException(__("supplier::messages.not_found"));
         }
         $entity->unit_name = $data['unit_name'] ?? $entity->unit_name;
         $entity->email = $data['email'] ?? $entity->email;
@@ -45,7 +45,7 @@ class SupplierServiceImpl implements SupplierService
     public function delete(array $data) : Supplier | BadException {
         $entity = $this->repo->findById($data);
         if(!$entity) {
-            throw new BadException(__("suppliers::messages.not_found"));
+            throw new BadException(__("supplier::messages.not_found"));
         }
         return $this->repo->delete($entity);
     }

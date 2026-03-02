@@ -1,6 +1,8 @@
 <?php 
 namespace Core\Order\Application\Queries;
 
+use App\Supports\Permissions\Enums\Permission;
+
 use App\Contracts\Queries\QueryInterface;
 use App\Models\OrderModel;
 use App\Supports\Hooks\HookAction;
@@ -61,7 +63,7 @@ class IndexQuery implements QueryInterface {
             'customers.name',
             'customers.email'], 'like', '%' . $dto->keywords . '%');        
         }
-        Event::dispatch("erp.order.index", [
+        Event::dispatch(Permission::ORDER_INDEX->value, [
             ...$data
         ]);
         return $list->orderBy("orders.id", $dto->order_by)->paginate(15)->toArray();

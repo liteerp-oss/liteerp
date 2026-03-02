@@ -2,6 +2,8 @@
 
 namespace Core\PermissionGroup\Application\UseCases;
 
+use App\Supports\Permissions\Enums\Permission;
+
 use App\Supports\Hooks\HookAction;
 use App\Supports\Hooks\HookContext;
 use App\Supports\Hooks\HookDispatcher;
@@ -53,7 +55,7 @@ class CreatePermissionGroup
             )
         );
 
-        Event::dispatch('erp.permissiongroup.create', $data);
+        Event::dispatch(Permission::PERMISSIONGROUP_CREATE->value, $data);
         DB::commit();
 
         return $data;

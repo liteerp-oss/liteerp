@@ -2,6 +2,8 @@
 
 namespace Core\PurchaseItem\Application\UseCases;
 
+use App\Supports\Permissions\Enums\Permission;
+
 use App\Supports\Hooks\HookAction;
 use App\Supports\Hooks\HookContext;
 use App\Supports\Hooks\HookDispatcher;
@@ -48,7 +50,7 @@ class UpdatePurchaseItem
                 module: 'PurchaseItem'
             )
         );
-        Event::dispatch('erp.purchaseitem.update',[
+        Event::dispatch(Permission::PURCHASEITEM_UPDATE->value,[
             ...$data
         ]);
         DB::commit();

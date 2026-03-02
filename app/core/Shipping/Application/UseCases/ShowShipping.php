@@ -2,6 +2,8 @@
 
 namespace Core\Shipping\Application\UseCases;
 
+use App\Supports\Permissions\Enums\Permission;
+
 use Core\Shipping\Application\DTOs\CreateShippingRequest;
 use Core\Shipping\Application\DTOs\ShowShippingRequest;
 use Core\Shipping\Domain\Services\ShippingService;
@@ -44,7 +46,7 @@ class ShowShipping
                 module: 'Shipping'
             )
         );
-        Event::dispatch("erp.shipping.show", [
+        Event::dispatch(Permission::SHIPPING_SHOW->value, [
             ...$data,
         ]);
         return $data;

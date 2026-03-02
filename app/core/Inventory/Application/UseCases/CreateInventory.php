@@ -2,6 +2,8 @@
 
 namespace Core\Inventory\Application\UseCases;
 
+use App\Supports\Permissions\Enums\Permission;
+
 use App\Supports\Hooks\HookAction;
 use App\Supports\Hooks\HookContext;
 use App\Supports\Hooks\HookPhase;
@@ -43,7 +45,7 @@ class CreateInventory
                 module: 'Inventory'
             )
         );
-        Event::dispatch('erp.inventory.create',[
+        Event::dispatch(Permission::INVENTORY_CREATE->value,[
             ...$data
         ]);
         DB::commit();

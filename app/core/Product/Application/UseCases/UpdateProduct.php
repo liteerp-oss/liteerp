@@ -2,6 +2,8 @@
 
 namespace Core\Product\Application\UseCases;
 
+use App\Supports\Permissions\Enums\Permission;
+
 use App\Supports\Hooks\HookAction;
 use App\Supports\Hooks\HookContext;
 use App\Supports\Hooks\HookDispatcher;
@@ -46,7 +48,7 @@ class UpdateProduct
                 module: 'Product'
             )
         );
-        Event::dispatch("erp.product.update", [
+        Event::dispatch(Permission::PRODUCT_UPDATE->value, [
             ...$data
         ]);
         DB::commit();

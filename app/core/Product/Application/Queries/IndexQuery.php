@@ -1,6 +1,8 @@
 <?php 
 namespace Core\Product\Application\Queries;
 
+use App\Supports\Permissions\Enums\Permission;
+
 use App\Contracts\Queries\QueryInterface;
 use App\Models\ProductModel;
 use App\Supports\Hooks\HookAction;
@@ -19,7 +21,7 @@ class IndexQuery implements QueryInterface {
     function handle(array $data): array
     {
         $dto = IndexProductRequest::fromArray($data);
-        Event::dispatch("erp.product.index", [
+        Event::dispatch(Permission::PRODUCT_INDEX->value, [
             ...$dto->toArray(),
             'user_id' => $dto->created_by,
             'business_id' => $dto->business_id
@@ -45,7 +47,7 @@ class IndexQuery implements QueryInterface {
         );
         $rows = $hooks['query'];
         $data = $hooks['data'];
-        Event::dispatch("erp.product.index", [
+        Event::dispatch(Permission::PRODUCT_INDEX->value, [
             ...$data
         ]);
         return $rows->orderBy("products.id",$dto->order_by)

@@ -2,6 +2,8 @@
 
 namespace Core\PermissionGroup\Application\UseCases;
 
+use App\Supports\Permissions\Enums\Permission;
+
 use App\Supports\Hooks\HookAction;
 use App\Supports\Hooks\HookContext;
 use App\Supports\Hooks\HookDispatcher;
@@ -52,7 +54,7 @@ class UpdatePermissionGroup
             )
         );
 
-        Event::dispatch('erp.permissiongroup.update', [...$data]);
+        Event::dispatch(Permission::PERMISSIONGROUP_UPDATE->value, [...$data]);
         DB::commit();
 
         return $data;

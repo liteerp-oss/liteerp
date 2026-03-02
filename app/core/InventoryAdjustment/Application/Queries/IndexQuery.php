@@ -1,6 +1,8 @@
 <?php 
 namespace Core\InventoryAdjustment\Application\Queries;
 
+use App\Supports\Permissions\Enums\Permission;
+
 use App\Models\InventoryAdjustmentModel;
 use App\Supports\Hooks\HookAction;
 use App\Supports\Hooks\HookContext;
@@ -48,7 +50,7 @@ class IndexQuery
             $list = $list->whereAny(['inventory_adjustments.reason', 'products.name', 'products.sku'], 
                     'LIKE', '%' . $data['keywords'] . '%');
         }
-        Event::dispatch("erp.inventoryadjustment.index", [
+        Event::dispatch(Permission::INVENTORYADJUSTMENT_INDEX->value, [
             ...$data
         ]);
         return $list->orderBy('id',$dto->order_by)->paginate()->toArray();

@@ -2,6 +2,8 @@
 
 namespace Core\Warehouse\Application\UseCases;
 
+use App\Supports\Permissions\Enums\Permission;
+
 use App\Supports\Hooks\HookAction;
 use App\Supports\Hooks\HookContext;
 use App\Supports\Hooks\HookDispatcher;
@@ -48,7 +50,7 @@ class CreateWarehouse
                 module: 'Warehouse'
             )
         );
-        Event::dispatch("erp.warehouse.create", [
+        Event::dispatch(Permission::WAREHOUSE_CREATE->value, [
             ...$data
         ]);
         DB::commit();

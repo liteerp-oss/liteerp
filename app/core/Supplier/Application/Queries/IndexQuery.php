@@ -2,6 +2,8 @@
 
 namespace Core\Supplier\Application\Queries;
 
+use App\Supports\Permissions\Enums\Permission;
+
 use App\Contracts\Queries\QueryInterface;
 use App\Models\SupplierModel;
 use App\Supports\Hooks\HookAction;
@@ -48,7 +50,7 @@ class IndexQuery implements QueryInterface
         if($dto->active) {
             $list = $list->where('suppliers.active', $dto->active);
         }
-        Event::dispatch("erp.supplier.index", [
+        Event::dispatch(Permission::SUPPLIER_INDEX->value, [
             ...$data
         ]);
         return $list->orderBy('suppliers.id', $dto->order_by)->paginate(15)->toArray();

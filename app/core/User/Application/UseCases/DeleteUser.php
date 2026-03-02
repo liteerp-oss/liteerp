@@ -2,6 +2,8 @@
 
 namespace Core\User\Application\UseCases;
 
+use App\Supports\Permissions\Enums\Permission;
+
 use App\Exceptions\BadException;
 use Core\User\Application\DTOs\DeleteUserRequest;
 use Core\User\Domain\Services\UserService;
@@ -50,7 +52,7 @@ class DeleteUser
                 module: 'User'
             )
         );
-        Event::dispatch("erp.user.delete", [
+        Event::dispatch(Permission::USER_DELETE->value, [
             ...$data
         ]);
         DB::commit();

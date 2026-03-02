@@ -7,6 +7,7 @@ use App\Supports\Hooks\HookContext;
 use App\Supports\Hooks\HookDispatcher;
 use App\Supports\Hooks\HookPhase;
 use App\Supports\Hooks\HookTiming;
+use App\Supports\Permissions\Enums\Permission;
 use Core\PermissionGroupUser\Application\DTOs\ShowPermissionGroupUserRequest;
 use Core\PermissionGroupUser\Domain\Services\PermissionGroupUserService;
 use Illuminate\Support\Facades\Event;
@@ -36,7 +37,7 @@ class ShowPermissionGroupUser
             )
         );
 
-        Event::dispatch('erp.permissiongroupuser.show', [...$payload]);
+        Event::dispatch(Permission::PERMISSIONGROUPUSER_SHOW->value, [...$payload]);
 
         return $payload;
     }

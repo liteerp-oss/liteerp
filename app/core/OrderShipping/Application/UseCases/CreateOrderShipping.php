@@ -2,6 +2,8 @@
 
 namespace Core\OrderShipping\Application\UseCases;
 
+use App\Supports\Permissions\Enums\Permission;
+
 use App\Supports\Hooks\HookAction;
 use App\Supports\Hooks\HookContext;
 use App\Supports\Hooks\HookDispatcher;
@@ -44,7 +46,7 @@ class CreateOrderShipping
                 module: 'OrderShipping'
             )
         );
-        Event::dispatch('erp.ordershipping.create',[
+        Event::dispatch(Permission::ORDERSHIPPING_CREATE->value,[
             ...$data
         ]);
         return $data;

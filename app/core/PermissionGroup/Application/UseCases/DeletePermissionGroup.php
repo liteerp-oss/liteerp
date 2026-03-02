@@ -2,6 +2,8 @@
 
 namespace Core\PermissionGroup\Application\UseCases;
 
+use App\Supports\Permissions\Enums\Permission;
+
 use App\Supports\Hooks\HookAction;
 use App\Supports\Hooks\HookContext;
 use App\Supports\Hooks\HookDispatcher;
@@ -52,7 +54,7 @@ class DeletePermissionGroup
             )
         );
 
-        Event::dispatch('erp.permissiongroup.delete', [...$data]);
+        Event::dispatch(Permission::PERMISSIONGROUP_DELETE->value, [...$data]);
         DB::commit();
 
         return $data;

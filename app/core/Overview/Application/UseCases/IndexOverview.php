@@ -2,6 +2,8 @@
 
 namespace Core\Overview\Application\UseCases;
 
+use App\Supports\Permissions\Enums\Permission;
+
 use App\Supports\Hooks\HookAction;
 use App\Supports\Hooks\HookContext;
 use App\Supports\Hooks\HookDispatcher;
@@ -18,16 +20,19 @@ class IndexOverview
 
     public function handle(array $data)
     {
+        $dto = IndexOverviewRequest::fromArray($data);
         $data = $this->hooks->dispatch(
             new HookContext(
                 action: HookAction::INDEX,
                 phase: HookPhase::RESPONSE,
                 timing: HookTiming::BEFORE,
-                payload: $data,
+                payload: [
+                    ...$data,
+                    ...$dto->toArray()
+                ],
                 module: 'Overview'
             )
         );
-        $dto = IndexOverviewRequest::fromArray($data);
         $index = $this->service->index($dto->toArray());
         $data = $this->hooks->dispatch(
             new HookContext(
@@ -41,8 +46,7 @@ class IndexOverview
                 module: 'Overview'
             )
         );
-        Event::dispatch("erp.overview.index", [
-            ...$dto->toArray(),
+        Event::dispatch(Permission::OVERVIEW_INDEX->value, [
             ...$data
         ]);
         return $data;

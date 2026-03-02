@@ -2,6 +2,8 @@
 
 namespace Core\InvoiceIn\Application\UseCases;
 
+use App\Supports\Permissions\Enums\Permission;
+
 use App\Supports\Hooks\HookAction;
 use App\Supports\Hooks\HookContext;
 use App\Supports\Hooks\HookDispatcher;
@@ -60,10 +62,8 @@ class UnapprovedInvoiceIn
                 module: 'InvoiceIn'
             )
         );
-        Event::dispatch("erp.invoicein.cancelled", [
+        Event::dispatch(Permission::INVOICEIN_CANCELLED->value, [
             ...$data,
-            'user_id' => $dto->created_by,
-            'business_id' => $dto->business_id,
             'invoice_in_id' => $update->id,
         ]);
         DB::commit();

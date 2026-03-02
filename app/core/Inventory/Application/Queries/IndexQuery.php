@@ -1,6 +1,8 @@
 <?php 
 namespace Core\Inventory\Application\Queries;
 
+use App\Supports\Permissions\Enums\Permission;
+
 use App\Supports\Hooks\HookAction;
 use App\Supports\Hooks\HookContext;
 use App\Supports\Hooks\HookPhase;
@@ -65,7 +67,7 @@ class IndexQuery implements QueryInterface {
                 '%' . $dto->keywords . '%'
             );
         }
-        Event::dispatch("erp.inventory.index", [
+        Event::dispatch(Permission::INVENTORY_INDEX->value, [
             ...$data
         ]);
         $index = $index->orderBy('inventories.id', $dto->order_by)->paginate(15)->toArray();

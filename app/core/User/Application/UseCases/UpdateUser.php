@@ -2,6 +2,8 @@
 
 namespace Core\User\Application\UseCases;
 
+use App\Supports\Permissions\Enums\Permission;
+
 use App\Exceptions\BadException;
 use Core\User\Application\DTOs\CreateUserRequest;
 use Core\User\Domain\Services\UserService;
@@ -57,7 +59,7 @@ class UpdateUser
                 module: 'User'
             )
         );
-        Event::dispatch("erp.user.update", [
+        Event::dispatch(Permission::USER_UPDATE->value, [
             ...$data
         ]);
         DB::commit();

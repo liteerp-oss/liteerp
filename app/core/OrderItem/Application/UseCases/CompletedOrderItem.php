@@ -2,6 +2,8 @@
 
 namespace Core\OrderItem\Application\UseCases;
 
+use App\Supports\Permissions\Enums\Permission;
+
 use App\Supports\Hooks\HookDispatcher;
 use Core\OrderItem\Domain\Services\OrderItemService;
 use Core\OrderItem\Application\DTOs\CompletedOrderItemRequest;
@@ -17,7 +19,7 @@ class CompletedOrderItem
         $dto = CompletedOrderItemRequest::fromArray($data);
         $list = $this->service->indexForStockMovementOut($dto->toArray());
 
-        Event::dispatch('erp.orderitem.completed',[
+        Event::dispatch(Permission::ORDERITEM_COMPLETED->value,[
             ...$data,
             ...$dto->toArray(),
             'list' => $list,

@@ -2,6 +2,8 @@
 
 namespace Core\Supplier\Application\UseCases;
 
+use App\Supports\Permissions\Enums\Permission;
+
 use App\Supports\Hooks\HookAction;
 use App\Supports\Hooks\HookContext;
 use App\Supports\Hooks\HookDispatcher;
@@ -46,7 +48,7 @@ class DeleteSupplier
                 module: 'Supplier'
             )
         );
-        Event::dispatch("erp.supplier.delete", [
+        Event::dispatch(Permission::SUPPLIER_DELETE->value, [
             ...$data,
         ]);
         DB::commit();

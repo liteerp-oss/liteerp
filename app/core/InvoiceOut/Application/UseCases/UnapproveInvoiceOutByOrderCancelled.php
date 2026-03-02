@@ -2,6 +2,8 @@
 
 namespace Core\InvoiceOut\Application\UseCases;
 
+use App\Supports\Permissions\Enums\Permission;
+
 use Core\InvoiceOut\Application\DTOs\UnapproveInvoiceOutByOrderCancelledRequest;
 use Core\InvoiceOut\Domain\Services\InvoiceOutService;
 use Illuminate\Support\Facades\DB;
@@ -19,7 +21,7 @@ class UnapproveInvoiceOutByOrderCancelled
         $findInvoice = $this->service->getByOrderId($dto->toArray());
         if ($findInvoice) {
             $update = $this->service->unApproved($findInvoice->toArray());
-            Event::dispatch("erp.invoiceout.unapproved", [
+            Event::dispatch(Permission::INVOICEOUT_UNAPPROVED->value, [
                 ...$update->toArray(),
                 'user_id' => $dto->created_by,
                 'business_id' => $dto->business_id,

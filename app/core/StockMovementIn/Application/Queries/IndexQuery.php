@@ -1,6 +1,8 @@
 <?php 
 namespace Core\StockMovementIn\Application\Queries;
 
+use App\Supports\Permissions\Enums\Permission;
+
 use App\Contracts\Queries\QueryInterface;
 use App\Models\StockMovementInModel;
 use Core\StockMovementIn\Application\DTOs\IndexStockMovementInRequest;
@@ -59,7 +61,7 @@ class IndexQuery implements QueryInterface {
         );
         $rows = $data['query'];
         $data = $data['data'];
-        Event::dispatch("erp.stockmovementin.index", [
+        Event::dispatch(Permission::STOCKMOVEMENTIN_INDEX->value, [
             ...$data
         ]);
         return $rows->orderBy('stock_movements_in.id', $dto->order_by)->paginate(15)->toArray();

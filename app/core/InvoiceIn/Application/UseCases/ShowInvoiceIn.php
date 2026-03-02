@@ -2,6 +2,8 @@
 
 namespace Core\InvoiceIn\Application\UseCases;
 
+use App\Supports\Permissions\Enums\Permission;
+
 use App\Supports\Hooks\HookAction;
 use App\Supports\Hooks\HookContext;
 use App\Supports\Hooks\HookDispatcher;
@@ -29,7 +31,7 @@ class ShowInvoiceIn
             )
         );
         $dto = ShowInvoiceInRequest::fromArray($data);
-        Event::dispatch('erp.invoicein.show',[
+        Event::dispatch(Permission::INVOICEIN_SHOW->value,[
             ...$dto->toArray(),
             'user_id' => $dto->created_by
         ]);

@@ -2,6 +2,8 @@
 
 namespace Core\CategoryProduct\Application\Queries;
 
+use App\Supports\Permissions\Enums\Permission;
+
 use App\Contracts\Queries\QueryInterface;
 use App\Models\CategoryProductModel;
 use App\Supports\Hooks\HookAction;
@@ -40,7 +42,7 @@ class IndexQuery implements QueryInterface {
         if(!empty($dto->keywords)) {
             $index = $index->whereAny(['category_product.name', 'category_product.description'], 'like', '%' . $dto->keywords . '%');
         }
-        Event::dispatch("erp.categoryproduct.index", [
+        Event::dispatch(Permission::CATEGORYPRODUCT_INDEX->value, [
             ...$data
         ]);
         return $index->orderBy('category_product.id', $dto->order_by)->paginate(15)->toArray();

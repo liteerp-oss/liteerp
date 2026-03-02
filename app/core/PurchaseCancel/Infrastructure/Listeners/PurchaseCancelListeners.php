@@ -6,11 +6,15 @@ use Core\PurchaseCancel\Application\UseCases\CreatePurchaseCancel;
 use Illuminate\Support\Facades\Event;
 
 class PurchaseCancelListeners {
-    public function handle(CreatePurchaseCancel $CreatePurchaseCancel){
-        Event::listen('erp.purchase.*',function(string $eventName, array $data) use($CreatePurchaseCancel) {
+    function __construct(private CreatePurchaseCancel $CreatePurchaseCancel)
+    {
+        
+    }
+    public function handle(){
+        Event::listen('erp.purchase.*',function(string $eventName, array $data) {
             if($eventName === 'erp.purchase.cancelled') {
                 
-                $CreatePurchaseCancel->handle($data);
+                $this->CreatePurchaseCancel->handle($data);
             }
         });
     }

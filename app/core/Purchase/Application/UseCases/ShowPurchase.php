@@ -2,6 +2,8 @@
 
 namespace Core\Purchase\Application\UseCases;
 
+use App\Supports\Permissions\Enums\Permission;
+
 use App\Supports\Hooks\HookAction;
 use App\Supports\Hooks\HookContext;
 use App\Supports\Hooks\HookDispatcher;
@@ -45,7 +47,7 @@ class ShowPurchase
                 module: 'Purchase'
             )
         );
-        Event::dispatch("erp.purchase.show", [
+        Event::dispatch(Permission::PURCHASE_SHOW->value, [
             ...$data
         ]);
         return $data;

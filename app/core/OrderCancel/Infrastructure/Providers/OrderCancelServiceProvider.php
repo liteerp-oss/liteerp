@@ -19,12 +19,11 @@ class OrderCancelServiceProvider extends ServiceProvider
         $this->mergeModuleConfig();
     }
 
-    public function boot(CreateOrderCancel $CreateOrderCancel)
+    public function boot(OrderCancelListeners $listener)
     {
         $this->loadModuleRoutes();
         $this->loadModuleTranslations();
-        $listener = new OrderCancelListeners();
-        $listener->handle($CreateOrderCancel);
+        $listener->handle();
     }
 
     protected function mergeModuleConfig(): void
@@ -51,33 +50,6 @@ class OrderCancelServiceProvider extends ServiceProvider
         }
         if (file_exists("$routePath/web.php")) {
             $this->loadRoutesFrom("$routePath/web.php");
-        }
-    }
-    protected function loadModuleCommands(): void
-    {
-
-        if (is_dir(base_path('core'))) {
-            $commandFiles = glob(base_path('core') . '/*/Console/*.php');
-
-            if (!empty($commandFiles)) {
-                foreach ($commandFiles as $file) {
-                    require_once $file;
-                }
-
-                $commandClasses = array_map(function ($file) {
-                    $class = basename($file, '.php');
-                    $parts = explode(DIRECTORY_SEPARATOR, $file);
-                    $moduleIndex = array_search('core', $parts);
-                    $module = isset($parts[$moduleIndex + 1]) ? $parts[$moduleIndex + 1] : null;
-                    return $module ? "Core\{$module}\Console\{$class}" : null;
-                }, $commandFiles);
-
-                $commandClasses = array_values(array_filter($commandClasses));
-
-                if (!empty($commandClasses)) {
-                    $this->commands($commandClasses);
-                }
-            }
         }
     }
 }

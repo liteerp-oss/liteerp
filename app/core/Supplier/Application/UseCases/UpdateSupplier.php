@@ -2,6 +2,8 @@
 
 namespace Core\Supplier\Application\UseCases;
 
+use App\Supports\Permissions\Enums\Permission;
+
 use App\Supports\Hooks\HookAction;
 use App\Supports\Hooks\HookContext;
 use App\Supports\Hooks\HookDispatcher;
@@ -46,7 +48,7 @@ class UpdateSupplier
                 module: 'Supplier'
             )
         );
-        Event::dispatch("erp.supplier.update", [
+        Event::dispatch(Permission::SUPPLIER_UPDATE->value, [
             ...$data
         ]);
         DB::commit();

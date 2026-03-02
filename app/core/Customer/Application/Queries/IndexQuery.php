@@ -2,6 +2,8 @@
 
 namespace Core\Customer\Application\Queries;
 
+use App\Supports\Permissions\Enums\Permission;
+
 use App\Contracts\Queries\QueryInterface;
 use App\Models\CustomerModel;
 use App\Supports\Hooks\HookAction;
@@ -46,7 +48,7 @@ class IndexQuery implements QueryInterface
         if($dto->active) {
             $list = $list->where('customers.active', $dto->active);
         }
-        Event::dispatch("erp.customer.index", [
+        Event::dispatch(Permission::CUSTOMER_INDEX->value, [
             ...$data
         ]);
         return $list->orderBy('customers.id', $dto->order_by)->paginate(15)->toArray();

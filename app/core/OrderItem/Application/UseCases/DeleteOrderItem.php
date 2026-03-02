@@ -2,6 +2,8 @@
 
 namespace Core\OrderItem\Application\UseCases;
 
+use App\Supports\Permissions\Enums\Permission;
+
 use Core\OrderItem\Application\DTOs\DeleteOrderItemRequest;
 use Core\OrderItem\Domain\Services\OrderItemService;
 use Illuminate\Support\Facades\DB;
@@ -49,7 +51,7 @@ class DeleteOrderItem
                 module: 'OrderItem'
             )
         );
-        Event::dispatch('erp.orderitem.delete', [
+        Event::dispatch(Permission::ORDERITEM_DELETE->value, [
             ...$data,
             'qty_change' => -abs($qty_change),
         ]);

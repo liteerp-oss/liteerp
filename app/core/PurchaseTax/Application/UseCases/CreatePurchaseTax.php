@@ -2,6 +2,8 @@
 
 namespace Core\PurchaseTax\Application\UseCases;
 
+use App\Supports\Permissions\Enums\Permission;
+
 use Core\ActivityLog\Application\DTOs\CreateActivityLogRequest;
 use Core\ActivityLog\Application\UseCases\CreateActivityLog;
 use Core\PurchaseTax\Application\DTOs\CreatePurchaseTaxRequest;
@@ -17,7 +19,7 @@ class CreatePurchaseTax
     {
         DB::beginTransaction();
         $create = $this->service->create($dto->toArray());
-        Event::dispatch("erp.purchasetax.create", [
+        Event::dispatch(Permission::PURCHASETAX_CREATE->value, [
             ...$create->toArray(),
             'user_id' => $dto->user_id,
             'business_id' => $dto->business_id

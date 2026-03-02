@@ -2,6 +2,8 @@
 
 namespace Core\Shipping\Application\UseCases;
 
+use App\Supports\Permissions\Enums\Permission;
+
 use App\Supports\Hooks\HookAction;
 use App\Supports\Hooks\HookContext;
 use App\Supports\Hooks\HookDispatcher;
@@ -46,7 +48,7 @@ class UpdateShipping
                 module: 'Shipping'
             )
         );
-        Event::dispatch("erp.shipping.update", [
+        Event::dispatch(Permission::SHIPPING_UPDATE->value, [
             ...$data
         ]);
         DB::commit();

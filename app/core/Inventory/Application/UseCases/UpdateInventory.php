@@ -2,6 +2,8 @@
 
 namespace Core\Inventory\Application\UseCases;
 
+use App\Supports\Permissions\Enums\Permission;
+
 use App\Supports\Hooks\HookAction;
 use App\Supports\Hooks\HookContext;
 use App\Supports\Hooks\HookDispatcher;
@@ -47,7 +49,7 @@ class UpdateInventory
                 module: 'Inventory'
             )
         );
-        Event::dispatch('erp.inventory.update', [
+        Event::dispatch(Permission::INVENTORY_UPDATE->value, [
             ...$data
         ]);
         DB::commit();

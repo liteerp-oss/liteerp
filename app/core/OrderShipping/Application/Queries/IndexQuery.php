@@ -2,6 +2,8 @@
 
 namespace Core\OrderShipping\Application\Queries;
 
+use App\Supports\Permissions\Enums\Permission;
+
 use App\Contracts\Queries\QueryInterface;
 use App\Models\ShippingModel;
 use App\Supports\Hooks\HookAction;
@@ -52,7 +54,7 @@ class IndexQuery implements QueryInterface
             $list = $list->whereAny(['shippings.tracking_number','shipping_providers.name'],
             'like', '%' . $dto->keywords . '%');
         }
-        Event::dispatch("erp.ordershipping.index", [
+        Event::dispatch(Permission::ORDERSHIPPING_INDEX->value, [
             ...$data
         ]);
         return $list->orderBy('shippings.id', $dto->order_by)->paginate(15)

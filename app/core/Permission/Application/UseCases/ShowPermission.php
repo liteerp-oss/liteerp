@@ -2,6 +2,8 @@
 
 namespace Core\Permission\Application\UseCases;
 
+use App\Supports\Permissions\Enums\Permission;
+
 use App\Supports\Hooks\HookAction;
 use App\Supports\Hooks\HookContext;
 use App\Supports\Hooks\HookDispatcher;
@@ -48,7 +50,7 @@ class ShowPermission
                 module: 'Permission'
             )
         );
-        Event::dispatch('erp.permission.show', [...$data]);
+        Event::dispatch(Permission::PERMISSION_SHOW->value, [...$data]);
 
         return $data;
     }

@@ -2,6 +2,8 @@
 
 namespace Core\Product\Application\UseCases;
 
+use App\Supports\Permissions\Enums\Permission;
+
 use App\Supports\Hooks\HookAction;
 use App\Supports\Hooks\HookContext;
 use App\Supports\Hooks\HookDispatcher;
@@ -45,7 +47,7 @@ class ShowProduct
                 module: 'Product'
             )
         );
-        Event::dispatch("erp.product.show", [
+        Event::dispatch(Permission::PRODUCT_SHOW->value, [
             ...$data
         ]);
         return $data;

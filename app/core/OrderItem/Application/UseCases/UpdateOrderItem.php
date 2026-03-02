@@ -2,6 +2,8 @@
 
 namespace Core\OrderItem\Application\UseCases;
 
+use App\Supports\Permissions\Enums\Permission;
+
 use App\Supports\Hooks\HookAction;
 use App\Supports\Hooks\HookContext;
 use App\Supports\Hooks\HookDispatcher;
@@ -56,7 +58,7 @@ class UpdateOrderItem
                 module: 'OrderItem'
             )
         );
-        Event::dispatch('erp.orderitem.update',[
+        Event::dispatch(Permission::ORDERITEM_UPDATE->value,[
             ...$data,
             'qty_change' => $qty_change,
         ]);

@@ -1,6 +1,8 @@
 <?php
 namespace Core\Supplier\Application\UseCases;
 
+use App\Supports\Permissions\Enums\Permission;
+
 use App\Supports\Hooks\HookAction;
 use App\Supports\Hooks\HookContext;
 use App\Supports\Hooks\HookDispatcher;
@@ -44,7 +46,7 @@ class CreateSupplier
                 module: 'Supplier'
             )
         );
-        Event::dispatch("erp.supplier.create", [
+        Event::dispatch(Permission::SUPPLIER_CREATE->value, [
             ...$data
         ]);
         DB::commit();

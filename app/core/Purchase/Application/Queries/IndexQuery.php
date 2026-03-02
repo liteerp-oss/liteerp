@@ -1,6 +1,8 @@
 <?php 
 namespace Core\Purchase\Application\Queries;
 
+use App\Supports\Permissions\Enums\Permission;
+
 use App\Contracts\Queries\QueryInterface;
 use App\Models\PurchaseModel;
 use App\Supports\Hooks\HookAction;
@@ -56,7 +58,7 @@ class IndexQuery implements QueryInterface {
         if ($dto->keywords) {
             $list->whereAny(['suppliers.unit_name','created_users.name'], 'like', '%' . $dto->keywords . '%');
         }
-        Event::dispatch("erp.purchase.index", [
+        Event::dispatch(Permission::PURCHASE_INDEX->value, [
             ...$data,
             ...$dto->toArray(),
         ]);

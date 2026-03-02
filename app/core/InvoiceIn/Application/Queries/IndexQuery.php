@@ -2,6 +2,8 @@
 
 namespace Core\InvoiceIn\Application\Queries;
 
+use App\Supports\Permissions\Enums\Permission;
+
 use App\Contracts\Queries\QueryInterface;
 use App\Models\InvoiceInModel;
 use App\Supports\Hooks\HookAction;
@@ -53,7 +55,7 @@ class IndexQuery implements QueryInterface
             'suppliers.unit_name',
             'suppliers.email'], 'like', '%' . $dto->keywords . '%');
         }
-        Event::dispatch("erp.invoicein.index", [
+        Event::dispatch(Permission::INVOICEIN_INDEX->value, [
             ...$data
         ]);
         return $list->orderBy("invoice_ins.id", $dto->order_by)->paginate(15)->toArray();

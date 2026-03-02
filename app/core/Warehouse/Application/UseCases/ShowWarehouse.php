@@ -2,6 +2,8 @@
 
 namespace Core\Warehouse\Application\UseCases;
 
+use App\Supports\Permissions\Enums\Permission;
+
 use App\Supports\Hooks\HookAction;
 use App\Supports\Hooks\HookContext;
 use App\Supports\Hooks\HookDispatcher;
@@ -47,7 +49,7 @@ class ShowWarehouse
                 module: 'Warehouse'
             )
         );
-        Event::dispatch('erp.warehouse.show',[
+        Event::dispatch(Permission::WAREHOUSE_SHOW->value,[
             'user_id' => $dto->created_by,
             'business_id' => $dto->busuness_id
         ]);

@@ -2,6 +2,8 @@
 
 namespace Core\PriceList\Application\UseCases;
 
+use App\Supports\Permissions\Enums\Permission;
+
 use App\Supports\Hooks\HookAction;
 use App\Supports\Hooks\HookContext;
 use App\Supports\Hooks\HookDispatcher;
@@ -48,7 +50,7 @@ class CreatePriceList
             )
         );
         
-        Event::dispatch("erp.pricelist.create", [
+        Event::dispatch(Permission::PRICELIST_CREATE->value, [
             ...$data
         ]);
         

@@ -1,6 +1,8 @@
 <?php 
 namespace Core\StockIn\Application\Queries;
 
+use App\Supports\Permissions\Enums\Permission;
+
 use App\Contracts\Queries\QueryInterface;
 use App\Models\StockInModel;
 use App\Supports\Hooks\HookAction;
@@ -57,7 +59,7 @@ class IndexQuery implements QueryInterface {
                 'users.name',
                 'suppliers.unit_name'], 'like', '%' . $dto->keywords . '%');
         }
-        Event::dispatch("erp.stockin.index", [
+        Event::dispatch(Permission::STOCKIN_INDEX->value, [
             ...$data
         ]);
         return $list->orderBy("stock_ins.id",$dto->order_by)->paginate(15)->toArray();

@@ -2,6 +2,8 @@
 
 namespace Core\InventoryAdjustment\Application\UseCases;
 
+use App\Supports\Permissions\Enums\Permission;
+
 use App\Supports\Hooks\HookAction;
 use App\Supports\Hooks\HookContext;
 use App\Supports\Hooks\HookDispatcher;
@@ -42,7 +44,7 @@ class CreateInventoryAdjustment
                 module: 'InventoryAdjustment'
             )
         );
-        Event::dispatch("erp.inventoryadjustment.create", [
+        Event::dispatch(Permission::INVENTORYADJUSTMENT_CREATE->value, [
             ...$data,
             ...$create->toArray(),
         ]);

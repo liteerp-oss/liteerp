@@ -2,6 +2,8 @@
 
 namespace Core\Warehouse\Application\Queries;
 
+use App\Supports\Permissions\Enums\Permission;
+
 use App\Contracts\Queries\QueryInterface;
 use App\Models\WarehouseModel;
 use App\Supports\Hooks\HookAction;
@@ -42,7 +44,7 @@ class IndexQuery implements QueryInterface
         );
         $list = $data['query'];
         $data = $data['data'];
-        Event::dispatch("erp.warehouse.index", [
+        Event::dispatch(Permission::WAREHOUSE_INDEX->value, [
             ...$data
         ]);
         return $list->orderBy('warehouses.id', $dto->order_by)->paginate(15)->toArray();

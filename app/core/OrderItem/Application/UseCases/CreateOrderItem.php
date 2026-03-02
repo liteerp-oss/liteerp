@@ -2,6 +2,8 @@
 
 namespace Core\OrderItem\Application\UseCases;
 
+use App\Supports\Permissions\Enums\Permission;
+
 use App\Supports\Hooks\HookAction;
 use App\Supports\Hooks\HookContext;
 use App\Supports\Hooks\HookDispatcher;
@@ -47,7 +49,7 @@ class CreateOrderItem
             )
         );
 
-        Event::dispatch('erp.orderitem.create',[
+        Event::dispatch(Permission::ORDERITEM_CREATE->value,[
             ...$data,
             'qty_change' => (float) ($item->buy_quantity
                 + $item->gift_quantity

@@ -2,6 +2,8 @@
 
 namespace Core\Warehouse\Application\UseCases;
 
+use App\Supports\Permissions\Enums\Permission;
+
 use App\Supports\Hooks\HookAction;
 use App\Supports\Hooks\HookContext;
 use App\Supports\Hooks\HookDispatcher;
@@ -48,7 +50,7 @@ class DeleteWarehouse
                 module: 'Warehouse'
             )
         );
-        Event::dispatch("erp.warehouse.delete", [
+        Event::dispatch(Permission::WAREHOUSE_DELETE->value, [
             ...$data
         ]);
         DB::commit();

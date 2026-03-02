@@ -20,13 +20,11 @@ class PurchaseItemServiceProvider extends ServiceProvider
         $this->mergeModuleConfig();
     }
 
-    public function boot(CheckForStockMovementIn $checkForStockMovementIn,
-        CheckForPurchaseRequested $CheckForPurchaseRequested)
+    public function boot(PurchaseItemListner $listener)
     {
         $this->loadModuleRoutes();
         $this->loadModuleTranslations();
-        $listener = new PurchaseItemListner();
-        $listener->handle($checkForStockMovementIn,$CheckForPurchaseRequested);
+        $listener->handle();
     }
 
     protected function mergeModuleConfig(): void

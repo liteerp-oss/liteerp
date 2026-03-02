@@ -25,9 +25,9 @@ class SupplierServiceProvider extends ServiceProvider
 
     protected function mergeModuleConfig(): void
     {
-        $path = __DIR__ . '/../config/' . strtolower('Suppliers') . '.php';
+        $path = __DIR__ . '/../config/' . strtolower('Supplier') . '.php';
         if (file_exists($path)) {
-            $this->mergeConfigFrom($path, strtolower('Suppliers'));
+            $this->mergeConfigFrom($path, strtolower('Supplier'));
         }
     }
 
@@ -35,7 +35,7 @@ class SupplierServiceProvider extends ServiceProvider
     {
         $langPath = __DIR__ . '/../lang';
         if (is_dir($langPath)) {
-            $this->loadTranslationsFrom($langPath, strtolower('Suppliers'));
+            $this->loadTranslationsFrom($langPath, strtolower('Supplier'));
         }
     }
 
