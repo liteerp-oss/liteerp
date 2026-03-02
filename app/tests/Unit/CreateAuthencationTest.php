@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use App\Supports\Permissions\Enums\Permission;
 use Core\Authencation\Application\DTOs\CreateAuthencationRequest;
 use Core\Authencation\Application\UseCases\CreateAuthencation;
 use Core\Authencation\Domain\Entities\Authencation;
@@ -67,10 +68,10 @@ class CreateAuthencationTest extends TestCase
 
         Event::shouldReceive('dispatch')
             ->once()
-            ->with('erp.notification.create', [
+            ->with(Permission::NOTIFICATION_CREATE->value, [
                 'user_id' => 1,
-                'message' => __("authencation::messages.message_verify_account"),
-                'title' => __("authencation::messages.subject_verify_account"),
+                'message' => 'authencation::messages.message_verify_account',
+                'title' => 'authencation::messages.subject_verify_account',
                 'entity_type' => "users",
                 'entity_id' => 1,
                 'chanels' => ['mail'],

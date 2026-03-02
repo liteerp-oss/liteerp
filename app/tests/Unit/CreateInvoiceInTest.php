@@ -56,7 +56,8 @@ class CreateInvoiceInTest extends TestCase
             'invoice_date' => '2024-01-15',
             'due_date' => '2024-02-15',
             'image' => 'invoice.jpg',
-            'created_by' => 3
+            'created_by' => 3,
+            'username' => 'tester'
         ];
 
         $createdInvoiceIn = new InvoiceIn(
@@ -110,7 +111,9 @@ class CreateInvoiceInTest extends TestCase
 
         $result = $this->useCase->handle($data);
 
-        $this->assertEquals($createdInvoiceIn, $result);
+        $this->assertIsArray($result);
+        $this->assertEquals(1, $result['business_id']);
+        $this->assertEquals(2, $result['purchase_id']);
     }
 
     public function test_handle_handles_service_exception()

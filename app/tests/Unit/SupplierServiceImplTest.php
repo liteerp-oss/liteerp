@@ -62,7 +62,7 @@ class SupplierServiceImplTest extends TestCase
         $this->repoMock->shouldReceive('findByName')->with($data)->andReturn($existingSupplier);
 
         $this->expectException(BadException::class);
-        $this->expectExceptionMessage(__('suppliers::messages.name_used'));
+        $this->expectExceptionMessage(__('supplier::messages.name_used'));
 
         $this->service->create($data);
     }
@@ -145,7 +145,7 @@ class SupplierServiceImplTest extends TestCase
         $this->repoMock->shouldReceive('findByName')->with($data)->andReturn($anotherSupplier);
 
         $this->expectException(BadException::class);
-        $this->expectExceptionMessage(__('suppliers::messages.name_used'));
+        $this->expectExceptionMessage(__('supplier::messages.name_used'));
 
         $this->service->update($data);
     }
@@ -162,7 +162,7 @@ class SupplierServiceImplTest extends TestCase
         $this->repoMock->shouldReceive('findById')->with($data)->andReturn(null);
 
         $this->expectException(BadException::class);
-        $this->expectExceptionMessage(__('suppliers::messages.not_found'));
+        $this->expectExceptionMessage(__('supplier::messages.not_found'));
 
         $this->service->update($data);
     }
@@ -200,7 +200,7 @@ class SupplierServiceImplTest extends TestCase
         $this->repoMock->shouldReceive('findById')->with($data)->andReturn(null);
 
         $this->expectException(BadException::class);
-        $this->expectExceptionMessage(__('suppliers::messages.not_found'));
+        $this->expectExceptionMessage(__('supplier::messages.not_found'));
 
         $this->service->delete($data);
     }

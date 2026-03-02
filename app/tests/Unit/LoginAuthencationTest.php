@@ -3,6 +3,7 @@
 namespace Tests\Unit;
 
 use App\Exceptions\UnauthorizedException;
+use App\Supports\Permissions\Enums\Permission;
 use Core\Authencation\Application\DTOs\CreateAuthencationRequest;
 use Core\Authencation\Application\UseCases\LoginAuthencation;
 use Core\Authencation\Domain\Entities\Authencation;
@@ -97,10 +98,10 @@ class LoginAuthencationTest extends TestCase
 
         Event::shouldReceive('dispatch')
             ->once()
-            ->with('erp.notification.create', [
+            ->with(Permission::NOTIFICATION_CREATE->value, [
                 'user_id' => 1,
-                'message' => __("This is email to verify your account"),
-                'title' => __("Verify account"),
+                'message' => 'authencation::messages.message_verify_account',
+                'title' => 'authencation::messages.subject_verify_account',
                 'entity_type' => "users",
                 'entity_id' => 1,
                 'chanels' => ['mail'],

@@ -92,7 +92,7 @@ class PurchaseServiceImplTest extends TestCase
             ->andReturn(null);
 
         $this->expectException(BadException::class);
-        $this->expectExceptionMessage(__('purchases::messages.not_found'));
+        $this->expectExceptionMessage(__('purchase::messages.not_found'));
 
         $this->service->show($data);
     }
@@ -126,7 +126,7 @@ class PurchaseServiceImplTest extends TestCase
             ->andReturn(null);
 
         $this->expectException(BadException::class);
-        $this->expectExceptionMessage(__('purchases::messages.not_found'));
+        $this->expectExceptionMessage(__('purchase::messages.not_found'));
 
         $this->service->findOneById($data);
     }
@@ -282,7 +282,7 @@ class PurchaseServiceImplTest extends TestCase
             ->andReturn(null);
 
         $this->expectException(BadException::class);
-        $this->expectExceptionMessage(__('purchases::messages.not_found'));
+        $this->expectExceptionMessage(__('purchase::messages.not_found'));
 
         $this->service->update($data);
     }
@@ -307,7 +307,7 @@ class PurchaseServiceImplTest extends TestCase
             ->andReturn($existingPurchase);
 
         $this->expectException(BadException::class);
-        $this->expectExceptionMessage(__('purchases::messages.status_transition_invalid'));
+        $this->expectExceptionMessage(__('purchase::messages.status_transition_invalid'));
 
         $this->service->update($data);
     }
@@ -332,7 +332,7 @@ class PurchaseServiceImplTest extends TestCase
             ->andReturn($existingPurchase);
 
         $this->expectException(BadException::class);
-        $this->expectExceptionMessage(__('purchases::messages.status_transition_invalid'));
+        $this->expectExceptionMessage(__('purchase::messages.status_transition_invalid'));
 
         $this->service->update($data);
     }
@@ -357,7 +357,7 @@ class PurchaseServiceImplTest extends TestCase
             ->andReturn($existingPurchase);
 
         $this->expectException(BadException::class);
-        $this->expectExceptionMessage(__('purchases::messages.status_invalid'));
+        $this->expectExceptionMessage(__('purchase::messages.status_invalid'));
 
         $this->service->update($data);
     }

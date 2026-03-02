@@ -46,7 +46,8 @@ class CreatePurchaseTest extends TestCase
             'expected_date' => '2024-01-20',
             'note' => 'Test purchase',
             'shipping_fee' => 25.00,
-            'payment_method' => 'cash'
+            'payment_method' => 'cash',
+            'username' => 'tester'
         ];
 
         $purchase = new Purchase(
