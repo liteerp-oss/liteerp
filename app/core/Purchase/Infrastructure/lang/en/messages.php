@@ -7,10 +7,10 @@ return [
     'cannot_update' => 'Currently purchase can not update data',
     'already_cancelled' => 'Currently purchase has been cancelled',
     'notification' => [
-        'created' => ':username has been created new purchase',
-        'update' => ':username has been updated purchase',
-        'requested' => ':username has been requested purchase',
-        'approved' => ':username has been approved purchase',
-        'cancelled' => ':username has been cancelled purchase'
+        'created' => ':username created a new purchase',
+        'update' => ':username updated the purchase',
+        'requested' => ':username submitted the purchase for approval',
+        'approved' => ':username approved the purchase',
+        'cancelled' => ':username cancelled the purchase'
     ]
 ];

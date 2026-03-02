@@ -5,10 +5,10 @@ return [
     'status_invalid' => 'Status invalid',
     'order_completed_cannot_cancel' => 'This order has been completed, you can not change to cancel',
     'notification' => [
-        'created' => ':username has been created stock out ticket',
-        'shipped' => ':username has been shipped order',
-        'pending' => ':username has been updated stock out ticket',
-        'cancelled' => ':username has been cancelled order',
-        'completed' => ':username has been completed stock out ticket',
+        'created' => ':username created a stock-out ticket',
+        'shipped' => ':username marked the order as shipped',
+        'pending' => ':username updated the stock-out ticket',
+        'cancelled' => ':username cancelled the order',
+        'completed' => ':username marked the stock-out ticket as completed',
     ]
 ];
