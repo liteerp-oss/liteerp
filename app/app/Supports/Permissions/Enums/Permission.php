@@ -181,6 +181,7 @@ enum Permission: string
     case PERMISSIONGROUP_CREATE = 'erp.permissiongroup.create';
     case PERMISSIONGROUP_UPDATE = 'erp.permissiongroup.update';
     case PERMISSIONGROUP_DELETE = 'erp.permissiongroup.delete';
+    case PERMISSIONGROUP_CREATE_ADMIN = 'erp.permissiongroup.create_admin';
 
     case PERMISSION_INDEX = 'erp.permission.index';
     case PERMISSION_SHOW = 'erp.permission.show';
@@ -189,6 +190,7 @@ enum Permission: string
 
     case PERMISSIONGROUPUSER_CREATE = 'erp.permissiongroupuser.create';
     case PERMISSIONGROUPUSER_DELETE = 'erp.permissiongroupuser.delete';
+    case PERMISSIONGROUPUSER_SHOW = 'erp.permissiongroupuser.show';
 
     case NOTIFICATION_WORKFLOW = 'erp.notification.workflow';
     case NOTIFICATION_UPDATE = 'erp.notification.update';
