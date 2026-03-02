@@ -64,8 +64,15 @@ export default function Warehouse() {
             { label: t('Address'), key: 'address' },
             {
                 label: t('Products'),
-                key: 'product_count',
-                render: (value) => <span>{value}</span>,
+                key: 'total_product'
+            },
+            {
+                label: t('Quantity'),
+                key: 'total_qty'
+            },
+            {
+                label: t('Reserved quantity'),
+                key: 'total_reserved_qty'
             },
             {
                 label: t('Status'),
