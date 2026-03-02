@@ -266,6 +266,7 @@ class PermissionBuilder
             Permission::STOCKOUT_DELETE,
             Permission::STOCKOUT_COMPLETED,
             Permission::STOCKOUT_SHIPPED,
+            Permission::STOCKOUT_CANCELLED
         ]);
     }
 
