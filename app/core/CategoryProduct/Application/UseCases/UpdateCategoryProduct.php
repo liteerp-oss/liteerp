@@ -7,6 +7,7 @@ use App\Supports\Hooks\HookContext;
 use App\Supports\Hooks\HookDispatcher;
 use App\Supports\Hooks\HookPhase;
 use App\Supports\Hooks\HookTiming;
+use App\Supports\Permissions\Enums\Permission;
 use Core\CategoryProduct\Application\DTOs\CreateCategoryProductRequest;
 use Core\CategoryProduct\Domain\Services\CategoryProductService;
 use Illuminate\Support\Facades\DB;
@@ -46,7 +47,7 @@ class UpdateCategoryProduct
                 module: 'CategoryProduct'
             )
         );
-        Event::dispatch("erp.categoryproduct.update", [
+        Event::dispatch(Permission::CATEGORYPRODUCT_UPDATE->value, [
             ...$data,
             'category_id' => $update->id
         ]);

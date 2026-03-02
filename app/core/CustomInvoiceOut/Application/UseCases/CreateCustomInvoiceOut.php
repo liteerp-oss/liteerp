@@ -7,6 +7,7 @@ use App\Supports\Hooks\HookContext;
 use App\Supports\Hooks\HookDispatcher;
 use App\Supports\Hooks\HookPhase;
 use App\Supports\Hooks\HookTiming;
+use App\Supports\Permissions\Enums\Permission;
 use Core\CustomInvoiceOut\Application\DTOs\CreateCustomInvoiceOutRequest;
 use Core\CustomInvoiceOut\Domain\Services\CustomInvoiceOutService;
 use Illuminate\Support\Facades\DB;
@@ -49,7 +50,7 @@ class CreateCustomInvoiceOut
                 module: 'CustomInvoiceOut'
             )
         );
-        Event::dispatch('erp.custominvoiceout.create', [
+        Event::dispatch(Permission::CUSTOMINVOICEOUT_CREATE->value, [
             ...$data
         ]);
         DB::commit();

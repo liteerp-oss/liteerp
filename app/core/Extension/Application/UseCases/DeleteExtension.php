@@ -2,6 +2,7 @@
 
 namespace Core\Extension\Application\UseCases;
 
+use App\Supports\Permissions\Enums\Permission;
 use Core\Extension\Application\DTOs\DeleteExtensionRequest;
 use Core\Extension\Domain\Services\ExtensionService;
 use Core\Extension\Domain\Supports\ExtensionInstall;
@@ -19,7 +20,7 @@ class DeleteExtension
         DB::beginTransaction();
         $dto = DeleteExtensionRequest::fromArray($data);
         $findById = $this->service->findById($dto->toArray());
-        Event::dispatch("erp.extension.delete", [
+        Event::dispatch(Permission::EXTENSION_DELETE->value, [
             ...$dto->toArray(),
             ...$data,
             ...$findById->toArray(),

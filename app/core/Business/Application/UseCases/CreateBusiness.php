@@ -7,6 +7,7 @@ use App\Supports\Hooks\HookContext;
 use App\Supports\Hooks\HookDispatcher;
 use App\Supports\Hooks\HookPhase;
 use App\Supports\Hooks\HookTiming;
+use App\Supports\Permissions\Enums\Permission;
 use Core\Business\Application\DTOs\CreateBusinessRequest;
 use Core\Business\Domain\Services\BusinessService;
 use Illuminate\Support\Facades\DB;
@@ -44,7 +45,7 @@ class CreateBusiness
                 ...$business->toArray()
             ]
         ));
-        Event::dispatch('erp.business.create', [
+        Event::dispatch(Permission::BUSINESS_CREATE->value, [
             ...$data,
             'business_id' => $business->id,
             'role_user_id' => $dto->user_id

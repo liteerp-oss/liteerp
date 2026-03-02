@@ -7,6 +7,7 @@ use App\Supports\Hooks\HookContext;
 use App\Supports\Hooks\HookDispatcher;
 use App\Supports\Hooks\HookPhase;
 use App\Supports\Hooks\HookTiming;
+use App\Supports\Permissions\Enums\Permission;
 use Core\CategoryProduct\Application\DTOs\CreateCategoryProductRequest;
 use Core\CategoryProduct\Domain\Services\CategoryProductService;
 use Illuminate\Support\Facades\DB;
@@ -49,7 +50,7 @@ class CreateCategoryProduct
                 module: 'CategoryProduct'
             )
         );
-        Event::dispatch("erp.categoryproduct.create", [
+        Event::dispatch(Permission::CATEGORYPRODUCT_CREATE->value, [
             ...$data
         ]);
         DB::commit();

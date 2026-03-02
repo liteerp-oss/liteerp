@@ -2,6 +2,7 @@
 
 namespace Core\Extension\Application\UseCases;
 
+use App\Supports\Permissions\Enums\Permission;
 use Core\Extension\Application\DTOs\UpdateExtensionRequest;
 use Core\Extension\Domain\Services\ExtensionService;
 use Core\Extension\Domain\Supports\ExtensionChange;
@@ -17,7 +18,7 @@ class UpdateExtension
         DB::beginTransaction();
         $dto = UpdateExtensionRequest::fromArray($data);
         $update = $this->service->update($dto->toArray());
-        Event::dispatch("erp.extension.update", [
+        Event::dispatch(Permission::EXTENSION_UPDATE->value, [
             ...$dto->toArray(),
             ...$data,
             ...$update->toArray(),

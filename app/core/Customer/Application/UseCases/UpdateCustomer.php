@@ -7,6 +7,7 @@ use App\Supports\Hooks\HookContext;
 use App\Supports\Hooks\HookDispatcher;
 use App\Supports\Hooks\HookPhase;
 use App\Supports\Hooks\HookTiming;
+use App\Supports\Permissions\Enums\Permission;
 use Core\Customer\Application\DTOs\CreateCustomerRequest;
 use Core\Customer\Domain\Services\CustomerService;
 use Illuminate\Support\Facades\DB;
@@ -46,7 +47,7 @@ class UpdateCustomer
                 module: 'Customer'
             )
         );
-        Event::dispatch("erp.customer.update", [
+        Event::dispatch(Permission::CUSTOMER_UPDATE->value, [
             ...$data
         ]);
         DB::commit();

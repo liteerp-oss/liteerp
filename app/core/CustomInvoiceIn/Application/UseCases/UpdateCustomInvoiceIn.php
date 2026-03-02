@@ -7,6 +7,7 @@ use App\Supports\Hooks\HookContext;
 use App\Supports\Hooks\HookDispatcher;
 use App\Supports\Hooks\HookPhase;
 use App\Supports\Hooks\HookTiming;
+use App\Supports\Permissions\Enums\Permission;
 use Core\CustomInvoiceIn\Application\DTOs\CreateCustomInvoiceInRequest;
 use Core\CustomInvoiceIn\Domain\Services\CustomInvoiceInService;
 use Core\CustomInvoiceIn\Infrastructure\Events\CustomInvoiceInEvent;
@@ -48,7 +49,7 @@ class UpdateCustomInvoiceIn
                 module: 'CustomInvoiceIn'
             )
         );
-        Event::dispatch('erp.custominvoicein.update', [
+        Event::dispatch(Permission::CUSTOMINVOICEIN_UPDATE->value, [
             ...$data
         ]);
         DB::commit();

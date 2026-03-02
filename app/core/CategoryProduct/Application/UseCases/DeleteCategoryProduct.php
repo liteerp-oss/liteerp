@@ -7,6 +7,7 @@ use App\Supports\Hooks\HookContext;
 use App\Supports\Hooks\HookDispatcher;
 use App\Supports\Hooks\HookPhase;
 use App\Supports\Hooks\HookTiming;
+use App\Supports\Permissions\Enums\Permission;
 use Core\CategoryProduct\Application\DTOs\CreateCategoryProductRequest;
 use Core\CategoryProduct\Application\DTOs\DeleteCategoryProductRequest;
 use Core\CategoryProduct\Domain\Services\CategoryProductService;
@@ -47,7 +48,7 @@ class DeleteCategoryProduct
                 module: 'CategoryProduct'
             )
         );
-        Event::dispatch("erp.categoryproduct.delete", [
+        Event::dispatch(Permission::CATEGORYPRODUCT_DELETE->value, [
             ...$data
         ]);
         DB::commit();

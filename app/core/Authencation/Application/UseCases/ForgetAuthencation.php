@@ -2,6 +2,7 @@
 
 namespace Core\Authencation\Application\UseCases;
 
+use App\Supports\Permissions\Enums\Permission;
 use Core\AppToken\Application\DTOs\CreateAppTokenRequest;
 use Core\AppToken\Application\UseCases\CreateAppToken;
 use Core\Authencation\Application\DTOs\ForgetAuthencationRequest;
@@ -27,15 +28,16 @@ class ForgetAuthencation
             ],
             'exp' => 5
         ]));
-        Event::dispatch('erp.notification.create', [
+        $notification = [
             'user_id' => $account->id,
-            'message' => __("authencation::message.message_reset_password"),
-            'title'   => __("authencation::message.subject_verify_account"),
             'entity_type' => "users",
             'entity_id' => $account->id,
             'chanels' => ['mail'],
+            'message' => __("authencation::message.message_reset_password"),
+            'title'   => __("authencation::message.subject_verify_account"),
             'link'     => URL::to('/dashboard/reset-password?token=' . $token)
-        ]);
+        ];
+        Event::dispatch(Permission::NOTIFICATION_CREATE->value, $notification);
         return [];
     }
 }

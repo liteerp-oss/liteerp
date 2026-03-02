@@ -2,6 +2,7 @@
 
 namespace Core\Authencation\Application\UseCases;
 
+use App\Supports\Permissions\Enums\Permission;
 use Core\AppToken\Application\UseCases\CreateAppToken;
 use Core\Authencation\Application\DTOs\CreateAuthencationRequest;
 use Core\Authencation\Domain\Services\AuthencationService;
@@ -18,7 +19,7 @@ class CreateAdminAuthencation
         DB::beginTransaction();
         $dto->password = Hash::make($dto->password);
         $account = $this->service->createAdmin($dto->toArray());
-        Event::dispatch("erp.authencation.create_admin", $account->toArray());
+        Event::dispatch(Permission::AUTHENCATION_CREATE_ADMIN->value, $account->toArray());
         DB::commit();
         return $account;
     }

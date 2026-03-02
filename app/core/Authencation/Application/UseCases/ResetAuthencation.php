@@ -2,6 +2,7 @@
 
 namespace Core\Authencation\Application\UseCases;
 
+use App\Supports\Permissions\Enums\Permission;
 use Core\AppToken\Application\UseCases\ParseAppToken;
 use Core\Authencation\Application\DTOs\ResetAuthencationRequest;
 use Core\Authencation\Domain\Services\AuthencationService;
@@ -23,17 +24,19 @@ class ResetAuthencation
             'id' => $tokenData->data->id,
             'password' => Hash::make($newPassword)
         ]);
-        Event::dispatch('erp.notification.create', [
-            'user_id' => $account->id,
-            'message' => __("authencation::messages.changed_password",[
-                'password' => $newPassword
-            ]),
-            'title'   => __("authencation::messages.security_account"),
-            'entity_type' => "users",
-            'entity_id' => $account->id,
-            'chanels' => ['mail'],
-            'link'     => URL::to('/dashboard/login')
-        ]);
+        $notification = [
+                'user_id' => $account->id,
+                'entity_type' => "users",
+                'entity_id' => $account->id,
+                'chanels' => ['mail'],
+                'message' => "authencation::messages.changed_password",
+                'message_params' => [
+                    'password' => $newPassword
+                ],
+                'title'   => "authencation::messages.security_account",
+                'link'     => URL::to('/dashboard/login')
+            ];
+        Event::dispatch(Permission::NOTIFICATION_CREATE->value, $notification);
         return [];
     }
 }

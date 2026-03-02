@@ -2,6 +2,7 @@
 
 namespace Core\Extension\Application\UseCases;
 
+use App\Supports\Permissions\Enums\Permission;
 use Core\Extension\Application\DTOs\CreateExtensionRequest;
 use Core\Extension\Domain\Services\ExtensionService;
 use Core\Extension\Domain\Supports\ExtensionChange;
@@ -20,7 +21,7 @@ class CreateExtension
         DB::beginTransaction();
         $dto = CreateExtensionRequest::fromArray($data);
         $entity = $this->service->create($dto->toArray());
-        Event::dispatch("erp.extension.create", [
+        Event::dispatch(Permission::EXTENSION_CREATE->value, [
             ...$dto->toArray(),
             ...$data,
             ...$entity->toArray(),

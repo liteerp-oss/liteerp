@@ -3,6 +3,7 @@
 namespace Core\Authencation\Application\UseCases;
 
 use App\Exceptions\UnauthorizedException;
+use App\Supports\Permissions\Enums\Permission;
 use Core\AppToken\Application\DTOs\CreateAppTokenRequest;
 use Core\AppToken\Application\UseCases\CreateAppToken;
 use Core\Authencation\Application\DTOs\CreateAuthencationRequest;
@@ -29,15 +30,16 @@ class LoginAuthencation
                 ],
                 'exp' => 5
             ]));
-            Event::dispatch('erp.notification.create', [
+            $notification = [
                 'user_id' => $account->id,
-                'message' => "authencation::messages.message_verify_account",
-                'title'   => "authencation::messages.subject_verify_account",
                 'entity_type' => "users",
                 'entity_id' => $account->id,
                 'chanels' => ['mail'],
+                'message' => "authencation::messages.message_verify_account",
+                'title'   => "authencation::messages.subject_verify_account",
                 'link'     => URL::to('/dashboard/verify-account?token=' . $token)
-            ]);
+            ];
+            Event::dispatch(Permission::NOTIFICATION_CREATE->value, $notification);
             throw new UnauthorizedException(__("authcation::messages.not_verify"));
         }
         return [

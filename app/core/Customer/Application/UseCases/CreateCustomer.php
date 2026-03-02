@@ -7,6 +7,7 @@ use App\Supports\Hooks\HookContext;
 use App\Supports\Hooks\HookPhase;
 use App\Supports\Hooks\HookTiming;
 use App\Supports\Hooks\HookDispatcher;
+use App\Supports\Permissions\Enums\Permission;
 use Core\Customer\Application\DTOs\CreateCustomerRequest;
 use Core\Customer\Domain\Services\CustomerService;
 use Illuminate\Support\Facades\DB;
@@ -49,7 +50,7 @@ class CreateCustomer
             )
         );
 
-        Event::dispatch("erp.customer.create", [
+        Event::dispatch(Permission::CUSTOMER_CREATE->value, [
             ...$data
         ]);
         DB::commit();

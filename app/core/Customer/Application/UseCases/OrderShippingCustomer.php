@@ -2,6 +2,7 @@
 
 namespace Core\Customer\Application\UseCases;
 
+use App\Supports\Permissions\Enums\Permission;
 use Core\Customer\Application\DTOs\OrderShippingCustomerRequest;
 use Core\Customer\Domain\Services\CustomerService;
 use Illuminate\Support\Facades\Event;
@@ -14,7 +15,7 @@ class OrderShippingCustomer
     {
         $customer = $this->service->show($dto->toArray());
 
-        Event::dispatch('erp.customer.creatordershipping', [
+        Event::dispatch(Permission::CUSTOMER_CREATORDEALERSHIPPING->value, [
             'order_id' => $dto->order_id,
             'receiver_name' => $customer->name,
             'receiver_phone' => $customer->phone,

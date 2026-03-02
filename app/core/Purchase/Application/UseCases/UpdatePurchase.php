@@ -54,22 +54,22 @@ class UpdatePurchase
                 ...$data,
                 ...$forInvoice
             ];
-            Event::dispatch("erp.purchase.approved", $updateData);
+            Event::dispatch(Permission::PURCHASE_APPROVED->value, $updateData);
         } else if($update->isDraft()) {
             $updateData = [
                 ...$data,
             ];
-            Event::dispatch("erp.purchase.update", $updateData);
+            Event::dispatch(Permission::PURCHASE_UPDATE->value, $updateData);
         } else if($update->isRequested()) {
             $updateData = [
                 ...$data,
             ];
-            Event::dispatch("erp.purchase.requested", $updateData);
+            Event::dispatch(Permission::PURCHASE_REQUESTED->value, $updateData);
         } else if($update->isCancelled()){
             $updateData = [
                 ...$data,
             ];
-            Event::dispatch("erp.purchase.cancelled", $updateData);
+            Event::dispatch(Permission::PURCHASE_CANCELLED->value, $updateData);
         }
 
         $notification = [
@@ -84,7 +84,7 @@ class UpdatePurchase
                 'username' => $data['username']
             ]
         ];
-        Event::dispatch("erp.notification.many", [
+        Event::dispatch(Permission::NOTIFICATION_CREATE_MANY->value, [
             ...$notification,
             'permissions' => [
                 Permission::PURCHASE_APPROVED,
@@ -93,7 +93,7 @@ class UpdatePurchase
                 Permission::PURCHASE_REQUESTED,
             ]
         ]);
-        Event::dispatch("erp.notification.create", $notification);
+        Event::dispatch(Permission::NOTIFICATION_CREATE->value, $notification);
         DB::commit();
         return $data;
     }

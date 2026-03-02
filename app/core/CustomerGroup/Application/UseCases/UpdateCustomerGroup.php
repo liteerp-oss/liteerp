@@ -8,6 +8,7 @@ use App\Supports\Hooks\HookContext;
 use App\Supports\Hooks\HookDispatcher;
 use App\Supports\Hooks\HookPhase;
 use App\Supports\Hooks\HookTiming;
+use App\Supports\Permissions\Enums\Permission;
 use Core\CustomerGroup\Application\DTOs\CreateCustomerGroupRequest;
 use Core\CustomerGroup\Domain\Services\CustomerGroupService;
 use Illuminate\Support\Facades\DB;
@@ -49,7 +50,7 @@ class UpdateCustomerGroup
                 module: 'CustomerGroup'
             )
         );
-        Event::dispatch("erp.customergroup.update", [
+        Event::dispatch(Permission::CUSTOMERGROUP_UPDATE->value, [
             ...$data
         ]);
         DB::commit();

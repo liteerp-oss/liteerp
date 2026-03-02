@@ -7,8 +7,10 @@ use App\Supports\Hooks\HookContext;
 use App\Supports\Hooks\HookDispatcher;
 use App\Supports\Hooks\HookPhase;
 use App\Supports\Hooks\HookTiming;
+use App\Supports\Permissions\Enums\Permission;
 use Core\CustomerGroup\Application\DTOs\ShowCustomerGroupRequest;
 use Core\CustomerGroup\Domain\Services\CustomerGroupService;
+use Illuminate\Support\Facades\Event;
 
 class ShowCustomerGroup
 {
@@ -45,6 +47,9 @@ class ShowCustomerGroup
                 module: 'CustomerGroup'
             )
         );
+        Event::dispatch(Permission::CUSTOMERGROUP_SHOW->value,[
+            ...$data
+        ]);
         return $data;
     }
 }

@@ -7,6 +7,7 @@ use App\Supports\Hooks\HookContext;
 use App\Supports\Hooks\HookDispatcher;
 use App\Supports\Hooks\HookPhase;
 use App\Supports\Hooks\HookTiming;
+use App\Supports\Permissions\Enums\Permission;
 use Core\CustomerGroup\Application\DTOs\DeleteCustomerGroupRequest;
 use Core\CustomerGroup\Domain\Services\CustomerGroupService;
 use Illuminate\Support\Facades\DB;
@@ -48,7 +49,7 @@ class DeleteCustomerGroup
                 module: 'CustomerGroup'
             )
         );
-        Event::dispatch("erp.customergroup.delete", [
+        Event::dispatch(Permission::CUSTOMERGROUP_DELETE->value, [
             ...$data
         ]);
         DB::commit();

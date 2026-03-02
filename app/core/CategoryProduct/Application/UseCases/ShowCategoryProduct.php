@@ -8,7 +8,9 @@ use App\Supports\Hooks\HookContext;
 use App\Supports\Hooks\HookDispatcher;
 use App\Supports\Hooks\HookPhase;
 use App\Supports\Hooks\HookTiming;
+use App\Supports\Permissions\Enums\Permission;
 use Core\CategoryProduct\Application\DTOs\ShowCategoryProductRequest;
+use Illuminate\Support\Facades\Event;
 
 class ShowCategoryProduct
 {
@@ -43,6 +45,9 @@ class ShowCategoryProduct
                 module: 'CategoryProduct'
             )
         );
+        Event::dispatch(Permission::CATEGORYPRODUCT_SHOW->value,[
+            ...$data
+        ]);
         return $data;
     }
 }

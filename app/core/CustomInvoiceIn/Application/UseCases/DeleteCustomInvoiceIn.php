@@ -7,6 +7,7 @@ use App\Supports\Hooks\HookContext;
 use App\Supports\Hooks\HookDispatcher;
 use App\Supports\Hooks\HookPhase;
 use App\Supports\Hooks\HookTiming;
+use App\Supports\Permissions\Enums\Permission;
 use Core\CustomInvoiceIn\Application\DTOs\DeleteCustomInvoiceInRequest;
 use Core\CustomInvoiceIn\Domain\Services\CustomInvoiceInService;
 use Illuminate\Support\Facades\DB;
@@ -47,7 +48,7 @@ class DeleteCustomInvoiceIn
                 module: 'CustomInvoiceIn'
             )
         );
-        Event::dispatch('erp.custominvoicein.delete', [
+        Event::dispatch(Permission::CUSTOMINVOICEIN_DELETE->value, [
             ...$data
         ]);
         DB::commit();

@@ -7,6 +7,7 @@ use App\Supports\Hooks\HookContext;
 use App\Supports\Hooks\HookDispatcher;
 use App\Supports\Hooks\HookPhase;
 use App\Supports\Hooks\HookTiming;
+use App\Supports\Permissions\Enums\Permission;
 use Core\Business\Application\DTOs\CreateBusinessRequest;
 use Core\Business\Domain\Services\BusinessService;
 use Illuminate\Support\Facades\DB;
@@ -42,7 +43,7 @@ class UpdateBusiness
                 ...$business->toArray()
             ]
         ));
-        Event::dispatch('erp.business.update',[
+        Event::dispatch(Permission::BUSINESS_UPDATE->value,[
             ...$data,
             'business_id' => $business->id
         ]);
