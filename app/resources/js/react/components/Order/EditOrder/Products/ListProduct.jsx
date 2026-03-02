@@ -32,8 +32,8 @@ export default function ListProduct({
         table.setLoading(true);
         InventoryService.list({
             ...search.formData,
+            ...detail,
             page: page,
-            customer_group_id: detail?.customer_group_id
         })
             .then((resp) => {
                 console.log(resp)

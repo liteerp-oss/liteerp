@@ -25,8 +25,7 @@ class IndexQuery implements QueryInterface {
             "products.unit as unit",
             "warehouses.name as warehouse",
             "category_product.name as category",
-            "category_product.tax as tax",
-            "price_list.price as price"
+            "category_product.tax as tax"
         )
             ->join("products", "products.id", "=", "inventories.product_id")
             ->join("warehouses", "warehouses.id", "=", "inventories.warehouse_id")
@@ -35,13 +34,19 @@ class IndexQuery implements QueryInterface {
                 "category_product.id",
                 "=",
                 "products.category_id"
-            )
+            )->where('products.business_id', $dto->business_id);
+        if($dto->order_id) {
+            $index = $index->addSelect("price_list.price as price")
             ->join("price_list", "price_list.product_id", "=", "products.id")
-            ->where('products.business_id', $dto->business_id);
+            ->join("customer_group", "customer_group.id", "=", "price_list.customer_group_id")
+            ->join("customers", "customers.group", "=", "customer_group.id")
+            ->join("orders", "orders.customer_id", "=", "customers.id")
+            ->where('orders.id', $dto->order_id)
+            ->groupBy("price_list.price");
+        }
         $index = $index->groupBy(
             "inventories.id",
-            "products.id",
-            "price_list.price"
+            "products.id"
         );
         $hooks = $this->hooks->dispatch(
             new HookContext(
