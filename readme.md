@@ -159,7 +159,7 @@ LiteERP focuses on **operations**, not accounting or tax compliance.
 - Laravel 12
 - ReactJS
 - MySQL 8
-- PHP 8.3+
+- PHP 8.4+
 - Clean Architecture
 - Domain Driven Design
 - Domain Events
