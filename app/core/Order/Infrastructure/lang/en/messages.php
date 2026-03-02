@@ -8,4 +8,10 @@ return [
     'status_invalid' => 'Invalid order status for this operation.',
     'order_cancelled' => 'This order has been cancelled.',
     'status_cannot_modify_items' => 'Current order status does not allow adding or removing products.',
+    'notification' => [
+        'created' => ':username has been created',
+        'pending' => ':username has been updated',
+        'approved' => ':username has been approved',
+        'cancelled' => ':username has been cancelled',
+    ]
 ];

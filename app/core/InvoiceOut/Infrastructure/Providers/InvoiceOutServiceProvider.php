@@ -21,22 +21,18 @@ class InvoiceOutServiceProvider extends ServiceProvider
         $this->mergeModuleConfig();
     }
 
-    public function boot(CreateInvoiceOut $createInvoiceOut,
-    UnapproveInvoiceOutByOrderCancelled $UnapproveInvoiceOutByOrderCancelled,
-    UpdateTotalByShippingFee $UpdateTotalByShippingFee)
+    public function boot(InvoiceOutListener $listener)
     {
         $this->loadModuleRoutes();
         $this->loadModuleTranslations();
-        $listener = new InvoiceOutListener();
-        $listener->handle($createInvoiceOut,
-        $UnapproveInvoiceOutByOrderCancelled, $UpdateTotalByShippingFee);
+        $listener->handle();
     }
 
     protected function mergeModuleConfig(): void
     {
-        $path = __DIR__ . '/../config/' . strtolower('InvoiceOuts') . '.php';
+        $path = __DIR__ . '/../config/' . strtolower('InvoiceOut') . '.php';
         if (file_exists($path)) {
-            $this->mergeConfigFrom($path, strtolower('InvoiceOuts'));
+            $this->mergeConfigFrom($path, strtolower('InvoiceOut'));
         }
     }
 
@@ -44,7 +40,7 @@ class InvoiceOutServiceProvider extends ServiceProvider
     {
         $langPath = __DIR__ . '/../lang';
         if (is_dir($langPath)) {
-            $this->loadTranslationsFrom($langPath, strtolower('InvoiceOuts'));
+            $this->loadTranslationsFrom($langPath, strtolower('InvoiceOut'));
         }
     }
 

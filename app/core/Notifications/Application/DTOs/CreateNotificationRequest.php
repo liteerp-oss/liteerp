@@ -6,7 +6,7 @@ class CreateNotificationRequest
 {
     public function __construct(
         public int $user_id,
-        public ?string $message = null,
+        public string $message,
         public ?string $link = null,
         public ?string $title = null,
         public ?string $entity_type,
@@ -14,14 +14,20 @@ class CreateNotificationRequest
         public array $chanels = ['db'],
         public ?string $queue = null,
         public ?string $type = null,
-        public ?int $business_id = null
-    ) {}
+        public ?int $business_id = null,
+        // translate params
+        public array $message_params = [],
+        public array $title_params = [],
+        public string $locate = 'en'
+    ) {
+        
+    }
 
     public static function fromArray(array $data): self
     {
         return new self(
             user_id: $data['user_id'],
-            message: $data['message'] ?? null,
+            message: $data['message'],
             link: $data['link'] ?? null,        
             title: $data['title'] ?? null,      
             entity_type: $data['entity_type'] ?? null,
@@ -29,7 +35,10 @@ class CreateNotificationRequest
             chanels: $data['chanels']  ?? ['db'],
             queue: $data['queue'] ?? null,
             type: $data['type'] ?? null,
-            business_id: $data['business_id'] ?? null
+            business_id: $data['business_id'] ?? null,
+            message_params: $data['message_params'] ?? [],
+            title_params: $data['title_params'] ?? [],
+            locate: $data['locate'] ?? 'en'
         );
     }
     
@@ -45,7 +54,10 @@ class CreateNotificationRequest
             'chanels' => $this->chanels,
             'queue'   => $this->queue,
             'type'    => $this->type,
-            'business_id'   => $this->business_id
+            'business_id'   => $this->business_id,
+            'message_params' => $this->message_params,
+            'title_params' => $this->title_params,
+            'locate' => $this->locate
         ];
         
     }

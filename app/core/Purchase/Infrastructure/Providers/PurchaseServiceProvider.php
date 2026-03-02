@@ -2,8 +2,6 @@
 
 namespace Core\Purchase\Infrastructure\Providers;
 
-use Core\Purchase\Application\UseCases\CheckForPurchaseCancelled;
-use Core\Purchase\Application\UseCases\CheckForPurchaseItem;
 use Illuminate\Support\ServiceProvider;
 use Core\Purchase\Domain\Repositories\PurchaseRepositoryInterface;
 use Core\Purchase\Infrastructure\Repositories\EloquentPurchaseRepository;
@@ -20,20 +18,18 @@ class PurchaseServiceProvider extends ServiceProvider
         $this->mergeModuleConfig();
     }
 
-    public function boot(CheckForPurchaseItem $checkForPurchaseItem,
-    CheckForPurchaseCancelled $checkForPurchaseCancelled)
+    public function boot(PurchaseListener $listener)
     {
         $this->loadModuleRoutes();
         $this->loadModuleTranslations();
-        $listener = new PurchaseListener();
-        $listener->handle($checkForPurchaseItem,$checkForPurchaseCancelled);
+        $listener->handle();
     }
 
     protected function mergeModuleConfig(): void
     {
-        $path = __DIR__ . '/../config/' . strtolower('Purchases') . '.php';
+        $path = __DIR__ . '/../config/' . strtolower('Purchase') . '.php';
         if (file_exists($path)) {
-            $this->mergeConfigFrom($path, strtolower('Purchases'));
+            $this->mergeConfigFrom($path, strtolower('Purchase'));
         }
     }
 
@@ -41,7 +37,7 @@ class PurchaseServiceProvider extends ServiceProvider
     {
         $langPath = __DIR__ . '/../lang';
         if (is_dir($langPath)) {
-            $this->loadTranslationsFrom($langPath, strtolower('Purchases'));
+            $this->loadTranslationsFrom($langPath, strtolower('Purchase'));
         }
     }
 

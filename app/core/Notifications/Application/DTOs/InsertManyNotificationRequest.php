@@ -8,7 +8,7 @@ class InsertManyNotificationRequest
 {
     public function __construct(
         public ?string $title = null,
-        public ?string $message = null,
+        public string $message,
         public ?string $link = null,
         public ?string $entity_type,
         public ?int $entity_id,
@@ -17,6 +17,7 @@ class InsertManyNotificationRequest
         public ?int $business_id = null,
         public ?string $type = null,
         public int $user_id,
+        public ?array $permissions = [],
         // translate params
         public array $message_params = [],
         public array $title_params = []
@@ -27,7 +28,7 @@ class InsertManyNotificationRequest
     public static function fromArray(array $data): self
     {
         return new self(
-            message: $data['message'] ?? null,
+            message: $data['message'],
             link: $data['link'] ?? URL::to('/dashboard'),        
             title: $data['title'] ?? null,      
             entity_type: $data['entity_type'] ?? null,
@@ -38,7 +39,8 @@ class InsertManyNotificationRequest
             type: $data['type'] ?? null,
             user_id: $data['user_id'],
             message_params: $data['message_params'] ?? [],
-            title_params: $data['title_params'] ?? []
+            title_params: $data['title_params'] ?? [],
+            permissions: $data['permissions'] ?? []
         );
     }
     
@@ -56,7 +58,8 @@ class InsertManyNotificationRequest
             'type'  => $this->type,
             'user_id' => $this->user_id,
             'message_params' => $this->message_params,
-            'title_params' => $this->title_params
+            'title_params' => $this->title_params,
+            'permissions' => $this->permissions
         ];
     }
     public function getQueue():string {

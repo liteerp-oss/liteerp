@@ -20,13 +20,11 @@ class InvoiceInServiceProvider extends ServiceProvider
         $this->mergeModuleConfig();
     }
 
-    public function boot(AutomaticCreateInvoice $AutomaticCreateInvoice,
-        UnapprovedInvoiceIn $UnapprovedInvoiceIn)
+    public function boot(InvoiceInListener $invoiceInListener)
     {
         $this->loadModuleRoutes();
         $this->loadModuleTranslations();
-        $invoiceInListener = new InvoiceInListener();
-        $invoiceInListener->handle($AutomaticCreateInvoice,$UnapprovedInvoiceIn);
+        $invoiceInListener->handle();
     }
 
     protected function mergeModuleConfig(): void

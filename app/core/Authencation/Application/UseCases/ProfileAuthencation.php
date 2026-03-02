@@ -3,8 +3,6 @@
 namespace Core\Authencation\Application\UseCases;
 
 use App\Exceptions\UnauthorizedException;
-use Core\Authencation\Application\DTOs\CreateAuthencationRequest;
-use Core\Authencation\Domain\Entities\Authencation;
 use Core\Authencation\Domain\Services\AuthencationService;
 use Illuminate\Support\Facades\Auth;
 

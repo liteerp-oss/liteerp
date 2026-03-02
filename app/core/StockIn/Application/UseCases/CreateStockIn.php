@@ -7,6 +7,7 @@ use App\Supports\Hooks\HookContext;
 use App\Supports\Hooks\HookDispatcher;
 use App\Supports\Hooks\HookPhase;
 use App\Supports\Hooks\HookTiming;
+use App\Supports\Permissions\Enums\Permission;
 use Core\StockIn\Application\DTOs\CreateStockInRequest;
 use Core\StockIn\Domain\Services\StockInService;
 use Illuminate\Support\Facades\DB;
@@ -47,25 +48,30 @@ class CreateStockIn
                 module: 'StockIn'
             )
         );
-        Event::dispatch("erp.stockin.create", [
+        Event::dispatch(Permission::STOCKIN_CREATE->value, [
             ...$data,
         ]);
-        Event::dispatch("erp.notification.many", [
+        $notification = [
             'user_id' => $dto->created_by,
             'business_id' => $dto->business_id,
             'type' => 'created',
             'entity_type' => 'stockin',
             'entity_id' => $create->id,
-            'chanels' => ['db']
+            'chanels' => ['db'],
+            'message' => "stockin::messages.notification.created",
+            'message_params' => [
+                'username' => $data['username']
+            ]
+        ];
+        Event::dispatch(Permission::NOTIFICATION_CREATE_MANY->value, [
+            ...$notification,
+            'permissions' => [
+                Permission::STOCKIN_UPDATE,
+                Permission::STOCKIN_RECEIVED,
+                Permission::STOCKIN_CANCELLED
+            ]
         ]);
-        Event::dispatch("erp.notification.create", [
-            'user_id' => $dto->created_by,
-            'business_id' => $dto->business_id,
-            'type' => 'created',
-            'entity_type' => 'stockin',
-            'entity_id' => $create->id,
-            'chanels' => ['db']
-        ]);
+        Event::dispatch(Permission::NOTIFICATION_CREATE->value, $notification);
         DB::commit();
         return $data;
     }

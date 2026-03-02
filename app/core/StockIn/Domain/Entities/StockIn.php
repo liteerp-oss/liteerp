@@ -64,4 +64,7 @@ class StockIn
     public function isCancelled(): bool{
         return $this->status === 'cancelled' ? true : false;
     }
+    public function getStatus() : string {
+        return $this->status;
+    }
 }

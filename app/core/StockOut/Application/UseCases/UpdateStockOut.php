@@ -7,6 +7,7 @@ use App\Supports\Hooks\HookContext;
 use App\Supports\Hooks\HookDispatcher;
 use App\Supports\Hooks\HookPhase;
 use App\Supports\Hooks\HookTiming;
+use App\Supports\Permissions\Enums\Permission;
 use Core\StockOut\Application\DTOs\CreateStockOutRequest;
 use Core\StockOut\Domain\Services\StockOutService;
 use Illuminate\Support\Facades\DB;
@@ -48,45 +49,51 @@ class UpdateStockOut
                 module: 'StockOut'
             )
         );
-        $statusNotify = 'updated';
         if($update->isCompleted()) {
-            Event::dispatch("erp.stockout.completed", [
-                ...$data
-            ]);
-            $statusNotify = 'completed';
-        } else if($update->isShipped()) {
-            Event::dispatch("erp.stockout.shipped", [
+            Event::dispatch(Permission::STOCKOUT_COMPLETED->value, [
                 ...$data,
-                'user_id' => $dto->created_by,
-                'business_id' => $dto->business_id,
-                'order_id' => $dto->order_id,
                 'stock_out_id' => $update->id
             ]);
-            $statusNotify = 'shipped';
-        } else {
-            Event::dispatch("erp.stockout.update", [
+        } else if($update->isShipped()) {
+            Event::dispatch(Permission::STOCKOUT_SHIPPED->value, [
                 ...$data,
-                'user_id' => $dto->created_by,
-                'business_id' => $dto->business_id,
-                'order_id' => $dto->order_id
+                'stock_out_id' => $update->id
+            ]);
+        } else {
+            Event::dispatch(Permission::STOCKOUT_UPDATE->value, [
+                ...$data,
+                'stock_out_id' => $update->id
             ]);    
         }
-        Event::dispatch("erp.notification.many", [
+        $notification = [
             'user_id' => $dto->created_by,
             'business_id' => $dto->business_id,
-            'type' => $statusNotify,
+            'type' => $update->getStatus(),
             'entity_type' => 'stockout',
             'entity_id' => $update->id,
-            'chanels' => ['db']
+            'chanels' => ['db'],
+            'message' => "stockout::messages.notification.{$update->getStatus()}",
+            'message_params' => [
+                'username' => $data['username']
+            ]
+        ];
+        Event::dispatch(Permission::NOTIFICATION_CREATE_MANY->value, [
+            ...$notification,
+            'permissions' => [
+                Permission::STOCKOUT_SHIPPED->value,
+                Permission::STOCKOUT_COMPLETED->value,
+                Permission::STOCKOUT_UPDATE->value,
+                Permission::STOCKOUT_CREATE->value,
+                Permission::ORDER_APPROVED->value,
+                Permission::ORDER_CANCELLED->value,
+                Permission::ORDER_CREATE->value,
+                Permission::ORDER_UPDATE->value,
+                Permission::INVOICEOUT_APPROVED->value,
+                Permission::INVOICEOUT_UNAPPROVED->value,
+                Permission::INVOICEOUT_UPDATE->value
+            ]
         ]);
-        Event::dispatch("erp.notification.create", [
-            'user_id' => $dto->created_by,
-            'business_id' => $dto->business_id,
-            'type' => $statusNotify,
-            'entity_type' => 'stockout',
-            'entity_id' => $update->id,
-            'chanels' => ['db']
-        ]);
+        Event::dispatch(Permission::NOTIFICATION_CREATE->value, $notification);
         DB::commit();
         return $data;
     }

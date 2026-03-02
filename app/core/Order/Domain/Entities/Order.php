@@ -98,4 +98,7 @@ class Order
     public function makeOrderDate(){
         $this->order_date = date('Y-m-d',time());
     }
+    public function getStatus() : string {
+        return $this->status;
+    }
 }

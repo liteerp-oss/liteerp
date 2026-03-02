@@ -11,28 +11,28 @@ use Illuminate\Support\Facades\Event;
 
 class StockInListener
 {
-    public function handle(
-        CreateStockIn $createStockIn,
-        CheckForStockMovementIn $checkForStockMovementIn,
-        CancelledStockIn $cancelledStockIn
-    ) {
-        Event::listen('erp.invoicein.*', function (string $eventName, array $data)
-        use ($createStockIn, $cancelledStockIn) {
+    function __construct(
+        private CreateStockIn $createStockIn,
+        private CheckForStockMovementIn $checkForStockMovementIn,
+        private CancelledStockIn $cancelledStockIn
+    ) {}
+    public function handle()
+    {
+        Event::listen('erp.invoicein.*', function (string $eventName, array $data) {
             if ($eventName === 'erp.invoicein.approved') {
-                $createStockIn->handle($data);
+                $this->createStockIn->handle($data);
             } else if ($eventName === 'erp.invoicein.cancelled') {
-                $cancelledStockIn->handle(CancelledStockInRequest::fromArray($data));
+                $this->cancelledStockIn->handle($data);
             }
         });
         Event::listen(
             'erp.stockmovementin.*',
-            function (string $eventName, array $data)
-            use ($checkForStockMovementIn) {
+            function (string $eventName, array $data) {
                 if (
                     $eventName === 'erp.stockmovementin.update'
                     || $eventName === 'erp.stockmovementin.create'
                 ) {
-                    $checkForStockMovementIn->handle(CheckForStockMovementInRequest::fromArray([
+                    $this->checkForStockMovementIn->handle(CheckForStockMovementInRequest::fromArray([
                         'id' => $data['stock_in_id'],
                         'business_id' => $data['business_id'],
                         'user_id' => $data['user_id']

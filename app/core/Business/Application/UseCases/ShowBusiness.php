@@ -43,7 +43,8 @@ class ShowBusiness
             'id' => $business['id'],
             'data' => [
                 ...$business,
-                'user_id' => $user->id
+                'user_id' => $user->id,
+                'username' => $user->name
             ],
             'exp' => config('business.exp_token')
         ]));

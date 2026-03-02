@@ -20,14 +20,11 @@ class StockOutServiceProvider extends ServiceProvider
         $this->mergeModuleConfig();
     }
 
-    public function boot(CreateStockOut $CreateStockOut,
-        CancelledStockOutByOrderCancelled $CancelledStockOutByOrderCancelled)
+    public function boot(StockOutListener $listener)
     {
         $this->loadModuleRoutes();
         $this->loadModuleTranslations();
-        $listener = new StockOutListener();
-        $listener->handle($CreateStockOut,
-    $CancelledStockOutByOrderCancelled);
+        $listener->handle();
     }
 
     protected function mergeModuleConfig(): void

@@ -7,6 +7,7 @@ use App\Supports\Hooks\HookContext;
 use App\Supports\Hooks\HookDispatcher;
 use App\Supports\Hooks\HookPhase;
 use App\Supports\Hooks\HookTiming;
+use App\Supports\Permissions\Enums\Permission;
 use Core\Order\Application\DTOs\UpdateOrderRequest;
 use Core\Order\Domain\Services\OrderService;
 use Illuminate\Support\Facades\DB;
@@ -15,7 +16,7 @@ use Illuminate\Support\Facades\Event;
 class UpdateOrder
 {
     public function __construct(
-        private OrderService $service, 
+        private OrderService $service,
         private HookDispatcher $hooks
     ) {}
 
@@ -35,7 +36,7 @@ class UpdateOrder
                 module: 'Order'
             )
         );
-        
+
         $update = $this->service->update($dto->toArray());
         $data = $this->hooks->dispatch(
             new HookContext(
@@ -49,38 +50,53 @@ class UpdateOrder
                 module: 'Order'
             )
         );
-        $notificationStatus = 'update';
+        $notification = [
+            'user_id' => $dto->created_by,
+            'business_id' => $dto->business_id,
+            'type' => $update->getStatus(),
+            'entity_type' => 'order',
+            'entity_id' => $update->id,
+            'chanels' => ['db'],
+            'message' => "order::messages.notification.{$update->getStatus()}",
+            'message_params' => [
+                'username' => $data['username']
+            ],
+            'permissions' => []
+        ];
         if($update->isApproved()) {
-            Event::dispatch("erp.order.approved", [
+            Event::dispatch(Permission::ORDER_APPROVED->value, [
                 ...$data
             ]);  
-            $notificationStatus = "approved";
+            $notification['permissions'] = [
+                Permission::ORDER_CREATE->value,
+                Permission::ORDER_APPROVED->value,
+                Permission::ORDER_CANCELLED->value,
+                Permission::ORDER_DELETE->value,
+                Permission::ORDER_UPDATE->value
+            ];
         } else if($update->isCancelled()) {
-            Event::dispatch("erp.order.cancelled", [
+            Event::dispatch(Permission::ORDER_CANCELLED->value, [
                 ...$data
-            ]);
-            $notificationStatus = "cancelled";
+            ]); 
+            $notification['permissions'] = [
+                Permission::ORDER_CREATE->value,
+                Permission::ORDER_APPROVED->value,
+                Permission::ORDER_CANCELLED->value,
+                Permission::ORDER_DELETE->value,
+                Permission::ORDER_UPDATE->value
+            ];
         } else {
-            Event::dispatch("erp.order.update", [
+            Event::dispatch(Permission::ORDER_UPDATE->value, [
                 ...$data
             ]);
+            $notification['permissions'] = [
+                Permission::ORDER_CREATE->value,
+                Permission::ORDER_UPDATE->value
+            ];
         }
-        Event::dispatch("erp.notification.many", [
-            'user_id' => $dto->created_by,
-            'business_id' => $dto->business_id,
-            'type' => $notificationStatus,
-            'entity_type' => 'order',
-            'entity_id' => $update->id,
-            'chanels' => ['db']
-        ]);
-        Event::dispatch("erp.notification.create", [
-            'user_id' => $dto->created_by,
-            'business_id' => $dto->business_id,
-            'type' => $notificationStatus,
-            'entity_type' => 'order',
-            'entity_id' => $update->id,
-            'chanels' => ['db']
-        ]);
+        
+        Event::dispatch(Permission::NOTIFICATION_CREATE_MANY->value, $notification);
+        Event::dispatch(Permission::NOTIFICATION_CREATE->value, $notification);
         DB::commit();
         return $data;
     }

@@ -40,11 +40,7 @@ class OrderItemListener
                          $this->CheckExistsOrderItem->handle(
                               CheckExistsOrderItemRequest::fromArray($data)
                          );
-                         $this->getSummaryOrderItem->handle([
-                              'business_id' => $data['business_id'],
-                              'user_id' => $data['user_id'],
-                              'order_id' => $data['order_id']
-                         ]);
+                         $this->getSummaryOrderItem->handle($data);
                     }
                }
           );

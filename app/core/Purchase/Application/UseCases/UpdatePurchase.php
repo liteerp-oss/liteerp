@@ -7,6 +7,7 @@ use App\Supports\Hooks\HookContext;
 use App\Supports\Hooks\HookDispatcher;
 use App\Supports\Hooks\HookPhase;
 use App\Supports\Hooks\HookTiming;
+use App\Supports\Permissions\Enums\Permission;
 use Core\Purchase\Application\DTOs\UpdatePurchaseRequest;
 use Core\Purchase\Domain\Services\PurchaseService;
 use Core\Purchase\Domain\Entities\Purchase;
@@ -70,22 +71,29 @@ class UpdatePurchase
             ];
             Event::dispatch("erp.purchase.cancelled", $updateData);
         }
+
+        $notification = [
+            'user_id' => $dto->created_by,
+            'business_id' => $dto->business_id,
+            'type' => $update->getStatus(),
+            'entity_type' => 'purchase',
+            'entity_id' => $update->id,
+            'chanels' => ['db'],
+            'message' => "purchase::messages.notification.{$update->getStatus()}",
+            'message_params' => [
+                'username' => $data['username']
+            ]
+        ];
         Event::dispatch("erp.notification.many", [
-            'user_id' => $dto->created_by,
-            'business_id' => $dto->business_id,
-            'type' => $update->getStatus(),
-            'entity_type' => 'purchase',
-            'entity_id' => $update->id,
-            'chanels' => ['db']
+            ...$notification,
+            'permissions' => [
+                Permission::PURCHASE_APPROVED,
+                Permission::PURCHASE_CANCELLED,
+                Permission::PURCHASE_CREATE,
+                Permission::PURCHASE_REQUESTED,
+            ]
         ]);
-        Event::dispatch("erp.notification.create", [
-            'user_id' => $dto->created_by,
-            'business_id' => $dto->business_id,
-            'type' => $update->getStatus(),
-            'entity_type' => 'purchase',
-            'entity_id' => $update->id,
-            'chanels' => ['db']
-        ]);
+        Event::dispatch("erp.notification.create", $notification);
         DB::commit();
         return $data;
     }

@@ -7,6 +7,7 @@ use App\Supports\Hooks\HookContext;
 use App\Supports\Hooks\HookDispatcher;
 use App\Supports\Hooks\HookPhase;
 use App\Supports\Hooks\HookTiming;
+use App\Supports\Permissions\Enums\Permission;
 use Core\InvoiceOut\Application\DTOs\CreateInvoiceOutRequest;
 use Core\InvoiceOut\Domain\Services\InvoiceOutService;
 use Illuminate\Support\Facades\DB;
@@ -54,35 +55,43 @@ class UpdateInvoiceOut
                 module: 'InvoiceOut'
             )
         );
+        $status = 'updated';
         if($data['approved'] === true && !$findInvoice->isApproved()) {
-            Event::dispatch("erp.invoiceout.approved", [
+            Event::dispatch(Permission::INVOICEOUT_APPROVED->value, [
                 ...$data,
                 'invoice_out_id' => $update->id
             ]);  
+            $status = 'approved';
         } else {
-            Event::dispatch("erp.invoiceout.update", [
+            Event::dispatch(Permission::INVOICEOUT_UPDATE->value, [
                 ...$data,
                 'invoice_out_id' => $update->id
             ]);    
         }
-
-        Event::dispatch("erp.notification.many", [
+        $notification = [
             'user_id' => $dto->created_by,
             'business_id' => $dto->business_id,
-            'type' => 'updated',
+            'type' => $status,
             'entity_type' => 'invoiceout',
             'entity_id' => $update->id,
-            'chanels' => ['db']
+            'chanels' => ['db'],
+            'message' => "invoiceout::messages.notification.$status",
+            'message_params' => [
+                'username' => $data['username']
+            ]
+        ];
+        Event::dispatch(Permission::NOTIFICATION_CREATE_MANY->value, [
+            ...$notification,
+            'permissions' => [
+                Permission::INVOICEOUT_CREATE->value,
+                Permission::INVOICEOUT_APPROVED->value,
+                Permission::INVOICEOUT_DELETE->value,
+                Permission::INVOICEOUT_UNAPPROVED->value,
+                Permission::INVOICEOUT_UPDATE->value
+            ]
         ]);
         
-        Event::dispatch("erp.notification.create", [
-            'user_id' => $dto->created_by,
-            'business_id' => $dto->business_id,
-            'type' => 'updated',
-            'entity_type' => 'invoiceout',
-            'entity_id' => $update->id,
-            'chanels' => ['db']
-        ]);
+        Event::dispatch(Permission::NOTIFICATION_CREATE->value, $notification);
         
         DB::commit();
         return $data;

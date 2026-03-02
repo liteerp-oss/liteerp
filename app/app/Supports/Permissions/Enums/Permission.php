@@ -1,6 +1,6 @@
 <?php
 
-namespace Core\Permission\Domain\Enums;
+namespace App\Supports\Permissions\Enums;
 
 enum Permission: string
 {
@@ -145,6 +145,7 @@ enum Permission: string
     case STOCKOUT_DELETE = 'erp.stockout.delete';
     case STOCKOUT_COMPLETED = 'erp.stockout.completed';
     case STOCKOUT_SHIPPED = 'erp.stockout.shipped';
+    case STOCKOUT_CANCELLED = "erp.stockout.cancelled";
 
     case STOCKMOVEMENTIN_INDEX = 'erp.stockmovementin.index';
     case STOCKMOVEMENTIN_SHOW = 'erp.stockmovementin.show';

@@ -2,7 +2,7 @@
 
 namespace Core\Permission\Infrastructure\Helpers;
 
-use Core\Permission\Domain\Enums\Permission;
+use App\Supports\Permissions\Enums\Permission;
 use Core\Permission\Domain\Enums\PermissionType;
 
 class PermissionBuilder
@@ -359,9 +359,7 @@ class PermissionBuilder
     public function addNotification(): self
     {
         return $this->add(PermissionType::NOTIFICATION, [
-            Permission::NOTIFICATION_WORKFLOW,
-            Permission::NOTIFICATION_UPDATE,
-            Permission::NOTIFICATION_DELETE,
+            Permission::NOTIFICATION_WORKFLOW
         ]);
     }
     public function buildByPass(): array

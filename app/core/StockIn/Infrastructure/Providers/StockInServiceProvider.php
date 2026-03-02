@@ -2,9 +2,6 @@
 
 namespace Core\StockIn\Infrastructure\Providers;
 
-use Core\StockIn\Application\UseCases\CancelledStockIn;
-use Core\StockIn\Application\UseCases\CheckForStockMovementIn;
-use Core\StockIn\Application\UseCases\CreateStockIn;
 use Illuminate\Support\ServiceProvider;
 use Core\StockIn\Domain\Repositories\StockInRepositoryInterface;
 use Core\StockIn\Infrastructure\Repositories\EloquentStockInRepository;
@@ -21,14 +18,11 @@ class StockInServiceProvider extends ServiceProvider
         $this->mergeModuleConfig();
     }
 
-    public function boot(CreateStockIn $createStockIn,
-        CheckForStockMovementIn $checkForStockMovementIn,
-        CancelledStockIn $cancelledStockIn)
+    public function boot(StockInListener $listenr)
     {
         $this->loadModuleRoutes();
         $this->loadModuleTranslations();
-        $listenr = new StockInListener();
-        $listenr->handle($createStockIn,$checkForStockMovementIn,$cancelledStockIn);
+        $listenr->handle();
     }
 
     protected function mergeModuleConfig(): void

@@ -7,8 +7,10 @@ use App\Supports\Hooks\HookContext;
 use App\Supports\Hooks\HookDispatcher;
 use App\Supports\Hooks\HookPhase;
 use App\Supports\Hooks\HookTiming;
+use App\Supports\Permissions\Enums\Permission;
 use Core\StockOut\Application\DTOs\ShowStockOutRequest;
 use Core\StockOut\Domain\Services\StockOutService;
+use Illuminate\Support\Facades\Event;
 
 class ShowStockOut
 {
@@ -43,6 +45,9 @@ class ShowStockOut
                 module: 'StockOut'
             )
         );
+        Event::dispatch(Permission::STOCKOUT_SHOW->value, [
+            ...$data
+        ]);
         return $data;
     }
 }

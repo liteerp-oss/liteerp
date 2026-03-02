@@ -7,6 +7,7 @@ use App\Supports\Hooks\HookContext;
 use App\Supports\Hooks\HookDispatcher;
 use App\Supports\Hooks\HookPhase;
 use App\Supports\Hooks\HookTiming;
+use App\Supports\Permissions\Enums\Permission;
 use Core\InvoiceOut\Application\DTOs\ShowInvoiceOutRequest;
 use Core\InvoiceOut\Domain\Services\InvoiceOutService;
 use Illuminate\Support\Facades\Event;
@@ -44,7 +45,7 @@ class ShowInvoiceOut
                 module: 'InvoiceOut'
             )
         );
-        Event::dispatch('erp.invoiceout.index',[
+        Event::dispatch(Permission::INVOICEOUT_SHOW->value,[
             ...$data
         ]);
         return $data;

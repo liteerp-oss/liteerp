@@ -14,7 +14,7 @@ class CheckForPurchaseCancelled
     {
         $row = $this->service->findOneById($dto);
         if($row->isCancelled()) {
-            throw new BadException(__("purchases::messages.already_cancelled"));
+            throw new BadException(__("purchase::messages.already_cancelled"));
         }
         return $row;
     }

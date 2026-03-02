@@ -2,25 +2,26 @@
 
 namespace Core\InvoiceOut\Infrastructure\Listeners;
 
-use Core\InvoiceOut\Application\DTOs\CreateInvoiceOutRequest;
 use Core\InvoiceOut\Application\DTOs\UnapproveInvoiceOutByOrderCancelledRequest;
 use Core\InvoiceOut\Application\UseCases\CreateInvoiceOut;
 use Core\InvoiceOut\Application\UseCases\UnapproveInvoiceOutByOrderCancelled;
 use Core\InvoiceOut\Application\UseCases\UpdateTotalByShippingFee;
 use Illuminate\Support\Facades\Event;
-use Illuminate\Support\Facades\Log;
 
 class InvoiceOutListener
 {
-    public function handle(CreateInvoiceOut $createInvoiceOut,
-    UnapproveInvoiceOutByOrderCancelled $UnapproveInvoiceOutByOrderCancelled,
-    UpdateTotalByShippingFee $UpdateTotalByShippingFee)
+    function __construct(private CreateInvoiceOut $createInvoiceOut,
+    private UnapproveInvoiceOutByOrderCancelled $UnapproveInvoiceOutByOrderCancelled,
+    private UpdateTotalByShippingFee $UpdateTotalByShippingFee)
+    {
+    }
+    public function handle()
     {
         Event::listen(
             'erp.order.*',
-            function (string $eventName, array $data) use ($UnapproveInvoiceOutByOrderCancelled) {
+            function (string $eventName, array $data) {
                 if ($eventName === 'erp.order.cancelled') {
-                    $UnapproveInvoiceOutByOrderCancelled->handle(
+                    $this->UnapproveInvoiceOutByOrderCancelled->handle(
                         new UnapproveInvoiceOutByOrderCancelledRequest(
                             business_id: $data['business_id'],
                             order_id: $data['order_id'],
@@ -32,9 +33,9 @@ class InvoiceOutListener
         );
         Event::listen(
             'erp.orderitem.*',
-            function (string $eventName, array $data) use ($createInvoiceOut) {
+            function (string $eventName, array $data) {
                 if ($eventName === 'erp.orderitem.summary') {
-                    $createInvoiceOut->handle($data);
+                    $this->createInvoiceOut->handle($data);
                 } 
             }
         );
@@ -44,9 +45,9 @@ class InvoiceOutListener
          */
         Event::listen(
             "erp.ordershipping.*",
-            function (string $eventName, array $data) use ($UpdateTotalByShippingFee) {
+            function (string $eventName, array $data) {
                 if ($eventName === "erp.ordershipping.update") {
-                    $UpdateTotalByShippingFee->handle($data);
+                    $this->UpdateTotalByShippingFee->handle($data);
                 } 
             }
         );

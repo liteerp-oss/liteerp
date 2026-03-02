@@ -9,6 +9,7 @@ use App\Supports\Hooks\HookContext;
 use App\Supports\Hooks\HookDispatcher;
 use App\Supports\Hooks\HookPhase;
 use App\Supports\Hooks\HookTiming;
+use App\Supports\Permissions\Enums\Permission;
 use Core\StockOut\Application\DTOs\IndexStockOutRequest;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
@@ -70,7 +71,7 @@ class IndexQuery implements QueryInterface
                 '%' . $dto->keywords . '%'
             );
         }
-        Event::dispatch("erp.stockout.index", [
+        Event::dispatch(Permission::STOCKOUT_INDEX->value, [
             ...$data
         ]);
         return $index->orderBy("stock_outs.id", $dto->order_by)->paginate(15)->toArray();

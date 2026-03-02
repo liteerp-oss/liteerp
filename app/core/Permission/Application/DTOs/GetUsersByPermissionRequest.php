@@ -5,7 +5,7 @@ namespace Core\Permission\Application\DTOs;
 class GetUsersByPermissionRequest
 {
     public function __construct(
-        public ?string $permission,
+        public ?array $permissions = [],
         public int $business_id,
         public int $user_id,
     ) {}
@@ -13,7 +13,7 @@ class GetUsersByPermissionRequest
     public static function fromArray(array $data): self
     {
         return new self(
-            permission: $data['permission'],
+            permissions: $data['permissions'],
             business_id: $data['business_id'],
             user_id: $data['user_id'],
         );
@@ -22,7 +22,7 @@ class GetUsersByPermissionRequest
     public function toArray(): array
     {
         return [
-            'permission' => $this->permission,
+            'permissions' => $this->permissions,
             'business_id' => $this->business_id,
             'user_id' => $this->user_id,
         ];

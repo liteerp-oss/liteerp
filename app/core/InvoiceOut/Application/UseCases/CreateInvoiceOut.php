@@ -7,6 +7,7 @@ use App\Supports\Hooks\HookContext;
 use App\Supports\Hooks\HookDispatcher;
 use App\Supports\Hooks\HookPhase;
 use App\Supports\Hooks\HookTiming;
+use App\Supports\Permissions\Enums\Permission;
 use Core\InvoiceOut\Application\DTOs\CreateInvoiceOutRequest;
 use Core\InvoiceOut\Domain\Services\InvoiceOutService;
 use Illuminate\Support\Facades\DB;
@@ -49,25 +50,30 @@ class CreateInvoiceOut
                 module: 'InvoiceOut'
             )
         );
-        Event::dispatch("erp.invoiceout.create", [
+        Event::dispatch(Permission::INVOICEOUT_CREATE->value, [
             ...$data
         ]);
-        Event::dispatch("erp.notification.many", [
+        $notification = [
             'user_id' => $dto->created_by,
             'business_id' => $dto->business_id,
             'type' => 'created',
-            'entity_type' => 'stockout',
+            'entity_type' => 'invoiceout',
             'entity_id' => $create->id,
-            'chanels' => ['db']
+            'chanels' => ['db'],
+            'message' => "invoiceout::messages.notification.created",
+            'message_params' => [
+                'username' => $data['username']
+            ]
+        ];
+        Event::dispatch(Permission::NOTIFICATION_CREATE_MANY->value, [
+            ...$notification,
+            'permissions' => [
+                Permission::INVOICEOUT_APPROVED->value,
+                Permission::INVOICEOUT_UPDATE->value,
+                Permission::INVOICEIN_CANCELLED->value
+            ]
         ]);
-        Event::dispatch("erp.notification.create", [
-            'user_id' => $dto->created_by,
-            'business_id' => $dto->business_id,
-            'type' => 'created',
-            'entity_type' => 'stockout',
-            'entity_id' => $create->id,
-            'chanels' => ['db']
-        ]);
+        Event::dispatch(Permission::NOTIFICATION_CREATE->value, $notification);
         DB::commit();
         return $data;
     }

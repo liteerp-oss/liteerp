@@ -52,7 +52,8 @@ class BusinessToken
          */
         $request->merge([
             'business_id' => $businessInfo->data->id,
-            'user_id' => $businessInfo->data->user_id
+            'user_id' => $businessInfo->data->user_id,
+            'username' => $businessInfo->data->username
         ]);
         return $next($request);
     }

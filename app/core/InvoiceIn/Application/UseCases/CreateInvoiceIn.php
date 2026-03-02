@@ -7,6 +7,7 @@ use App\Supports\Hooks\HookContext;
 use App\Supports\Hooks\HookDispatcher;
 use App\Supports\Hooks\HookPhase;
 use App\Supports\Hooks\HookTiming;
+use App\Supports\Permissions\Enums\Permission;
 use Core\InvoiceIn\Application\DTOs\CreateInvoiceInRequest;
 use Core\InvoiceIn\Domain\Services\InvoiceInService;
 use Illuminate\Support\Facades\DB;
@@ -20,16 +21,19 @@ class CreateInvoiceIn
     public function handle(array $data)
     {
         DB::beginTransaction();
+        $dto = CreateInvoiceInRequest::fromArray($data);
         $data = $this->hooks->dispatch(
             new HookContext(
                 action: HookAction::CREATE,
                 phase: HookPhase::RESPONSE,
                 timing: HookTiming::BEFORE,
-                payload: $data,
+                payload: [
+                    ...$data,
+                    ...$dto->toArray()
+                ],
                 module: 'InvoiceIn'
             )
         );
-        $dto = CreateInvoiceInRequest::fromArray($data);
         $create = $this->service->create($dto->toArray());
         $data = $this->hooks->dispatch(
             new HookContext(
@@ -43,20 +47,29 @@ class CreateInvoiceIn
                 module: 'InvoiceIn'
             )
         );
-        Event::dispatch("erp.invoicein.create", [
-            ...$create->toArray(),
-            'user_id' => $dto->created_by,
-            'business_id' => $dto->business_id
-        ]);
-        Event::dispatch("erp.notification.many", [
+        $notification = [
             'user_id' => $dto->created_by,
             'business_id' => $dto->business_id,
             'type' => 'created',
             'entity_type' => 'invoicein',
             'entity_id' => $create->id,
-            'chanels' => ['db']
+            'chanels' => ['db'],
+            'message' => "invoicein::messages.notification.created",
+            'message_params' => [
+                'username' => $data['username']
+            ]
+        ];
+        Event::dispatch(Permission::INVOICEIN_CREATE->value, [
+            ...$data
+        ]);
+        Event::dispatch(Permission::NOTIFICATION_CREATE_MANY->value, [
+            ...$notification,
+            'permissions' => [
+                Permission::INVOICEIN_APPROVED,
+                Permission::INVOICEIN_UPDATE
+            ]
         ]);
         DB::commit();
-        return $create;
+        return $data;
     }
 }

@@ -21,6 +21,8 @@ class CreateNotification
         foreach($dto->chanels as $key => $value ) {
             switch($value) {
                 case "db":
+                    $dto->message = $dto->message ? __($dto->message,$dto->message_params) : __("No data");
+                    $dto->title = $dto->title ? __($dto->title,$dto->title_params) : $dto->entity_type;
                     $create = $this->serviceDB->create($dto->toArray());
                     NewNotificationBroadcast::dispatch($dto->user_id,$dto->business_id);
                     break;
@@ -28,7 +30,7 @@ class CreateNotification
                     if(!$dto->title || !$dto->message) {
                         throw new BadException(__("notifications::messages.empty_title_message"));
                     }
-                    SendMailJob::dispatch($dto->user_id,$dto->title,
+                    SendMailJob::dispatch($dto->user_id,$dto->title ?? __("No title"),
                         $dto->message,$dto->link ?? URL::to('/dashboard'))
                             ->onQueue($dto->queue ?? 'low');
                     

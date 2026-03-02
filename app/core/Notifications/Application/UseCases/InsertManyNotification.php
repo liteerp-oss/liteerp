@@ -21,24 +21,21 @@ class InsertManyNotification
     {
         $create = [];
         DB::beginTransaction();
-        $users = $this->getUsersByPermission->handle([
-                'permission' => 'erp.notification.workflow',
-                'business_id' => $dto->business_id,
-                'user_id' => $dto->user_id,
-            ]);
+        $users = $this->getUsersByPermission->handle($dto->toArray());
         foreach($users as $k => $user ) {
             foreach($dto->chanels as $key => $chanels) {
                 $adapter = new CreateNotificationRequest(
                     user_id: $user['user_id'],
-                    message: $dto->message ? __($dto->message,$dto->message_params,$user['lang']) : null,
+                    message: $dto->message ? __($dto->message,$dto->message_params,$user['lang']) : __("No data"), 
                     link: $dto->link,
-                    title: $dto->title ? __($dto->title,$dto->title_params,$user['lang']) : null,
+                    title: $dto->title ? __($dto->title,$dto->title_params,$user['lang']) : __("No data"),
                     entity_type: $dto->entity_type,
                     entity_id: $dto->entity_id,
                     chanels: $dto->chanels,
                     type: $dto->type,
                     business_id: $dto->business_id,
-                    queue: $dto->queue
+                    queue: $dto->queue,
+                    locate: $user['lang']
                 );
                 switch($chanels) {
                     case "db":
