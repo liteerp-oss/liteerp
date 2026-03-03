@@ -59,6 +59,11 @@ export default function DashboardLayout({
                         <span>LiteERP © 2026</span>
                     </div>
                     <div className="col-md-8 d-flex align-items-center gap-3 justify-content-center justify-content-md-end">
+                        <a href="https://www.hetzner.com/cloud" target="_blank"
+                            className="text-muted text-decoration-none d-flex align-items-center gap-1 hover-opacity">
+                            <img src="/Hetzner-Logo.png" height={25}/>
+                            Sponsorship Cloud
+                        </a>
                         <a href="https://github.com/liteerp-oss/liteerp" target="_blank"
                             className="text-muted text-decoration-none d-flex align-items-center gap-1 hover-opacity">
                             <i className="bi bi-github"></i>
