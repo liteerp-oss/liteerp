@@ -271,4 +271,14 @@ for providing reliable infrastructure for development and deployment.
   <img src="./app/public/Hetzner-Logo.png" width="200"/>
 </a>
 
+## Partners
 
+#### Zenda.cloud (Vietnam)
+
+Zenda.cloud is an independent project and regional partner of LiteERP in Vietnam.
+
+Zenda develops SaaS solutions built on the LiteERP platform for the Vietnamese market. The LiteERP team may provide technical collaboration and ecosystem support, but Zenda operates as a separate entity and is not governed or controlled by LiteERP.
+
+Zenda supports the LiteERP open-source project through financial donations that help fund development and long-term maintenance.
+
+<img src="./app/public/zenda-cloud.png">
