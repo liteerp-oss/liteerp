@@ -1,0 +1,251 @@
+## Version beta/version-0.0.10
+- docs: add parners contents for main readme
+- Merge branch 'dev' into app/refactor
+- refactor: Add translate for authencation and notification
+- refactor: move path Hetzner logo
+- refactor: add sponsorship logo -> hetzner
+- refactor: add path ./public/extensions into gitignore
+- refactor: add install for step make extension, add method support publish assets of extension
+- refactor: add generate resource assets folder for extension
+- refactor: update language notification
+- refactor: add query index for order of inventory
+- reafactor: update query index join inventory for warehouse
+- docs: update version php
+- env: add config AI for .env.example
+- Merge branch 'app/AI' into dev
+- refactor: update unit test
+- refactor: add permission for permissiongroup, permissiongroupuser
+- refactor: change hardcode event name to Permission enum class, clean code. Fix: update namespace module for define path at provider module
+- refactor: change hardcode event name to Permission enum class
+- refactor: add stock out cancelled permission for PermissionBuilder
+- refactor: add username account into business token, update new logic for notification, move Permission enum go to App\Supports, clean code
+- features: init CustomHomePage extension
+- Merge branch 'features/permission' into dev
+- fix: fix bug #41
+- refactor: update logic display nav sidebar
+- docs: add business logic document, update main readme
+- refactor: update UX search product for purchase
+- refactor: update unit test and feature test
+- docs: update content main readme
+- refactor: add hook for method index home controller
+- refactor: update rule make extension
+- fix: Fix ui business list
+- fix: remove unique type for permission group
+- fix: add business query for permission group
+- refactor: add translate, add hook for business UI
+- refactor: add hook, add dto index, add index query for business
+- Merge branch 'app/refactor' into dev
+- refactor: add translate, fix SearchSelect component error can not change keyword search
+- fix: fix check name exists of product category
+- refactor: change type log to daily
+- fix: clean code permission page
+- fix: bypass check role for table common display on overview
+- refactor: add hook for view, search, index. clean code
+- fix: fix bug repo -> method getUsersByPermission of Permission
+- refactor: refactor structure. fix: fix bug update resever qty of inventory
+- refactor: refactor inventory listener class
+- refactor: refactor stockmovement listener class
+- refactor: stockmovementout -> remove method create and update manual
+- docs: add document for stockmovementin hook at hook readme
+- Merge branch 'dev' into docs/hook
+- refactor: refactor structure implement adapter, listner, add hook
+- refactor: update hook document at hook readme
+- fix: update module name for hook
+- fix: update module name for hook
+- fix: add method update inventory on step stock in of purchase, clean code, update ui
+- refactor: rebuild permission config to class builder
+- docs: add Sponsorship for main readme
+- Merge branch 'app/refactor' into dev
+- refactor: clean code -> remove logs debug
+- fix: add group_id for event from permission group
+- refactor: add config notification permission. Implement auto add basic permission for nomal group
+- refactor: change logic create notification by roles to create notification by permission
+- refactor: remove create notification by role if system has new purchase
+- fix: fix router display for invoices detail. change key display total price of invoice out
+- refactor: update bypass role create notification,add method support get users by role, add permission notification workflow
+- fix: update logic for Summary Order Item
+- fix: update new rule for notification, remove create notification for role change to permission
+- fix: logic total price, structure as clean architecture rule for InvoiceOut
+- feature: add agent conversation table for ai
+- update: upgrate php version 8.3 to 8.4
+- Add package laravel/ai
+- update screenshoot
+- Update screenshoot readme
+- refactor: update content display after done setup
+- Merge branch 'docs/extension' into dev
+- docs: update content for middleware, and migration of extension document
+- Merge branch 'docs/extension' into dev
+- docs: update content for register menu of extension
+- fix: add role for create admin
+- Update document for EXT
+- Update content main readme
+- refactor: update new structure for FastMode Extension
+- refactor: refactor permission for smtp, add business id for logic implement
+- fix: fix get permission function for helper PermissionNode
+- refactor: update language, support role, update style, change name component for HRM Extension
+- refactor: update text display
+- refactor: add support translate, fix display text for PermissionForm
+- refactor: add check role option for TabsCommon component
+- refactor: add translate for common input select component
+- refactor: add type for StatusBadge component
+- feature: add common function support display text
+- feature: add class PermissionNode  support for permission frontend
+- update: clean code, add custom roles for check from CommonDataTableV2
+- update: add languages resource
+- refactor: module users, permission.fix: Extension event
+- refactor: rebuild sidebar menu. Rebuild mobile menu. separate pages
+- refactor: refactor permission core. remove business role, user
+- refactor: Add event for api index, add filter search has active or status for customer, supplier, shipping provider
+- fix: update test for many, because we just refactor search api index and logic hook implement
+- fix: fix bug, refactor code. implement new rule for api index, clean code
+- fix: add hook, fix bug, clean code. refactor: index query, adapter, optimizer query db
+- fix: Add permission for extension. refactor: change solution check permission for Frontend
+- fix: add translate. refactor: implement label into input form
+- fix: update translate for stock in detail
+- fix: add translate. refactor: implement label input input form
+- Add languages key
+- update: add new badge
+- fix: add translate. refactor: implement label into common component input form
+- update: Update language key
+- fix: add translate. refactor input label for order
+- Merge branch 'features/purchase' into dev
+- fix: display data on table for purchase
+- fix: add width for search button
+- Merge branch 'app/ui' into dev
+- Add language key, common data table v2, fix label of search select component, add translate for VerticalCommonTable
+- fix: update validate, update input form UI, fix bug select all for change tax, implement translate
+- Merge branch 'extensions/hrm' into dev
+- update: Change CommonDataTable to CommonDataTableV2
+- Merge branch 'extensions/smtp' into dev
+- fix: clean code SMTP extension
+- fix: autoload resource invoice out pdf extension
+- fix: autoload resource
+- fix: change name css file to autpload for extension product renew
+- Merge branch 'extensions/fastmode' into dev
+- fix: update resource autoload fastmode
+- docs: update document for Frontend
+- refactor: Remove Product Attribute, because currently extesnion can do it
+- fix: UI button common
+- fix: update UI CommonDataTable to CommonDataTableV2
+- feat: add CommonDataTableV2
+- feat: Init Invoice Out PDF extension
+- fix: mistake translate key of authencation
+- fix: Add autoload for invoiceinpdf extension
+- gMerge branch 'extensions/inventorytracking' into dev
+- feat: init inventory tracking extension
+- Merge branch 'extensions/smtp' into dev
+- Fix: install file of smtp extension
+- Merge branch 'extensions/hrm' into dev
+- fix: update install, AddMenuHook HRM
+- fix: update install file, service provider
+- Merge branch 'extensions/appssl' into dev
+- update: update readme ext appssl
+- fix: change type value of decimal at field name is price of price list table
+- fix: remove product attribute at product module
+- update: Add support translate for channel mail of notification
+- Merge branch 'features/businessrole' into dev
+- update: add join table user for business role at function listUserByRole
+- Merge branch 'features/extension' into dev
+- update: change type log of extension install executor
+- Merge branch 'features/extension' into dev
+- update: add toArray for adapter install plan of extension
+- fix: add price for inventory API index
+- feat: Implement hook for inventory
+- Merge branch 'extensions/hrm' into dev
+- docs: update readme extension HRM
+- fix: update console generate extension
+- fix: update menu again if has event from ext
+- Fix: clean code menu mobile
+- fix: responsive for table, iPad
+- feat: Init extension AppSSL
+- docs: update content for main readme
+- docs: update content for main readme
+- docs: update content for main readme
+- fix: because a some old machine start docker container a little slow, so need change to waiting 30 thirty seconds to sure
+- Merge branch 'extensions/fastmode' into dev
+- Merge branch 'app/core' into dev
+- refactor: change logic implement console run by schedule from console default to schedule service provider. fix: error stuck overlapping for queue
+- fix: fix error init tag soon
+- feat: Change logic implement schedule from console default to module Overview service provider
+- Merge branch 'docs/extension' into dev
+- docs: Update content for Extension
+- feat: Init FastMode extension
+- docs: update content for main readme
+- docs: update document for extension
+- docs: update content main readme
+- docs: Update rule for contributing
+- fix: Update unit test for update translate keys from modules
+- fix: update translate for warehouse
+- fix: update translate for user
+- fix: update translate for supplier
+- fix: update translate for stockout
+- fix: update translate for stockmovementout
+- fix: update translate for stockmovementin
+- fix: update translate for stockin
+- fix: update translate for shipping
+- fix: update translate for purchase item
+- fix: update translate for purchase cancel
+- fix: Change controller default Purchase Cancel
+- fix: update translate for purchase
+- fix: update translate for product
+- fix: update translate for price list
+- fix: update translate for order shipping
+- fix: update translate for order item
+- fix: update translate for order
+- fix: update translate for notification
+- fix: update translate for invoice out
+- fix: update translate for invoice in
+- fix: update translate for inventory
+- fix: update translate for extension
+- fix: update translate for custom invoice out
+- fix: update translate for custom invoice in
+- fix: update translate for customer group
+- fix: update translate for customer group
+- fix: update translate for customer
+- fix: update translate for category product
+- fix: update translate for business role
+- fix: update translate for business
+- fix: update translate keys for notification of authencation
+- fix: update translate keys for authencation
+- fix: update user entity for unit test User Module
+- fix: Update language files for vi and ja of authencation
+- Add translation for authencation
+- update: add language key for user entity
+- update: change middleware alias name
+- update: change middleware alias name
+- update: change middleware alias name
+- update: change middleware alias name
+- Merge branch 'docs/rules' into dev
+- Merge branch 'docs/module' into dev
+- Merge branch 'docs/hook' into dev
+- update: update content for notification
+- update: update business role hook
+- update: Update rule for contributing
+- update: Update document for Ext
+- Merge branch 'extensions/debt' into dev
+- Merge branch 'extensions/hrm' into dev
+- update: Change hook timing of business role from extension smtp
+- update: Change hook timing of business role from extension hrm
+- update: Change hook timing of business role from extension debt
+- Change hook timing of business role
+- Add hook before, after for business role
+- Merge pull request #28 from lightla/fix/category-product
+- Merge branch 'liteerp-oss:dev' into fix/category-product
+- fix: category product
+- docs: Update rule for CONTRIBUTING.md
+- docs: remove Rule.md because it's not necessary
+- Add document for rule
+- Merge pull request #27 from lightla/devops/docker
+- doc: change doc VI-EN
+- feate: update docker
+- Revert "Merge pull request #25 from lightla/devops/docker"
+- Merge pull request #25 from lightla/devops/docker
+- doc: update doc
+- doc: update doc
+- doc: update doc
+- Merge branch 'liteerp-oss:dev' into devops/docker
+- fix: change container app name, change doccument
+- feat: update docker, sync user host with user inside docker container app
+- Update rule for contributing
+- Fix discord link
+- Change document link at home
