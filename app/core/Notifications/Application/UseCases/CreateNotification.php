@@ -30,8 +30,8 @@ class CreateNotification
                     if(!$dto->title || !$dto->message) {
                         throw new BadException(__("notifications::messages.empty_title_message"));
                     }
-                    SendMailJob::dispatch($dto->user_id,$dto->title ?? __("No title"),
-                        $dto->message,$dto->link ?? URL::to('/dashboard'))
+                    SendMailJob::dispatch($dto->user_id,__($dto->title,$dto->title_params,$dto->locate) ?? __("No title"),
+                        __($dto->message,$dto->message_params,$dto->locate),$dto->link ?? URL::to('/dashboard'))
                             ->onQueue($dto->queue ?? 'low');
                     
                     break;

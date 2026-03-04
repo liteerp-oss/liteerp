@@ -7,6 +7,7 @@ use Core\AppToken\Application\DTOs\CreateAppTokenRequest;
 use Core\AppToken\Application\UseCases\CreateAppToken;
 use Core\Authencation\Application\DTOs\ForgetAuthencationRequest;
 use Core\Authencation\Domain\Services\AuthencationService;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\URL;
 
@@ -33,9 +34,10 @@ class ForgetAuthencation
             'entity_type' => "users",
             'entity_id' => $account->id,
             'chanels' => ['mail'],
-            'message' => __("authencation::message.message_reset_password"),
-            'title'   => __("authencation::message.subject_verify_account"),
-            'link'     => URL::to('/dashboard/reset-password?token=' . $token)
+            'message' => "authencation::messages.message_reset_password",
+            'title'   => "authencation::messages.subject_verify_account",
+            'link'     => URL::to('/dashboard/reset-password?token=' . $token),
+            'locate' => App::getLocale()
         ];
         Event::dispatch(Permission::NOTIFICATION_CREATE->value, $notification);
         return [];

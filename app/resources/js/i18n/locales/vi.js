@@ -462,5 +462,9 @@ export default {
     "Dashboard": "Bảng điều khiển",
     "No extension to render": "Không có tiện ích mở rộng để hiển thị",
     "Edit Permission Group": "Chỉnh sửa nhóm quyền",
-    "please_add_business": "Vui lòng thêm công ty để tiếp tục"
+    "please_add_business": "Vui lòng thêm công ty để tiếp tục",
+    "forget_password_success": "Hệ thống sẽ gửi email xác nhận đặt lại mật khẩu đến email của bạn, vui lòng kiểm tra.",
+    "verify_account": "Xác minh tài khoản",
+    "no_account": "Chưa có tài khoản?",
+    "forgot_password": "Quên mật khẩu"
 };

@@ -462,5 +462,9 @@ export default {
         "Dashboard": "Dashboard",
         "No extension to render": "No extension to render",
         "Edit Permission Group":"Edit Permission Group",
-        "please_add_business": "Please add your company to continue"
+        "please_add_business": "Please add your company to continue",
+        "forget_password_success": 'The system will send email confirm reset password to your email, please check it',
+        "verify_account":"Verify account",
+        "no_account":"Don’t have an account?",
+        "forgot_password":"Forgot password"
 };

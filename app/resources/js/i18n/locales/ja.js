@@ -462,5 +462,9 @@ export default {
     "Dashboard": "ダッシュボード",
     "No extension to render": "表示する拡張機能がありません",
     "Edit Permission Group": "権限グループ編集",
-    "please_add_business": "続行するには会社を追加してください"
+    "please_add_business": "続行するには会社を追加してください",
+    "forget_password_success": "パスワードをリセットするための確認メールを送信しました。メールをご確認ください。",
+    "verify_account": "アカウントを確認",
+    "no_account": "アカウントをお持ちではありませんか？",
+    "forgot_password": "パスワードをお忘れですか"
 };
