@@ -38,7 +38,7 @@ class MakeExtension extends Command
         }
         $this->info['name'] = $this->argument('name');
         $this->info['directory'] = $directory;
-        $this->info['description'] = $this->argument('name') ." extension support LiteERP";  
+        $this->info['description'] = $this->argument('name') . " extension support LiteERP";
         $this->createDirectories($fs, $basePath);
         $this->createFiles($fs, $basePath, $directory);
         $make->handle($this->info);
@@ -64,6 +64,7 @@ class MakeExtension extends Command
             'Resources/js/i18n/ja',
             'Resources/js/i18n/vi',
             'Resources/css',
+            'Resources/assets',
             'lang/en',
             'lang/ja',
             'lang/vi',
@@ -315,5 +316,10 @@ Describe what this extension does.
 ## Notes
 This extension does not modify core modules.
 MD);
+
+        // LICENSE
+        $fs->put("{$base}/Resources/assets/license", <<<TXT
+            # {$directory}
+        TXT);
     }
 }
