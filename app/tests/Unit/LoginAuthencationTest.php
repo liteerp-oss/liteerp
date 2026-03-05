@@ -109,7 +109,7 @@ class LoginAuthencationTest extends TestCase
             ]);
 
         $this->expectException(UnauthorizedException::class);
-        $this->expectExceptionMessage(__("authcation::messages.not_verify"));
+        $this->expectExceptionMessage(__("authencation::messages.not_verify"));
 
         $this->useCase->handle($dto);
     }
