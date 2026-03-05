@@ -40,7 +40,7 @@ class LoginAuthencation
                 'link'     => URL::to('/dashboard/verify-account?token=' . $token)
             ];
             Event::dispatch(Permission::NOTIFICATION_CREATE->value, $notification);
-            throw new UnauthorizedException(__("authcation::messages.not_verify"));
+            throw new UnauthorizedException(__("authencation::messages.not_verify"));
         }
         return [
             ...$account->response(),
