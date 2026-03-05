@@ -29,7 +29,6 @@ services:
     build:
       context: "./"
       dockerfile: 'Dockerfile.db'
-    user: "${UID}:${GID}"
     container_name: '${APP_NAME}-mysql'
     restart: 'always'
     ports:
