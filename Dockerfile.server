@@ -90,10 +90,10 @@ RUN set -eux; \
     docker-php-ext-install gd \
     zip; \
     php -r 'var_dump(gd_info());'
-RUN apt-get update && apt-get install -y ca-certificates && update-ca-certificates
+RUN apt-get install -y ca-certificates && update-ca-certificates
 RUN pecl install redis \
     && docker-php-ext-enable redis
-RUN apt-get update && apt-get install -y libicu-dev \
+RUN apt-get install -y libicu-dev \
     && docker-php-ext-install intl
 RUN curl -sL https://deb.nodesource.com/setup_22.x | bash - 
 RUN apt-get install -y nodejs
@@ -101,6 +101,3 @@ RUN apt-get install -y nodejs
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 # Enable apache modules
 RUN a2enmod rewrite headers
-
-# Important, use User www (UID)
-USER www
