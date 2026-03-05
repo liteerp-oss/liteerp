@@ -249,7 +249,25 @@
 - Update rule for contributing
 - Fix discord link
 ## Version beta/version-0.0.11
-- Change document link at home- fix: fix UI for profile page
+- fix: mysql container user
+- refactor: update logic deploy staging
+- fix: update logic deploy for staging
+- fix: update translate language key LoginAuthencation
+- docs: Update document install main read, add badge build
+- refactor: update name deploy staging CI/CD. feat: Add deploy production CI/CD
+- refactor: optimizer dockerfile server
+- refactor: add permission for docker container
+- refactor: update workflows CI/CD
+- refactor: optimizer docker build and permission
+- refactor: remove default permission role docker .env.example
+- feat: Add runner auto deploy
+- feat: Add runner auto deploy
+- feat: Add runner auto deploy
+- feat: Add runner auto deploy
+- feat: Add runner auto deploy
+- feat: Add runner auto deploy
+- feat: Add runner auto deploy
+- fix: fix UI for profile page
 - fix: fix mistake namespace for Permission Group ViewRender
 - fix: update translate for login authencation
 - refactor: add option create business for user
