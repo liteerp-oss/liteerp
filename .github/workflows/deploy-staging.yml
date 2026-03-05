@@ -37,7 +37,9 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
             cd ~/staging
-            git pull origin dev
+            git pull origin staging
             docker compose build
             docker compose up -d
+            docker compose exec -T app composer install
+            docker compose exec -T app composer dump-autoload
             docker compose exec -T app php artisan app:setup
