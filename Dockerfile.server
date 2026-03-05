@@ -91,7 +91,8 @@ RUN set -eux; \
     zip; \
     php -r 'var_dump(gd_info());'
 RUN apt-get update && apt-get install -y ca-certificates
-RUN pecl install redis \
+RUN pecl channel-update pecl.php.net \
+    && pecl install redis \
     && docker-php-ext-enable redis
 RUN apt-get update && apt-get install -y libicu-dev \
     && docker-php-ext-install intl
