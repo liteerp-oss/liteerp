@@ -13,14 +13,14 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Install
-        run: 
+        run: |
           cp -r .env.example .env
           cp -r ./app/.env.example ./app/.env
           docker compose build
           docker compose up -d
 
       - name: Run tests
-        run: docker exec LiteERP-app php artisan migrate
+        run: docker compose exec -T app php artisan migrate
 
   deploy:
     needs: test
