@@ -9,6 +9,7 @@ x-app-build: &app-build
 services:
   app:
     <<: *app-build
+    user: "${UID}:${GID}"
     mem_limit: 2048m
     mem_reservation: 512M
     container_name: '${APP_NAME}-app'
@@ -28,6 +29,7 @@ services:
     build:
       context: "./"
       dockerfile: 'Dockerfile.db'
+    user: "${UID}:${GID}"
     container_name: '${APP_NAME}-mysql'
     restart: 'always'
     ports:
@@ -65,6 +67,7 @@ services:
       - ${REDIS_PORT}:6379
   scheduler:
     <<: *app-build
+    user: "${UID}:${GID}"
     container_name: '${APP_NAME}-scheduler'
     mem_limit: 256m
     mem_reservation: 64M
