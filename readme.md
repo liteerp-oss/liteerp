@@ -14,6 +14,10 @@
   <img src="screenshoot.png" alt="LiteERP Screenshot" />
 </p>
 
+[![Staging](https://github.com/liteerp-oss/liteerp/actions/workflows/deploy-staging.yml/badge.svg)](https://github.com/liteerp-oss/liteerp/actions/workflows/deploy-staging.yml)
+
+[![Production](https://github.com/liteerp-oss/liteerp/actions/workflows/deploy-prod.yml/badge.svg)](https://github.com/liteerp-oss/liteerp/actions/workflows/deploy-prod.yml)
+
 ---
 
 ## 🎯 Who Is LiteERP Built For?
@@ -210,11 +214,6 @@ pure-core and extension-first philosophy.
 ## 🐳 Docker Setup (Quick Start)
 
 - First step you need copy `.env.example` at root folder to `.env`, please don't mistake `.env.example` at root and `.env.example` at `./app/.env.example`. At root is environment of docker and at app folder is environment for laravel.
-
-- set permission for folder archive mysql: `chmod -R 777 ./docker` 
-- set permission for folder bootstrap cache: `chmod -R 777 ./app/bootstrap/cache` 
-- set permission for folder storage: `chmod -R 777 ./app/storage`
-- set owner for folder laravel: `cd ./app && chown -R 1000:1000 ./ && cd ../` 
 
 You need register a account at Pusher and update connect config at `./app/.env`. <a href="https://pusher.com/" target="_blank">Register new account</a>
 
