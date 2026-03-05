@@ -248,4 +248,14 @@
 - feat: update docker, sync user host with user inside docker container app
 - Update rule for contributing
 - Fix discord link
-- Change document link at home
+## Version beta/version-0.0.11
+- Change document link at home- fix: fix UI for profile page
+- fix: fix mistake namespace for Permission Group ViewRender
+- fix: update translate for login authencation
+- refactor: add option create business for user
+- docs: update document install for main readme
+- docs: update document setup for main readme
+- refactor: remove mount database for docker compose
+- refactor: add update CA for docker server, remove channel pecl php.net
+- refactor: add php update pecl channel
+- refactor: add update CA for docker build server
