@@ -172,6 +172,7 @@ export default function Profile() {
                         <div className="row mt-1">
                             <div style={{ width: 200 }}>
                                 <PrimaryButton
+                                    width={200}
                                     onClick={update}
                                     label={t('Submit')}
                                     loading={form.loading}
