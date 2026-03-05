@@ -1,8 +1,8 @@
-name: Deploy & Test Staging
+name: Deploy & Test Production
 
 on:
   push:
-    branches: [ staging ]
+    branches: [ production ]
 
 jobs:
 
