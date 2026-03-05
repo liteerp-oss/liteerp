@@ -33,7 +33,7 @@ services:
     ports:
       - ${DATABASE_PORT}:3306
     volumes: 
-      - ./docker/data/mysql:/var/lib/mysql
+      #- ./docker/data/mysql:/var/lib/mysql
       - ./docker/logs/mysql:/var/log/mysql
       - ./docker-config/database/custom.cnf:/etc/mysql/conf.d/custom.cnf:ro
     environment:
