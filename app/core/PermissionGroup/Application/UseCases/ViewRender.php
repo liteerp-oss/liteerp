@@ -1,6 +1,6 @@
 <?php
 
-namespace Core\Permission\Application\UseCases;
+namespace Core\PermissionGroup\Application\UseCases;
 
 use App\Supports\Hooks\HookAction;
 use App\Supports\Hooks\HookContext;

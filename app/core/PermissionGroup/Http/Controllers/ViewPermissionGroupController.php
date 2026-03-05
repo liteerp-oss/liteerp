@@ -2,7 +2,7 @@
 
 namespace Core\PermissionGroup\Http\Controllers;
 
-use Core\Order\Application\UseCases\ViewRender;
+use Core\PermissionGroup\Application\UseCases\ViewRender;
 use Illuminate\Http\Request;
 
 class ViewPermissionGroupController
