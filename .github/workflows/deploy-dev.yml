@@ -5,11 +5,29 @@ on:
     branches: [ dev ]
 
 jobs:
-  deploy:
+
+  test:
     runs-on: ubuntu-latest
 
     steps:
-      - name: SSH deploy
+      - uses: actions/checkout@v4
+
+      - name: Install
+        run: 
+          cp -r .env.example .env
+          cp -r ./app/.env.example ./app/.env
+          docker compose build
+          docker compose up -d
+
+      - name: Run tests
+        run: docker exec LiteERP-app php artisan migrate
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy staging
         uses: appleboy/ssh-action@v1
         with:
           host: ${{ secrets.SERVER_IP }}
