@@ -18,11 +18,11 @@ jobs:
           cp -r ./app/.env.example ./app/.env
           docker compose build
           docker compose up -d
-          docker compose exec -T LiteERP-app composer install
-          docker compose exec -T LiteERP-app php artisan key:generate
+          docker compose exec -T app composer install
+          docker compose exec -T app php artisan key:generate
 
       - name: Run tests
-        run: docker compose exec -T LiteERP-app php artisan test
+        run: docker compose exec -T app php artisan test
 
   deploy:
     needs: test
@@ -40,4 +40,4 @@ jobs:
             git pull origin dev
             docker compose build
             docker compose up -d
-            docker compose exec -T LiteERP-app php artisan app:setup
+            docker compose exec -T app php artisan app:setup
