@@ -23,7 +23,10 @@ class IsAdmin
         }
         $user = $user->user();
         if($user->system_role !== 'admin') {
-            return response(['message' => __("You have not permission")],403);
+            if(env('ONLY_ADMIN_CREATE_BUSINESS')
+                && env('ONLY_ADMIN_CREATE_BUSINESS') === true) {
+                return response(['message' => __("You have not permission")],403);
+            }
         }
         return $next($request);
     }
