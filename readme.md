@@ -20,6 +20,12 @@
 
 ---
 
+## DEMO 
+
+<a href="http://liteerp.org/" target="_blank">Demo</a>
+
+---
+
 ## 🎯 Who Is LiteERP Built For?
 
 LiteERP is designed for **small and medium-sized businesses (SMEs)** that need a **clean, operational ERP core** without enterprise-level complexity.
