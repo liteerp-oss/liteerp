@@ -211,12 +211,16 @@ pure-core and extension-first philosophy.
 
 - First step you need copy `.env.example` at root folder to `.env`, please don't mistake `.env.example` at root and `.env.example` at `./app/.env.example`. At root is environment of docker and at app folder is environment for laravel.
 
+- set permission for folder archive mysql: `chmod -R 777 ./docker` 
+
 Steps:
 1. `docker compose build && docker compose up -d`
 2. `docker exec -it LiteERP-app bash`
 3. `composer install`
 4. `php artisan app:setup`
 5. `php artisan app:create-admin {email} {password} {name}`
+
+On step 3: if you run by `root` and you can not run `composer install` then let exists docker and at root project and run `cd ./app && chown -R 1000:1000 . && cd ../` and try again step 3.
 
 You need register a account at Pusher and update connect config at `./app/.env`. <a href="https://pusher.com/" target="_blank">Register new account</a>
 
@@ -225,10 +229,6 @@ You need register a account at Pusher and update connect config at `./app/.env`.
     PUSHER_APP_SECRET=""
     PUSHER_APP_CLUSTER=""
 
-On a some case you need restart docker again after config Pusher: 
-
-    docker compose build && docker compose up -d
-
 Basic environment configuration (`./app/.env.example`):
 
     APP_TIMEZONE="Asia/Ho_Chi_Minh"  
@@ -236,6 +236,10 @@ Basic environment configuration (`./app/.env.example`):
     APP_CURRENCY_LOCALE="en-US"
 
 Find your <a href="https://www.php.net/manual/en/timezones.php" target="_blank">timezone</a>
+
+On a some case you need restart docker again after config Pusher: 
+
+    docker compose build && docker compose up -d
 
 Visit:  
 http://localhost:8002/dashboard/login
