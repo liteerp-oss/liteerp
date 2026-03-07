@@ -277,3 +277,14 @@
 - refactor: add update CA for docker server, remove channel pecl php.net
 - refactor: add php update pecl channel
 - refactor: add update CA for docker build server
+## Version beta/version-0.0.12
+- Merge branch 'app/refactor' into dev
+- feat: add join category for pricelist
+- feat: add join category table for index query production
+- feat: add block extension flag into .env
+- refactor: update design business table
+- refactor: add popup error for extension page
+- feat: add custom permission for permission button UI component
+- fix: join table index to leftJoin for warehouse
+- feat: Add feature block extension
+- docs: add demo link for main readme
