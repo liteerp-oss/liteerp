@@ -9,10 +9,16 @@ export default function UpdateButton({
     loading = false,
     width = 70,
     height = 35,
-    type = null
+    type = null,
+    customPermission = null
 }) {
     const roles = useSelector((state) => state.businessRole.role);
-    const permission = roles?.includes("erp." + type + ".update");
+    let permission = null;
+    if (customPermission) {
+        permission = roles?.includes(customPermission);
+    } else if (type) {
+        permission = roles?.includes("erp." + type + ".update");
+    }
     return <PrimaryButton
         label={label}
         onClick={onClick}
