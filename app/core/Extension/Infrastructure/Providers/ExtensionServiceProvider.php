@@ -8,9 +8,11 @@ use Core\Extension\Infrastructure\Repositories\EloquentExtensionRepository;
 use Core\Extension\Domain\Services\ExtensionService;
 use Core\Extension\Domain\Supports\ExtensionInstall;
 use Core\Extension\Domain\Supports\ExtensionInstallExecutor;
+use Core\Extension\Http\Middlewares\BlockExtension;
 use Core\Extension\Infrastructure\Services\ExtensionServiceImpl;
 use Core\Extension\Infrastructure\Supports\ExtensionInstallExecutorImpl;
 use Core\Extension\Infrastructure\Supports\ExtensionInstallImpl;
+use Illuminate\Routing\Router;
 
 class ExtensionServiceProvider extends ServiceProvider
 {
@@ -23,10 +25,11 @@ class ExtensionServiceProvider extends ServiceProvider
         $this->mergeModuleConfig();
     }
 
-    public function boot()
+    public function boot(Router $router)
     {
         $this->loadModuleRoutes();
         $this->loadModuleTranslations();
+        $router->aliasMiddleware('extension.block', BlockExtension::class);
     }
 
     protected function mergeModuleConfig(): void
