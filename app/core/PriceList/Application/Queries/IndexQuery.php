@@ -23,10 +23,13 @@ class IndexQuery implements QueryInterface {
         $dto = IndexPriceListRequest::fromArray($data);
         $rows = PriceListModel::select("price_list.*",
         "products.name as name",
-        "customer_group.name as group")
+        "customer_group.name as group",
+        "category_product.tax as tax")
         ->join("products","products.id","=","price_list.product_id")
         ->join("customer_group","customer_group.id",
             "=","price_list.customer_group_id")
+        ->join("category_product","category_product.id",
+            "=","products.category_id")
         ->where("products.business_id",$dto->business_id);
         $hooks = $this->hooks->dispatch(
             new HookContext(

@@ -28,7 +28,8 @@ class IndexQuery implements QueryInterface {
         ]);
         $rows = ProductModel::select("products.*",
             "category_product.name as category")
-            ->join("category_product","category_product.id","=","products.category_id");
+            ->join("category_product","category_product.id","=","products.category_id")
+            ->where('products.business_id',$dto->business_id);
         if($dto->keywords) {
             $rows = $rows->whereAny(['products.name', 'products.sku', 'category_product.name'], 
             'like', '%'. $dto->keywords .'%');  

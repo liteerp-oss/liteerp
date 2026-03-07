@@ -53,6 +53,12 @@ export default function ExtensionCard({
         })
         .catch((error) => {
           form.setLoading(false)
+          if(error.response?.data?.message) {
+                openPopup({
+                    type: 'error',
+                    message: error.response?.data?.message
+                })
+            }
         })
     }
   }, [form]);
@@ -69,6 +75,12 @@ export default function ExtensionCard({
         })
         .catch((error) => {
           form.setLoading(false)
+          if(error.response?.data?.message) {
+                openPopup({
+                    type: 'error',
+                    message: error.response?.data?.message
+                })
+            }
         })
     }
   }, [form]);
