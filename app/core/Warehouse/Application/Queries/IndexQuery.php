@@ -38,7 +38,7 @@ class IndexQuery implements QueryInterface
             "inventories.total_reserved_qty",
             "inventories.total_product"
         )
-            ->joinSub($sub,"inventories",function($join) {
+            ->leftJoinSub($sub,"inventories",function($join) {
                 $join->on("inventories.warehouse_id","=","warehouses.id");
             })
             ->where('warehouses.business_id', $dto->business_id);
