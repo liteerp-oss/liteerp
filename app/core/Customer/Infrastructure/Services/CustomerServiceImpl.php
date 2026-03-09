@@ -62,4 +62,16 @@ class CustomerServiceImpl implements CustomerService
         }
         return $this->repo->delete($entity);
     }
+    public function createOrUpdate(array $data): Customer|BadException
+    {
+        $row = $this->repo->findByPhone($data);
+        $entity = Customer::fromArray($data);
+        if($row) {
+            $row->address = $entity->address ?? $row->address;
+            $row->name = $entity->name ?? $row->name;
+            $row->email = $entity->email ?? $row->email;
+            return $this->repo->update($row);
+        }
+        return $this->repo->create($entity);
+    }
 }
