@@ -7,24 +7,26 @@ final class FormFieldRender {
     private string $key = '',
     private ?array $options = [],
     private string $label = '',
-    private string $placeHolder = ''
+    private string $placeHolder = '',
+    private bool $required = false
     ) {
 
     }
     public function toArray(){
-        return $this->options ? [
-            'type' => $this->type,
-            'value' => $this->value,
-            'key' => $this->key,
-            'options' => $this->options,
-            'label' => $this->label,
-            'placeHolder' => $this->placeHolder 
-        ] : [
+        $attributes = [
             'type' => $this->type,
             'value' => $this->value,
             'key' => $this->key,
             'label' => $this->label,
-            'placeHolder' => $this->placeHolder
+            'placeHolder' => $this->placeHolder,
+            'required' => $this->required
         ];
+        if($this->type === FormFieldType::SELECT) {
+            $attributes = [
+                ...$attributes,
+                'options' => $this->options,
+            ];
+        }
+        return $attributes;
     }
 }
