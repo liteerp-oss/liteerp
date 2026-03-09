@@ -27,8 +27,7 @@ class IndexQuery implements QueryInterface
         $list = $list->join("customer_group", "customer_group.id", "=", "customers.group");
         $list = $list->leftJoin("orders", "orders.customer_id", "=", "customers.id")
             ->where('customers.business_id', $dto->business_id)
-            ->groupBy("customers.id")
-            ->orderBy("customers.id", $dto->order_by);
+            ->groupBy("customers.id");
         $hooks = $this->hooks->dispatch(
             new HookContext(
                 action: HookAction::INDEX,
@@ -43,7 +42,7 @@ class IndexQuery implements QueryInterface
         );
         $list = $hooks['query'];
         if ($dto->keywords) {
-            $list = $list->whereAny(['customers.name', 'customers.email'], 'like', '%' . $dto->keywords . '%');
+            $list = $list->whereAny(['customers.name', 'customers.email','customers.phone'], 'like', '%' . $dto->keywords . '%');
         }
         if($dto->active) {
             $list = $list->where('customers.active', $dto->active);
