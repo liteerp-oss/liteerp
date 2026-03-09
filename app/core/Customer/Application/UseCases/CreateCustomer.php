@@ -41,7 +41,7 @@ class CreateCustomer
             new HookContext(
                 action: HookAction::CREATE,
                 phase: HookPhase::RESPONSE,
-                timing: HookTiming::BEFORE,
+                timing: HookTiming::AFTER,
                 payload: [
                     ...$data,
                     ...$create->toArray()
