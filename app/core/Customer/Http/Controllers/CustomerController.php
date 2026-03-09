@@ -9,10 +9,12 @@ use Core\Customer\Application\DTOs\IndexCustomerRequest as DTOsIndexCustomerRequ
 use Core\Customer\Application\Queries\IndexQuery;
 use Core\Customer\Application\UseCases\DeleteCustomer;
 use Core\Customer\Application\UseCases\IndexCustomer;
+use Core\Customer\Application\UseCases\ShowCustomer;
 use Core\Customer\Application\UseCases\UpdateCustomer;
 use Core\Customer\Http\Requests\CreateCustomerRequest as FormRequest;
 use Core\Customer\Http\Requests\DeleteCustomerRequest;
 use Core\Customer\Http\Requests\IndexCustomerRequest;
+use Core\Customer\Http\Requests\ShowCustomerRequest;
 use Core\Customer\Http\Requests\UpdateCustomerRequest;
 
 class CustomerController
@@ -32,6 +34,11 @@ class CustomerController
         return response()->json(['message' => $entity]);
     }
     public function destroy(DeleteCustomerRequest $request,DeleteCustomer $useCase,string $id) {
+        $request->merge(['id' => $id]);
+        $entity = $useCase->handle($request->all());
+        return response()->json(['message' => $entity]);
+    }
+    public function show(ShowCustomerRequest $request,ShowCustomer $useCase,string $id) {
         $request->merge(['id' => $id]);
         $entity = $useCase->handle($request->all());
         return response()->json(['message' => $entity]);

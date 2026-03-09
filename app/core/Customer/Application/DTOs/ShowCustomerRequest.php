@@ -5,7 +5,7 @@ namespace Core\Customer\Application\DTOs;
 class ShowCustomerRequest
 {
     public function __construct(
-        public string $id,
+        public int $id,
         public string $created_by,
         public string $business_id
     ) {}
