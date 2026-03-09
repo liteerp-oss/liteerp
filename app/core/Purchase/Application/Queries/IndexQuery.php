@@ -1,4 +1,5 @@
-<?php 
+<?php
+
 namespace Core\Purchase\Application\Queries;
 
 use App\Supports\Permissions\Enums\Permission;
@@ -14,11 +15,9 @@ use Core\Purchase\Application\DTOs\IndexPurchaseRequest;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
 
-class IndexQuery implements QueryInterface {
-    function __construct(private HookDispatcher $hooks)
-    {
-        
-    }
+class IndexQuery implements QueryInterface
+{
+    function __construct(private HookDispatcher $hooks) {}
     function handle(array $data): array
     {
         $dto = IndexPurchaseRequest::fromArray($data);
@@ -31,8 +30,15 @@ class IndexQuery implements QueryInterface {
             DB::raw("SUM(purchase_items.gift_quantity) as gift_quantity"),
             DB::raw("SUM(purchase_items.compensation_quantity) as compensation_quantity"),
             DB::raw("SUM(purchase_items.conversion_quantity) as conversion_quantity"),
-            DB::raw("SUM(purchase_items.tax) as tax"),
-            DB::raw("SUM(purchase_items.unit_cost) as unit_cost")
+            DB::raw("ROUND(SUM(
+                purchase_items.unit_cost * purchase_items.tax / 100
+            ),2) as tax"),
+            DB::raw("ROUND(SUM(purchase_items.unit_cost),2) as subtotal"),
+            DB::raw("ROUND(
+            SUM(
+                purchase_items.unit_cost + (purchase_items.unit_cost * purchase_items.tax / 100) + purchases.shipping_fee
+            )
+            ,2) as total")
         )
             ->join("suppliers", "suppliers.id", "=", "purchases.supplier_id")
             ->join("users as created_users", "created_users.id", "=", "purchases.created_by")
@@ -56,7 +62,7 @@ class IndexQuery implements QueryInterface {
         $list = $data['query'];
         $data = $data['data'];
         if ($dto->keywords) {
-            $list->whereAny(['suppliers.unit_name','created_users.name'], 'like', '%' . $dto->keywords . '%');
+            $list->whereAny(['suppliers.unit_name', 'created_users.name'], 'like', '%' . $dto->keywords . '%');
         }
         Event::dispatch(Permission::PURCHASE_INDEX->value, [
             ...$data,

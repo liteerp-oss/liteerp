@@ -89,22 +89,35 @@ export default function ListPurchases() {
                 },
             },
             {
-                label: t('Purchase date'),
-                key: 'purchase_date',
-                render: (date) => {
-                    return <div style={{
+                label: t('Total'),
+                key: 'total',
+                render: (value) => (
+                    <div style={{
                         width: 120
-                    }}>{isoToDateTime(date)}</div>
-                },
+                    }}>
+                        <strong><Currencies amount={value} /></strong>
+                    </div>
+                ),
             },
             {
-                label: t('Expected date'),
-                key: 'expected_date',
-                render: (date) => {
-                    return <div style={{
+                label: t('Subtotal'),
+                key: 'subtotal',
+                render: (value) => (
+                    <div style={{
                         width: 120
-                    }}>{isoToDateTime(date)}</div>
-                },
+                    }}>
+                        <strong><Currencies amount={value} /></strong>
+                    </div>
+                ),
+            },
+            {
+                label: t('Tax'),
+                key: 'tax',
+                render: (value) => (
+                    <strong>
+                        <Currencies amount={value} />
+                    </strong>
+                ),
             },
             {
                 label: t('Shipping fee'),
@@ -157,13 +170,22 @@ export default function ListPurchases() {
                 }
             },
             {
-                label: t('Tax'),
-                key: 'tax',
-                render: (value) => (
-                    <strong>
-                        <Currencies amount={value} />
-                    </strong>
-                ),
+                label: t('Purchase date'),
+                key: 'purchase_date',
+                render: (date) => {
+                    return <div style={{
+                        width: 120
+                    }}>{isoToDateTime(date)}</div>
+                },
+            },
+            {
+                label: t('Expected date'),
+                key: 'expected_date',
+                render: (date) => {
+                    return <div style={{
+                        width: 120
+                    }}>{isoToDateTime(date)}</div>
+                },
             },
             {
                 label: t('Status'),
