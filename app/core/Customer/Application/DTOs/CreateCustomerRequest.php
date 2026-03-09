@@ -9,7 +9,7 @@ class CreateCustomerRequest
         public string $name,
         public ?string $contact_name = null,
         public ?string $email = null,
-        public ?string $phone = null,
+        public string $phone,
         public ?string $address = null,
         public ?string $tax_code = null,
         public ?string $bank_name = null,
@@ -21,7 +21,9 @@ class CreateCustomerRequest
         public bool $active = true,
         public ?int $id = null,
         public ?int $created_by 
-    ) {}
+    ) {
+        $this->formatPhoneNumber();
+    }
 
     /**
      * Create DTO from array input
@@ -33,7 +35,7 @@ class CreateCustomerRequest
             name:         $data['name'],
             contact_name: $data['contact_name'] ?? null,
             email:        $data['email'] ?? null,
-            phone:        $data['phone'] ?? null,
+            phone:        $data['phone'],
             address:      $data['address'] ?? null,
             tax_code:     $data['tax_code'] ?? null,
             bank_name:    $data['bank_name'] ?? null,
@@ -71,5 +73,8 @@ class CreateCustomerRequest
             'id'           => $this->id,
             'created_by'   => $this->created_by  
         ];
+    }
+    function formatPhoneNumber() { 
+        $this->phone = preg_replace('/\D+/', '', $this->phone); 
     }
 }
