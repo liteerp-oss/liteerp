@@ -273,11 +273,11 @@ If LiteERP helps you:
 
 ## Sponsorship
 
-This project is proudly supported by **Hetzner Cloud**  
+This project is proudly supported by **Hetzner**  
 for providing reliable infrastructure for development and deployment.
 
 
-<a href="https://www.hetzner.com/cloud/" target="_blank">
+<a href="https://www.hetzner.com" target="_blank">
   <img src="./app/public/Hetzner-Logo.png" width="200"/>
 </a>
 
