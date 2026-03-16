@@ -22,11 +22,8 @@ class CreateManyStockMovementOut
         foreach ($dto->list as $key => $value) {
             $adapter = CreateStockMovementOutRequest::fromArray([
                 'business_id' => $dto->business_id,
-                'stock_out_id' => $dto->stock_out_id,
-                'warehouse_id' => $value['warehouse_id'],
-                'product_id' => $value['product_id'],
                 'user_id'   => $dto->created_by,
-                'qty_change' => $value['reserved_qty']
+                'order_item_id' => $value['order_item_id']
             ]);
             $create = $this->service->create($adapter->toArray());
             Event::dispatch(Permission::STOCKMOVEMENTOUT_CREATE->value,[

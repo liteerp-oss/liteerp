@@ -19,10 +19,10 @@ class EloquentStockMovementOutRepository implements StockMovementOutRepositoryIn
     public function findById(array $data): ?StockMovementOut
     {
         $row = StockMovementOutModel::select("stock_movements_out.*")
-            ->join("products", "products.id", "=", "stock_movements_out.product_id")
-            ->join("warehouses", "warehouses.id", "=", "stock_movements_out.warehouse_id")
+            ->join("order_items","order_items.id","=","stock_movements_out.order_item_id")
+            ->join("orders","orders.id","=","order_items.order_id")
             ->where('stock_movements_out.id', $data['id'])
-            ->where('products.business_id', $data['business_id'])
+            ->where('orders.business_id', $data['business_id'])
             ->first()?->toArray();
         if (!$row) {
             return null;
@@ -32,12 +32,10 @@ class EloquentStockMovementOutRepository implements StockMovementOutRepositoryIn
     public function findExists(array $data): ?StockMovementOut
     {
         $row = StockMovementOutModel::select("stock_movements_out.*")
-            ->join("products", "products.id", "like", "stock_movements_out.product_id")
-            ->join("warehouses", "warehouses.id", "like", "stock_movements_out.warehouse_id")
-            ->where('stock_movements_out.product_id', $data['product_id'])
-            ->where('products.business_id', $data['business_id'])
-            ->where('stock_movements_out.warehouse_id', $data['warehouse_id'])
-            ->where('stock_movements_out.stock_out_id', $data['stock_out_id'])
+            ->join("order_items","order_items.id","=","stock_movements_out.order_item_id")
+            ->join("orders","orders.id","=","order_items.order_id")
+            ->where('stock_movements_out.order_item_id', $data['order_item_id'])
+            ->where('orders.business_id', $data['business_id'])
             ->first()?->toArray();
         if (!$row) {
             return null;
