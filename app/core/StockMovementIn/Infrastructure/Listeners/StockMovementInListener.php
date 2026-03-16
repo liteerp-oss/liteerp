@@ -2,12 +2,15 @@
 
 namespace Core\StockMovementIn\Infrastructure\Listeners;
 
+use App\Supports\Permissions\Enums\Permission;
+use Core\StockMovementIn\Application\UseCases\CheckStockMovementInForOrderItem;
 use Core\StockMovementIn\Application\UseCases\CompleteStockMovementIn;
 use Illuminate\Support\Facades\Event;
 
 class StockMovementInListener
 {
-    public function __construct(private CompleteStockMovementIn $completeStockMovementIn)
+    public function __construct(private CompleteStockMovementIn $completeStockMovementIn,
+        private CheckStockMovementInForOrderItem $CheckStockMovementInForOrderItem)
     {
         
     }
@@ -16,8 +19,17 @@ class StockMovementInListener
         Event::listen(
             "erp.stockin.*",
             function (string $eventName, array $data) {
-                if ($eventName === 'erp.stockin.received') {
+                if ($eventName === Permission::STOCKIN_RECEIVED->value) {
                     $this->completeStockMovementIn->handle($data);
+                }
+            }
+        );
+        Event::listen(
+            "erp.orderitem.*",
+            function (string $eventName, array $data) {
+                if ($eventName === Permission::ORDERITEM_CREATE->value
+                    || $eventName === Permission::ORDERITEM_UPDATE->value) {
+                    $this->CheckStockMovementInForOrderItem->handle($data);
                 }
             }
         );

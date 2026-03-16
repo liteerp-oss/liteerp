@@ -56,4 +56,17 @@ class EloquentStockMovementInRepository implements StockMovementInRepositoryInte
         ->where('stock_movements_in.stock_in_id',$data['stock_in_id']);
         return $rows->paginate($data['limit'] ?? 300)->toArray();
     }
+    public function getWithAvailabelQtyChange(array $data): ?array
+    {
+        return StockMovementInModel::select("stock_movements_in.*",
+        DB::raw("stock_movements_in.qty_change - COALESCE(SUM(
+                        order_items.buy_quantity 
+                        + order_items.gift_quantity
+                        + order_items.compensation_quantity
+                        + order_items.conversion_quantity
+                    ),0) as quantity"))
+        ->leftJoin('order_items','order_items.stock_movements_in_id','=','stock_movements_in.id')
+        ->where('stock_movements_in.id',$data['id'])
+        ->groupBy("stock_movements_in.id")->first()?->toArray();
+    }
 }

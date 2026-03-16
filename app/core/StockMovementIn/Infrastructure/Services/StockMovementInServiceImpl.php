@@ -34,4 +34,12 @@ class StockMovementInServiceImpl implements StockMovementInService
     {
         return $this->repo->index($data);
     }
+    public function show(array $data): StockMovementIn|BadException
+    {
+        return $this->repo->findById($data) ?? throw new BadException(__("stockmovementin::messages.not_found"));
+    }
+    public function showWithAvailabelQtyChange(array $data): array|BadException
+    {
+        return $this->repo->getWithAvailabelQtyChange($data) ?? throw new BadException(__("stockmovementin::messages.not_found"));
+    }
 }
