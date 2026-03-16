@@ -1,6 +1,5 @@
 <?php
 
 return [
-    'created' => 'InventoryAdjustment created successfully!',
-    'deleted' => 'InventoryAdjustment deleted successfully!',
+    'adjusted_by_invalid' => 'Quantity should less than value 0'
 ];

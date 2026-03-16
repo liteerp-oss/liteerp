@@ -10,7 +10,8 @@ class InventoryAdjustment
         public float $qty_adjusted,
         public ?string $reason,
         public int $adjusted_by,
-        public ?int $id = null
+        public ?int $id = null,
+        public int $purchase_id
     ) {}
 
     /**
@@ -24,7 +25,8 @@ class InventoryAdjustment
             qty_adjusted: (float) $data['qty_adjusted'],
             reason: $data['reason'] ?? null,
             adjusted_by: $data['adjusted_by'],
-            id: $data['id'] ?? null
+            id: $data['id'] ?? null,
+            purchase_id: $data['purchase_id']
         );
     }
 
@@ -39,7 +41,8 @@ class InventoryAdjustment
             'warehouse_id'  => $this->warehouse_id,
             'qty_adjusted'  => $this->qty_adjusted,
             'reason'        => $this->reason,
-            'adjusted_by'   => $this->adjusted_by
+            'adjusted_by'   => $this->adjusted_by,
+            'purchase_id'   => $this->purchase_id
         ];
     }
 }

@@ -1,6 +1,5 @@
 <?php
 
 return [
-    'created' => 'Tạo InventoryAdjustment thành công!',
-    'deleted' => 'Xoá InventoryAdjustment thành công!',
+    'adjusted_by_invalid' => 'Chỉ có thể  điều chỉnh giảm không thể  tăng '
 ];

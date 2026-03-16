@@ -2,6 +2,8 @@
 
 namespace Core\InventoryAdjustment\Application\DTOs;
 
+use App\Exceptions\BadException;
+
 class CreateInventoryAdjustmentRequest
 {
     public function __construct(
@@ -12,8 +14,13 @@ class CreateInventoryAdjustmentRequest
         public int $adjusted_by,
         public ?int $id = null,
         public ?int $business_id,
-        public ?int $created_by
-    ) {}
+        public ?int $created_by,
+        public ?int $purchase_id
+    ) {
+        if($this->qty_adjusted >= 0) {
+            throw new BadException(__("inventoryadjustment::messages.adjusted_by_invalid"));
+        }
+    }
 
     public static function fromArray(array $data): self
     {
@@ -25,7 +32,8 @@ class CreateInventoryAdjustmentRequest
             adjusted_by: $data['user_id'],
             id: $data['id'] ?? null,
             business_id: $data['business_id'] ?? null,
-            created_by: $data['user_id'] ?? null 
+            created_by: $data['user_id'] ?? null,
+            purchase_id: $data['purchase_id']
         );
     }
 
@@ -39,7 +47,8 @@ class CreateInventoryAdjustmentRequest
             'reason'        => $this->reason,
             'adjusted_by'   => $this->adjusted_by,
             'business_id'   => $this->business_id,
-            'created_by'    => $this->created_by
+            'created_by'    => $this->created_by,
+            'purchase_id'   => $this->purchase_id
         ];
     }
 }
