@@ -15,5 +15,6 @@ class InventoryAdjustmentModel extends Model
         'qty_adjusted',
         'reason',
         'adjusted_by',
+        'purchase_id'
     ];
 }
