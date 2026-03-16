@@ -18,6 +18,7 @@ return new class extends Migration
             $table->decimal('qty_adjusted', 20, 2);
             $table->string('reason')->nullable(); 
             $table->foreignId('adjusted_by')->constrained('users');
+            $table->foreignId('purchase_id')->nullable()->constrained('purchases')->onDelete('cascade');
             $table->timestamps();
         });
     }

@@ -11,10 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->string('lang', 5)
-                  ->default('en')
-                  ->after('email');
+        Schema::create('stock_movements_out', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('order_item_id')->constrained('order_items');
+            $table->foreignId('created_by')->constrained('users');
+            $table->timestamps();
         });
     }
 
@@ -23,8 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('lang');
-        });
+        Schema::dropIfExists('stock_movements_out');
     }
 };

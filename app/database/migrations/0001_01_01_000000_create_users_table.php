@@ -23,6 +23,8 @@ return new class extends Migration
             $table->string('phone')->nullable();
             $table->timestamp('last_seen')->nullable();
             $table->enum('system_role',['admin','member'])->default('member');
+            $table->string('lang', 5)
+                  ->default('en');
             $table->softDeletes();
             $table->rememberToken();
             $table->timestamps();

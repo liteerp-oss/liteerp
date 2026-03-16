@@ -20,15 +20,6 @@ return new class extends Migration
             $table->foreignId('created_by')->constrained('users');
             $table->timestamps();
         });
-        Schema::create('stock_movements_out', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('product_id')->constrained('products');
-            $table->foreignId('warehouse_id')->constrained('warehouses');
-            $table->decimal('qty_change', 20, 2);
-            $table->foreignId('stock_out_id')->constrained('stock_outs');
-            $table->foreignId('created_by')->constrained('users');
-            $table->timestamps();
-        });
     }
 
     /**
@@ -37,6 +28,5 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('stock_movements_in');
-        Schema::dropIfExists('stock_movements_out');
     }
 };
