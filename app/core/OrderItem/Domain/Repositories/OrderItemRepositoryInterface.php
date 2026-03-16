@@ -15,4 +15,5 @@ interface OrderItemRepositoryInterface
     public function update(OrderItem $entity) : OrderItem;
     public function delete(OrderItem $entity) : OrderItem;
     public function summary(array $data) : ?array;
+    public function cancelByOrderId(array $data) : bool;
 }

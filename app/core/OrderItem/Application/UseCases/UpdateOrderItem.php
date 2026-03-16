@@ -36,15 +36,15 @@ class UpdateOrderItem
         );
         $oldData = $this->service->findById($dto->toArray());
         $item = $this->service->update($dto->toArray());
-        $new_qty_change = (float) ($item->buy_quantity
+        $new_qty = (float) ($item->buy_quantity
                 + $item->gift_quantity
                 + $item->compensation_quantity
                 + $item->conversion_quantity);
-        $old_qty_change = (float) ($oldData->buy_quantity
+        $old_qty = (float) ($oldData->buy_quantity
                 + $oldData->gift_quantity
                 + $oldData->compensation_quantity
                 + $oldData->conversion_quantity);
-        $qty_change = $new_qty_change - $old_qty_change;
+        $qty_change = $new_qty - $old_qty;
         $data = $this->hooks->dispatch(
             new HookContext(
                 action: HookAction::UPDATE,
@@ -59,8 +59,7 @@ class UpdateOrderItem
             )
         );
         Event::dispatch(Permission::ORDERITEM_UPDATE->value,[
-            ...$data,
-            'qty_change' => $qty_change,
+            ...$data
         ]);
 
         DB::commit();

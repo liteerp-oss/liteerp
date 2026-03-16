@@ -8,7 +8,7 @@ class CreateOrderItemRequest
         public ?int $business_id = null,
         public ?int $created_by = null,
         public int $order_id,
-        public int $inventory_id,
+        public int $stock_movements_in_id,
         public float $discount = 0,
         public float $tax = 0,
         public float $buy_quantity = 0,
@@ -26,7 +26,7 @@ class CreateOrderItemRequest
     {
         return new self(
             order_id:               $data['order_id'],
-            inventory_id:             $data['inventory_id'],
+            stock_movements_in_id:  $data['stock_movements_in_id'],
             discount:               (float)($data['discount'] ?? 0),
             tax:                    (float) $data['tax'],
             buy_quantity:           (float)($data['buy_quantity'] ?? 0),
@@ -47,7 +47,7 @@ class CreateOrderItemRequest
     {
         return [
             'order_id'              => $this->order_id,
-            'inventory_id'            => $this->inventory_id,
+            'stock_movements_in_id' => $this->stock_movements_in_id,
             'discount'              => $this->discount,
             'tax'                   => $this->tax,
             'buy_quantity'          => $this->buy_quantity,

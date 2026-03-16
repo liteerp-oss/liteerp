@@ -15,4 +15,5 @@ interface OrderItemService
     public function findById(array $data) : OrderItem | BadException;
     public function summary(array $data): ?array;
     public function indexForStockMovementOut(array $data) : array;
+    public function cancelByOrderItem(array $data) : bool;
 }

@@ -78,4 +78,8 @@ class OrderItemServiceImpl implements OrderItemService
     public function indexForStockMovementOut(array $data) : array {
         return $this->repo->indexForStockMovementOut($data);
     }
+    public function cancelByOrderItem(array $data): bool
+    {
+        return $this->repo->cancelByOrderId($data);
+    }
 }
