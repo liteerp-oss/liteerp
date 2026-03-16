@@ -27,7 +27,7 @@ class OrderShippingServiceImpl implements OrderShippingService
     }
     public function update(array $data): OrderShipping|BadException
     {
-        $entity = $this->repo->findById($data);
+        $entity = $this->repo->findByOrderId($data);
         if(!$entity) {
               throw new BadException(__("ordershipping::messages.not_found"));
         }
@@ -48,6 +48,10 @@ class OrderShippingServiceImpl implements OrderShippingService
     {
         return $this->repo->findByOrderId($data) 
               ?? throw new BadException(__("ordershipping::messages.not_found"));
+    }
+    public function getByOrderId(array $data): OrderShipping
+    {
+        return $this->repo->findByOrderId($data);
     }
     public function findById(array $data): OrderShipping|BadException
     {

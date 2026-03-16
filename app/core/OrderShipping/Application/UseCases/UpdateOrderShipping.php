@@ -35,7 +35,7 @@ class UpdateOrderShipping
                 module: 'OrderShipping'
             )
         );
-        $oldData = $this->service->findById($data);
+        $oldData = $this->service->findByOrderId($data);
         $update = $this->service->update($data);
         $data = $this->hooks->dispatch(
             new HookContext(
