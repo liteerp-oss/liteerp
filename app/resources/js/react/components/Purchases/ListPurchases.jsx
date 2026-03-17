@@ -89,24 +89,6 @@ export default function ListPurchases() {
                 },
             },
             {
-                label: t('Purchase date'),
-                key: 'purchase_date',
-                render: (date) => {
-                    return <div style={{
-                        width: 120
-                    }}>{isoToDateTime(date)}</div>
-                },
-            },
-            {
-                label: t('Expected date'),
-                key: 'expected_date',
-                render: (date) => {
-                    return <div style={{
-                        width: 120
-                    }}>{isoToDateTime(date)}</div>
-                },
-            },
-            {
                 label: t('Shipping fee'),
                 key: 'shipping_fee',
                 render: (value) => (
@@ -157,6 +139,24 @@ export default function ListPurchases() {
                 }
             },
             {
+                label: t('Subtotal'),
+                key: 'subtotal',
+                render: (value) => (
+                    <strong>
+                        <Currencies amount={value} />
+                    </strong>
+                ),
+            },
+            {
+                label: t('Total'),
+                key: 'total',
+                render: (value) => (
+                    <strong>
+                        <Currencies amount={value} />
+                    </strong>
+                ),
+            },
+            {
                 label: t('Tax'),
                 key: 'tax',
                 render: (value) => (
@@ -173,20 +173,28 @@ export default function ListPurchases() {
             {
                 label: t('Approved by'),
                 key: 'approved_name',
-                render: (value) => (
-                    <span className="badge bg-primary text-uppercase">
+                render: (value) => {
+                    return <div style={{
+                        width: 120
+                    }}>
+                        <span className="badge bg-primary text-uppercase">
                         {value}
                     </span>
-                ),
+                    </div>
+                },
             },
             {
                 label: t('Created by'),
                 key: 'created_name',
-                render: (value) => (
-                    <span className="badge bg-primary text-uppercase">
+                render: (value) => {
+                    return <div style={{
+                        width: 100
+                    }}>
+                        <span className="badge bg-primary text-uppercase">
                         {value}
                     </span>
-                ),
+                    </div>
+                },
             },
         ])
         getPurchases();
