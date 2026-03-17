@@ -45,8 +45,8 @@ class IndexQuery implements QueryInterface
             ->join("orders", "orders.id", "=", "invoice_outs.order_id")
             ->join('shippings', 'shippings.order_id', '=', 'orders.id')
             ->join("order_items", "order_items.order_id", "=", "orders.id")
-            ->join("inventories", "inventories.id", "=", "order_items.inventory_id")
-            ->join("products", "products.id", "=", "inventories.product_id")
+            ->join("stock_movements_in", "stock_movements_in.id", "=", "order_items.stock_movements_in_id")
+            ->join("products", "products.id", "=", "stock_movements_in.product_id")
             ->join("customers", "customers.id", "=", "orders.customer_id")
             ->groupBy("stock_outs.id")
             ->where('stock_outs.business_id', $dto->business_id);
