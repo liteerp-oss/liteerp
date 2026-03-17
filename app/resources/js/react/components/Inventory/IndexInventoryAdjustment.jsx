@@ -12,6 +12,9 @@ import TextArea from '../UI/Input/Textarea'
 import { isoToDateTime } from '../../libraries/common'
 import { useI18n } from '../../../i18n/useI18n'
 import CommonDataTableV2 from '../CommonDataTableV2'
+import PurchaseService from '@/react/services/PurchaseService'
+import StockMovementInService from '@/react/services/StockMovementInService'
+import { Select } from '../UI/Input/Select'
 
 export default function IndexInventoryAdjustment() {
     const { t, lang } = useI18n()
@@ -19,8 +22,8 @@ export default function IndexInventoryAdjustment() {
     const form = useForm()
     const search = useForm()
     const { openPopup } = usePopup()
-    const [products, setProducts] = useState([])
-    const [warehouses, setWarehouses] = useState([])
+    const [stockMovementIn, setStockMovementIn] = useState([])
+    const [purchases,setPurchases] = useState([])
     const [showForm, setShowForm] = useState(false)
 
     const getAdjustment = useCallback(
@@ -38,22 +41,23 @@ export default function IndexInventoryAdjustment() {
         [search.formData]
     )
 
-    const getProducts = useCallback((keywords = '', callback = null) => {
-        ProductService.list({
+    const getStockMovementIn = useCallback((keywords = '') => {
+        StockMovementInService.list({
             keywords,
             page: 0,
+            purchase_id: form.formData?.purchase_id
         }).then((resp) => {
-            setProducts(resp.message.data)
-            callback && callback()
+            setStockMovementIn(resp.message.data)
         })
-    }, [])
+    }, [form.formData?.purchase_id])
 
-    const getWarehouses = useCallback((keywords = '', callback = null) => {
-        WarehouseService.list({
+    const getPurchase = useCallback((keywords = '', callback = null) => {
+        PurchaseService.list({
             keywords,
             page: 0,
+            isCompleted: 1
         }).then((resp) => {
-            setWarehouses(resp.message.data)
+            setPurchases(resp.message.data)
             callback && callback()
         })
     }, [])
@@ -95,7 +99,14 @@ export default function IndexInventoryAdjustment() {
             search.setHookRender(resp.message?.search ?? [])
         })
     }, [table])
-
+    useEffect(() => {
+        if(form.formData?.purchase_id) {
+            getStockMovementIn();
+        } else {
+            setStockMovementIn([])
+        }
+        
+    },[form.formData?.purchase_id])
     useEffect(() => {
         table.setColums([
             { key: 'id', label: t('ID') },
@@ -166,43 +177,45 @@ export default function IndexInventoryAdjustment() {
                     title={t('Add adjustment')}
                 >
                     <div>
-                        <div className="form-group">
-                            <label>{t('Product')}</label>
-                            <SearchSelect
-                                name="product_id"
-                                search={getProducts}
-                                changeValue={form.handleChangeByKey}
-                                value={form.formData?.product_id}
+
+                        <div className="form-group mt-3">
+                            <Select
+                                label={t('Inventory')}
+                                required={true}
+                                name="stock_movements_in_id"
+                                handleChange={form.handleChange}
+                                value={form.formData?.stock_movements_in_id}
                                 errorMessage={
-                                    form.formErrors?.product_id
+                                    form.formErrors?.stock_movements_in_id
                                 }
-                                options={products.map((item) => ({
+                                options={stockMovementIn.map((item) => ({
                                     value: item.id,
                                     label: item.name,
                                 }))}
                             />
                         </div>
-
-                        <div className="form-group">
-                            <label>{t('Warehouse')}</label>
+                        <div className="form-group mt-3">
                             <SearchSelect
-                                name="warehouse_id"
-                                search={getWarehouses}
+                                label={t('Purchase')}
+                                required={true}
+                                name="purchase_id"
+                                search={getPurchase}
                                 changeValue={form.handleChangeByKey}
-                                value={form.formData?.warehouse_id}
+                                value={form.formData?.purchase_id}
                                 errorMessage={
-                                    form.formErrors?.warehouse_id
+                                    form.formErrors?.purchase_id
                                 }
-                                options={warehouses.map((item) => ({
+                                options={purchases.map((item) => ({
                                     value: item.id,
-                                    label: item.name,
+                                    label: `PU${item.id}`,
                                 }))}
                             />
                         </div>
 
-                        <div className="form-group">
-                            <label>{t('Quantity')}</label>
+                        <div className="form-group mt-3">
                             <InputForm
+                                label={t('Quantity')}
+                                required={true}
                                 name="qty_adjusted"
                                 value={form.formData?.qty_adjusted}
                                 handleChange={form.handleChange}
@@ -212,9 +225,10 @@ export default function IndexInventoryAdjustment() {
                             />
                         </div>
 
-                        <div className="form-group">
-                            <label>{t('Reason')}</label>
+                        <div className="form-group mt-3">
                             <TextArea
+                                label={t('Reason')}
+                                required={true}
                                 name="reason"
                                 value={form.formData?.reason}
                                 handleChange={form.handleChange}

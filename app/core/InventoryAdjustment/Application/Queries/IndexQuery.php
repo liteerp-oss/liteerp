@@ -23,10 +23,12 @@ class IndexQuery
              "products.name as product_name",
              "products.sku as product_sku",
              "warehouses.name as warehouse",
-             "users.name as created_by"
+             "users.name as created_by",
+             "purchase_id"
              )
-            ->join("products", "products.id", "=", "inventory_adjustments.product_id")
-            ->join("warehouses", "warehouses.id", "=", "inventory_adjustments.warehouse_id")
+            ->join("stock_movements_in","stock_movements_in.id","=","inventory_adjustments.stock_movements_in_id")
+            ->join("products", "products.id", "=", "stock_movements_in.product_id")
+            ->join("warehouses", "warehouses.id", "=", "stock_movements_in.warehouse_id")
             ->join("users", "users.id", "=", "inventory_adjustments.adjusted_by")
             ->where('products.business_id',$dto->business_id);
         $data = $this->hooks->dispatch(

@@ -5,8 +5,7 @@ namespace Core\InventoryAdjustment\Domain\Entities;
 class InventoryAdjustment
 {
     public function __construct(
-        public int $product_id,
-        public int $warehouse_id,
+        public int $stock_movements_in_id,
         public float $qty_adjusted,
         public ?string $reason,
         public int $adjusted_by,
@@ -20,8 +19,7 @@ class InventoryAdjustment
     public static function fromArray(array $data): self
     {
         return new self(
-            product_id: $data['product_id'],
-            warehouse_id: $data['warehouse_id'],
+            stock_movements_in_id: $data['stock_movements_in_id'],
             qty_adjusted: (float) $data['qty_adjusted'],
             reason: $data['reason'] ?? null,
             adjusted_by: $data['adjusted_by'],
@@ -37,8 +35,7 @@ class InventoryAdjustment
     {
         return [
             'id'            => $this->id,
-            'product_id'    => $this->product_id,
-            'warehouse_id'  => $this->warehouse_id,
+            'stock_movements_in_id'    => $this->stock_movements_in_id,
             'qty_adjusted'  => $this->qty_adjusted,
             'reason'        => $this->reason,
             'adjusted_by'   => $this->adjusted_by,
