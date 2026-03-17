@@ -80,9 +80,6 @@ enum Permission: string
 
     case INVENTORY_INDEX = 'erp.inventory.index';
     case INVENTORY_SHOW = 'erp.inventory.show';
-    case INVENTORY_CREATE = 'erp.inventory.create';
-    case INVENTORY_UPDATE = 'erp.inventory.update';
-    case INVENTORY_DELETE = 'erp.inventory.delete';
 
     case INVENTORYADJUSTMENT_CREATE = 'erp.inventoryadjustment.create';
     case INVENTORYADJUSTMENT_INDEX = 'erp.inventoryadjustment.index';
