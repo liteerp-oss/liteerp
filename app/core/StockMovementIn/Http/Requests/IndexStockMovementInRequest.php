@@ -18,6 +18,7 @@ class IndexStockMovementInRequest extends FormRequest
             'keywords'     => 'nullable|string|max:150',
             'order_by'     => 'nullable|in:ASC,DESC',
             'customer_id' => 'nullable|numeric|exists:customers,id',
+            'purchase_id' => 'nullable|numeric|exists:purchases,id',
             ...$hooks->dispatch(
                 new HookContext(
                     action: HookAction::INDEX,

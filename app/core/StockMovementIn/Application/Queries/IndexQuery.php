@@ -5,6 +5,8 @@ namespace Core\StockMovementIn\Application\Queries;
 use App\Supports\Permissions\Enums\Permission;
 
 use App\Contracts\Queries\QueryInterface;
+use App\Models\InventoryAdjustmentModel;
+use App\Models\OrderItemModel;
 use App\Models\StockMovementInModel;
 use Core\StockMovementIn\Application\DTOs\IndexStockMovementInRequest;
 use App\Supports\Hooks\HookAction;
@@ -21,8 +23,36 @@ class IndexQuery implements QueryInterface
     public function handle(array $data): array
     {
         $dto = IndexStockMovementInRequest::fromArray($data);
+        /**
+         * Sub query InventoryAdjustmentModel
+         */
+        $iaSub = InventoryAdjustmentModel::select(
+            "inventory_adjustments.stock_movements_in_id",
+            DB::raw("SUM(inventory_adjustments.qty_adjusted) as total_adjustment")
+        )->groupBy("inventory_adjustments.stock_movements_in_id");
+        /**
+         * Sub query OrderItemModel
+         */
+        $oiSub = OrderItemModel::select(
+            "order_items.stock_movements_in_id",
+            DB::raw("SUM(
+            order_items.buy_quantity 
+                        + order_items.gift_quantity
+                        + order_items.compensation_quantity
+                        + order_items.conversion_quantity
+            ) as total_order_qty")
+        )
+            ->whereNull('deleted_at')
+            ->where(function ($query) {
+                $query->where('order_items.cancelled', false)
+                    ->orWhere('order_items.cancelled', NULL);
+            })
+            ->groupBy('stock_movements_in_id');
+        /**
+         * Mail query 
+         */
         $rows = StockMovementInModel::select(
-            "stock_movements_in.id",
+            "stock_movements_in.*",
             "stock_movements_in.id as stock_movements_in_id",
             "suppliers.unit_name as unit_name",
             "products.name as name",
@@ -75,48 +105,53 @@ class IndexQuery implements QueryInterface
                 "category_product.id",
                 "=",
                 "products.category_id"
-            );
-        if ($dto->customer_id) {
-            $rows = $rows->join("price_list", "price_list.product_id", "=", "products.id")
-                ->join("customer_group", "customer_group.id", "=", "price_list.customer_group_id")
-                ->join("customers", "customers.group", "=", "customer_group.id")
-                ->leftJoin(
-                    "order_items",
-                    "order_items.stock_movements_in_id",
-                    "=",
-                    "stock_movements_in.id"
-                )
-                ->groupBy(
-                    "stock_movements_in.id",
-                    "suppliers.unit_name",
-                    "products.name",
-                    "products.unit",
-                    "products.sku",
-                    "category_product.name",
-                    "warehouses.name",
-                    "purchases.id",
-                    "price_list.id"
-                )
-                ->addSelect(DB::raw("stock_movements_in.qty_change - COALESCE(SUM(
-                        order_items.buy_quantity 
-                        + order_items.gift_quantity
-                        + order_items.compensation_quantity
-                        + order_items.conversion_quantity
-                    ),0) as quantity"),
-                    "price_list.price")
-                ->where('customers.id', $dto->customer_id)
-                ->where('order_items.deleted_at', NULL)
-                ->where(function($query) {
-                    $query->where('order_items.cancelled', NULL)
-                    ->orWhere('order_items.cancelled', false);
-                })
-                ->havingRaw("quantity > 0");
+            )->leftJoinSub($oiSub, 'oi', function ($join) {
+                $join->on('oi.stock_movements_in_id', '=', 'stock_movements_in.id');
+            })
+            ->leftJoinSub($iaSub, 'ia', function ($join) {
+                $join->on('ia.stock_movements_in_id', '=', 'stock_movements_in.id');
+            });
+        /**
+         * Take order 
+         * Inventory adjustment
+         */
+        if ($dto->customer_id || $dto->purchase_id) {
+            $rows = $rows->addSelect(
+                DB::raw('
+                        stock_movements_in.qty_change 
+                        - COALESCE(oi.total_order_qty, 0)
+                        + COALESCE(ia.total_adjustment, 0) as quantity
+                    ')
+            )->whereRaw('
+                    stock_movements_in.qty_change 
+                    - COALESCE(oi.total_order_qty, 0)
+                    + COALESCE(ia.total_adjustment, 0) > 0
+                ');
+            /**
+             * Search for take order 
+             */
+            if ($dto->customer_id) {
+                $rows = $rows->join("price_list", "price_list.product_id", "=", "products.id")
+                    ->join("customer_group", "customer_group.id", "=", "price_list.customer_group_id")
+                    ->join("customers", "customers.group", "=", "customer_group.id")
+                    ->addSelect("price_list.price")
+                    ->where('customers.id', $dto->customer_id)
+                    ->where('stock_ins.status', 'received');
+            }
+            /**
+             * For inventory adjustment 
+             */
+            else if ($dto->purchase_id) {
+                $rows = $rows
+                    ->where('purchases.id', $dto->purchase_id)
+                    ->where('stock_ins.status', 'received');
+            }
         }
         $rows = $rows->where('invoice_ins.business_id', $dto->business_id);
-        if($dto->stock_in_id) {
+        if ($dto->stock_in_id) {
             $rows = $rows->where('stock_movements_in.stock_in_id', $dto->stock_in_id);
         }
-            
+
         if ($dto->keywords) {
             $rows->whereAny(
                 ['products.name', 'products.sku', 'category_product.name'],
