@@ -18,14 +18,15 @@ class OrderItemModel extends Model
      */
     protected $fillable = [
         'order_id',
-        'inventory_id',
+        'stock_movements_in_id',
         'discount',
         'tax',
         'buy_quantity',
         'gift_quantity',
         'compensation_quantity',
         'conversion_quantity',
-        'price'
+        'price',
+        'cancelled'
     ];
 
     /**

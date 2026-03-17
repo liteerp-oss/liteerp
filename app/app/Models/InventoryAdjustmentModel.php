@@ -10,10 +10,10 @@ class InventoryAdjustmentModel extends Model
     protected $table = 'inventory_adjustments';
 
     protected $fillable = [
-        'product_id',
-        'warehouse_id',
+        'stock_movements_in_id',
         'qty_adjusted',
         'reason',
         'adjusted_by',
+        'purchase_id'
     ];
 }

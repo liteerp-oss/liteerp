@@ -16,6 +16,7 @@ class IndexPurchaseRequest extends FormRequest
         return [
             'keywords' => 'nullable|string|max:150',
             'order_by' => 'nullable|in:ASC,DESC',
+            'isCompleted' => 'nullable|boolean',
             ...$hooks->dispatch(
                 new HookContext(
                     action: HookAction::INDEX,

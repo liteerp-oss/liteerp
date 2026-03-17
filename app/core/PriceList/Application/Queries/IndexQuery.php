@@ -1,4 +1,5 @@
-<?php 
+<?php
+
 namespace Core\PriceList\Application\Queries;
 
 use App\Supports\Permissions\Enums\Permission;
@@ -13,24 +14,32 @@ use App\Supports\Hooks\HookTiming;
 use Core\PriceList\Application\DTOs\IndexPriceListRequest;
 use Illuminate\Support\Facades\Event;
 
-class IndexQuery implements QueryInterface {
-    function __construct(private HookDispatcher $hooks)
-    {
-        
-    }
+class IndexQuery implements QueryInterface
+{
+    function __construct(private HookDispatcher $hooks) {}
     public function handle(array $data): array
     {
         $dto = IndexPriceListRequest::fromArray($data);
-        $rows = PriceListModel::select("price_list.*",
-        "products.name as name",
-        "customer_group.name as group",
-        "category_product.tax as tax")
-        ->join("products","products.id","=","price_list.product_id")
-        ->join("customer_group","customer_group.id",
-            "=","price_list.customer_group_id")
-        ->join("category_product","category_product.id",
-            "=","products.category_id")
-        ->where("products.business_id",$dto->business_id);
+        $rows = PriceListModel::select(
+            "price_list.*",
+            "products.name as name",
+            "customer_group.name as group",
+            "category_product.tax as tax"
+        )
+            ->join("products", "products.id", "=", "price_list.product_id")
+            ->join(
+                "customer_group",
+                "customer_group.id",
+                "=",
+                "price_list.customer_group_id"
+            )
+            ->join(
+                "category_product",
+                "category_product.id",
+                "=",
+                "products.category_id"
+            )
+            ->where("products.business_id", $dto->business_id);
         $hooks = $this->hooks->dispatch(
             new HookContext(
                 action: HookAction::INDEX,

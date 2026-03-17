@@ -21,6 +21,7 @@ export default defineConfig({
             '@wrappers': path.resolve(__dirname, 'resources/js/react/wrappers'),
             '@layouts': path.resolve(__dirname, 'resources/js/react/layouts'),
             '@core': path.resolve(__dirname, 'resources/js/core'),
+            '@services': path.resolve(__dirname, 'resources/js/react/services'),
         }
     },
 

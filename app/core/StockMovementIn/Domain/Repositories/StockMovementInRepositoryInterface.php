@@ -11,5 +11,6 @@ interface StockMovementInRepositoryInterface
     public function update(StockMovementIn $data): ?StockMovementIn;
     public function findById(array $data) : ?StockMovementIn;
     public function checkExists(array $data) : ?StockMovementIn;
+    public function getWithAvailabelQtyChange(array $data): ?array;
     public function index(array $data) : array;
 }

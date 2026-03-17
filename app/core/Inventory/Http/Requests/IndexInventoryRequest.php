@@ -10,8 +10,7 @@ class IndexInventoryRequest extends FormRequest
     {
         return [
             'keywords' => 'nullable|string|max:150',
-            'order_by' => 'nullable|in:ASC,DESC',
-            'order_id' => 'nullable|exists:orders,id'
+            'order_by' => 'nullable|in:ASC,DESC'
         ];
     }
 

@@ -31,14 +31,15 @@ class IndexQuery implements QueryInterface
             DB::raw("SUM(purchase_items.compensation_quantity) as compensation_quantity"),
             DB::raw("SUM(purchase_items.conversion_quantity) as conversion_quantity"),
             DB::raw("ROUND(SUM(
-                purchase_items.unit_cost * purchase_items.tax / 100
+            purchase_items.unit_cost * purchase_items.tax / 100
             ),2) as tax"),
-            DB::raw("ROUND(SUM(purchase_items.unit_cost),2) as subtotal"),
-            DB::raw("ROUND(
-            SUM(
-                purchase_items.unit_cost + (purchase_items.unit_cost * purchase_items.tax / 100) + purchases.shipping_fee
-            )
-            ,2) as total")
+             DB::raw("ROUND(SUM(
+            purchase_items.unit_cost
+            ),2) as subtotal"),
+             DB::raw("ROUND(SUM(
+            purchase_items.unit_cost + (purchase_items.unit_cost * purchase_items.tax / 100)
+            ) + purchases.shipping_fee,2) as total"),
+            DB::raw("ROUND(SUM(purchase_items.unit_cost),2) as unit_cost")
         )
             ->join("suppliers", "suppliers.id", "=", "purchases.supplier_id")
             ->join("users as created_users", "created_users.id", "=", "purchases.created_by")
@@ -47,6 +48,16 @@ class IndexQuery implements QueryInterface
             ->where('purchases.business_id', $dto->business_id)
             ->orderBy("purchases.id", $dto->order_by)
             ->groupBy("purchases.id");
+        /**
+         * Search for inventory adjustment 
+         * Only get for purchase completed
+         */
+        if($dto->isCompleted) {
+            $list = $list->leftJoin("invoice_ins",
+                "invoice_ins.purchase_id","=","purchases.id")
+                ->leftJoin("stock_ins","stock_ins.invoice_in_id","=","invoice_ins.id")
+                ->where('stock_ins.status','received');
+        }
         $data = $this->hooks->dispatch(
             new HookContext(
                 action: HookAction::INDEX,
@@ -62,7 +73,7 @@ class IndexQuery implements QueryInterface
         $list = $data['query'];
         $data = $data['data'];
         if ($dto->keywords) {
-            $list->whereAny(['suppliers.unit_name', 'created_users.name'], 'like', '%' . $dto->keywords . '%');
+            $list->whereAny(['suppliers.unit_name','created_users.name','purchases.id'], 'like', '%' . $dto->keywords . '%');
         }
         Event::dispatch(Permission::PURCHASE_INDEX->value, [
             ...$data,

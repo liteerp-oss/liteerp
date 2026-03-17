@@ -54,7 +54,7 @@ class EloquentPermissionRepository implements PermissionRepositoryInterface
     }
     public function getUsersByPermission(array $data): array
     {
-        $users = PermissionModel::select('permissions.*','users.name as user_name','users.email','users.lang')
+        $users = PermissionModel::select('permissions.*','users.name as user_name','users.email','users.lang','users.id as user_id')
             ->join('permission_groups', 'permission_groups.id', '=', 'permissions.group_id')
             ->join('permission_group_user', 'permission_group_user.group_id', '=', 'permission_groups.id')
             ->join('users', 'users.id', '=', 'permission_groups.user_id')

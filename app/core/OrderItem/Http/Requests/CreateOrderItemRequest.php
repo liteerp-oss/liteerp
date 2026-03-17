@@ -15,7 +15,7 @@ class CreateOrderItemRequest extends FormRequest
     {
         return [
             'order_id'               => 'required|integer|exists:orders,id',
-            'inventory_id'           => 'required|integer|exists:inventories,id',
+            'stock_movements_in_id'           => 'required|integer|exists:stock_movements_in,id',
             'discount'               => 'nullable|numeric|min:0',
 
             'buy_quantity'           => 'nullable|numeric|min:0',

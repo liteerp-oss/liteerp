@@ -2,6 +2,7 @@ import React from "react";
 import Currencies from '../../../Currencies';
 import { useI18n } from "@/i18n/useI18n";
 import CommonDataTableV2 from "@/react/components/CommonDataTableV2";
+import ContentOnTable from "@/react/components/ContentOnTable";
 
 export default function ProductAdded({
     table = null,
@@ -15,8 +16,12 @@ export default function ProductAdded({
 }) {
     const { t } = useI18n();
     const columns = [
-        { label: t("Name"), key: "name" },
-        { label: t("Unit"), key: "unit" },
+        { label: t("Name"), key: "name",render: (value) => {
+            return <ContentOnTable value={value}/>
+        } },
+        { label: t("PU"), key: "purchase_id",render:(value) => {
+            return "PU"+value
+        } },
         {
             label: t('Price'),
             key: "price",
@@ -58,7 +63,9 @@ export default function ProductAdded({
         },
 
         { label: t("Tax") + " (%)", key: "tax" },
-        { label: t("Warehouse"), key: "warehouse" }
+        { label: t("Warehouse"), key: "warehouse",render: (value) => {
+            return <ContentOnTable value={value}/>
+        }  }
     ];
 
     return (

@@ -25,22 +25,9 @@ class IndexQuery implements QueryInterface
     function handle(array $data): array
     {
         $dto = IndexWarehouseRequest::fromArray($data);
-        $sub = InventoryModel::select(
-            'inventories.warehouse_id',
-            DB::raw('SUM(inventories.quantity) as total_qty'),
-            DB::raw('SUM(inventories.reserved_qty) as total_reserved_qty'),
-            DB::raw('COUNT(inventories.product_id) as total_product')
-        )
-            ->groupBy('inventories.warehouse_id');
         $list = WarehouseModel::select(
-            "warehouses.*",
-            "inventories.total_qty",
-            "inventories.total_reserved_qty",
-            "inventories.total_product"
+            "warehouses.*"
         )
-            ->leftJoinSub($sub,"inventories",function($join) {
-                $join->on("inventories.warehouse_id","=","warehouses.id");
-            })
             ->where('warehouses.business_id', $dto->business_id);
         if ($dto->keywords) {
             $list = $list->whereAny(['warehouses.name', 'warehouses.address'], 'like', '%' . $dto->keywords . '%');

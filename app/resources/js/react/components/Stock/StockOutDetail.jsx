@@ -25,6 +25,7 @@ import { ExtraCard } from "../ExtraCard";
 import RenderFormFieldByList from "../RenderFormFieldByList";
 import { useI18n } from "../../../i18n/useI18n";
 import StatusBadge from "../StatusBadge";
+import ContentOnTable from "../ContentOnTable";
 export default function StockOutDetail() {
     const { t } = useI18n();
     const [loading, setLoading] = useState(false)
@@ -169,33 +170,60 @@ export default function StockOutDetail() {
     }, []);
     useEffect(() => {
         tableInventory.setColums([
-            { label: t("Name"), key: "name" },
-            { label: t("Buy"), key: "buy_quantity" },
-            { label: t("Compensation"), key: "compensation_quantity" },
-            { label: t("Conversion"), key: "conversion_quantity" },
-            { label: t("Gift"), key: "gift_quantity" },
+            {
+                label: t("Name"), key: "name", render: (value) => {
+                    return <div style={{
+                        width: 100
+                    }}>
+                        <ContentOnTable value={value} />
+                    </div>
+                }
+            },
+            {
+                label: t("PU"), key: "purchase_id", render: (value) => {
+                    return `PU${value}`
+                }
+            },
+            {
+                label: t("Buy"), key: "buy_quantity", render: (value) => {
+                    return <div style={{ width: 80 }}>{value}</div>
+                }
+            },
+            {
+                label: t("Compensation"), key: "compensation_quantity", render: (value) => {
+                    return <div style={{ width: 80 }}>{value}</div>
+                }
+            },
+            {
+                label: t("Conversion"), key: "conversion_quantity", render: (value) => {
+                    return <div style={{ width: 80 }}>{value}</div>
+                }
+            },
+            {
+                label: t("Gift"), key: "gift_quantity", render: (value) => {
+                    return <div style={{ width: 80 }}>{value}</div>
+                }
+            },
             { label: t('Sku'), key: 'sku' },
+            { label: t('Price'), key: 'price' },
             {
-                label: t('Price'), key: 'price',
-                render: (value) => <Currencies amount={value} />
-            },
-            {
-                label: t('Total tax'), key: 'total_tax',
-                render: (value) => <Currencies amount={value} />
-            },
-            {
-                label: t('Discount'), key: 'discount',
-                render: (value) => <span>{value}%</span>
+                label: t('Total tax'), key: 'total_tax', render: (value) => {
+                    return <div style={{ width: 80 }}>{value}</div>
+                }
             },
             {
                 label: t('Subtotal'), key: 'subtotal',
-                render: (value) => <span><Currencies amount={value} /></span>
+                render: (value) => <div style={{ width: 100 }}><Currencies amount={value} /></div>
             },
             {
                 label: t('Total'), key: 'total',
-                render: (value) => <span><Currencies amount={value} /></span>
+                render: (value) => <div style={{ width: 100 }}><Currencies amount={value} /></div>
             },
-            { label: t("Warehouse"), key: "warehouse" },
+            {
+                label: t("Warehouse"), key: "warehouse", render: (value) => {
+                    return <div style={{ width: 80 }}>{value}</div>
+                }
+            },
         ]);
         if (!searchParams.get('stockout')) {
             return;
@@ -242,7 +270,7 @@ export default function StockOutDetail() {
                                     label={t("Employee")}
                                     left={form.formData?.approved_name ?? '-'}
                                     rightLabel={t('Status')}
-                                    right={<StatusBadge status={form.formData?.status ?? ''}/>}
+                                    right={<StatusBadge status={form.formData?.status ?? ''} />}
                                 />
 
                                 <div className="mt-3">

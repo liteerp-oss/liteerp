@@ -26,12 +26,12 @@ class EloquentOrderItemRepository implements OrderItemRepositoryInterface
             "products.image"
         )
             ->join(
-                "inventories",
-                "inventories.id",
+                "stock_movements_in",
+                "stock_movements_in.id",
                 "=",
-                "order_items.inventory_id"
+                "order_items.stock_movements_in_id"
             )
-            ->join("products", "products.id", "=", "inventories.product_id")
+            ->join("products", "products.id", "=", "stock_movements_in.product_id")
             ->where('order_items.id', $data['id'])
             ->where('products.business_id', $data['business_id'])
             ->get()->toArray();
@@ -64,7 +64,7 @@ class EloquentOrderItemRepository implements OrderItemRepositoryInterface
     {
         $row = OrderItemModel::select("order_items.*")
             ->join("orders", "orders.id", "=", "order_items.order_id")
-            ->where('order_items.inventory_id', $data['inventory_id'])
+            ->where('order_items.stock_movements_in_id', $data['stock_movements_in_id'])
             ->where('orders.business_id', $data['business_id'])
             ->where('orders.id', $data['order_id'])
             ->first()?->toArray();
@@ -118,9 +118,9 @@ class EloquentOrderItemRepository implements OrderItemRepositoryInterface
                 )
                 ,2) as total")
         )
-            ->join("inventories", "inventories.id", "=", "order_items.inventory_id")
-            ->join("warehouses", "warehouses.id", "=", "inventories.warehouse_id")
-            ->join("products", "products.id", "=", "inventories.product_id")
+            ->join("stock_movements_in", "stock_movements_in.id", "=", "order_items.stock_movements_in_id")
+            ->join("warehouses", "warehouses.id", "=", "stock_movements_in.warehouse_id")
+            ->join("products", "products.id", "=", "stock_movements_in.product_id")
             ->join("category_product", "category_product.id", "=", "products.category_id")
             ->join("orders", "orders.id", "=", "order_items.order_id")
             ->join("customers", "customers.id", "=", "orders.customer_id")
@@ -132,15 +132,16 @@ class EloquentOrderItemRepository implements OrderItemRepositoryInterface
     {
         return OrderItemModel::select(
             "order_items.*",
-            "inventories.product_id",
-            "inventories.warehouse_id",
+            "order_items.id as order_item_id",
+            "stock_movements_in.product_id",
+            "stock_movements_in.warehouse_id",
             DB::raw("ROUND((order_items.buy_quantity 
                 + order_items.gift_quantity
                 + order_items.compensation_quantity
                 + order_items.conversion_quantity),2) as reserved_qty")
         )
             ->join("orders", "orders.id", "=", "order_items.order_id")
-            ->join("inventories", "inventories.id", "=", "order_items.inventory_id")
+            ->join("stock_movements_in", "stock_movements_in.id", "=", "order_items.stock_movements_in_id")
             ->where('orders.business_id', $data['business_id'])
             ->where('order_items.order_id', $data['order_id'])
             ->limit(300)
@@ -194,22 +195,31 @@ class EloquentOrderItemRepository implements OrderItemRepositoryInterface
                 
             ),2) AS total,
             ROUND( 
-            CASE
-                WHEN shippings.shipping_fee_actual > 0
-                    THEN shippings.shipping_fee_actual
-                ELSE shippings.shipping_fee_estimated
-            END
+            MAX(
+                CASE
+                    WHEN shippings.shipping_fee_actual > 0
+                        THEN shippings.shipping_fee_actual
+                    ELSE shippings.shipping_fee_estimated
+                END
+            )
             ,2) AS shipping_fee
         ")
             ->join("orders", "orders.id", "=", "order_items.order_id")
-            ->join("inventories", "inventories.id", "=", "order_items.inventory_id")
-            ->join("products", "products.id", "=", "inventories.product_id")
+            ->join("stock_movements_in", "stock_movements_in.id", "=", "order_items.stock_movements_in_id")
+            ->join("products", "products.id", "=", "stock_movements_in.product_id")
             ->join("category_product", "category_product.id", "=", "products.category_id")
             ->join("customers", "customers.id", "=", "orders.customer_id")
             ->join("shippings", "shippings.order_id", "=", "orders.id")
-            ->groupBy("order_items.id")
             ->where('orders.business_id', $data['business_id'])
             ->where("order_items.order_id", $data['order_id'])
+            ->where("order_items.deleted_at", NULL)
+            //->groupBy("order_items.id")
             ->first()?->toArray();
+    }
+    public function cancelByOrderId(array $data): bool
+    {
+        return OrderItemModel::where('order_id',$data['order_id'])->update([
+            'cancelled' => true 
+        ]) ? true : false;
     }
 }

@@ -20,6 +20,7 @@ import RenderFormFieldByList from "../../RenderFormFieldByList";
 import { ExtraCard } from '../../ExtraCard'
 import { useI18n } from "../../../../i18n/useI18n";
 import StatusBadge from "../../StatusBadge";
+import ContentOnTable from "../../ContentOnTable";
 export default function InvoiceOutDetail() {
     const { t } = useI18n();
     const [loading, setLoading] = useState(false)
@@ -133,23 +134,48 @@ export default function InvoiceOutDetail() {
     }, [form.formData?.approved, detail?.approved])
     useEffect(() => {
         table.setColums([
-            { label: t("Name"), key: "name" },
-            { label: t("Buy"), key: "buy_quantity" },
-            { label: t("Compensation"), key: "compensation_quantity" },
-            { label: t("Conversion"), key: "conversion_quantity" },
-            { label: t("Gift"), key: "gift_quantity" },
+            {
+                label: t("Name"), key: "name", render: (value) => {
+                    return <div style={{
+                        width: 100
+                    }}>
+                        <ContentOnTable value={value} />
+                    </div>
+                }
+            },
+            {
+                label: t("PU"), key: "purchase_id", render: (value) => {
+                    return `PU${value}`
+                }
+            },
+            { label: t("Buy"), key: "buy_quantity",render:(value) => {
+                return <div style={{width: 80}}>{value}</div>
+            } },
+            { label: t("Compensation"), key: "compensation_quantity",render:(value) => {
+                return <div style={{width: 80}}>{value}</div>
+            } },
+            { label: t("Conversion"), key: "conversion_quantity",render:(value) => {
+                return <div style={{width: 80}}>{value}</div>
+            } },
+            { label: t("Gift"), key: "gift_quantity",render:(value) => {
+                return <div style={{width: 80}}>{value}</div>
+            } },
             { label: t('Sku'), key: 'sku' },
             { label: t('Price'), key: 'price' },
-            { label: t('Total tax'), key: 'total_tax' },
+            { label: t('Total tax'), key: 'total_tax',render:(value) => {
+                return <div style={{width: 80}}>{value}</div>
+            } },
             {
                 label: t('Subtotal'), key: 'subtotal',
-                render: (value) => <span><Currencies amount={value} /></span>
+                render: (value) => <div style={{width: 100}}><Currencies amount={value} /></div>
             },
             {
                 label: t('Total'), key: 'total',
-                render: (value) => <span><Currencies amount={value} /></span>
+                render: (value) => <div style={{width: 100}}><Currencies amount={value} /></div>
             },
-            { label: t("Warehouse"), key: "warehouse" },
+            { label: t("Warehouse"), key: "warehouse",render:(value) => {
+                return <div style={{width: 80}}>{value}</div>
+            } },
         ]);
         view();
     }, [])
@@ -335,11 +361,11 @@ export default function InvoiceOutDetail() {
                                 <h5 className="fw-semibold mb-3">{t("Payment information")}</h5>
                                 <div className="mb-2">
                                     <div className="theme-title small">{t("Payment method")}</div>
-                                    <StatusBadge status={form.formData?.payment_method ?? ''}/>
+                                    <StatusBadge status={form.formData?.payment_method ?? ''} />
                                 </div>
                                 <div className="mb-2">
                                     <div className="theme-title small">{t("Payment status")}</div>
-                                    <StatusBadge status={form.formData?.payment_status ?? ''}/>
+                                    <StatusBadge status={form.formData?.payment_status ?? ''} />
                                 </div>
                             </div>
 

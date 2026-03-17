@@ -14,10 +14,10 @@ class CreateInventoryAdjustmentRequest extends FormRequest
     public function rules(HookDispatcher $hooks): array
     {
         return [
-            'product_id'   => 'required|integer|exists:products,id',
-            'warehouse_id' => 'required|integer|exists:warehouses,id',
-            'qty_adjusted' => 'required|numeric',
+            'stock_movements_in_id' => 'required|integer|exists:stock_movements_in,id',
+            'qty_adjusted' => 'required|numeric|max:-1|lt:0',
             'reason'       => 'required|string|max:250',
+            'purchase_id'  => 'required|exists:purchases,id',
             ...$hooks->dispatch(
                 new HookContext(
                     action: HookAction::CREATE,

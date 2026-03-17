@@ -14,9 +14,11 @@ class IndexStockMovementInRequest extends FormRequest
     public function rules(HookDispatcher $hooks): array
     {
         return [
-            'stock_in_id'  => 'required|numeric|exists:stock_ins,id',
+            'stock_in_id'  => 'nullable|numeric|exists:stock_ins,id',
             'keywords'     => 'nullable|string|max:150',
             'order_by'     => 'nullable|in:ASC,DESC',
+            'customer_id' => 'nullable|numeric|exists:customers,id',
+            'purchase_id' => 'nullable|numeric|exists:purchases,id',
             ...$hooks->dispatch(
                 new HookContext(
                     action: HookAction::INDEX,

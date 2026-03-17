@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('order_items', function (Blueprint $table) {
             $table->id();
             $table->foreignId('order_id')->constrained('orders')->onDelete('cascade');
-            $table->foreignId('inventory_id')->constrained('inventories')->onDelete('cascade');
+            $table->foreignId('stock_movements_in_id')->constrained('stock_movements_in')->onDelete('cascade');
             $table->decimal('discount', 15, 2)->default(0);
             $table->decimal('buy_quantity',15,2)->default(0);
             $table->decimal('gift_quantity',15,2)->default(0);
@@ -22,6 +22,7 @@ return new class extends Migration
             $table->decimal('conversion_quantity',15,2)->default(0);
             $table->decimal('price', 15, 2)->default(0);
             $table->decimal('tax', 15, 2)->default(0);
+            $table->boolean('cancelled')->default(false);
             $table->softDeletes();
             $table->timestamps();
         });
