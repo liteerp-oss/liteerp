@@ -18,12 +18,10 @@ class InventoryServiceProvider extends ServiceProvider
         $this->mergeModuleConfig();
     }
 
-    public function boot(
-        InventoryListener $listenr)
+    public function boot()
     {
         $this->loadModuleRoutes();
         $this->loadModuleTranslations();
-        $listenr->handle();
     }
 
     protected function mergeModuleConfig(): void

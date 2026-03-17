@@ -22,12 +22,6 @@ class CreateInventoryRequest extends FormRequest
             )
         );
         return [
-            'product_id'   => 'required|integer|exists:products,id',
-            'warehouse_id' => 'required|integer|exists:warehouses,id',
-            'quantity'     => 'nullable|numeric|min:0',
-            'reserved_qty' => 'nullable|numeric|min:0',
-            'stock_in_id'  => 'nullable|exists:stock_ins,id',
-            'stock_out_id'  => 'nullable|exists:stock_outs,id',
             ...$hooks
         ];
     }
