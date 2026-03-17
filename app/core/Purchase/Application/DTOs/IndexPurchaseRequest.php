@@ -10,7 +10,8 @@ class IndexPurchaseRequest
         public ?string $status = null,
         public ?string $order_by = null,
         public int $created_by,
-        public int $business_id
+        public int $business_id,
+        public ?bool $isCompleted = null 
     ) {}
 
     public static function fromArray(array $data): self
@@ -20,7 +21,8 @@ class IndexPurchaseRequest
             status: $data['status'] ?? null,
             order_by: $data['order_by'] ?? 'DESC',
             created_by: $data['user_id'],
-            business_id: $data['business_id']
+            business_id: $data['business_id'],
+            isCompleted: $data['isCompleted'] ?? null 
         );
     }
 
@@ -31,7 +33,8 @@ class IndexPurchaseRequest
             'status'   => $this->status,
             'created_by'    => $this->created_by,
             'business_id'    => $this->business_id,
-            'order_by'  => $this->order_by
+            'order_by'  => $this->order_by,
+            'isCompleted' => $this->isCompleted
         ];
     }
 }
