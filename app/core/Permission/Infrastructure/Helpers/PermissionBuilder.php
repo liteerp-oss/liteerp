@@ -150,10 +150,7 @@ class PermissionBuilder
     {
         return $this->add(PermissionType::INVENTORY, [
             Permission::INVENTORY_INDEX,
-            Permission::INVENTORY_SHOW,
-            Permission::INVENTORY_CREATE,
-            Permission::INVENTORY_UPDATE,
-            Permission::INVENTORY_DELETE,
+            Permission::INVENTORY_SHOW
         ]);
     }
 
