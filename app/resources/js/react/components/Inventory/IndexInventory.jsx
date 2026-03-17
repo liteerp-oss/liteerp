@@ -40,7 +40,6 @@ export default function IndexInventory() {
             { key: 'id', label: t('ID') },
             { key: 'name', label: t('Name') },
             { key: 'quantity', label: t('Quantity') },
-            { key: 'reserved_qty', label: t('Reserved quantity') },
             { key: 'sku', label: t('SKU') },
             { key: 'unit', label: t('Unit') },
             { key: 'warehouse', label: t('Warehouse') },
