@@ -13,8 +13,7 @@ return new class extends Migration
     {
         Schema::create('inventory_adjustments', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('product_id')->constrained('products');
-            $table->foreignId('warehouse_id')->constrained('warehouses');
+            $table->foreignId('stock_movements_in_id')->constrained('stock_movements_in');
             $table->decimal('qty_adjusted', 20, 2);
             $table->string('reason')->nullable(); 
             $table->foreignId('adjusted_by')->constrained('users');
