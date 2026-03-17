@@ -28,11 +28,12 @@ export default function StockInDetail() {
     const [loading, setLoading] = useState(false);
     const [showForm, setShowForm] = useState(false);
     const [showFormInventory, setShowFormInventory] = useState(false);
+    const [showUpdateFormInventory, setUpdateShowFormInventory] = useState(false);
     const form = useForm();
     const searchProduct = useForm();
     const searchInventory = useForm();
     const [detail, setDetail] = useState(null)
-    const formAddInventory = useForm();
+    const formInventory = useForm();
     const table = useTable();
     const inventoryTable = useTable();
     const { openPopup } = usePopup();
@@ -126,20 +127,21 @@ export default function StockInDetail() {
         }
     }, [form.formData?.status, detail?.status])
     const handleAdd = (row) => {
-        formAddInventory.setFormData(row);
+        formInventory.setFormData(row);
         setShowFormInventory(true);
+        setUpdateShowFormInventory(false);
     }
     const handleEdit = (row) => {
-        formAddInventory.setFormData(row);
-        formAddInventory.setIsEdit(true)
-        setShowFormInventory(true);
+        formInventory.setFormData(row);
+        setShowFormInventory(false);
+        setUpdateShowFormInventory(true);
     }
     const createInventory = useCallback(() => {
-        formAddInventory.setLoading(true);
+        formInventory.setLoading(true);
         StockMovementInService.add({
-            ...formAddInventory.formData,
+            ...formInventory.formData,
             stock_in_id: searchParams.get('stockin'),
-            purchase_item_id: formAddInventory.formData?.id
+            purchase_item_id: formInventory.formData?.id
         })
             .then((resp) => {
                 openPopup({
@@ -147,7 +149,7 @@ export default function StockInDetail() {
                     message: t('You has been added')
                 })
                 setShowFormInventory(false)
-                formAddInventory.setLoading(false);
+                formInventory.setLoading(false);
                 getInventories();
             })
             .catch((error) => {
@@ -158,25 +160,25 @@ export default function StockInDetail() {
                     })
                 }
                 if (error.response.data?.errors) {
-                    formAddInventory.setFormErrors(error.response?.data?.errors)
+                    formInventory.setFormErrors(error.response?.data?.errors)
                 }
-                formAddInventory.setLoading(false);
+                formInventory.setLoading(false);
             })
-    }, [formAddInventory, searchParams])
+    }, [formInventory, searchParams])
     const updateInventory = useCallback(() => {
-        formAddInventory.setLoading(true);
+        formInventory.setLoading(true);
         StockMovementInService.update({
-            ...formAddInventory.formData,
+            ...formInventory.formData,
             stock_in_id: searchParams.get('stockin'),
-            purchase_item_id: formAddInventory.formData?.id
+            purchase_item_id: formInventory.formData?.id
         })
             .then((resp) => {
                 openPopup({
                     type: 'success',
                     message: t('You has been added')
                 })
-                setShowFormInventory(false)
-                formAddInventory.setLoading(false);
+                setUpdateShowFormInventory(false)
+                formInventory.setLoading(false);
                 getInventories();
             })
             .catch((error) => {
@@ -187,11 +189,11 @@ export default function StockInDetail() {
                     })
                 }
                 if (error.response.data?.errors) {
-                    formAddInventory.setFormErrors(error.response?.data?.errors)
+                    formInventory.setFormErrors(error.response?.data?.errors)
                 }
-                formAddInventory.setLoading(false);
+                formInventory.setLoading(false);
             })
-    }, [formAddInventory, searchParams])
+    }, [formInventory, searchParams])
     const getInventories = useCallback((page = 0) => {
         inventoryTable.setLoading(true);
         StockMovementInService.list({
@@ -230,10 +232,11 @@ export default function StockInDetail() {
     return (
         <div className="min-vh-100">
             <PageHead
+                containerClass=""
                 title={t("Detail stock in")}
                 subtitle={t("stockin_desc")}
             />
-            <div className="container mt-3">
+            <div className="mt-3">
                 {loading ? <LoadingBox /> :
                     <div>
                         <div className="row g-3 mb-4">
@@ -245,7 +248,7 @@ export default function StockInDetail() {
 
                         <div className="row g-4">
 
-                            <div className="col-lg-8">
+                            <div className="col-lg-9">
                                 <div className="p-4 rounded border">
                                     <div className="d-flex justify-content-between mb-3">
                                         <h5 className="fw-semibold">{t("Stock information")}</h5>
@@ -331,7 +334,7 @@ export default function StockInDetail() {
                             </div>
 
                             {/* Summary Box */}
-                            <div className="col-lg-4">
+                            <div className="col-lg-3">
                                 <div className="p-4 rounded mb-4 border">
                                     <h5 className="fw-semibold mb-3">{t("Warehouse")}</h5>
                                     <SummaryRow label={t("Quantity")} value={table.total} />
@@ -396,16 +399,28 @@ export default function StockInDetail() {
 
 {showFormInventory ? (
     <PopupLayout
-        loading={formAddInventory.loading}
+        loading={formInventory.loading}
         confirmText={t("Save")}
         onClose={() => setShowFormInventory(false)}
-        title={formAddInventory.isEdit
-            ? t("Update Inventory")
-            : t("Add Inventory")} 
-        onConfirm={ formAddInventory.isEdit ? updateInventory : createInventory}
+        title={t("Add Inventory")} 
+        onConfirm={ createInventory}
     >
         <div>
-            <InventoryForm form={formAddInventory} />
+            <InventoryForm form={formInventory} />
+        </div>
+    </PopupLayout>
+) : null}
+
+{showUpdateFormInventory ? (
+    <PopupLayout
+        loading={formInventory.loading}
+        confirmText={t("Save")}
+        onClose={() => setShowFormInventory(false)}
+        title={t("Update Inventory")} 
+        onConfirm={ updateInventory}
+    >
+        <div>
+            <InventoryForm form={formInventory} />
         </div>
     </PopupLayout>
 ) : null}
