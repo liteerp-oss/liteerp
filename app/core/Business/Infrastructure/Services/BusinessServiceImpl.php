@@ -51,4 +51,8 @@ class BusinessServiceImpl implements BusinessService
     public function all() : array {
         return $this->repo->all();
     }
+    public function getById(array $data): ?Business
+    {
+        return $this->repo->findById($data);
+    }
 }
