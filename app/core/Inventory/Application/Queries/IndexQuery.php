@@ -140,7 +140,7 @@ class IndexQuery implements QueryInterface
                     ],
                     'query' => $rows
                 ],
-                module: 'StockMovementIn'
+                module: 'Inventory'
             )
         );
         $rows = $data['query'];
