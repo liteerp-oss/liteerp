@@ -466,5 +466,6 @@ export default {
     "forget_password_success": "パスワードをリセットするための確認メールを送信しました。メールをご確認ください。",
     "verify_account": "アカウントを確認",
     "no_account": "アカウントをお持ちではありませんか？",
-    "forgot_password": "パスワードをお忘れですか"
+    "forgot_password": "パスワードをお忘れですか",
+    "add_business": "ビジネスを追加する"
 };

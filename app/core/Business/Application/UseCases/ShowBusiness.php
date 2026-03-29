@@ -56,6 +56,7 @@ class ShowBusiness
             payload: [
                 ...$data,
                 ...$user->toArray(),
+                'user_id' => $user->id,
                 ...$business,
                 'currency' => config('business.currency'),
                 'currency_locale'   => config('business.currency_locale')

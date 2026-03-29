@@ -9,6 +9,7 @@ interface BusinessService
 {
     public function create(array $data): Business;
     public function show(array $data): array | BadException;
+    public function getById(array $data): ?Business;
     public function update(array $data): Business;
     public function all() : array;
 }

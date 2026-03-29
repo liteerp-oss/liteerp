@@ -51,6 +51,6 @@ class CreateBusiness
             'role_user_id' => $dto->user_id
         ]);
         DB::commit();
-        return $business;
+        return $data;
     }
 }

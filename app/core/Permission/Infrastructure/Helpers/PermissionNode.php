@@ -31,13 +31,23 @@ class PermissionNode {
         if(count($this->permissions) == false ) {
             throw new BadException(__("You have not add permissions"));
         }
-        if($this->name == false ) {
+        if(!$this->name ) {
             throw new BadException(__("You have not add label for permission"));
         }
         $this->build[$this->name] = [
             ...$this->permissions
         ];
         return $this->build;
+    }
+    public function compileListItem() : array {
+        $this->checkValid();
+        if(count($this->permissions) == false ) {
+            throw new BadException(__("You have not add permissions"));
+        }
+        if(!$this->name ) {
+            throw new BadException(__("You have not add label for permission"));
+        }
+        return $this->permissions;
     }
 
     private function checkValid() : BadException | bool {

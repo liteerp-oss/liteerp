@@ -2,6 +2,7 @@ import React from "react";
 import SuccessButton from "../UI/Buttons/SuccessButton";
 import FlatIcon32 from "../UI/FlatIcons/FlatIcon32";
 import { useI18n } from "@/i18n/useI18n";
+import StatusBadge from "../StatusBadge";
 
 export default function BusinessListItem({
   business = null,
@@ -48,7 +49,12 @@ export default function BusinessListItem({
                     width: '50%'
                   }}>{t(item?.label)}</td>
                   <td>
-                    {business?.[item.key] ?? t('No data')}</td>
+                    {item.type === 'text' ? business?.[item.key] : ''}
+                    {item.type === 'link' ? <a href={business?.[item.key]}>
+                      {item.label}
+                    </a> : ''}
+                    {item.type === 'badge' ? <StatusBadge status={business?.[item.key]}/> : ''}
+                    </td>
                 </tr>
               })}
             </tbody>

@@ -11,6 +11,7 @@
         "laravel/ai": "^0.2.1",
         "laravel/framework": "^12.0",
         "laravel/sanctum": "^4.0",
+        "laravel/socialite": "^5.25",
         "laravel/tinker": "^2.10.1",
         "pusher/pusher-php-server": "^7.2",
         "spatie/fork": "^1.2"

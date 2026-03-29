@@ -15,6 +15,5 @@ class LogoutSessionToken
     public function handle(array $data)
     {
         $this->authSessionManager->logout();
-        return redirect()->to(URL::to("/dashboard/login"));
     }
 }

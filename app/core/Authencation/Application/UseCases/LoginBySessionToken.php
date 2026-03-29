@@ -10,8 +10,7 @@ use Illuminate\Support\Facades\URL;
 
 class LoginBySessionToken
 {
-    public function __construct(private AuthencationService $service,
-    private ParseAppToken $parseAppToken,
+    public function __construct(private ParseAppToken $parseAppToken,
     private AuthSessionManager $authSessionManager) {}
 
     public function handle(array $data)
@@ -23,7 +22,7 @@ class LoginBySessionToken
              $this->authSessionManager->login([
                 'id' => $tokenData->data->id
              ]);
-             return redirect()->to(URL::to('/dashboard/business'));
+             return true;
         }
         return abort(403);
     }

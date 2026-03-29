@@ -8,9 +8,11 @@ export default function AddProduct() {
     return (
         <div className="">
 
-            <div className="d-flex">
-                <div className="col-xs-12 col-sm-4 col-md-2 col-lg-2">
-                    <VerticalCommonTable data={{
+            <div className="">
+                    <ListProducts purchase={purchasedetail} />
+            </div>
+            <div>
+                <VerticalCommonTable data={{
                         shipping_fee: purchasedetail?.shipping_fee 
                             ? <Currencies amount={purchasedetail?.shipping_fee}/> : 0,
                         quantity: purchasedetail?.quantity ?? 0,
@@ -21,14 +23,6 @@ export default function AddProduct() {
                         total: purchasedetail?.total 
                             ? <Currencies amount={purchasedetail?.total}/> : 0,
                     }} />
-                </div>
-
-                <div className="col-xs-12 col-sm-8 col-md-10 col-lg-10">
-                    <ListProducts purchase={purchasedetail} />
-                </div>
-            </div>
-            <div>
-
             </div>
         </div>
     );

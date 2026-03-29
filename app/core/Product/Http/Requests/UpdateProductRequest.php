@@ -25,7 +25,7 @@ class UpdateProductRequest extends FormRequest
         return [
             ...$hooks,
             'category_id'        => 'required|exists:category_product,id,deleted_at,NULL',
-            'description'        => 'required|string|max:4096',
+            'description'        => 'required|string|max:4096|min:150',
             'image'              => 'nullable|string|max:255',
         ];
     }

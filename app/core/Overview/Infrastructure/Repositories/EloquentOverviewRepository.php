@@ -5,12 +5,14 @@ namespace Core\Overview\Infrastructure\Repositories;
 use App\Models\CustomerModel;
 use App\Models\CustomInvoiceInModel;
 use App\Models\CustomInvoiceOutModel;
-use App\Models\InventoryModel;
+use App\Models\InventoryAdjustmentModel;
 use App\Models\InvoiceInModel;
 use App\Models\InvoiceOutModel;
+use App\Models\OrderItemModel;
 use App\Models\OrderModel;
 use App\Models\ProductModel;
 use App\Models\PurchaseModel;
+use App\Models\StockMovementInModel;
 use App\Models\SupplierModel;
 use Core\Overview\Domain\Repositories\OverviewRepositoryInterface;
 use Illuminate\Support\Facades\Cache;
@@ -48,6 +50,45 @@ class EloquentOverviewRepository implements OverviewRepositoryInterface
     }
     public function businessChart(array $data): array
     {
+        /**
+         * For Inventory 
+         */
+        // Sub query InventoryAdjustmentModel
+        $iaSub = InventoryAdjustmentModel::select(
+            "inventory_adjustments.stock_movements_in_id",
+            DB::raw("SUM(inventory_adjustments.qty_adjusted) as total_adjustment")
+        )->groupBy("inventory_adjustments.stock_movements_in_id");
+        // Sub query OrderItemModel
+        $oiSub = OrderItemModel::select(
+            "order_items.stock_movements_in_id",
+            DB::raw("SUM(
+            order_items.buy_quantity 
+                        + order_items.gift_quantity
+                        + order_items.compensation_quantity
+                        + order_items.conversion_quantity
+            ) as total_order_qty")
+        )
+            ->whereNull('deleted_at')
+            ->where(function ($query) {
+                $query->where('order_items.cancelled', false)
+                    ->orWhere('order_items.cancelled', NULL);
+            })
+            ->groupBy('stock_movements_in_id');
+
+        $inventory = StockMovementInModel::join("stock_ins","stock_ins.id","=","stock_movements_in.stock_in_id")->leftJoinSub($oiSub, 'oi', function ($join) {
+            $join->on('oi.stock_movements_in_id', '=', 'stock_movements_in.id');
+        })
+            ->leftJoinSub($iaSub, 'ia', function ($join) {
+                $join->on('ia.stock_movements_in_id', '=', 'stock_movements_in.id');
+            })->selectRaw('
+                        SUM(stock_movements_in.qty_change 
+                        - COALESCE(oi.total_order_qty, 0)
+                        + COALESCE(ia.total_adjustment, 0)) as quantity
+                    ')->where('stock_ins.business_id', $data['business_id'])
+            ->value('quantity');
+        /**
+         * End for inventory 
+         */
         return [
             'revenue' => OrderModel::select(DB::raw("
                     ROUND(
@@ -88,10 +129,7 @@ class EloquentOverviewRepository implements OverviewRepositoryInterface
             'suppliers'  => SupplierModel::whereMonth('created_at', $data['month'])
                 ->whereYear('created_at', now()->year)
                 ->count(),
-            'inventory'  => InventoryModel::select(DB::raw("SUM(quantity - reserved_qty) as total"))
-                ->whereMonth('created_at', $data['month'])
-                ->whereYear('created_at', now()->year)
-                ->first()?->total ?? 0
+            'inventory'  => $inventory ?? 0
         ];
     }
     public function getCacheForMonth(array $data): ?array

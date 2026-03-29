@@ -12,7 +12,7 @@ class CreateStockMovementInRequest
         public int $purchase_item_id,
         public int $business_id,
         public int $created_by,
-        public ?int $id
+        public ?int $id = null
     ) {}
 
     public static function fromArray(array $data): self
@@ -25,7 +25,7 @@ class CreateStockMovementInRequest
             purchase_item_id: $data['purchase_item_id'],
             business_id: $data['business_id'],
             created_by : $data['user_id'],
-            id: $data['id']
+            id: $data['id'] ?? null
         );
     }
     public function toArray(){
