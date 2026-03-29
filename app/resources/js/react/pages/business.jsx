@@ -162,7 +162,7 @@ export default function Business() {
                 {openAdd ? <PopupLayout
                     onClose={() => setOpenAdd(false)}
                     onConfirm={submit}
-                    title={t("Add business")}
+                    title={t("add_business")}
                 >
                     <form>
                         <div className="mb-3">
@@ -185,7 +185,6 @@ export default function Business() {
                                 name="address"
                                 placeholder={t("Your company address")}
                                 label={t("Address")}
-                                required={true}
                             />
                         </div>
                         <div className="mb-3">
@@ -196,7 +195,6 @@ export default function Business() {
                                 name="tax_code"
                                 placeholder={t("Your company tax code")}
                                 label={t("Tax code")}
-                                required={true}
                             />
                         </div>
                         <div className="row">
@@ -208,7 +206,6 @@ export default function Business() {
                                     name="phone"
                                     placeholder={t("Your company contact phone")}
                                     label={t("Phone")}
-                                    required={true}
                                 />
                             </div>
                             <div className="mb-3 col-6">
@@ -219,7 +216,6 @@ export default function Business() {
                                     name="email"
                                     placeholder={t("Your company contact email")}
                                     label={t("Email")}
-                                    required={true}
                                 />
                             </div>
                         </div>
@@ -254,7 +250,6 @@ export default function Business() {
                                     name="bank_account_name"
                                     placeholder={t("Your company bank account name")}
                                     label={t("Bank account name")}
-                                    required={true}
                                 />
                             </div>
                         </div>

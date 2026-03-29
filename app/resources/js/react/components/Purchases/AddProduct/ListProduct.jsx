@@ -16,6 +16,7 @@ import PurchaseService from '../../../services/PurchaseService';
 import { useDispatch } from 'react-redux';
 import { setPurchaseDetail } from '../../../redux/purchase/detailSlice';
 import { useI18n } from '../../../../i18n/useI18n';
+import RenderFormTableByList from '../../RenderFieldTableByList'
 export default function ListProducts({
     purchase = null
 }) {
@@ -232,10 +233,95 @@ export default function ListProducts({
             })
     };
     useEffect(() => {
+        table.setColums([
+            {
+                label: t('Select'),
+                key: 'id',
+                render: (id) => (
+                    <input
+                        disabled={purchase.status !== 'draft'}
+                        type="checkbox"
+                        checked={checkList.includes(id)}
+                        onChange={(e) =>
+                            e.target.checked
+                                ? setCheckList((p) => [...p, id])
+                                : setCheckList((p) => p.filter((x) => x !== id))
+                        }
+                    />
+                ),
+            },
+            {
+                label: t('Image'),
+                key: 'image',
+                render: (src) =>
+                    src ? (
+                        <img
+                            src={src}
+                            alt="product"
+                            style={{
+                                width: 50,
+                                height: 50,
+                                borderRadius: 8,
+                                objectFit: 'cover',
+                            }}
+                        />
+                    ) : (
+                        <img
+                            src="/assets/icons/default_image.png"
+                            width={50}
+                            height={50}
+                            alt=""
+                        />
+                    ),
+            },
+            { label: t('Name'), key: 'name' },
+            { label: t('SKU'), key: 'sku' },
+            { label: t('Category'), key: 'category_name' },
+            { label: t('Buy'), key: 'buy_quantity' },
+            { label: t('Gift'), key: 'gift_quantity' },
+            { label: t('Compensation'), key: 'compensation_quantity' },
+            { label: t('Conversion'), key: 'conversion_quantity' },
+            {
+                label: t('Unit cost'),
+                key: 'unit_cost',
+                render: (value) => <Currencies amount={value} />,
+            },
+            {
+                label: t('Subtotal'),
+                key: 'subtotal',
+                render: (value) => <Currencies amount={value} />,
+            },
+            {
+                label: t('Tax'),
+                key: 'tax',
+                render: (value) => <span>{value}%</span>,
+            },
+            {
+                label: t('Total tax'),
+                key: 'total_tax',
+                render: (value) => <Currencies amount={value} />,
+            },
+            {
+                label: t('Total price'),
+                key: 'total',
+                render: (value) => <Currencies amount={value} />,
+            },
+        ])
         getPurchaseItems();
+        getViewPurchaseItem();
     }, []);
+    const getViewPurchaseItem = () => {
+        PurchaseItemService.view().then((resp) => {
+            //form.setHookRender(resp.message?.form)
+            table.addColums(resp.message.index, (item, data) => (
+                <RenderFormTableByList item={item} data={data} />
+            ))
+        }).catch((error) => {
+
+        })
+    }
     return (
-        <div className="m-4">
+        <div className="">
             <div className="d-flex justify-content-between align-items-center">
                 <div>
                     <h5 className="fw-bold mb-2 theme-title">{t('List products')}</h5>
@@ -265,80 +351,7 @@ export default function ListProducts({
                 loading={table.loading}
                 add={purchase?.status !== 'draft' ? null : () => setShowForm(true)}
                 links={table.links}
-                columns={[
-                    {
-                        label: t('Select'),
-                        key: 'id',
-                        render: (id) => (
-                            <input
-                                disabled={purchase.status !== 'draft'}
-                                type="checkbox"
-                                checked={checkList.includes(id)}
-                                onChange={(e) =>
-                                    e.target.checked
-                                        ? setCheckList((p) => [...p, id])
-                                        : setCheckList((p) => p.filter((x) => x !== id))
-                                }
-                            />
-                        ),
-                    },
-                    {
-                        label: t('Image'),
-                        key: 'image',
-                        render: (src) =>
-                            src ? (
-                                <img
-                                    src={src}
-                                    alt="product"
-                                    style={{
-                                        width: 50,
-                                        height: 50,
-                                        borderRadius: 8,
-                                        objectFit: 'cover',
-                                    }}
-                                />
-                            ) : (
-                                <img
-                                    src="/assets/icons/default_image.png"
-                                    width={50}
-                                    height={50}
-                                    alt=""
-                                />
-                            ),
-                    },
-                    { label: t('Name'), key: 'name' },
-                    { label: t('SKU'), key: 'sku' },
-                    { label: t('Category'), key: 'category_name' },
-                    { label: t('Buy'), key: 'buy_quantity' },
-                    { label: t('Gift'), key: 'gift_quantity' },
-                    { label: t('Compensation'), key: 'compensation_quantity' },
-                    { label: t('Conversion'), key: 'conversion_quantity' },
-                    {
-                        label: t('Unit cost'),
-                        key: 'unit_cost',
-                        render: (value) => <Currencies amount={value} />,
-                    },
-                    {
-                        label: t('Subtotal'),
-                        key: 'subtotal',
-                        render: (value) => <Currencies amount={value} />,
-                    },
-                    {
-                        label: t('Tax'),
-                        key: 'tax',
-                        render: (value) => <span>{value}%</span>,
-                    },
-                    {
-                        label: t('Total tax'),
-                        key: 'total_tax',
-                        render: (value) => <Currencies amount={value} />,
-                    },
-                    {
-                        label: t('Total price'),
-                        key: 'total',
-                        render: (value) => <Currencies amount={value} />,
-                    },
-                ]}
+                columns={table.colums}
                 data={table.data}
                 onEdit={purchase?.status !== 'draft' ? null : handleEdit}
                 onDelete={purchase?.status !== 'draft' ? null : handleDelete}
