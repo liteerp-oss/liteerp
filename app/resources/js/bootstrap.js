@@ -19,6 +19,7 @@ const reactEcho = configureEcho({
             Authorization: `Bearer ${localStorage.getItem('token')}`,
             Accept: "application/json",
             ContentType: "application/json",
+            "business-access": localStorage.getItem('business-access') ?? ''
         },
     },
 });
