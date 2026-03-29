@@ -466,5 +466,6 @@ export default {
     "forget_password_success": "Hệ thống sẽ gửi email xác nhận đặt lại mật khẩu đến email của bạn, vui lòng kiểm tra.",
     "verify_account": "Xác minh tài khoản",
     "no_account": "Chưa có tài khoản?",
-    "forgot_password": "Quên mật khẩu"
+    "forgot_password": "Quên mật khẩu",
+    "add_business": "Thêm doanh nghiệp"
 };

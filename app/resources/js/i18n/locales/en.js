@@ -466,5 +466,6 @@ export default {
         "forget_password_success": 'The system will send email confirm reset password to your email, please check it',
         "verify_account":"Verify account",
         "no_account":"Don’t have an account?",
-        "forgot_password":"Forgot password"
+        "forgot_password":"Forgot password",
+        "add_business":"Add business"
 };
