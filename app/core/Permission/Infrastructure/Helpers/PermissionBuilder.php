@@ -360,6 +360,14 @@ class PermissionBuilder
             Permission::NOTIFICATION_WORKFLOW
         ]);
     }
+
+    public function addCustom(string $type, array $permissions): self
+    {
+        $this->data[$type] = [
+            ...$this->data[$type] ?? $permissions
+        ];
+        return $this;
+    }
     public function buildByPass(): array
     {
         return [
