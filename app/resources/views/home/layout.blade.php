@@ -18,7 +18,7 @@
   <div class="">
     @yield('content')
   </div>
-
+@yield('scripts')
 </body>
 
 </html>
