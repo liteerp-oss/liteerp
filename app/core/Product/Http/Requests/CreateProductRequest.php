@@ -29,7 +29,7 @@ class CreateProductRequest extends FormRequest
             'name'               => 'required|string|max:255',
             'unit'               => 'required|in:pcs,set,box,carton,bag,pack,roll',
 
-            'description'        => 'required|string|max:4096',
+            'description'        => 'required|string|max:4096|min:150',
             'image'              => 'nullable|string|max:255',
         ];
     }

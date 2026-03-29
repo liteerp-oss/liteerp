@@ -23,6 +23,10 @@ class ProductServiceImpl implements ProductService
     {
         return $this->repo->findOneWithFullData($data) ?? throw new BadException(__("product::messages.not_found"));
     }
+    public function findById(array $data): Product|BadException
+    {
+        return $this->repo->findById($data) ?? throw new BadException(__("product::messages.not_found"));
+    }
     public function update(array $data): Product
     {
         $entity = $this->repo->findById($data);
