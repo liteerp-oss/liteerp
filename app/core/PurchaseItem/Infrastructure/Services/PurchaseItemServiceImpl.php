@@ -41,6 +41,10 @@ class PurchaseItemServiceImpl implements PurchaseItemService
     {
         return $this->repo->findById($data) ?? throw new BadException(__("purchaseitem::messages.not_found"));
     }
+    public function show(array $data): array|BadException
+    {
+        return $this->repo->show($data) ?? throw new BadException(__("purchaseitem::messages.not_found"));
+    }
     public function indexMinimal(array $data): array
     {
         return $this->repo->indexMinimal($data);

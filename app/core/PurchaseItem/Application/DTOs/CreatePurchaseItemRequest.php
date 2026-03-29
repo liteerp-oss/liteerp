@@ -24,10 +24,10 @@ class CreatePurchaseItemRequest
     public static function fromArray(array $data): self
     {
         return new self(
-            purchase_id: (int) ($data['purchase_id'] ?? 0),
-            product_id: $data['product_id'],
+            purchase_id: (int) $data['purchase_id'],
+            product_id: (int) $data['product_id'],
             discount: (float) ($data['discount'] ?? 0),
-            tax: (float) ($data['tax'] ?? 0),
+            tax: (float) $data['tax'],
             product_link: $data['product_link'] ?? null,
             buy_quantity: (float) ($data['buy_quantity'] ?? 0),
             gift_quantity: (float) ($data['gift_quantity'] ?? 0),

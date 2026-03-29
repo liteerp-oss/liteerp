@@ -41,6 +41,19 @@ class EloquentPurchaseItemRepository implements PurchaseItemRepositoryInterface
         }
         return PurchaseItem::fromArray($row);
     }
+    public function show(array $data): array
+    {
+        $row = PurchaseItemModel::select("purchase_items.*","products.name","products.sku")
+        ->join("purchases","purchases.id","=","purchase_items.purchase_id")
+        ->join("products","products.id","=","purchase_items.product_id")
+        ->where('purchases.business_id',$data['business_id'])
+        ->where('purchase_items.id',$data['id'])
+        ->first()?->toArray();
+        if(!$row) {
+            return $row;
+        }
+        return $row;
+    }
     public function update(PurchaseItem $entity): PurchaseItem
     {
         PurchaseItemModel::where('id',$entity->id)

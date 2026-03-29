@@ -11,5 +11,6 @@ interface PurchaseItemService
     public function update(array $data): PurchaseItem | BadException;
     public function delete(array $data): PurchaseItem | BadException;
     public function findById(array $data) : PurchaseItem | BadException;
+    public function show(array $data) : array | BadException;
     public function indexMinimal(array $data) : array;
 }
