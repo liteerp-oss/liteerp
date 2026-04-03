@@ -3,11 +3,13 @@ import {
   LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid,
 } from "recharts";
 import { useSelector } from "react-redux";
+import { useI18n } from "@/i18n/useI18n";
 
 export default function BusinessChart({
   title = "Business Chart",
   data = []
 }) {
+  const {t} = useI18n();
   const theme = useSelector((state) => state.theme.mode);
 
   const isDark = theme === "dark-theme";
@@ -36,7 +38,7 @@ export default function BusinessChart({
             yAxisId="left"
             type="monotone"
             dataKey="revenue"
-            name="Revenues"
+            name={t("Revenues")}
             stroke="#22c55e"
             strokeWidth={3}
             dot={{ fill: "#22c55e" }}
@@ -46,7 +48,7 @@ export default function BusinessChart({
             yAxisId="left"
             type="monotone"
             dataKey="customer"
-            name="Customers"
+            name={t("Customers")}
             stroke="#3b82f6"
             strokeWidth={2}
             dot={{ fill: "#3b82f6" }}
@@ -56,7 +58,7 @@ export default function BusinessChart({
             yAxisId="left"
             type="monotone"
             dataKey="product"
-            name="Products"
+            name={t("Products")}
             stroke="#a855f7"
             strokeWidth={2}
             dot={{ fill: "#a855f7" }}
@@ -66,7 +68,7 @@ export default function BusinessChart({
             yAxisId="left"
             type="monotone"
             dataKey="order"
-            name="Orders"
+            name={t("Orders")}
             stroke="#eab308"
             strokeWidth={3}
             dot={{ fill: "#eab308" }}
@@ -76,7 +78,7 @@ export default function BusinessChart({
             yAxisId="right"
             type="monotone"
             dataKey="inventory"
-            name="Inventories"
+            name={t("Inventories")}
             stroke="#db120bff"
             strokeWidth={2}
             dot={{ fill: "#db120bff" }}
@@ -85,7 +87,7 @@ export default function BusinessChart({
             yAxisId="right"
             type="monotone"
             dataKey="suppliers"
-            name="Suppliers"
+            name={t("Suppliers")}
             stroke="#09b417ff"
             strokeWidth={2}
             dot={{ fill: "#09b417ff" }}
