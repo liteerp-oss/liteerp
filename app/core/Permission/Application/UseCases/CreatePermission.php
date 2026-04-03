@@ -27,7 +27,16 @@ class CreatePermission
     {
         DB::beginTransaction();
         $dto = CreatePermissionRequest::fromArray($data);
-
+        if(!empty($data['permissions'])) {
+            $data['permissions'] = [
+                ...$data['permissions'],
+                ...$this->builder->addNotification()->buildListItem()
+            ];
+        } else {
+            $data['permissions'] = [
+                ...$this->builder->addNotification()->buildListItem()
+            ];
+        }
         $data = $this->hooks->dispatch(
             new HookContext(
                 action: HookAction::CREATE,
@@ -40,16 +49,6 @@ class CreatePermission
                 module: 'Permission'
             )
         );
-        if(!empty($data['permissions'])) {
-            $data['permissions'] = [
-                ...$data['permissions'],
-                ...$this->builder->addNotification()->buildListItem()
-            ];
-        } else {
-            $data['permissions'] = [
-                ...$this->builder->addNotification()->buildListItem()
-            ];
-        }
         $create = $this->service->create($data);
         $data = $this->hooks->dispatch(
             new HookContext(

@@ -33,4 +33,5 @@ enum PermissionType : string {
     case PERMISSION = 'Permission';
     case PERMISSION_GROUP_USER = 'Permission group user';
     case NOTIFICATION = 'Notification'; 
+    case ACTIVITYLOG = 'Activity log'; 
 }

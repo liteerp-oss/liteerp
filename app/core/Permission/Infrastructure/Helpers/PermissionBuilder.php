@@ -361,6 +361,13 @@ class PermissionBuilder
         ]);
     }
 
+    public function addActivityLog(): self
+    {
+        return $this->add(PermissionType::ACTIVITYLOG, [
+            Permission::ACTIVITYLOG_INDEX
+        ]);
+    }
+
     public function addCustom(string $type, array $permissions): self
     {
         $this->data[$type] = [
@@ -410,7 +417,8 @@ class PermissionBuilder
             ->addProductCategories()
             ->addSupplier()
             ->addInvoiceIn()
-            ->addInvoiceOut();
+            ->addInvoiceOut()
+            ->addActivityLog();
         return $this;
     }
     public function addBasic(): self

@@ -196,7 +196,7 @@ return [
                     'to'      => '/activity-logs',
                     'icon'    => 'bi bi-diagram-3',
                     'label'   => 'Logs',
-                    'ability' => 'erp.notification.index',
+                    'ability' => 'erp.activitylog.index',
                 ],
             ],
         ],
