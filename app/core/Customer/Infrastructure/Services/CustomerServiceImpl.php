@@ -17,14 +17,26 @@ class CustomerServiceImpl implements CustomerService
         if ($row) {
             throw new BadException(__("customer::messages.phone_used"));
         }
+        if(!empty($data['national_id'])) {
+            $row = $this->repo->findByNationalId($data);
+            if ($row) {
+                throw new BadException(__("customer::messages.phone_used"));
+            }    
+        }
+        
         $entity = Customer::fromArray($data);
         return $this->repo->create($entity);
     }
     public function update(array $data): Customer
     {
         $entity = $this->repo->findByPhone($data);
+        if(!empty($data['national_id'])) {
+            $national = $this->repo->findByNationalId($data);
+        }
         if ($entity && $entity->id !== $data['id']) {
             throw new BadException(__("customer::messages.phone_used"));
+        } else if($national && $national->id !== $data['id']) {
+            throw new BadException(__("customer::messages.national_used"));
         } else {
             $entity = $this->repo->findById($data);
             if (!$entity) {
@@ -43,6 +55,7 @@ class CustomerServiceImpl implements CustomerService
             $entity->website = $data['website'] ?? $entity->website;
             $entity->note = $data['note'] ?? $entity->note;
             $entity->active = $data['active'] ?? $entity->active;
+            $entity->national_id = $data['national_id'] ?? $entity->national_id;
             return $this->repo->update($entity);
         }
     }

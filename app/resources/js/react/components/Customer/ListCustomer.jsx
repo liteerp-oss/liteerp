@@ -145,6 +145,7 @@ export default function ListCustomer() {
             { label: t('Phone'), key: 'phone' },
             { label: t('Total orders'), key: 'total_order' },
             { label: t('Group'), key: 'group_name' },
+            { label: t('National Id'), key: 'national_id' },
             {
                 label: t('Type'),
                 key: 'type',

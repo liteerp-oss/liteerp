@@ -14,6 +14,7 @@ class Customer
         public ?string $phone = null,
         public ?string $address = null,
         public ?string $tax_code = null,
+        public ?string $national_id = null,
         public ?string $bank_name = null,
         public ?string $bank_account = null,
         public string $type = 'individual',   // individual | company
@@ -36,6 +37,7 @@ class Customer
             phone:        $data['phone'] ?? null,
             address:      $data['address'] ?? null,
             tax_code:     $data['tax_code'] ?? null,
+            national_id:  $data['national_id'] ?? null,
             bank_name:    $data['bank_name'] ?? null,
             bank_account: $data['bank_account'] ?? null,
             type:         $data['type'] ?? 'individual',
@@ -65,6 +67,7 @@ class Customer
             'phone'         => $this->phone,
             'address'       => $this->address,
             'tax_code'      => $this->tax_code,
+            'national_id'   => $this->national_id,
             'bank_name'     => $this->bank_name,
             'bank_account'  => $this->bank_account,
             'type'          => $this->type,

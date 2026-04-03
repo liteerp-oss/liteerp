@@ -30,6 +30,17 @@ class EloquentCustomerRepository implements CustomerRepositoryInterface
         $entity = Customer::fromArray($row);
         return $entity;
     }
+    public function findByNationalId(array $data): ?Customer
+    {
+        $row = CustomerModel::where('business_id',$data['business_id'])
+        ->where('national_id',$data['national_id'])
+        ->first()?->toArray();
+        if(!$row) {
+            return null;
+        }
+        $entity = Customer::fromArray($row);
+        return $entity;
+    }
     public function create(Customer $entity): Customer
     {
         // TODO: Add actual database logic

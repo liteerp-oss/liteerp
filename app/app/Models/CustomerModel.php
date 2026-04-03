@@ -23,6 +23,7 @@ class CustomerModel extends Model
         'phone',
         'address',
         'tax_code',
+        'national_id',
         'bank_name',
         'bank_account',
         'type',

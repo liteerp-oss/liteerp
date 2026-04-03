@@ -120,6 +120,17 @@ export default function CustomerForm({
                     label={t('Bank account')}
                 />
             </div>
+            <div className="form-group mt-2">
+                <InputForm
+                    name="national_id"
+                    handleChange={form.handleChange}
+                    value={form.formData?.national_id}
+                    errorMessage={form.formErrors?.national_id}
+                    placeholder={t('National Id')}
+                    required={false}
+                    label={t('National Id')}
+                />
+            </div>
 
             <div className="row mt-2">
                 <div className="form-group col-6">

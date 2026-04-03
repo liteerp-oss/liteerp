@@ -32,6 +32,7 @@ class UpdateCustomerRequest extends FormRequest
             'address'       => 'nullable|string|max:255',
 
             'tax_code'      => 'nullable|string|max:100',
+            'national_id'   => 'nullable|string|max:100',
             'bank_name'     => 'nullable|string|max:255',
             'bank_account'  => 'nullable|string|max:255',
 
