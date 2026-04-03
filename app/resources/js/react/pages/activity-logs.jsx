@@ -4,9 +4,9 @@ import PageHead from '../components/PageHead'
 import CommonDataTable from '../components/CommonDataTable'
 import ActivityLogService from '../services/ActivityLogService'
 import useTable from '../libraries/handleTable'
-import { isoToDateTime } from '../libraries/common'
 import StatusBadge from '../components/StatusBadge'
 import { useI18n } from '../../i18n/useI18n'
+import ContentOnTable from '../components/ContentOnTable'
 
 export default function ActivityLogs() {
     const { t } = useI18n()
@@ -20,7 +20,7 @@ export default function ActivityLogs() {
                 table.setData(resp.message.data)
                 table.setLinks(resp.message.links)
             })
-            .catch(() => {})
+            .catch(() => { })
     }, [])
 
     useEffect(() => {
@@ -53,24 +53,65 @@ export default function ActivityLogs() {
                                 ),
                             },
                             {
-                                key: 'description',
-                                label: t('Description'),
+                                key: 'name',
+                                label: t('User')
+                            },
+                            {
+                                key: 'entity_id',
+                                label: t('Entity ID')
                             },
                             {
                                 key: 'entity_type',
                                 label: t('Entity type'),
+                                render: (value) => {
+                                    return t(value)
+                                }
                             },
                             {
-                                key: 'entity_id',
-                                label: t('Entity ID'),
-                            },
-                            {
-                                key: 'created_at',
-                                label: t('Created at'),
-                                render: (time) => (
-                                    <span>{isoToDateTime(time)}</span>
-                                ),
-                            },
+                                key: 'description',
+                                label: t('Description'),
+                                render: (description) => {
+                                    const parsedDescription =
+                                        typeof description === "string"
+                                            ? JSON.parse(description)
+                                            : description;
+
+                                    const diff = parsedDescription?.diff || null;
+
+                                    const previewKeys = Object.entries(parsedDescription || {})
+                                        .filter(([key]) => key !== "diff")
+                                        .slice(0, 8);
+
+                                    return (
+                                        <div>
+                                            <div className="border rounded-4 p-3">
+                                                {diff ? (
+                                                    Object.entries(diff).map(([field, change]) => {
+                                                        return change.old || change.new ? <div key={field} className="mb-2">
+                                                            <div>
+                                                                <strong>{field.replace(/_/g, " ")}</strong>
+                                                                <div>
+                                                                    {change.old ? <ContentOnTable max={50} value={change.old.toString()} /> : '-'} <i className="bi bi-arrow-right-short"></i>{" "}
+                                                                    {change.new ? <ContentOnTable max={50} value={change.new.toString()} /> : '-'}
+                                                                </div>
+                                                            </div>
+                                                        </div> : null
+                                                    })
+                                                ) : previewKeys.length > 0 ? (
+                                                    previewKeys.map(([field, value], index) => {
+                                                        return index < 4 ? <div key={field} className="mb-2">
+                                                            <strong>{t(field).replace(/_/g, " ")}</strong>
+                                                            <div>{value ? <ContentOnTable value={t(value.toString())} max={50} /> : '-'}</div>
+                                                        </div> : null
+                                                    })
+                                                ) : (
+                                                    <div>{t("No data to display")}</div>
+                                                )}
+                                            </div>
+                                        </div>
+                                    );
+                                },
+                            }
                         ]}
                     />
                 </div>

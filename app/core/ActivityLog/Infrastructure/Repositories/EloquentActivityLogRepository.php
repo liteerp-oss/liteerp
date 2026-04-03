@@ -22,4 +22,17 @@ class EloquentActivityLogRepository implements ActivityLogRepositoryInterface
         ->where('activity_logs.business_id',$data['business_id'])
         ->paginate(15)->toArray();
     }
+    public function getByEntityTypeAndEntityId(string $entityType, string $entityId): ?ActivityLog
+    {
+        $model = ActivityLogModel::where('entity_type', $entityType)
+            ->where('entity_id', $entityId)
+            ->orderByDesc('id')
+            ->first();
+
+        if (!$model) {
+            return null;
+        }
+
+        return ActivityLog::fromArray($model->toArray());
+    }
 }

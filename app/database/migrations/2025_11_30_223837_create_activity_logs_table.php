@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('users');
             $table->string('action'); 
-            $table->text('description'); 
+            $table->longText('description'); 
             $table->string('entity_type'); 
             $table->unsignedBigInteger('entity_id');
             $table->foreignId('business_id')->constrained('business')->onDelete('cascade');
