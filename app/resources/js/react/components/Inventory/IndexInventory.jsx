@@ -37,7 +37,6 @@ export default function IndexInventory() {
 
     useEffect(() => {
         table.setColums([
-            { key: 'id', label: t('ID') },
             { key: 'name', label: t('Name') },
             { key: 'quantity', label: t('Quantity') },
             { key: 'sku', label: t('SKU') },

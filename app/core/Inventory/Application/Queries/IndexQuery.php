@@ -53,17 +53,12 @@ class IndexQuery implements QueryInterface
          * Mail query 
          */
         $rows = StockMovementInModel::select(
-            "stock_movements_in.id",
-            "stock_movements_in.id as stock_movements_in_id",
-            "suppliers.unit_name as unit_name",
             "products.name as name",
             "products.unit as unit",
             "products.sku as sku",
             "category_product.name as category",
             "category_product.tax",
-            "warehouses.name as warehouse",
-            "purchases.id as purchase_id",
-            "purchases.purchase_date as purchase_date"
+            "warehouses.name as warehouse"
         )
             ->join(
                 "stock_ins",
@@ -90,18 +85,6 @@ class IndexQuery implements QueryInterface
                 "stock_movements_in.warehouse_id"
             )
             ->join(
-                "purchases",
-                "purchases.id",
-                "=",
-                "invoice_ins.purchase_id"
-            )
-            ->join(
-                "suppliers",
-                "suppliers.id",
-                "=",
-                "purchases.supplier_id"
-            )
-            ->join(
                 "category_product",
                 "category_product.id",
                 "=",
@@ -113,13 +96,24 @@ class IndexQuery implements QueryInterface
                 $join->on('ia.stock_movements_in_id', '=', 'stock_movements_in.id');
             })->addSelect(
                 DB::raw('
-                        stock_movements_in.qty_change 
-                        - COALESCE(oi.total_order_qty, 0)
-                        + COALESCE(ia.total_adjustment, 0) as quantity
+                        SUM(
+                            stock_movements_in.qty_change 
+                            - COALESCE(oi.total_order_qty, 0)
+                            + COALESCE(ia.total_adjustment, 0)
+                        ) as quantity
                     ')
             );
         $rows = $rows->where('invoice_ins.business_id', $dto->business_id)
-            ->groupBy("stock_movements_in.id");
+            ->groupBy(
+                "stock_movements_in.warehouse_id",
+                "stock_movements_in.product_id",
+                "products.name",
+                "products.unit",
+                "products.sku",
+                "category_product.name",
+                "category_product.tax",
+                "warehouses.name"
+            );
 
         if ($dto->keywords) {
             $rows->whereAny(
@@ -148,6 +142,6 @@ class IndexQuery implements QueryInterface
         Event::dispatch(Permission::STOCKMOVEMENTIN_INDEX->value, [
             ...$data
         ]);
-        return $rows->orderBy('stock_movements_in.id', $dto->order_by)->paginate(15)->toArray();
+        return $rows->orderBy('products.name', $dto->order_by)->paginate(15)->toArray();
     }
 }
