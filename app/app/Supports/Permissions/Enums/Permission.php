@@ -194,4 +194,5 @@ enum Permission: string
     case NOTIFICATION_DELETE = 'erp.notification.delete';
     case NOTIFICATION_CREATE = 'erp.notification.create';
     case NOTIFICATION_CREATE_MANY = 'erp.notification.many';
+    case ACTIVITYLOG_INDEX = 'erp.activitylog.index';
 }
