@@ -8,5 +8,6 @@ return [
         'created' => ':username đã tạo hóa đơn đầu ra',
         'updated' => ':username đã cập nhật hóa đơn đầu ra',
         'approved' => ':username đã duyệt hóa đơn đầu ra'
-    ]
+    ],
+    'title' => 'Hoá đơn đầu ra',
 ];

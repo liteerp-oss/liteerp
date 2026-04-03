@@ -11,5 +11,6 @@ return [
         'updated' => ':username が入庫伝票を更新しました',
         'received' => ':username が入庫伝票を受領済みにしました',
         'cancelled' => ':username が入庫伝票をキャンセルしました',
-    ]
+    ],
+    'title' => '入庫伝票',
 ];

@@ -60,6 +60,7 @@ class CreateInvoiceOut
             'entity_type' => 'invoiceout',
             'entity_id' => $create->id,
             'chanels' => ['db'],
+            'title' => "invoiceout::messages.title",
             'message' => "invoiceout::messages.notification.created",
             'message_params' => [
                 'username' => $data['username']

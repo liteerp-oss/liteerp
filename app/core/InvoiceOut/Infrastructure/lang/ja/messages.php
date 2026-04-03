@@ -8,5 +8,6 @@ return [
         'created' => ':username が売上請求書を作成しました',
         'updated' => ':username が売上請求書を更新しました',
         'approved' => ':username が売上請求書を承認しました'
-    ]
+    ],
+    'title' => '売上請求書',
 ];

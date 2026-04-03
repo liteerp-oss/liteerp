@@ -8,7 +8,8 @@ class IndexOrderRequest
         public int $business_id,
         public ?string $keywords = null,
         public ?string $order_by = null,
-        public int $created_by
+        public int $created_by,
+        public int $paginate = 15
     ) {}
 
     /**
@@ -20,7 +21,8 @@ class IndexOrderRequest
             business_id: $data['business_id'],
             created_by: $data['user_id'],
             keywords: $data['keywords'] ?? null,
-            order_by: $data['order_by'] ?? 'DESC'
+            order_by: $data['order_by'] ?? 'DESC',
+            paginate: $data['paginate'] ?? 15
         );
     }
 
@@ -33,7 +35,8 @@ class IndexOrderRequest
             'business_id'            => $this->business_id,
             'created_by' => $this->created_by,
             'keywords' => $this->keywords,
-            'order_by' => $this->order_by
+            'order_by' => $this->order_by,
+            'paginate' => $this->paginate
         ];
     }
 }

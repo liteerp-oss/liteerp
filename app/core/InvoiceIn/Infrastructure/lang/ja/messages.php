@@ -10,5 +10,6 @@ return [
         'created' => ':username が仕入請求書を作成しました',
         'updated' => ':username が仕入請求書を更新しました',
         'approved' => ':username が仕入請求書を承認しました'
-    ]
+    ],
+    'title' => '仕入請求書',
 ];

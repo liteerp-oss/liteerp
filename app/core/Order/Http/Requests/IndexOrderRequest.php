@@ -26,7 +26,8 @@ class IndexOrderRequest extends FormRequest
         return [
             ...$additionalRules, 
             'keywords' => 'nullable|string|max:150',
-            'order_by' => 'nullable|in:ASC,DESC'
+            'order_by' => 'nullable|in:ASC,DESC',
+            'paginate' => 'nullable|numeric|max:100|min:0'
         ];
     }
 

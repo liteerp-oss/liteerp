@@ -72,6 +72,7 @@ class UpdateStockOut
             'entity_type' => 'stockout',
             'entity_id' => $update->id,
             'chanels' => ['db'],
+            'title' => 'stockout::messages.title',
             'message' => "stockout::messages.notification.{$update->getStatus()}",
             'message_params' => [
                 'username' => $data['username']

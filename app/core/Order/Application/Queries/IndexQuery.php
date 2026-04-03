@@ -66,6 +66,7 @@ class IndexQuery implements QueryInterface {
         Event::dispatch(Permission::ORDER_INDEX->value, [
             ...$data
         ]);
-        return $list->orderBy("orders.id", $dto->order_by)->paginate(15)->toArray();
+        return $list->orderBy("orders.id", $dto->order_by)
+            ->paginate($dto->paginate)->toArray();
     }
 }

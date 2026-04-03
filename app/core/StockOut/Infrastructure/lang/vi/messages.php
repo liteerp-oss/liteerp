@@ -10,5 +10,6 @@ return [
         'pending' => ':username đã cập nhật phiếu xuất kho',
         'cancelled' => ':username đã hủy đơn hàng',
         'completed' => ':username đã hoàn tất phiếu xuất kho',
-    ]
+    ],
+    'title' => 'Xuất kho',
 ];

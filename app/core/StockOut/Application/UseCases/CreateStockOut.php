@@ -57,6 +57,7 @@ class CreateStockOut
             'entity_type' => 'stockout',
             'entity_id' => $create->id,
             'chanels' => ['db'],
+            'title' => 'stockout::messages.title',
             'message' => "stockout::messages.notification.created",
             'message_params' => [
                 'username' => $data['username']

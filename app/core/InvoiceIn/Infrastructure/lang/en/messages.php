@@ -10,5 +10,6 @@ return [
         'created' => ':username created an incoming invoice',
         'updated' => ':username updated the incoming invoice',
         'approved' => ':username approved the incoming invoice'
-    ]
+    ],
+    'title' => 'Incoming Invoice',
 ];

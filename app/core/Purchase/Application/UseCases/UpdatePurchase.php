@@ -79,6 +79,7 @@ class UpdatePurchase
             'entity_type' => 'purchase',
             'entity_id' => $update->id,
             'chanels' => ['db'],
+            'title' => "purchase::messages.title",
             'message' => "purchase::messages.notification.{$update->getStatus()}",
             'message_params' => [
                 'username' => $data['username']

@@ -59,6 +59,7 @@ class CreateStockIn
             'entity_id' => $create->id,
             'chanels' => ['db'],
             'message' => "stockin::messages.notification.created",
+            'title' => "stockin::messages.title",
             'message_params' => [
                 'username' => $data['username']
             ]

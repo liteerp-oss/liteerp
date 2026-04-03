@@ -12,5 +12,6 @@ return [
         'requested' => ':username đã gửi phiếu mua hàng để duyệt',
         'approved' => ':username đã duyệt phiếu mua hàng',
         'cancelled' => ':username đã hủy phiếu mua hàng'
-    ]
+    ],
+    'title' => 'Phiếu mua hàng',
 ];

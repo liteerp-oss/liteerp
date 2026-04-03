@@ -10,5 +10,6 @@ return [
         'pending' => ':username が出庫伝票を更新しました',
         'cancelled' => ':username が注文をキャンセルしました',
         'completed' => ':username が出庫伝票を完了にしました',
-    ]
+    ],
+    'title' => '出庫',
 ];

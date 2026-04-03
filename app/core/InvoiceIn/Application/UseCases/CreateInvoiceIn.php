@@ -54,6 +54,7 @@ class CreateInvoiceIn
             'entity_type' => 'invoicein',
             'entity_id' => $create->id,
             'chanels' => ['db'],
+            'title' => "invoicein::messages.title",
             'message' => "invoicein::messages.notification.created",
             'message_params' => [
                 'username' => $data['username']

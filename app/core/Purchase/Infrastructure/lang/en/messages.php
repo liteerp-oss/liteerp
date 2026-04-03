@@ -12,5 +12,6 @@ return [
         'requested' => ':username submitted the purchase for approval',
         'approved' => ':username approved the purchase',
         'cancelled' => ':username cancelled the purchase'
-    ]
+    ],
+    'title' => 'Purchase',
 ];

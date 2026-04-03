@@ -75,6 +75,7 @@ class UpdateInvoiceOut
             'entity_type' => 'invoiceout',
             'entity_id' => $update->id,
             'chanels' => ['db'],
+            'title' => "invoiceout::messages.title",
             'message' => "invoiceout::messages.notification.$status",
             'message_params' => [
                 'username' => $data['username']

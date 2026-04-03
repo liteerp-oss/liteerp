@@ -13,5 +13,6 @@ return [
         'pending' => ':username updated the order',
         'approved' => ':username approved the order',
         'cancelled' => ':username cancelled the order',
-    ]
+    ],
+    'title' => 'Order',
 ];

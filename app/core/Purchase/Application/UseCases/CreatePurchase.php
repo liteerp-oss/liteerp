@@ -59,6 +59,7 @@ class CreatePurchase
             'entity_type' => 'purchase',
             'entity_id' => $create->id,
             'chanels' => ['db'],
+            'title' => "purchase::messages.title",
             'message' => 'purchase::messages.notification.created',
             'message_params' => [
                 'username' => $data['username']

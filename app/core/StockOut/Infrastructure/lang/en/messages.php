@@ -10,5 +10,6 @@ return [
         'pending' => ':username updated the stock-out ticket',
         'cancelled' => ':username cancelled the order',
         'completed' => ':username marked the stock-out ticket as completed',
-    ]
+    ],
+    'title' => 'Stock-out',
 ];

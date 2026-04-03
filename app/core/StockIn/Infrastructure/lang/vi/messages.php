@@ -11,5 +11,6 @@ return [
         'updated' => ':username đã cập nhật phiếu nhập kho',
         'received' => ':username đã xác nhận đã nhận phiếu nhập kho',
         'cancelled' => ':username đã hủy phiếu nhập kho',
-    ]
+    ],
+    'title' => 'Phiếu nhập kho',
 ];

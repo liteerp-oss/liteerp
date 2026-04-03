@@ -10,5 +10,6 @@ return [
         'created' => ':username đã tạo hóa đơn đầu vào',
         'updated' => ':username đã cập nhật hóa đơn đầu vào',
         'approved' => ':username đã duyệt hóa đơn đầu vào'
-    ]
+    ],
+    'title' => 'Hóa đơn đầu vào',
 ];

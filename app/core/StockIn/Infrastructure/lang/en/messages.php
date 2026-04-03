@@ -11,5 +11,6 @@ return [
         'updated' => ':username updated the stock-in ticket',
         'received' => ':username marked the stock-in ticket as received',
         'cancelled' => ':username cancelled the stock-in ticket',
-    ]
+    ],
+    'title' => 'Stock-in',
 ];

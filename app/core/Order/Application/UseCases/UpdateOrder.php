@@ -70,6 +70,7 @@ class UpdateOrder
             'entity_type' => 'order',
             'entity_id' => $update->id,
             'chanels' => ['db'],
+            'title' => "order::messages.title",
             'message' => "order::messages.notification.{$update->getStatus()}",
             'message_params' => [
                 'username' => $data['username']

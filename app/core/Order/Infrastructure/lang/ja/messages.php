@@ -13,5 +13,6 @@ return [
         'pending' => ':username が注文を更新しました',
         'approved' => ':username が注文を承認しました',
         'cancelled' => ':username が注文をキャンセルしました',
-    ]
+    ],
+    'title' => '注文',
 ];

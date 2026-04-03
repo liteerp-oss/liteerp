@@ -12,5 +12,6 @@ return [
         'requested' => ':username が仕入れを承認申請しました',
         'approved' => ':username が仕入れを承認しました',
         'cancelled' => ':username が仕入れをキャンセルしました'
-    ]
+    ],
+    'title' => '仕入れ',
 ];

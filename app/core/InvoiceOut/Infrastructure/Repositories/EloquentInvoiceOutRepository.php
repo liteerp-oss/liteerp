@@ -66,6 +66,7 @@ class EloquentInvoiceOutRepository implements InvoiceOutRepositoryInterface
         "customers.tax_code as tax_code",
         "customers.phone as phone",
         "orders.payment_method as payment_method",
+        "orders.note as note",
         "shippings.receiver_name as receiver_name",
         "shippings.receiver_phone as receiver_phone",
         "shippings.receiver_address as receiver_address",

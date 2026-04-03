@@ -57,6 +57,7 @@ class CreateOrder
             'entity_type' => 'order',
             'entity_id' => $create->id,
             'chanels' => ['db'],
+            'title' => "order::messages.title",
             'message' => "order::messages.notification.created",
             'message_params' => [
                 'username' => $data['username']

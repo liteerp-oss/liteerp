@@ -67,6 +67,7 @@ class UpdateStockIn
             'entity_type' => 'stockin',
             'entity_id' => $update->id,
             'chanels' => ['db'],
+            'title' => "stockin::messages.title",
             'message' => "stockin::messages.notification.$status",
             'message_params' => [
                 'username' => $data['username']

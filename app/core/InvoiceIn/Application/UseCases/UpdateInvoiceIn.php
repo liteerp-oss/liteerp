@@ -70,6 +70,7 @@ class UpdateInvoiceIn
             'entity_type' => 'invoicein',
             'entity_id' => $update->id,
             'chanels' => ['db'],
+            'title' => "invoicein::messages.title",
             'message' => "invoicein::messages.notification.$status",
             'message_params' => [
                 'username' => $data['username']

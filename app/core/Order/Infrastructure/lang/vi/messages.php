@@ -13,5 +13,6 @@ return [
         'pending' => ':username đã cập nhật đơn hàng',
         'approved' => ':username đã duyệt đơn hàng',
         'cancelled' => ':username đã hủy đơn hàng',
-    ]
+    ],
+    'title' => 'Đơn hàng',
 ];
