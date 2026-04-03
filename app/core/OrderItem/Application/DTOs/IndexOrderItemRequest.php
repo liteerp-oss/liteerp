@@ -9,7 +9,8 @@ class IndexOrderItemRequest
         public int $created_by,
         public ?string $order_by = null,
         public ?string $keywords = null,
-        public int $order_id
+        public int $order_id,
+        public int $paginate = 50
     ) {}
 
     /**
@@ -22,7 +23,8 @@ class IndexOrderItemRequest
             created_by: $data['user_id'],
             order_by: $data['order_by'] ?? 'DESC',
             keywords: $data['keywords'] ?? null,
-            order_id: $data['order_id']
+            order_id: $data['order_id'],
+            paginate: $data['paginate'] ?? 50
         );
     }
 
@@ -36,7 +38,8 @@ class IndexOrderItemRequest
             'created_by' => $this->created_by,
             'order_by' => $this->order_by,
             'keywords' => $this->keywords,
-            'order_id' => $this->order_id
+            'order_id' => $this->order_id,
+            'paginate' => $this->paginate
         ];
     }
 }

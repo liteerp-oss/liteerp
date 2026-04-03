@@ -84,6 +84,7 @@ class EloquentOrderItemRepository implements OrderItemRepositoryInterface
             "order_items.price as price",
             "warehouses.name as warehouse",
             "order_items.tax as tax",
+            "purchases.id as purchase_id",
             DB::raw("
                 ROUND(
                 (order_items.price * order_items.buy_quantity) * (order_items.discount / 100)
@@ -121,12 +122,12 @@ class EloquentOrderItemRepository implements OrderItemRepositoryInterface
             ->join("stock_movements_in", "stock_movements_in.id", "=", "order_items.stock_movements_in_id")
             ->join("warehouses", "warehouses.id", "=", "stock_movements_in.warehouse_id")
             ->join("products", "products.id", "=", "stock_movements_in.product_id")
-            ->join("category_product", "category_product.id", "=", "products.category_id")
-            ->join("orders", "orders.id", "=", "order_items.order_id")
-            ->join("customers", "customers.id", "=", "orders.customer_id")
+            ->join("stock_ins","stock_ins.id","=","stock_movements_in.stock_in_id")
+            ->join("invoice_ins","invoice_ins.id","=","stock_ins.invoice_in_id")
+            ->join("purchases","purchases.id","=","invoice_ins.purchase_id")
             ->where('products.business_id', $data['business_id'])
             ->where('order_items.order_id', $data['order_id'])
-            ->paginate(500)->toArray();
+            ->paginate($data['paginate'] ?? 15)->toArray();
     }
     public function indexForStockMovementOut(array $data): array
     {
