@@ -2,7 +2,6 @@ import React, { useCallback, useEffect } from 'react'
 import DashboardLayout from '../layouts/DashboardLayout'
 import PageHead from '../components/PageHead'
 import { InputForm } from '../components/UI/Input/InputForm'
-import PrimaryButton from '../components/UI/Buttons/PrimaryButton'
 import businessService from '../services/businessService'
 import { useForm } from '../libraries/handleInput'
 import { useDispatch, useSelector } from 'react-redux'
@@ -10,7 +9,6 @@ import { usePopup } from '../components/popups/PopupContext'
 import { setBusinessInfo } from '../redux/businessInfoSlice'
 import UploadImage from '../components/UI/Input/UploadImage'
 import { useI18n } from '../../i18n/useI18n'
-import PERMISSIONS from '../common/permission'
 import UpdateButton from '../components/UI/PermissionButtons/UpdateButton'
 
 export default function Setting() {
@@ -19,9 +17,9 @@ export default function Setting() {
     const business = useSelector((state) => state.business.data)
     const form = useForm()
     const { openPopup } = usePopup()
-    const roles = useSelector((state) => state.businessRole.role);
     const update = useCallback(() => {
         form.setLoading(true)
+        form.setFormErrors(null)
         businessService
             .update(form.formData)
             .then(() => {

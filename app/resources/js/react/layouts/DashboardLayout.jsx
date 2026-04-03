@@ -44,40 +44,42 @@ export default function DashboardLayout({
             <div className="col-lg-2 sidebar-desktop mb-5 px-0">
                 <Sidebar />
             </div>
-            <div className="col-lg-10 dashboard-content">
+            <div className="col-lg-10 dashboard-content" style={{
+                paddingLeft: 0
+            }}>
                 <Topbar />
-                <div>
+                <div className='px-2 mb-5'>
                     {children}
                 </div>
             </div>
         </div>
-        <footer className="border-top bg-white">
+        <footer className="border-top theme-bg">
             <div className="container-fluid py-2">
-                <div className="row align-items-center text-muted small">
+                <div className="row align-items-center custom-text-muted small">
                     <div className="col-md-4 d-flex align-items-center gap-2 justify-content-center justify-content-md-start">
                         <i className="bi bi-box"></i>
                         <span>LiteERP © 2026</span>
                     </div>
                     <div className="col-md-8 d-flex align-items-center gap-3 justify-content-center justify-content-md-end">
                         <a href="https://www.hetzner.com" target="_blank"
-                            className="text-muted text-decoration-none d-flex align-items-center gap-1 hover-opacity">
+                            className="custom-text-muted text-decoration-none d-flex align-items-center gap-1 hover-opacity">
                             <img src="/Hetzner-Logo.png" height={25}/>
                             Infrastructure powered by Hetzner
                         </a>
                         <a href="https://github.com/liteerp-oss/liteerp" target="_blank"
-                            className="text-muted text-decoration-none d-flex align-items-center gap-1 hover-opacity">
+                            className="custom-text-muted text-decoration-none d-flex align-items-center gap-1 hover-opacity">
                             <i className="bi bi-github"></i>
                             Github
                         </a>
 
                         <a href="https://github.com/liteerp-oss/docs"
-                            className="text-muted text-decoration-none d-flex align-items-center gap-1">
+                            className="custom-text-muted text-decoration-none d-flex align-items-center gap-1">
                             <i className="bi bi-book"></i>
                             Docs
                         </a>
 
                         <a href="https://github.com/liteerp-oss/liteerp/issues"
-                            className="text-muted text-decoration-none d-flex align-items-center gap-1">
+                            className="custom-text-muted text-decoration-none d-flex align-items-center gap-1">
                             <i className="bi bi-life-preserver"></i>
                             Support
                         </a>
