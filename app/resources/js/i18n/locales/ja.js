@@ -467,5 +467,6 @@ export default {
     "verify_account": "アカウントを確認",
     "no_account": "アカウントをお持ちではありませんか？",
     "forgot_password": "パスワードをお忘れですか",
-    "add_business": "ビジネスを追加する"
+    "add_business": "ビジネスを追加する",
+    "Revenues":"収益"
 };

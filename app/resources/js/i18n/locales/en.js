@@ -467,5 +467,6 @@ export default {
         "verify_account":"Verify account",
         "no_account":"Don’t have an account?",
         "forgot_password":"Forgot password",
-        "add_business":"Add business"
+        "add_business":"Add business",
+        "Revenues":"Revenues"
 };

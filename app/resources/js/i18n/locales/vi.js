@@ -467,5 +467,6 @@ export default {
     "verify_account": "Xác minh tài khoản",
     "no_account": "Chưa có tài khoản?",
     "forgot_password": "Quên mật khẩu",
-    "add_business": "Thêm doanh nghiệp"
+    "add_business": "Thêm doanh nghiệp",
+    "Revenues":"Doanh thu"
 };
