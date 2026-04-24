@@ -7,7 +7,8 @@ class CreateAuthencationRequest
     public function __construct(
         public string $email,
         public string $password,
-        public ?string $name = null
+        public ?string $name = null,
+        public string $lang = 'en'
     ) {}
 
     public static function fromArray(array $data): self
@@ -15,7 +16,8 @@ class CreateAuthencationRequest
         return new self(
             email: $data['email'],
             password: $data['password'],
-            name: $data['name'] ?? null
+            name: $data['name'] ?? null,
+            lang: $data['lang'] ?? 'en'
         );
     }
     public function toArray(): array
@@ -23,7 +25,8 @@ class CreateAuthencationRequest
         return [
             'email' => $this->email,
             'password' => $this->password,
-            'name'  => $this->name
+            'name'  => $this->name,
+            'lang' => $this->lang,
         ];
     }
 }
