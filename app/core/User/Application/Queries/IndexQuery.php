@@ -54,6 +54,6 @@ class IndexQuery implements QueryInterface
         Event::dispatch(Permission::USER_INDEX->value, [
             ...$data
         ]);
-        return $rows->orderBy('users.id', $dto->order_by)->paginate($dto->paginate)->toArray();
+        return $rows->orderBy('users.id', $dto->order_by)->paginate($dto->paginate ?? 15)->toArray();
     }
 }

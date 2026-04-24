@@ -9,7 +9,7 @@ class IndexUserRequest
         public int $business_id,
         public ?string $keywords = null,
         public ?string $order_by = null,
-        public int $paginate = 15
+        public ?int $paginate
     ) {}
 
     public static function fromArray(array $data): self
@@ -19,7 +19,7 @@ class IndexUserRequest
             business_id: $data['business_id'],
             keywords: $data['keywords'] ?? null,
             order_by: $data['order_by'] ?? 'DESC',
-            paginate: $data['paginate'] ?? 15
+            paginate: $data['paginate'] ?? null
         );
     }
     public function toArray()
@@ -29,7 +29,7 @@ class IndexUserRequest
             'business_id'   => $this->business_id,
             'keywords'  => $this->keywords,
             'order_by'  => $this->order_by,
-            'paginate' => 15
+            'paginate' => $this->paginate
         ];
     }
 }
