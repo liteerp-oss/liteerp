@@ -96,9 +96,9 @@ const NotificationList = () => {
       className="container-fluid py-4"
       style={{ minHeight: "100vh" }}
     >
-      <div className="mx-auto col-xs-12 col-sm-12 col-md-6 col-lg-6">
+      <div className="mx-auto col-xs-12 col-sm-12 col-md-10 col-lg-6">
         <div className="d-flex justify-content-between align-items-center mb-3">
-          <h5 className="theme-title-highlight mb-0">{t('All Notifications')}</h5>
+          <h5 className="theme-title-highlight mb-0">{t('all_notifications')}</h5>
           <div className="d-flex align-items-center">
             <span className="badge bg-secondary me-2">
               {table.total} {t('notifications')}

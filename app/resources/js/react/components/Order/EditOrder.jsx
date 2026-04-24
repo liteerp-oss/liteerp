@@ -43,7 +43,7 @@ export default function EditOrder() {
             .then((resp) => {
                 openPopup({
                     type: 'success',
-                    message: 'You has been update'
+                    message: t('update_success')
                 });
                 setDetail(form.formData);
                 if (callback) {
@@ -69,7 +69,7 @@ export default function EditOrder() {
         if (JSON.stringify(detail) !== JSON.stringify(form.formData)) {
             return openPopup({
                 type: 'warning',
-                message: 'Just change data, do you wanna to save?',
+                message: t('save_data_change'),
                 onConfirm: () => {
                     updateInformation(() => {
                         setCurrentStep((pre) => pre + 1)
@@ -100,7 +100,7 @@ export default function EditOrder() {
             .then((resp) => {
                 openPopup({
                     type: 'success',
-                    message: 'You has been changed'
+                    message: t('update_success')
                 });
                 setShippingDetail(shippingForm.formData);
                 shippingForm.setLoading(false)
@@ -123,7 +123,7 @@ export default function EditOrder() {
         if (JSON.stringify(shippingDetail) !== JSON.stringify(shippingForm.formData)) {
             return openPopup({
                 type: 'warning',
-                message: 'Just change data, do you wanna to save?',
+                message: t('save_data_change'),
                 onConfirm: () => {
                     saveShipping(() => {
                         setCurrentStep((pre) => pre + 1)
@@ -242,7 +242,7 @@ export default function EditOrder() {
 
     return <div>
         <PageHead
-            containerClass='mx-5'
+            containerClass='lg-m-4'
             title={t('Order')} subtitle={t("order_desc")} />
         {detail?.status === 'cancelled' ? <div className='row mx-4 mt-3'>
             <div className='col-12'>
@@ -253,13 +253,13 @@ export default function EditOrder() {
             </div>
         </div> : null}
         {detail ? <div>
-            <div className='row mx-4'>
+            <div className='row lg-m-4'>
                 <div className='mt-3'>
                     <FormStep
                         list={[t("Customer & Order"), t("Products"), t("Shipping"), t("Completed")]}
                         active={currentStep} />
                 </div>
-                <div className='col-9'>
+                <div className='col-lg-9'>
                     <div className='mt-3'>
                         <div className='theme-card p-3 rounded-4 border'>
                             <div className={currentStep == 0 ? 'show' : 'hidden'}>
@@ -279,21 +279,21 @@ export default function EditOrder() {
                             </div>
                         </div>
                         <div className="row mt-3">
-                            <div className="col-2">
+                            <div className="col-lg-2 col-md-6">
                                 <SecondaryButton loading={form.loading || shippingForm.loading} onClick={prevStep} 
                                 label={t('Back')} />
                             </div>
-                            <div className="col-4 ms-auto text-end">
-                                <div className='row'>
-                                    <div className='col-6'>
+                            <div className="col-lg-4 col-md-6 ms-auto text-end">
+                                <div className='d-flex'>
+                                    <div className=''>
                                         {detail?.status !== 'cancelled' ?
                                             <CancelButton 
                                             width={150}
                                             loading={form.loading || shippingForm.loading} onClick={confirmCancelled} 
-                                            label={t('Take Cancel')} type={'order'} />
+                                            label={t('button_cancel_label')} type={'order'} />
                                             : null}
                                     </div>
-                                    <div className='col-6'>
+                                    <div className='mx-2'>
                                         {currentStep <= 2
                                             ? <PrimaryButton width={120} loading={form.loading || shippingForm.loading} onClick={nextStep} 
                                             label={t('Next')} />
@@ -309,7 +309,7 @@ export default function EditOrder() {
                         </div>
                     </div>
                 </div>
-                <div className='col-3'>
+                <div className='col-lg-3'>
                     <Summary summaryData={summaryData} />
                 </div>
             </div>

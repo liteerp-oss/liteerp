@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function FormStep({ list = [], active = 0 }) {
   return (
-    <div className="d-flex align-items-center gap-4 mb-4">
+    <div className="d-flex align-items-center gap-4 mb-4 form-step-item">
 
       {list.map((item, index) => (
         <React.Fragment key={index}>

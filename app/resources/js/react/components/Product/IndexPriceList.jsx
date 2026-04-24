@@ -158,7 +158,7 @@ export default function IndexPriceList() {
                     </strong>
                 ),
             },
-            { label: t('Customer Group'), key: 'group' },
+            { label: t('Customer group'), key: 'group' },
         ])
     }, [lang])
 

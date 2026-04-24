@@ -8,7 +8,8 @@ export default function TextArea({
     name = 'textarea',
     disabled = false,
     required = false,
-    label = null
+    label = null,
+    rows= 3
 }){
     return <div>
         {label ? <label>
@@ -16,6 +17,7 @@ export default function TextArea({
           {required ? <span className='text-danger'>*</span> : null}
         </label> : null}
         <textarea 
+        rows={rows}
         disabled={disabled}
         value={value}
         onChange={handleChange}

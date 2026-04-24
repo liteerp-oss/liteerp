@@ -1,21 +1,25 @@
-import React, { useRef, useState } from 'react'
+import React, { use, useRef, useState } from 'react'
 import EntityIconType from './EntityIconType'
 import EntityMessage from './EntityMessage'
 import { usePopup } from '../popups/PopupContext';
 import { useDispatch } from 'react-redux';
 import { decrementNotificationCount } from '../../redux/NotificationSlice';
+import { useI18n } from '@/i18n/useI18n';
+import { useNavigate } from 'react-router-dom';
 export default function ListItem({
     entity = null,
     update = (item) => { },
     destroy = (item) => { }
 }) {
+    const navigate = useNavigate();
+    const {t} = useI18n();
     const dispatch = useDispatch();
     const { openPopup } = usePopup();
     const [item,setItem] = useState(entity);
     const confirmMarkRead = () => {
         openPopup({
             type: 'warning',
-            message: 'Are your sure confirm to readed',
+            message: 'confirm_readed',
             onConfirm: () => {
                 //item.is_read = true;
                 setItem((pre) => {
@@ -30,7 +34,7 @@ export default function ListItem({
     const confirmDelete = () => {
         openPopup({
             type: 'warning',
-            message: 'Are your sure confirm to delete',
+            message: 'confirm_delete',
             onConfirm: () => {
                 setItem(null);
                 destroy(entity);
@@ -38,9 +42,13 @@ export default function ListItem({
         })
     }
     return item ? <div
-        className="d-flex align-items-start justify-content-between p-3 mb-3 rounded notification-item theme-sidebar-bg theme-title"
+        onClick={() => {
+            navigate(item.link);
+        }}
+        className="row align-items-start 
+            justify-content-between p-3 mb-3 rounded notification-item theme-sidebar-bg theme-title"
     >
-        <div className="d-flex align-items-start">
+        <div className="col-8 align-items-start d-flex">
             <div
                 className="rounded-circle d-flex justify-content-center align-items-center me-3 theme-title"
                 style={{
@@ -72,14 +80,14 @@ export default function ListItem({
                 <div className="theme-title small mt-1">{item.created_at_human}</div>
             </div>
         </div>
-        <div className="text-end">
+        <div className="text-end col-4">
             {!item.is_read ? (
                 <button
                     onClick={confirmMarkRead}
                     className="btn btn-link btn-sm text-decoration-none text-info"
                     style={{ fontSize: "0.85rem" }}
                 >
-                    Mark as read
+                    {t('mark_as_read')}
                 </button>
             ) : null}
             <button
@@ -87,7 +95,7 @@ export default function ListItem({
                 className="btn btn-link btn-sm text-decoration-none text-danger"
                 style={{ fontSize: "0.85rem" }}
             >
-                Delete
+                {t('delete')}
             </button>
         </div>
     </div> : null;

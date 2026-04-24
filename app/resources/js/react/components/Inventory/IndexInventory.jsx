@@ -40,7 +40,9 @@ export default function IndexInventory() {
             { key: 'name', label: t('Name') },
             { key: 'quantity', label: t('Quantity') },
             { key: 'sku', label: t('SKU') },
-            { key: 'unit', label: t('Unit') },
+            { key: 'unit', label: t('Unit'),render:(value) => {
+                return t(value)
+            } },
             { key: 'warehouse', label: t('Warehouse') },
             { key: 'category', label: t('Category') },
         ])

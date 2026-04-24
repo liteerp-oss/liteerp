@@ -51,6 +51,7 @@ export default function ListProduct({
         StockMovementInService.list({
             ...detail,
             page: page,
+            ...search.formData
         })
             .then((resp) => {
                 console.log(resp)

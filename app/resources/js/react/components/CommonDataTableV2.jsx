@@ -115,19 +115,23 @@ export default function CommonDataTableV2({
                                 })}
                             </div>
                         </div>
-                        <div className="col-1 pt-4">
-                            <SecondaryButton
-                                width={50}
-                                label={
-                                    <div>
-                                        <i className="bi bi-gear-wide-connected"></i>
-                                    </div>
-                                }
-                                onClick={() => setShowExtras(true)}
-                            />
-                        </div>
-                        <div className="col-2 pt-4">
-                            <PrimaryButton loading={loading} width={100} onClick={() => callback()} label={t("Search")} />
+                        <div className="col-4 pt-4">
+                            <div className="d-flex">
+                                <SecondaryButton
+                                    width={50}
+                                    label={
+                                        <div>
+                                            <i className="bi bi-gear-wide-connected"></i>
+                                        </div>
+                                    }
+                                    onClick={() => setShowExtras(true)}
+                                />
+                                <div style={{
+                                    marginLeft: 10
+                                }}>
+                                    <PrimaryButton loading={loading} width={100} onClick={() => callback()} label={t("Search")} />
+                                </div>
+                            </div>
                         </div>
                     </div> : null}
                 </div>
@@ -137,7 +141,11 @@ export default function CommonDataTableV2({
 
             </div>
             <div className="table-responsive">
-                <table className={`table align-middle mb-0 theme-title theme-table`}>
+                <table className={`table align-middle mb-0 
+                        theme-title theme-table 
+                        table-hover`}
+                    style={{ width: "max-content", minWidth: "100%" }}
+                >
                     <thead>
                         <tr className="text-secondary small">
                             {columns.map((col, index) => (

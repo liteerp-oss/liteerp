@@ -76,9 +76,7 @@ export default function ListOrder() {
                 label: t('Order type'),
                 key: 'type',
                 render: (value) => (
-                    <span className="badge bg-primary text-uppercase">
-                        {value}
-                    </span>
+                    <StatusBadge status={value} />
                 ),
             },
             { label: t('Order no'), key: 'order_no' },

@@ -1,6 +1,7 @@
 import React from 'react'
 import LoadImage from './LoadImage'
 import StatusBadge from './StatusBadge'
+import ContentOnTable from './ContentOnTable'
 export default function RenderFieldTableByList({
     item = null,
     data = null
@@ -9,7 +10,7 @@ export default function RenderFieldTableByList({
         {item?.type === 'badge' ?
             <StatusBadge status={data}/>
             : item?.type === 'text' ?
-                <span>{data}</span>
+                <span><ContentOnTable value={data}/></span>
                 : item?.type === 'image' ?
                     <LoadImage
                         url={data}
