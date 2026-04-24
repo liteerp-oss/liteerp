@@ -52,6 +52,16 @@ class DeleteCustomerGroup
         Event::dispatch(Permission::CUSTOMERGROUP_DELETE->value, [
             ...$data
         ]);
+        /**
+         * Activity log 
+         */
+        Event::dispatch('erp.activitylog.delete', [
+            'user_id' => $dto->created_by,
+            'business_id' => $dto->business_id,
+            'type' => 'customergroup',
+            'id' => $delete->id,
+            'data' => $delete->toArray()        
+        ]);
         DB::commit();
         return $data;
     }

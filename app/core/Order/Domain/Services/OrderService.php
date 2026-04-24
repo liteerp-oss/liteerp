@@ -10,5 +10,6 @@ interface OrderService
     public function create(array $data): Order;
     public function show(array $data) : array | BadException;
     public function findOneById(array $data) : Order | BadException;
+    public function getOneById(array $data) : ?Order;
     public function update(array $data): Order | BadException;
 }

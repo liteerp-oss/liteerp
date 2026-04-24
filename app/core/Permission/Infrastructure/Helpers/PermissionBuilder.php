@@ -379,8 +379,6 @@ class PermissionBuilder
     {
         return [
             Permission::BUSINESS_CREATE->value,
-            Permission::NOTIFICATION_CREATE->value,
-            Permission::NOTIFICATION_CREATE_MANY->value,
             Permission::AUTHENCATION_CREATE_ADMIN->value
         ];
     }

@@ -51,6 +51,16 @@ class UpdateSupplier
         Event::dispatch(Permission::SUPPLIER_UPDATE->value, [
             ...$data
         ]);
+        /**
+         * Activity log 
+         */
+        Event::dispatch('erp.activitylog.update', [
+            'user_id' => $dto->created_by,
+            'business_id' => $dto->business_id,
+            'type' => 'supplier',
+            'id' => $update->id,
+            'data' => $update->toArray()        
+        ]);
         DB::commit();
         return $data;
     }

@@ -51,6 +51,16 @@ class UpdateCategoryProduct
             ...$data,
             'category_id' => $update->id
         ]);
+        /**
+         * Activity log 
+         */
+        Event::dispatch('erp.activitylog.update', [
+            'user_id' => $dto->created_by,
+            'business_id' => $dto->business_id,
+            'type' => 'categoryproduct',
+            'id' => $update->id,
+            'data' => $update->toArray()        
+        ]);
         DB::commit();
         return $data;
     }

@@ -40,7 +40,8 @@ class IndexQuery implements QueryInterface {
             ->leftJoin("users as approved_user", "approved_user.id", "=", "orders.approved_by")
             ->leftJoin("order_items", "order_items.order_id", "=", "orders.id")
             ->groupBy("orders.id")
-            ->where('orders.business_id',$dto->business_id);
+            ->where('orders.business_id',$dto->business_id)
+            ->where('order_items.deleted_at',NULL);
         $data = $this->hooks->dispatch(
             new HookContext(
                 action: HookAction::INDEX,

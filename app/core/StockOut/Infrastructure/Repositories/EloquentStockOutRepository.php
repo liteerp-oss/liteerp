@@ -27,7 +27,7 @@ class EloquentStockOutRepository implements StockOutRepositoryInterface
         }
         return StockOut::fromArray($entity);
     }
-    public function getByInvoiceInId(array $data): ?StockOut
+    public function getByInvoiceOutId(array $data): ?StockOut
     {
         $entity = StockOutModel::where('invoice_out_id',$data['invoice_out_id'])
         ->where('business_id',$data['business_id'])->first()?->toArray();

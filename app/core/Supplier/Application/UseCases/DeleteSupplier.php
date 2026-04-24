@@ -51,6 +51,16 @@ class DeleteSupplier
         Event::dispatch(Permission::SUPPLIER_DELETE->value, [
             ...$data,
         ]);
+        /**
+         * Activity log 
+         */
+        Event::dispatch('erp.activitylog.delete', [
+            'user_id' => $dto->created_by,
+            'business_id' => $dto->business_id,
+            'type' => 'supplier',
+            'id' => $delete->id,
+            'data' => $delete->toArray()        
+        ]);
         DB::commit();
         return $data;
     }

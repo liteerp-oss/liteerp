@@ -51,6 +51,16 @@ class CreateProduct
         Event::dispatch(Permission::PRODUCT_CREATE->value, [
             ...$data
         ]);
+        /**
+         * Activity log 
+         */
+        Event::dispatch('erp.activitylog.create', [
+            'user_id' => $dto->created_by,
+            'business_id' => $dto->business_id,
+            'type' => 'product',
+            'id' => $create->id,
+            'data' => $create->toArray()        
+        ]);
         DB::commit();
         return $data;
     }

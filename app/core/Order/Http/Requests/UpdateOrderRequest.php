@@ -31,8 +31,8 @@ class UpdateOrderRequest extends FormRequest
             'order_no' => 'required|string|max:150',
             'note' => 'nullable|string',
 
-            'type' => 'nullable|in:retail,wholesale',
-            'status' => 'nullable|in:pending,approved,cancelled',
+            'type' => 'required|in:retail,wholesale',
+            'status' => 'required|in:pending,approved,cancelled',
             'reason' => 'nullable|string|max:250',
         ];
     }

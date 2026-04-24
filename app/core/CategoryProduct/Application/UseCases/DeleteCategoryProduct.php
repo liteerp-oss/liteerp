@@ -51,6 +51,16 @@ class DeleteCategoryProduct
         Event::dispatch(Permission::CATEGORYPRODUCT_DELETE->value, [
             ...$data
         ]);
+        /**
+         * Activity log 
+         */
+        Event::dispatch('erp.activitylog.delete', [
+            'user_id' => $dto->created_by,
+            'business_id' => $dto->business_id,
+            'type' => 'categoryproduct',
+            'id' => $update->id,
+            'data' => $update->toArray()        
+        ]);
         DB::commit();
         return $data;
     }

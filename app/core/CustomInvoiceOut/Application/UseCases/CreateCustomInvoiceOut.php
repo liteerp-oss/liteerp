@@ -53,6 +53,16 @@ class CreateCustomInvoiceOut
         Event::dispatch(Permission::CUSTOMINVOICEOUT_CREATE->value, [
             ...$data
         ]);
+        /**
+         * Activity log 
+         */
+        Event::dispatch('erp.activitylog.create', [
+            'user_id' => $dto->created_by,
+            'business_id' => $dto->business_id,
+            'type' => 'custominvoiceout',
+            'id' => $create->id,
+            'data' => $create->toArray()        
+        ]);
         DB::commit();
 
         return $data;

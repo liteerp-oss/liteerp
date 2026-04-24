@@ -53,6 +53,16 @@ class UpdateCustomerGroup
         Event::dispatch(Permission::CUSTOMERGROUP_UPDATE->value, [
             ...$data
         ]);
+        /**
+         * Activity log 
+         */
+        Event::dispatch('erp.activitylog.update', [
+            'user_id' => $dto->created_by,
+            'business_id' => $dto->business_id,
+            'type' => 'customergroup',
+            'id' => $update->id,
+            'data' => $update->toArray()        
+        ]);
         DB::commit();
         return $data;
     }

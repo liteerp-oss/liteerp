@@ -30,6 +30,7 @@ class CustomerServiceImpl implements CustomerService
     public function update(array $data): Customer
     {
         $entity = $this->repo->findByPhone($data);
+        $national = null;
         if(!empty($data['national_id'])) {
             $national = $this->repo->findByNationalId($data);
         }
@@ -86,5 +87,9 @@ class CustomerServiceImpl implements CustomerService
             return $this->repo->update($row);
         }
         return $this->repo->create($entity);
+    }
+    public function getByNumberPhone(array $data): ?Customer
+    {
+        return $this->repo->findByPhone($data);
     }
 }

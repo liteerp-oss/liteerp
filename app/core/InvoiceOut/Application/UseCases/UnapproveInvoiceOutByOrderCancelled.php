@@ -15,16 +15,17 @@ class UnapproveInvoiceOutByOrderCancelled
         private InvoiceOutService $service
     ) {}
 
-    public function handle(UnapproveInvoiceOutByOrderCancelledRequest $dto)
+    public function handle(array $data)
     {
         DB::beginTransaction();
+        $dto = UnapproveInvoiceOutByOrderCancelledRequest::fromArray($data);
         $findInvoice = $this->service->getByOrderId($dto->toArray());
         if ($findInvoice) {
             $update = $this->service->unApproved($findInvoice->toArray());
             Event::dispatch(Permission::INVOICEOUT_UNAPPROVED->value, [
+                ...$data,
+                ...$dto->toArray(),
                 ...$update->toArray(),
-                'user_id' => $dto->created_by,
-                'business_id' => $dto->business_id,
                 'invoice_out_id' => $update->id
             ]);
         }

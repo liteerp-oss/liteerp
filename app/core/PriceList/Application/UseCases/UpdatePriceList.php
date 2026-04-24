@@ -52,7 +52,16 @@ class UpdatePriceList
         Event::dispatch(Permission::PRICELIST_UPDATE->value, [
             ...$data
         ]);
-        
+        /**
+         * Activity log 
+         */
+        Event::dispatch('erp.activitylog.update', [
+            'user_id' => $dto->created_by,
+            'business_id' => $dto->business_id,
+            'type' => 'pricelist',
+            'id' => $update->id,
+            'data' => $update->toArray()        
+        ]);
         DB::commit();
         return $data;
     }

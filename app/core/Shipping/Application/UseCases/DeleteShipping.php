@@ -49,6 +49,16 @@ class DeleteShipping
         Event::dispatch(Permission::SHIPPING_DELETE->value, [
             ...$data
         ]);
+        /**
+         * Activity log 
+         */
+        Event::dispatch('erp.activitylog.delete', [
+            'user_id' => $dto->created_by,
+            'business_id' => $dto->business_id,
+            'type' => 'shipping',
+            'id' => $delete->id,
+            'data' => $delete->toArray()        
+        ]);
         return $data;
     }
 }

@@ -61,7 +61,8 @@ class CreateOrder
             'message' => "order::messages.notification.created",
             'message_params' => [
                 'username' => $data['username']
-            ]
+            ],
+            'link' => "/orders?form=edit&id=$create->id"
         ];
         Event::dispatch(Permission::NOTIFICATION_CREATE_MANY->value, [
             ...$notification,
@@ -70,6 +71,18 @@ class CreateOrder
             ]
         ]);
         Event::dispatch(Permission::NOTIFICATION_CREATE->value, $notification);
+
+        /**
+         * Activity log 
+         */
+        Event::dispatch('erp.activitylog.create', [
+            'user_id' => $dto->created_by,
+            'business_id' => $dto->business_id,
+            'type' => 'order',
+            'id' => $create->id,
+            'data' => $create->toArray()        
+        ]);
+
         DB::commit();
         return $data;
     }

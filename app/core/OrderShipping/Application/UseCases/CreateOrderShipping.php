@@ -49,6 +49,16 @@ class CreateOrderShipping
         Event::dispatch(Permission::ORDERSHIPPING_CREATE->value,[
             ...$data
         ]);
+        /**
+         * Activity log 
+         */
+        Event::dispatch('erp.activitylog.create', [
+            'user_id' => $dto->created_by,
+            'business_id' => $dto->business_id,
+            'type' => 'ordershipping',
+            'id' => $create->id,
+            'data' => $create->toArray()        
+        ]);
         return $data;
     }
 }

@@ -35,7 +35,6 @@ class ShowWarehouse
                 module: 'Warehouse'
             )
         );
-        $dto = ShowWarehouseRequest::fromArray($data);
         $show = $this->service->show($dto->toArray());
         $data = $this->hooks->dispatch(
             new HookContext(
@@ -49,10 +48,7 @@ class ShowWarehouse
                 module: 'Warehouse'
             )
         );
-        Event::dispatch(Permission::WAREHOUSE_SHOW->value,[
-            'user_id' => $dto->created_by,
-            'business_id' => $dto->busuness_id
-        ]);
+        Event::dispatch(Permission::WAREHOUSE_SHOW->value,$data);
         return $data;
     }
 }

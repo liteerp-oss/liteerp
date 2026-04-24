@@ -70,6 +70,16 @@ class CreateInvoiceIn
                 Permission::INVOICEIN_UPDATE
             ]
         ]);
+        /**
+         * Activity log 
+         */
+        Event::dispatch('erp.activitylog.create', [
+            'user_id' => $dto->created_by,
+            'business_id' => $dto->business_id,
+            'type' => 'invoicein',
+            'id' => $create->id,
+            'data' => $create->toArray()        
+        ]);
         DB::commit();
         return $data;
     }

@@ -49,6 +49,16 @@ class CreateSupplier
         Event::dispatch(Permission::SUPPLIER_CREATE->value, [
             ...$data
         ]);
+        /**
+         * Activity log 
+         */
+        Event::dispatch('erp.activitylog.create', [
+            'user_id' => $dto->created_by,
+            'business_id' => $dto->business_id,
+            'type' => 'supplier',
+            'id' => $create->id,
+            'data' => $create->toArray()        
+        ]);
         DB::commit();
         return $data;
     }

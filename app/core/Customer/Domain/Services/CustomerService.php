@@ -12,4 +12,5 @@ interface CustomerService
     public function update(array $data): Customer | BadException;
     public function delete(array $data): Customer | BadException;
     public function show(array $data) : Customer | BadException;
+    public function getByNumberPhone(array $data) : ?Customer;
 }

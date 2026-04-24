@@ -19,13 +19,16 @@ class CancelledStockOutByOrderCancelled
     {
         DB::beginTransaction();
         $dto = CancelledStockOutByOrderCancelledRequest::fromArray($data);
-        $entity = $this->service->getByInvoiceInId($dto->toArray());
+        $entity = $this->service->getByInvoiceOutId($dto->toArray());
         if ($entity) {
             if ($entity->isCompleted()) {
                 throw new BadException(__("stockout::messages.order_completed_cannot_cancel"));
             }
             $entity->markCancelled();
-            $update = $this->service->update($entity->toArray());
+            $update = $this->service->update([
+                ...$entity->toArray(),
+                'order_id' => $dto->order_id
+            ]);
             Event::dispatch(Permission::STOCKOUT_CANCELLED->value, [
                 ...$data,
                 ...$update->toArray(),

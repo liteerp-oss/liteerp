@@ -54,7 +54,7 @@ class StockOutServiceImpl implements StockOutService
     {
         return $this->repo->findById($data);
     }
-    public function getByInvoiceInId(array $data) : ?StockOut {
-        return $this->repo->getByInvoiceInId($data);
+    public function getByInvoiceOutId(array $data) : ?StockOut {
+        return $this->repo->getByInvoiceOutId($data);
     }
 }

@@ -53,6 +53,16 @@ class CreateCustomer
         Event::dispatch(Permission::CUSTOMER_CREATE->value, [
             ...$data
         ]);
+        /**
+         * Activity log 
+         */
+        Event::dispatch('erp.activitylog.create', [
+            'user_id' => $dto->created_by,
+            'business_id' => $dto->business_id,
+            'type' => 'customer',
+            'id' => $create->id,
+            'data' => $create->toArray()        
+        ]);
         DB::commit();
         return $data;
     }

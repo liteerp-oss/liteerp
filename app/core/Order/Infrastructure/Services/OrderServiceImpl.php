@@ -34,6 +34,10 @@ class OrderServiceImpl implements OrderService
     {
         return $this->repo->findById($data) ?? throw new BadException(__("order::messages.not_found"));
     }
+    public function getOneById(array $data): ?Order
+    {
+        return $this->repo->findById($data);
+    }
     public function update(array $data): Order | BadException
     {
         /**
@@ -60,8 +64,8 @@ class OrderServiceImpl implements OrderService
                     throw new BadException(__("order::messages.status_invalid"));
                 }
                 $entity->order_no = $data['order_no'] ?? $entity->order_no;
-                $entity->note = $data['note'] ?? $entity->note;
-                $entity->type = $data['type'] ?? $entity->type;
+                $entity->note = $data['note'];
+                $entity->type = $data['type'];
                 $entity->markPending();
                 $entity->order_date = $data['order_date'] ?? $entity->order_date;
                 $entity->expected_delivery_date = $data['expected_delivery_date'] ?? $entity->expected_delivery_date;

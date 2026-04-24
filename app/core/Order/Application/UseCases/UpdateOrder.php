@@ -74,7 +74,8 @@ class UpdateOrder
             'message' => "order::messages.notification.{$update->getStatus()}",
             'message_params' => [
                 'username' => $data['username']
-            ]
+            ],
+            'link' => "/orders?form=edit&id=$update->id"
         ];
         Event::dispatch(Permission::NOTIFICATION_CREATE_MANY->value, [
             ...$notification,
@@ -87,6 +88,16 @@ class UpdateOrder
             ]
         ]);
         Event::dispatch(Permission::NOTIFICATION_CREATE->value, $notification);
+        /**
+         * Activity log 
+         */
+        Event::dispatch('erp.activitylog.update', [
+            'user_id' => $dto->created_by,
+            'business_id' => $dto->business_id,
+            'type' => 'order',
+            'id' => $update->id,
+            'data' => $update->toArray()        
+        ]);
         DB::commit();
         return $data;
     }

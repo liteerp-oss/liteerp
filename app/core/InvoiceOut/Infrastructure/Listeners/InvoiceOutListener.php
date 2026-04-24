@@ -21,13 +21,7 @@ class InvoiceOutListener
             'erp.order.*',
             function (string $eventName, array $data) {
                 if ($eventName === 'erp.order.cancelled') {
-                    $this->UnapproveInvoiceOutByOrderCancelled->handle(
-                        new UnapproveInvoiceOutByOrderCancelledRequest(
-                            business_id: $data['business_id'],
-                            order_id: $data['order_id'],
-                            created_by: $data['user_id']
-                        )
-                    );
+                    $this->UnapproveInvoiceOutByOrderCancelled->handle($data);
                 }
             }
         );

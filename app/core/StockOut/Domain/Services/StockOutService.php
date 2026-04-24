@@ -12,5 +12,5 @@ interface StockOutService
     public function show(array $data) : array;
     public function findById(array $data) : StockOut | BadException;
     public function getById(array $data) : ?StockOut;
-    public function getByInvoiceInId(array $data) : ?StockOut;
+    public function getByInvoiceOutId(array $data) : ?StockOut;
 }
