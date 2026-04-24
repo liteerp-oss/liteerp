@@ -56,6 +56,16 @@ class CreatePermissionGroup
         );
 
         Event::dispatch(Permission::PERMISSIONGROUP_CREATE->value, $data);
+        /**
+         * Activity log 
+         */
+        Event::dispatch('erp.activitylog.create', [
+            'user_id' => $dto->created_by,
+            'business_id' => $dto->business_id,
+            'type' => 'permissiongroup',
+            'id' => $create->id,
+            'data' => $create->toArray()        
+        ]);
         DB::commit();
 
         return $data;
