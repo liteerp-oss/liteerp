@@ -24,3 +24,4 @@ Homestead.yaml
 Thumbs.db
 /storage/keys
 /public/extensions
+/public/*.html
