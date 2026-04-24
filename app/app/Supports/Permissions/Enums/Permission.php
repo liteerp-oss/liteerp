@@ -195,4 +195,8 @@ enum Permission: string
     case NOTIFICATION_CREATE = 'erp.notification.create';
     case NOTIFICATION_CREATE_MANY = 'erp.notification.many';
     case ACTIVITYLOG_INDEX = 'erp.activitylog.index';
+    case ACTIVITYLOG_CREATE = 'erp.activitylog.create';
+    case ACTIVITYLOG_UPDATE = 'erp.activitylog.update';
+    case ACTIVITYLOG_DELETE = 'erp.activitylog.delete';
+    case ACTIVITYLOG_CANCEL = 'erp.activitylog.cancel';
 }
