@@ -31,7 +31,7 @@ class CreateNotification
                         throw new BadException(__("notifications::messages.empty_title_message"));
                     }
                     SendMailJob::dispatch($dto->user_id,__($dto->title,$dto->title_params,$dto->locate) ?? __("No title"),
-                        __($dto->message,$dto->message_params,$dto->locate),$dto->link ?? URL::to('/dashboard'))
+                        __($dto->message,$dto->message_params,$dto->locate),$dto->link ?? null)
                             ->onQueue($dto->queue ?? 'low');
                     
                     break;

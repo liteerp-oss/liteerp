@@ -14,7 +14,6 @@ class UpdateNotification
 
     public function handle(UpdateNotificationRequest $dto)
     {
-        Event::dispatch(Permission::NOTIFICATION_UPDATE->value,$dto->toArray());
         return $this->serviceDB->update($dto->toArray());
     }
 }

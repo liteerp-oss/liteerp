@@ -11,7 +11,6 @@ class IndexNotification
 
     public function handle(IndexNotificationRequest $dto)
     {
-       
         return $this->service->index($dto->toArray());
     }
 }

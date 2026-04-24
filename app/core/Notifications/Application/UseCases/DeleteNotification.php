@@ -14,7 +14,6 @@ class DeleteNotification
 
     public function handle(DeleteNotificationRequest $dto)
     {
-        Event::dispatch(Permission::NOTIFICATION_DELETE->value,$dto->toArray());
         return $this->serviceDB->delete($dto->toArray());
     }
 }

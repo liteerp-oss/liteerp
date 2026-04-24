@@ -22,7 +22,7 @@ class EloquentNotificationRepository implements NotificationRepositoryInterface
     }
     public function index(array $data) : array {
         if(!empty($data['is_not_read'])) {
-            return NotificationModel::select(DB::raw("SUM(user_id) as total"))
+            return NotificationModel::select(DB::raw("COUNT(user_id) as total"))
             ->where('user_id',$data['user_id'])
             ->where('is_read',false)
             ->where('business_id',$data['business_id'])

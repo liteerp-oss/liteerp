@@ -22,6 +22,7 @@ class InsertManyNotification
         $create = [];
         DB::beginTransaction();
         $users = $this->getUsersByPermission->handle($dto->toArray());
+        logs()->debug("users",$users);
         foreach($users as $k => $user ) {
             foreach($dto->chanels as $key => $chanels) {
                 $adapter = new CreateNotificationRequest(
@@ -40,7 +41,11 @@ class InsertManyNotification
                 switch($chanels) {
                     case "db":
                         $entity = Notification::fromArray($adapter->toArray());
-                        $create[$k] = $entity->toArray();
+                        $create[$k] = [
+                            ...$entity->toArray(),
+                            'created_at' => date('Y-m-d H:i:s',time()),
+                            'updated_at' => date('Y-m-d H:i:s',time()),
+                        ];
                         NewNotificationBroadcast::dispatch($user['user_id'],$dto->business_id);
                         break;
                     case "mail":
@@ -51,6 +56,7 @@ class InsertManyNotification
                 }
             }
         }
+        logs()->debug("InsertManyNotification: ".json_encode($create));
         $data = $this->serviceDB->insertMany($create);
 
         DB::commit();

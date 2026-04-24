@@ -29,7 +29,7 @@ class InsertManyNotificationRequest
     {
         return new self(
             message: $data['message'],
-            link: $data['link'] ?? URL::to('/dashboard'),        
+            link: $data['link'] ?? null,        
             title: $data['title'] ?? null,      
             entity_type: $data['entity_type'] ?? null,
             entity_id: $data['entity_id'] ?? null,
