@@ -70,14 +70,14 @@ body,.label, h1, h2, h3, h4, h5, h6 {
 }
 .badge-approved,.badge-received,.badge-completed,
     .badge-paid, .badge-bank, .badge-create, .badge-creatordershipping,
-    .badge-summary, .badge-active,.badge-admin {
+    .badge-summary, .badge-active,.badge-admin, .badge-wholesale {
     background-color: var(--bs-success)!important;
 }
 .badge-requested,.badge-shipped, .badge-cash, .badge-update,.badge-company {
     background-color: var(--bs-warning)!important;
     color: var(--bs-gray-900)!important;
 }
-.badge-unapproved,.badge-partial_payment {
+.badge-unapproved,.badge-partial_payment,.badge-retail {
     background-color: var(--bs-primary)!important;
 }
 .ml-2 {

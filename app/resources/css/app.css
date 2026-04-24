@@ -69,6 +69,10 @@ a {
 
   .dashboard-content {
     min-height: 100vh;
+    width: 100%!important;
+  }
+  .form-step-item {
+    font-size: 15px;
   }
 }
 
