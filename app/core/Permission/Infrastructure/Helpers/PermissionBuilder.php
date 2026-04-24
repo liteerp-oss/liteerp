@@ -354,13 +354,6 @@ class PermissionBuilder
         ]);
     }
 
-    public function addNotification(): self
-    {
-        return $this->add(PermissionType::NOTIFICATION, [
-            Permission::NOTIFICATION_WORKFLOW
-        ]);
-    }
-
     public function addActivityLog(): self
     {
         return $this->add(PermissionType::ACTIVITYLOG, [
@@ -379,7 +372,12 @@ class PermissionBuilder
     {
         return [
             Permission::BUSINESS_CREATE->value,
-            Permission::AUTHENCATION_CREATE_ADMIN->value
+            Permission::NOTIFICATION_CREATE->value,
+            Permission::NOTIFICATION_CREATE_MANY->value,
+            Permission::AUTHENCATION_CREATE_ADMIN->value,
+            Permission::ACTIVITYLOG_CREATE->value,
+            Permission::ACTIVITYLOG_UPDATE->value,
+            Permission::ACTIVITYLOG_DELETE->value,
         ];
     }
     public function addFull(): self
@@ -404,7 +402,6 @@ class PermissionBuilder
             ->addInventory()
             ->addInventoryAdjustment()
             ->addCustomInvoiceOut()
-            ->addNotification()
             ->addPermission()
             ->addPermissionGroup()
             ->addPermissionGroupUser()
@@ -421,7 +418,7 @@ class PermissionBuilder
     }
     public function addBasic(): self
     {
-        return $this->addNotification();
+        return $this;
     }
     public function build(): array
     {

@@ -41,7 +41,6 @@ class CreateFullPermission
                 module: 'Permission'
             )
         );
-
         $create = $this->service->create($data);
 
         $data = $this->hooks->dispatch(

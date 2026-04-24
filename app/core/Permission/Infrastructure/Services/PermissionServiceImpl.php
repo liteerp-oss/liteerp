@@ -13,7 +13,7 @@ class PermissionServiceImpl implements PermissionService
 
     public function create(array $data): array|BadException
     {
-        $permessions = [
+        $permissions = [
             'group_id' => $data['group_id'],
             'permissions' => [],
         ];
@@ -21,7 +21,7 @@ class PermissionServiceImpl implements PermissionService
         foreach ($data['permissions'] as $key => $permission) {
             if (!in_array($permission, $arrayPermissions)) {
                 $arrayPermissions[$key] = $permission;
-                $permessions['permissions'][$key] = [
+                $permissions['permissions'][$key] = [
                     'group_id' => $data['group_id'],
                     'permission' => $permission,
                     'created_at' => now(),
@@ -29,7 +29,7 @@ class PermissionServiceImpl implements PermissionService
                 ];
             }
         }
-        return $this->repo->create($permessions);
+        return $this->repo->create($permissions);
     }
 
     public function show(array $data): array|BadException

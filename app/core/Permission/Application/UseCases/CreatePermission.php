@@ -19,24 +19,13 @@ class CreatePermission
 {
     public function __construct(
         private PermissionService $service,
-        private HookDispatcher $hooks,
-        private PermissionBuilder $builder
+        private HookDispatcher $hooks
     ) {}
 
     public function handle(array $data)
     {
         DB::beginTransaction();
         $dto = CreatePermissionRequest::fromArray($data);
-        if(!empty($data['permissions'])) {
-            $data['permissions'] = [
-                ...$data['permissions'],
-                ...$this->builder->addNotification()->buildListItem()
-            ];
-        } else {
-            $data['permissions'] = [
-                ...$this->builder->addNotification()->buildListItem()
-            ];
-        }
         $data = $this->hooks->dispatch(
             new HookContext(
                 action: HookAction::CREATE,
