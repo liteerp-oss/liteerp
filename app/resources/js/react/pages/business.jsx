@@ -16,6 +16,7 @@ import { useI18n } from "@/i18n/useI18n";
 import { PopupLayout } from "../layouts/PopupLayout";
 import { InputForm } from "../components/UI/Input/InputForm";
 import RenderFormFieldByList from "../components/RenderFormFieldByList";
+import Logo from "../components/Logo";
 export default function Business() {
     const { t } = useI18n();
     const [loadViewDetail, setLoadingViewDetail] = useState(false)
@@ -116,9 +117,9 @@ export default function Business() {
                         <div className="d-flex justify-content-between align-items-center">
                             <div className="d-flex">
                                 <div className="">
-                                    <img className="thumbnail"
-                                        height={50}
-                                        src={"/assets/logo-full.png"} alt='' />
+                                    <a href="/">
+                                    <Logo/>
+                                    </a>
                                 </div>
                             </div>
                             <div>
