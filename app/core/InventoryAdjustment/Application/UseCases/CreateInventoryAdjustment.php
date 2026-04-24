@@ -48,6 +48,16 @@ class CreateInventoryAdjustment
             ...$data,
             ...$create->toArray(),
         ]);
+        /**
+         * Activity log 
+         */
+        Event::dispatch('erp.activitylog.create', [
+            'user_id' => $dto->created_by,
+            'business_id' => $dto->business_id,
+            'type' => 'inventoryadjustment',
+            'id' => $create->id,
+            'data' => $create->toArray()        
+        ]);
         DB::commit();
         return $data;
     }
