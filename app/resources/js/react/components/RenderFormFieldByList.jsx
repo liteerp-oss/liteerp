@@ -3,6 +3,7 @@ import TextArea from './UI/Input/Textarea'
 import { Select } from './UI/Input/Select'
 import { InputForm } from './UI/Input/InputForm'
 import UploadImage from './UI/Input/UploadImage'
+import GalleryImage from './UI/Input/GalleryImage'
 export default function RenderFormFieldByList({
     item = {
         label: '',
@@ -41,7 +42,14 @@ export default function RenderFormFieldByList({
                 label={item?.label}
                 required={item?.required}
             />
-                : <InputForm
+                : item.type === 'gallery' ? <GalleryImage
+                    name={item.key}
+                    handleChangeByKey={form.handleChangeByKey}
+                    value={form.formData?.[item.key]}
+                    errorMessage={form.formErrors?.[item.key]}
+                    required={item?.required}
+                    label={item?.label}
+                /> : <InputForm
                     name={item.key}
                     handleChange={form.handleChange}
                     value={form.formData?.[item.key]}
