@@ -2,6 +2,7 @@ import React from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import LanguageSwitcher from '../components/LanguageSwitcher';
 import { setTheme } from '../redux/themeSlice';
+import Logo from '../components/Logo';
 export default function AuthLayout(data = {
     children
 }) {
@@ -16,7 +17,7 @@ export default function AuthLayout(data = {
             {/** Langauges */}
             <div>
                 <div className="text-center mb-3">
-                    <img className="thumbnail" width={300} src="/assets/logo-full.png" alt='' />
+                   <Logo/>
                 </div>
                 {data.children}
                 <div className="d-flex justify-content-center mt-3">

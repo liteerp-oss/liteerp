@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from "react-redux";
-export default function AuthLayout(data = {
+export default function BusinessLayout(data = {
     children
 }){
     const theme = useSelector((state) => state.theme.mode);
