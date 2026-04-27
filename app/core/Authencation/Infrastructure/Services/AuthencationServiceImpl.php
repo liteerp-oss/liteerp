@@ -83,6 +83,10 @@ class AuthencationServiceImpl implements AuthencationService
     {
         return $this->repo->findByEmail($data['email']) ?? throw new BadException(__("authencation::messages.not_found"));
     }
+    public function getByEmail(array $data): ?Authencation
+    {
+        return $this->repo->findByEmail($data['email']);
+    }
     public function getPersonalTokenByEmail(array $data): ?array
     {
         $entity = $this->repo->findByEmail($data['email']);

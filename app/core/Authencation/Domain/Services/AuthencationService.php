@@ -16,5 +16,6 @@ interface AuthencationService
     public function verify(array $data) : Authencation | UnauthorizedException;
     public function resetPassword(array $data) : Authencation | UnauthorizedException;
     public function findByEmail(array $data) : Authencation | UnauthorizedException;
+    public function getByEmail(array $data) : ?Authencation;
     public function getPersonalTokenByEmail(array $data) : ?array;
 }
