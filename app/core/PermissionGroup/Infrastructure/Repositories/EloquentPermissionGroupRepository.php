@@ -26,7 +26,8 @@ class EloquentPermissionGroupRepository implements PermissionGroupRepositoryInte
 
     public function findByName(array $data): ?PermissionGroup
     {
-        $row = PermissionGroupModel::where('name', $data['name'])->first()?->toArray();
+        $row = PermissionGroupModel::where('name', $data['name'])
+        ->where('business_id',$data['business_id'])->first()?->toArray();
         if (!$row) {
             return null;
         }

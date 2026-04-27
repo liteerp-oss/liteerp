@@ -15,7 +15,7 @@ class CreatePermissionGroupAdminRequest
         return new self(
             created_by: $data['user_id'] ?? null,
             business_id: $data['business_id'] ?? null,
-            name: $data['name'] ?? 'Admin'
+            name: 'Admin'
         );
     }
 
