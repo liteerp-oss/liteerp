@@ -23,6 +23,7 @@
         "@tinymce/tinymce-react": "^6.3.0",
         "bootstrap": "^5.3.8",
         "bootstrap-icons": "^1.13.1",
+        "firebase": "^12.12.1",
         "react": "^19.2.0",
         "react-bootstrap-icons": "^1.11.6",
         "react-dom": "^19.2.0",
