@@ -8,7 +8,7 @@ export default function ApproveButton({
     onClick = null,
     disabled = false,
     loading = false,
-    width = 70,
+    width = 'auto',
     height = 35,
     type = null,
     customPermission = null

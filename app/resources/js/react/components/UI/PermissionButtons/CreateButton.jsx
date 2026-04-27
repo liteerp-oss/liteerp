@@ -1,17 +1,19 @@
 import React from "react";
 import PrimaryButton from "../Buttons/PrimaryButton";
 import { useSelector } from "react-redux";
+import { useI18n } from "@/i18n/useI18n";
 
 export default function CreateButton({
-    label = "Create",
+    label = "Save changes",
     onClick = null,
     disabled = false,
     loading = false,
-    width = 70,
+    width = 'auto',
     height = 35,
     type = null,
     customPermission = null
 }) {
+    const {t} = useI18n()
     const roles = useSelector((state) => state.businessRole.role);
     let permission = null;
     if(customPermission) {
@@ -21,7 +23,7 @@ export default function CreateButton({
     }
     
     return <PrimaryButton
-        label={label}
+        label={t(label)}
         onClick={onClick}
         disabled={disabled || !permission}
         loading={loading}

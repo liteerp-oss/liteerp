@@ -11,7 +11,9 @@ import { usePopup } from '../popups/PopupContext'
 import CreateButton from '../UI/PermissionButtons/CreateButton'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import CustomEditor from '../UI/Input/CustomEditor'
+import PermissionNode from '@/core/PermissionNode'
 export default function UpdateProduct() {
+    const permission = new PermissionNode();
     const { t } = useI18n();
     const [searchParams] = useSearchParams();
     const navigate = useNavigate()
@@ -27,13 +29,21 @@ export default function UpdateProduct() {
             ...form.formData
         })
             .then(() => {
-                openPopup({
-                    type: 'success',
-                    message: t('update_success'),
-                    onConfirm: () => {
-                        navigate('/products')
-                    }
-                })
+                if(permission.fromNode('product').getPermission('index')) {
+                    openPopup({
+                        type: 'success',
+                        message: t('update_success'),
+                        confirmText: t('go_to_purchase'),
+                        onConfirm: () => {
+                            navigate('/purchases')
+                        }
+                    })    
+                } else {
+                    openPopup({
+                        type: 'success',
+                        message: t('update_success')
+                    })    
+                }
                 form.setFormErrors(null)
                 form.setLoading(false)
             })
@@ -160,7 +170,7 @@ export default function UpdateProduct() {
                     value={form.formData?.description}
                     placeholder={t('Description')}
                     errorMessage={form.formErrors?.description}
-                    required={true}
+                    required={false}
                     label={t('Description')}
                 />
 
@@ -184,7 +194,7 @@ export default function UpdateProduct() {
             </div>
         </div>
         <div className='mt-3'>
-            <CreateButton type={'product'} width={120} onClick={update} loading={form.loading} />
+            <CreateButton type={'product'} onClick={update} loading={form.loading} />
         </div>
     </div>
 }

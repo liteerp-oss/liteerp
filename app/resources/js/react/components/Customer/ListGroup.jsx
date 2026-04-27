@@ -30,8 +30,9 @@ export default function ListGroup() {
             .then(() => {
                 openPopup({
                     type: 'success',
-                    message: t('Group has been created'),
+                    message: t('create_success')
                 })
+
                 setShowAdd(false)
                 getGroup()
                 form.setLoading(false)
@@ -57,9 +58,9 @@ export default function ListGroup() {
         CustomerGroupService.update(form.formData)
             .then(() => {
                 openPopup({
-                    type: 'success',
-                    message: t('Group has been updated'),
-                })
+                        type: 'success',
+                        message: t('update_success')
+                    })
                 setShowAdd(false)
                 getGroup()
                 form.setLoading(false)
@@ -102,7 +103,7 @@ export default function ListGroup() {
             .then(() => {
                 openPopup({
                     type: 'success',
-                    message: t('Group has been deleted'),
+                    message: t('delete_success'),
                 })
                 getGroup()
             })

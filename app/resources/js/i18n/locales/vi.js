@@ -470,8 +470,9 @@ export default {
     "add_business": "Thêm doanh nghiệp",
     "Revenues": "Doanh thu",
     "save_data_change": "Tôi chỉ muốn thay đổi dữ liệu thôi, bạn có muốn lưu lại không?",
-    "update_success": "Bạn đã được cập nhật",
+    "update_success": "Bạn đã cập nhật thành công",
     "create_success": "Bạn đã tạo thành công",
+    "delete_success":"Bạn đã xóa thành công",
     "button_cancel_label": "Hủy bỏ",
     "retail": "Bán lẻ",
     "wholesale": "Bán sỉ",
@@ -491,4 +492,12 @@ export default {
     "confirm_readed": "Xác nhận đánh dấu là đã đọc",
     "confirm_delete": "Xác nhận xóa",
     "mark_as_read": "Đánh dấu là đã đọc",
+    "go_to_product": "Đi đến thêm sản phẩm",
+    "go_to_price_list": "Đi đến thêm bảng giá",
+    "go_to_warehouse": "Đi đến thêm kho",
+    "go_to_shipping": "Đi đến thêm vận chuyển",
+    "go_to_purchase": "Đi đến thêm nhập hàng",
+    "go_to_customer_group":"Đi đến thêm nhóm khách hàng",
+    "go_to_invoicein":"Đến hóa đơn đầu vào",
+    "go_to_stockin":"Đến phiếu nhập kho"
 };

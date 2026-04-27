@@ -10,10 +10,13 @@ import RenderFieldTableByList from '../RenderFieldTableByList'
 import RenderFormFieldByList from '../RenderFormFieldByList'
 import { useI18n } from '../../../i18n/useI18n'
 import CommonDataTableV2 from '../CommonDataTableV2'
+import { useNavigate } from 'react-router-dom'
+import PermissionNode from '@/core/PermissionNode'
 
 export default function Category() {
+    const permission = new PermissionNode();
     const { t, lang } = useI18n()
-
+    const navigate = useNavigate();
     const [attributes, setAttributes] = useState([])
     const [showAdd, setShowAdd] = useState(false)
     const attrForm = useForm()
@@ -52,10 +55,22 @@ export default function Category() {
             })),
         })
             .then(() => {
-                openPopup({
-                    type: 'success',
-                    message: t('Category has been created'),
-                })
+                if(permission.fromNode('categoryproduct').getPermission('index')) {
+                    openPopup({
+                        type: 'success',
+                        message: t('create_success'),
+                        confirmText: t('go_to_product'),
+                        onConfirm: () => {
+                            navigate('/products')
+                        }
+                    })    
+                } else {
+                    openPopup({
+                        type: 'success',
+                        message: t('create_success')
+                    })    
+                }
+                
                 setShowAdd(false)
                 getCategorires(0)
                 resetAttribute()
@@ -87,10 +102,22 @@ export default function Category() {
             })),
         })
             .then(() => {
-                openPopup({
-                    type: 'success',
-                    message: t('Category has been updated'),
-                })
+                if(permission.fromNode('categoryproduct').getPermission('index')) {
+                    openPopup({
+                        type: 'success',
+                        message: t('update_success'),
+                        confirmText: t('go_to_product'),
+                        onConfirm: () => {
+                            navigate('/products')
+                        }
+                    })
+                } else {
+                    openPopup({
+                        type: 'success',
+                        message: t('update_success')
+                    })
+                }
+                
                 setShowAdd(false)
                 getCategorires(0)
                 resetAttribute()
@@ -190,7 +217,7 @@ export default function Category() {
             {showAdd && (
                 <PopupLayout
                     loading={form.loading}
-                    confirmText={t('Save')}
+                    confirmText={t('Save changes')}
                     onConfirm={form.isEdit ? update : submit}
                     onClose={() => {
                         setShowAdd(false)

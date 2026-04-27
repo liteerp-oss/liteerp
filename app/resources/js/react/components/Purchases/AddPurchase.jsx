@@ -96,7 +96,6 @@ export default function AddPurchase() {
                     </div>
                     <div className="col-2 ms-auto text-end">
                         <PrimaryButton
-                            width={100}
                             loading={form.loading}
                             onClick={create}
                             label={t('Next')}

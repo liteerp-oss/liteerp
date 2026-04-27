@@ -22,8 +22,10 @@ import BootstrapAlert from '../BootstrapAlert';
 import { useI18n } from '../../../i18n/useI18n';
 import ApproveButton from '../UI/PermissionButtons/ApproveButton';
 import CancelButton from '../UI/PermissionButtons/CancelButton';
+import PermissionNode from '@/core/PermissionNode';
 
 export default function EditPurchase() {
+    const permission = new PermissionNode();
     const { t } = useI18n();
     const dispatch = useDispatch();
     const [showCancel, setShowCancel] = useState(false);
@@ -60,13 +62,25 @@ export default function EditPurchase() {
                 expected_date: isoToDateTime(form.formData?.expected_date),
                 purchase_date: isoToDateTime(form.formData?.purchase_date),
                 status: status,
-            })
-                .then(() => {
-                    openPopup({
-                        type: 'success',
-                        message: t('Purchase has been updated successfully'),
-                        onCancel: callback ?? null,
-                    });
+            }).then(() => {
+                    if(status === 'approved' && permission.fromNode('invoicein').getPermission('index')) {
+                        openPopup({
+                            type: 'success',
+                            message: t('Purchase has been updated successfully'),
+                            onCancel: callback ?? null,
+                            confirmText: t('go_to_invoicein'),
+                            onConfirm: () => {
+                                navigate('/invoice-ins')
+                            }
+                        });
+                    } else {
+                        openPopup({
+                            type: 'success',
+                            message: t('Purchase has been updated successfully'),
+                            onCancel: callback ?? null,
+                        });
+                    }
+                    
                     getPurchaseDetail();
                     form.setLoading(false);
                 })
@@ -226,7 +240,6 @@ export default function EditPurchase() {
                             <div className="col-6">
                                 {detail?.status !== 'cancelled' && (
                                     <CancelButton
-                                        width={170}
                                         loading={form.loading}
                                         onClick={confirmUpdateToCancelled}
                                         label={t('Cancel purchase')}
@@ -238,7 +251,6 @@ export default function EditPurchase() {
                             <div className="col-6">
                                 {currentStep <= 1 && (
                                     <PrimaryButton
-                                        width={100}
                                         loading={form.loading}
                                         onClick={nextStep}
                                         label={t('Next')}
@@ -248,7 +260,6 @@ export default function EditPurchase() {
                                 {currentStep === 2 &&
                                     detail?.status === 'draft' && (
                                         <PrimaryButton
-                                            width={170}
                                             loading={form.loading}
                                             onClick={confirmUpdateToRequest}
                                             label={t('Send to request')}
@@ -258,7 +269,6 @@ export default function EditPurchase() {
                                 {currentStep === 2 &&
                                     detail?.status === 'requested' && (
                                         <ApproveButton
-                                            width={100}
                                             loading={form.loading}
                                             onClick={confirmUpdateToApprove}
                                             label={t('Approve')}

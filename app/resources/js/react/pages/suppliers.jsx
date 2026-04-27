@@ -14,11 +14,14 @@ import RenderFormFieldByList from '../components/RenderFormFieldByList'
 import RenderFormTableByList from '../components/RenderFieldTableByList'
 import { useI18n } from '../../i18n/useI18n'
 import CommonDataTableV2 from '../components/CommonDataTableV2'
+import PermissionNode from '@/core/PermissionNode'
+import { useNavigate } from 'react-router-dom'
 
 export default function Suppliers() {
+    const permission = new PermissionNode();
     const { t, lang } = useI18n()
     const { openPopup } = usePopup()
-
+    const navigate = useNavigate();
     const [addShow, setAddShow] = useState(false)
 
     const search = useForm()
@@ -91,10 +94,22 @@ export default function Suppliers() {
                 setAddShow(false)
                 getSupliers()
                 form.setLoading(false)
-                openPopup({
-                    type: 'success',
-                    message: t('Supplier has been added'),
-                })
+                if (permission.fromNode('supplier').getPermission('index')) {
+                    openPopup({
+                        type: 'success',
+                        message: t('create_success'),
+                        confirmText: t('go_to_purchase'),
+                        onConfirm: () => {
+                            navigate('/purchases')
+                        }
+                    })
+                } else {
+                    openPopup({
+                        type: 'success',
+                        message: t('create_success'),
+                    })
+                }
+
             })
             .catch((error) => {
                 if (error.response?.data?.errors) {
@@ -119,10 +134,22 @@ export default function Suppliers() {
                 setAddShow(false)
                 getSupliers()
                 form.setLoading(false)
-                openPopup({
-                    type: 'success',
-                    message: t('Supplier has been updated'),
-                })
+                if (permission.fromNode('supplier').getPermission('index')) {
+                    openPopup({
+                        type: 'success',
+                        message: t('update_success'),
+                        confirmText: t('go_to_purchase'),
+                        onConfirm: () => {
+                            navigate('/purchases')
+                        }
+                    })
+                } else {
+                    openPopup({
+                        type: 'success',
+                        message: t('update_success'),
+                    })
+                }
+                
             })
             .catch((error) => {
                 if (error.response?.data?.errors) {
@@ -345,7 +372,7 @@ export default function Suppliers() {
                                 handleChange={form.handleChange}
                                 errorMessage={form.formErrors?.website}
                                 label={t("Website")}
-                                    required={false}
+                                required={false}
                             />
                         </div>
 

@@ -7,6 +7,7 @@ import SupplierService from '../../../services/SupplierService';
 import { isoToDateTime } from '../../../libraries/common';
 import RenderFormFieldByList from '../../RenderFormFieldByList';
 import { useI18n } from '../../../../i18n/useI18n';
+import { useNavigate } from 'react-router-dom';
 
 export default function PurchaseInformation({
     form = {
@@ -18,13 +19,14 @@ export default function PurchaseInformation({
     },
 }) {
     const { t } = useI18n();
+    const navigate = useNavigate();
     const [supplierData, setSupplierData] = useState([]);
 
     const getSuppliers = useCallback((keywords = '', callback = null) => {
         SupplierService.list({
             page: 0,
             keywords: keywords,
-            active: 1 
+            active: 1
         })
             .then((resp) => {
                 setSupplierData(resp.message?.data);
@@ -45,21 +47,37 @@ export default function PurchaseInformation({
 
             <div className="row">
                 <div className="col-6">
-                    <SearchSelect
-                        errorMessage={form.formErrors?.supplier_id}
-                        disabled={disabled}
-                        search={getSuppliers}
-                        value={form.formData?.supplier_id}
-                        changeValue={form.handleChangeByKey}
-                        options={supplierData?.map((item) => ({
-                            value: item.id,
-                            label: item.unit_name,
-                        }))}
-                        name="supplier_id"
-                        defaultKeywords={form.formData?.supplier_name}
-                        label={t('Supplier')}
-                        required={true}
-                    />
+                    <div className='d-flex'>
+                        <div className='flex-grow-1'>
+                            <SearchSelect
+                                errorMessage={form.formErrors?.supplier_id}
+                                disabled={disabled}
+                                search={getSuppliers}
+                                value={form.formData?.supplier_id}
+                                changeValue={form.handleChangeByKey}
+                                options={supplierData?.map((item) => ({
+                                    value: item.id,
+                                    label: item.unit_name,
+                                }))}
+                                name="supplier_id"
+                                defaultKeywords={form.formData?.supplier_name}
+                                label={t('Supplier')}
+                                required={true}
+                            />
+                        </div>
+
+                        <div
+                            className='d-flex justify-content-center align-items-center ms-2'
+                            onClick={() => {
+                                navigate('/suppliers')
+                            }}
+                        >
+                            <i className="bi bi-plus-square text-success" style={{
+                                fontSize: 30,
+                                paddingTop: 20
+                            }}></i>
+                        </div>
+                    </div>
                 </div>
 
                 <div className="col-6">

@@ -5,7 +5,7 @@ export default function DangerButton({
   onClick = null, 
   disabled = false,
   loading = false,
-  width = 70,
+  width = 'auto',
   height = 35
 }) {
   return (
@@ -13,7 +13,9 @@ export default function DangerButton({
     disabled={disabled || loading}
     className="erp-btn erp-btn-danger" onClick={onClick} style={{
       width: width,
-      height: height
+      height: height,
+      paddingLeft: 15,
+      paddingRight: 15
     }}>
       {label}
     </button>

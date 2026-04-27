@@ -15,9 +15,8 @@ import { useI18n } from '../../../i18n/useI18n'
 import CommonDataTableV2 from '../CommonDataTableV2'
 
 export default function IndexPriceList() {
-    const { t, lang } = useI18n()
+    const { t, lang } = useI18n();
     const { openPopup } = usePopup()
-
     const [showAdd, setShowAdd] = useState(false)
     const [products, setProducts] = useState([])
     const [groups, setGroups] = useState([])
@@ -66,9 +65,10 @@ export default function IndexPriceList() {
         PriceListService.add(form.formData)
             .then(() => {
                 openPopup({
-                    type: 'success',
-                    message: t('Price has been created'),
-                })
+                        type: 'success',
+                        message: t('create_success')
+                    })
+
                 setShowAdd(false)
                 getPriceList()
                 form.setLoading(false)
@@ -95,7 +95,7 @@ export default function IndexPriceList() {
             .then(() => {
                 openPopup({
                     type: 'success',
-                    message: t('Price has been updated'),
+                    message: t('update_success')
                 })
                 setShowAdd(false)
                 getPriceList(0)
@@ -119,7 +119,7 @@ export default function IndexPriceList() {
         PriceListService.delete(row).then(() => {
             openPopup({
                 type: 'success',
-                message: t('Price has been deleted'),
+                message: t('delete_success'),
             })
             getPriceList()
         })
@@ -166,21 +166,21 @@ export default function IndexPriceList() {
         <div className="mt-3">
             <CommonDataTableV2
                 loading={table.loading}
-                
+
                 search={search}
                 callback={getPriceList}
                 add={() => {
-                              setShowAdd(true)
-                              form.setIsEdit(false)
-                          }}
+                    setShowAdd(true)
+                    form.setIsEdit(false)
+                }}
                 columns={table.colums}
                 data={table.data}
                 links={table.links}
                 onEdit={(row) => {
-                              form.setIsEdit(true)
-                              form.setFormData(row)
-                              setShowAdd(true)
-                          }}
+                    form.setIsEdit(true)
+                    form.setFormData(row)
+                    setShowAdd(true)
+                }}
                 onDelete={handleDelete}
                 type={'pricelist'}
             />

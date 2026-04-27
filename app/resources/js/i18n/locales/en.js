@@ -472,6 +472,7 @@ export default {
     "save_data_change": "Just change data, do you wanna to save?",
     "update_success": "You has been updated",
     "create_success": "You has been created",
+    "delete_success":"You has been deleted",
     "button_cancel_label": "Take Cancel",
     "retail": "Retail",
     "wholesale": "Wholesale",
@@ -491,4 +492,12 @@ export default {
     "confirm_readed": "Confirm mark as read",
     "confirm_delete": "Confirm delete",
     "mark_as_read": "Mark as read",
+    "go_to_product":"Go to add product",
+    "go_to_price_list":"Go to add price list",
+    "go_to_warehouse":"Go to add warehouse",
+    "go_to_shipping":"Go to add shipping",
+    "go_to_purchase":"Go to add purchase",
+    "go_to_customer_group":"Go to add customer group",
+    "go_to_invoicein":"Go to invoice in",
+    "go_to_stockin":"Go to stock in"
 };

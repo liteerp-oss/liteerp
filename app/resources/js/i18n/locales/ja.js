@@ -472,6 +472,7 @@ export default {
     "save_data_change": "データを変更するだけです。保存しますか？",
     "update_success": "更新されました",
     "create_success": "あなたは作成されました",
+    "delete_success":"あなたは削除されました",
     "button_cancel_label": "キャンセルする",
     "retail": "小売り",
     "wholesale": "水",
@@ -491,4 +492,12 @@ export default {
     "confirm_readed": "既読にするか確認する",
     "confirm_delete": "削除するか確認する",
     "mark_as_read": "既読にする",
+    "go_to_product": "商品を追加するへ移動",
+    "go_to_price_list": "価格リストを追加するへ移動",
+    "go_to_warehouse": "倉庫を追加するへ移動",
+    "go_to_shipping": "配送を追加するへ移動",
+    "go_to_purchase": "仕入れを追加するへ移動",
+    "go_to_customer_group":"顧客グループを追加する",
+    "go_to_invoicein":"請求書へ移動",
+    "go_to_stockin":"在庫へ"
 };

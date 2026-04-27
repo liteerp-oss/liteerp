@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import SecondaryButton from '../../UI/Buttons/SecondaryButton'
 import PrimaryButton from '../../UI/Buttons/PrimaryButton'
 import InvoiceInService from '../../../services/InvoiceInService'
-import { Link, useSearchParams } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useForm } from "../../../libraries/handleInput";
 import { usePopup } from "../../popups/PopupContext";
 import PurchaseItemService from '../../../services/PurchaseItemService'
@@ -18,7 +18,10 @@ import UploadImage from "../../UI/Input/UploadImage";
 import RenderFormFieldByList from '../../RenderFormFieldByList'
 import { useI18n } from "../../../../i18n/useI18n";
 import StatusBadge from "../../StatusBadge";
+import PermissionNode from "@/core/PermissionNode";
 export default function InvoiceInDetail() {
+    const permission = new PermissionNode();
+    const navigate = useNavigate();
     const { t } = useI18n();
     const [loading, setLoading] = useState(false);
     const { openPopup } = usePopup();
@@ -74,10 +77,22 @@ const update = useCallback(() => {
     InvoiceInService.update(form.formData)
         .then((resp) => {
             setShowEdit(false);
-            openPopup({
-                type: 'success',
-                message: t('You has been updated')
-            });
+            if(permission.fromNode('stockin').getPermission('index')) {
+                openPopup({
+                    type: 'success',
+                    message: t('update_success'),
+                    confirmText: t('go_to_stockin'),
+                    onConfirm: () => {
+                        navigate('/stock-ins')
+                    }
+                });    
+            } else {
+                    openPopup({
+                    type: 'success',
+                    message: t('update_success')
+                });
+            }
+            
             setDetail(form.formData);
             form.setLoading(false);
         })

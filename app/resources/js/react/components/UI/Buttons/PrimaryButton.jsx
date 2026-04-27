@@ -5,14 +5,16 @@ export default function PrimaryButton({
   onClick = null, 
   disabled = false,
   loading = false,
-  width = 70,
+  width = 'auto',
   height = 35
 }) {
   return (
     <button disabled={disabled || loading} className="erp-btn erp-btn-primary" onClick={onClick}
     style={{
       width: width,
-      height: height
+      height: height,
+      paddingLeft: 15,
+      paddingRight: 15
     }}
     >
       {label}

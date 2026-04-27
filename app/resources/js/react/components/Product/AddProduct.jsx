@@ -12,8 +12,10 @@ import { usePopup } from '../popups/PopupContext'
 import CreateButton from '../UI/PermissionButtons/CreateButton'
 import { useNavigate } from 'react-router-dom'
 import CustomEditor from '../UI/Input/CustomEditor'
+import PermissionNode from '@/core/PermissionNode'
 
 export default function AddProduct() {
+    const permission = new PermissionNode();
     const { t } = useI18n()
     const navigate = useNavigate()
     const [category, setCategory] = useState([])
@@ -25,13 +27,22 @@ export default function AddProduct() {
 
         ProductService.add(form.formData)
             .then(() => {
-                openPopup({
-                    type: 'success',
-                    message: t('create_success'),
-                    onConfirm: () => {
-                        navigate('/products')
-                    }
-                })
+                if (permission.fromNode('product').getPermission('index')) {
+                    openPopup({
+                        type: 'success',
+                        message: t('create_success'),
+                        confirmText: t('go_to_purchase'),
+                        onConfirm: () => {
+                            navigate('/purchases')
+                        }
+                    })
+                } else {
+                    openPopup({
+                        type: 'success',
+                        message: t('create_success')
+                    })
+                }
+
                 form.setFormErrors(null)
                 form.setLoading(false)
             })
@@ -140,11 +151,11 @@ export default function AddProduct() {
             <div className="form-group mt-3">
                 <CustomEditor
                     name="description"
-                    handleChange={form.handleChangeByKey}
+                    handleChangeByKey={form.handleChangeByKey}
                     value={form.formData?.description}
                     placeholder={t('Description')}
                     errorMessage={form.formErrors?.description}
-                    required={true}
+                    required={false}
                     label={t('Description')}
                 />
             </div>
@@ -166,7 +177,7 @@ export default function AddProduct() {
             </div>
         </div>
         <div className='mt-3'>
-            <CreateButton type={'product'} width={120} onClick={create} loading={form.loading} />
+            <CreateButton type={'product'} onClick={create} loading={form.loading} />
         </div>
     </div>
 }

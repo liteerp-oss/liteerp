@@ -228,7 +228,9 @@ export default function CommonDataTableV2({
                                         </td>
                                     )}
                                 </tr>
-                            )) : <tr className="theme-sidebar-bg theme-title">
+                            )) : <tr className="theme-sidebar-bg theme-title"
+                                onClick={add && permission.canAdd ? add : null }
+                                >
                                 <td colSpan={columns.length + 1}>
                                     <div
                                         className="d-flex justify-content-center align-items-center py-4"

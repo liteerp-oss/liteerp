@@ -3,7 +3,7 @@ import React from "react";
 export default function SuccessButton({ 
   label = "Success Button", 
   onClick = null, 
-  width = 150,
+  width = 'auto',
   disabled = false,
   loading = false,
   height = 35
@@ -13,7 +13,9 @@ export default function SuccessButton({
     disabled={disabled || loading}
     className="erp-btn erp-btn-success" onClick={onClick} style={{
       width: width,
-      height : height
+      height : height,
+      paddingLeft: 15,
+      paddingRight: 15
     }}>
       {label}
     </button>

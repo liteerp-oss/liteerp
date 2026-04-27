@@ -1,3 +1,4 @@
+import { useI18n } from "@/i18n/useI18n";
 import React, { useState, useMemo } from "react";
 import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
@@ -5,7 +6,7 @@ import { NavLink } from "react-router-dom";
 export default function MenuMobile() {
   const nav = useSelector((state) => state.businessRole.nav);
   const [open, setOpen] = useState(false);
-
+  const {t} = useI18n();
   return (
     <>
       <i
@@ -34,7 +35,7 @@ export default function MenuMobile() {
                       </div>
 
                       <div className="menu-mobile-label">
-                        {child.label}
+                        {t(child.label)}
                       </div>
                     </div>
                   );

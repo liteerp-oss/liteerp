@@ -6,9 +6,13 @@ import SecondaryButton from "../UI/Buttons/SecondaryButton";
 import WarningButton from "../UI/Buttons/WarningButton";
 import SuccessButton from "../UI/Buttons/SuccessButton";
 import DangerButton from "../UI/Buttons/DangerButton";
+import { useI18n } from "@/i18n/useI18n";
 const PopupContext = createContext();
 
 export const PopupProvider = ({ children }) => {
+
+  const {t} = useI18n()
+
   const [popup, setPopup] = useState(null);
 
   const openPopup = useCallback((options) => {
@@ -17,8 +21,8 @@ export const PopupProvider = ({ children }) => {
       type: options.type || "success", // success | warning | error | info
       onConfirm: options.onConfirm || null,
       onCancel: options.onCancel || null,
-      confirmText: options.confirmText || "Confirm",
-      cancelText: options.cancelText || "Close",
+      confirmText: options.confirmText || t("Confirm"),
+      cancelText: options.cancelText || t("Close"),
     });
   }, []);
 
@@ -40,11 +44,11 @@ export const PopupProvider = ({ children }) => {
   const popupTitle = (type) => {
     switch (type) {
       case "success":
-        return "Completed";
+        return t("Completed");
       case "error":
-        return "Failed";
+        return t("Failed");
       case "warning":
-        return "Warning";
+        return t("Warning");
       default:
         return { bg: "#6366f1", Icon: CheckCircle };
     }
@@ -53,7 +57,8 @@ export const PopupProvider = ({ children }) => {
   const getButtonStyle = (type) => {
     switch (type) {
       case "success":
-        return <SuccessButton label={popup.confirmText}
+        return <SuccessButton 
+                label={popup.confirmText}
                 onClick={() => {
                   popup.onConfirm?.();
                       closePopup();

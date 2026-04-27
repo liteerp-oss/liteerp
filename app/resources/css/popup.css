@@ -13,7 +13,7 @@
   color: var(--erp-text);
   padding: 1.5rem;
   border-radius: 0.75rem;
-  width: 400px;
+  width: 500px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
   animation: fadeIn 0.2s ease-out;
 }

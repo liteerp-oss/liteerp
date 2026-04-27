@@ -1,43 +1,44 @@
-import React from "react";
+import React,{ lazy, Suspense } from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-
-// Pages
-import Login from "./react/pages/login";
-import Dashboard from "./react/pages/dashboard";
-import Product from "./react/pages/product";
-import Order from "./react/pages/order";
-import Customer from "./react/pages/customer";
-import Warehouse from "./react/pages/warehouse";
-import InvoiceIns from "./react/pages/invoiceins";
-import Setting from "./react/pages/setting";
-import User from "./react/pages/user";
-import Register from "./react/pages/register";
-import Business from "./react/pages/business";
-import VerifyAccount from "./react/pages/verify-account";
-import Notification from "./react/pages/notification";
-import StockIns from "./react/pages/stockin";
-import Purchases from "./react/pages/purchases";
-import Suppliers from "./react/pages/suppliers";
-import Shipping from "./react/pages/shipping";
-import Inventory from "./react/pages/Inventory";
-import ActivityLogs from "./react/pages/activity-logs";
-import Profile from "./react/pages/Profile";
-import ForgetPassword from "./react/pages/forget-password";
-import ResetPassword from "./react/pages/reset-password";
-import Logout from "./react/pages/Logout";
-import Extensions from "./react/pages/extensions";
 import Wrapper from "@/react/wrappers/Wrapper";
-import routeRegistry from '@core/RouteRegistry'
-import Permissions from "./react/pages/permissions";
-import InvoiceOuts from "./react/pages/Invoiceouts";
-import CustomInvoiceIns from "./react/pages/custominvoiceins";
-import CustomInvoiceOuts from "./react/pages/custominvoiceouts";
-import CustomerGroup from "./react/pages/customergroup";
-import CategoryProduct from "./react/pages/categoryproduct";
-import Pricelist from "./react/pages/pricelist";
-import StockOuts from "./react/pages/stockout";
-import InventoryAdjustments from "./react/pages/inventoryadjustments";
+import routeRegistry from "@core/RouteRegistry";
+
+// Lazy pages
+const Login = lazy(() => import("./react/pages/login"));
+const Dashboard = lazy(() => import("./react/pages/dashboard"));
+const Product = lazy(() => import("./react/pages/product"));
+const Order = lazy(() => import("./react/pages/order"));
+const Customer = lazy(() => import("./react/pages/customer"));
+const Warehouse = lazy(() => import("./react/pages/warehouse"));
+const InvoiceIns = lazy(() => import("./react/pages/invoiceins"));
+const Setting = lazy(() => import("./react/pages/setting"));
+const User = lazy(() => import("./react/pages/user"));
+const Register = lazy(() => import("./react/pages/register"));
+const Business = lazy(() => import("./react/pages/business"));
+const VerifyAccount = lazy(() => import("./react/pages/verify-account"));
+const Notification = lazy(() => import("./react/pages/notification"));
+const StockIns = lazy(() => import("./react/pages/stockin"));
+const Purchases = lazy(() => import("./react/pages/purchases"));
+const Suppliers = lazy(() => import("./react/pages/suppliers"));
+const Shipping = lazy(() => import("./react/pages/shipping"));
+const Inventory = lazy(() => import("./react/pages/Inventory"));
+const ActivityLogs = lazy(() => import("./react/pages/activity-logs"));
+const Profile = lazy(() => import("./react/pages/Profile"));
+const ForgetPassword = lazy(() => import("./react/pages/forget-password"));
+const ResetPassword = lazy(() => import("./react/pages/reset-password"));
+const Logout = lazy(() => import("./react/pages/Logout"));
+const Extensions = lazy(() => import("./react/pages/extensions"));
+const Permissions = lazy(() => import("./react/pages/permissions"));
+const InvoiceOuts = lazy(() => import("./react/pages/Invoiceouts"));
+const CustomInvoiceIns = lazy(() => import("./react/pages/custominvoiceins"));
+const CustomInvoiceOuts = lazy(() => import("./react/pages/custominvoiceouts"));
+const CustomerGroup = lazy(() => import("./react/pages/customergroup"));
+const CategoryProduct = lazy(() => import("./react/pages/categoryproduct"));
+const Pricelist = lazy(() => import("./react/pages/pricelist"));
+const StockOuts = lazy(() => import("./react/pages/stockout"));
+const InventoryAdjustments = lazy(() => import("./react/pages/inventoryadjustments"));
+
 const App = () => {
   const routes = routeRegistry.all();
   return (

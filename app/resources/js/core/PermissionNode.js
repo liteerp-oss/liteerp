@@ -4,6 +4,7 @@ export default class PermissionNode {
     }
     fromNode(name) {
         this.node = name;
+        return this;
     }
     getPermission(name){
         return `erp.${this.node}.${this.node}-${name}`;

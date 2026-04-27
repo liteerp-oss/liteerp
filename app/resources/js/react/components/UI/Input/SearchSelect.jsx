@@ -87,7 +87,7 @@ export default function SearchSelect({
           }}
           options={options}
           placeholder={placeholder}
-          className={(errorMessage ? 'is-invalid' : '')}
+          className={(errorMessage ? 'is-invalid' : '') + " search-select"}
         />
         {errorMessage ? <div className="invalid-feedback">
           {errorMessage.map((mess, index) => {
