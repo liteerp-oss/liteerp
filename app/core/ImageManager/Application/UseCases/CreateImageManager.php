@@ -12,10 +12,10 @@ class CreateImageManager
 
     public function handle(CreateImageManagerRequest $dto)
     {
-        $path = Storage::disk('public')->putFile('public/business/' . $dto->business_id .'/images', $dto->file);
+        $path = Storage::putFile('public/business/' . $dto->business_id .'/images', $dto->file);
         return $this->service->create([
             ...$dto->toArray(),
-            'path' => '/storage/' . $path
+            'path' => Storage::url($path)
         ]);
     }
 }
