@@ -9,6 +9,7 @@ import PurchaseService from '../../services/PurchaseService';
 import PurchaseInformation from './EditPurchase/PurchaseInformation';
 import PageHead from '../PageHead';
 import { useI18n } from '../../../i18n/useI18n';
+import { isoToDateTime } from '../../libraries/common';
 
 export default function AddPurchase() {
     const { t } = useI18n();
@@ -65,6 +66,10 @@ export default function AddPurchase() {
 
     useEffect(() => {
         view();
+        form.setFormData({
+            purchase_date: isoToDateTime(new Date()),
+            expected_date: isoToDateTime(new Date()),
+        });
     }, []);
 
     return (
