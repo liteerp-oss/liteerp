@@ -4,7 +4,7 @@ import { i18nMessages } from "./locales/autoload";
 export const I18nContext = createContext({
   lang: "en",
   t: (key) => key,
-  setLang: () => {},
+  setLang: () => { },
 });
 
 export const I18nProvider = ({ children }) => {

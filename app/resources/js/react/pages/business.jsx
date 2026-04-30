@@ -17,6 +17,7 @@ import { PopupLayout } from "../layouts/PopupLayout";
 import { InputForm } from "../components/UI/Input/InputForm";
 import RenderFormFieldByList from "../components/RenderFormFieldByList";
 import Logo from "../components/Logo";
+import { BoxArrowInLeft } from "react-bootstrap-icons";
 export default function Business() {
     const { t } = useI18n();
     const [loadViewDetail, setLoadingViewDetail] = useState(false)
@@ -27,7 +28,7 @@ export default function Business() {
     const [openAdd, setOpenAdd] = useState(false);
     const form = useForm();
     const [listBusiness, setListBusiness] = useState([]);
-    const [renderItem,setRenderItem] = useState(null)
+    const [renderItem, setRenderItem] = useState(null)
     const getDetail = useCallback((id) => {
         setLoadingViewDetail(true)
         businessService.show(id)
@@ -109,6 +110,10 @@ export default function Business() {
         dispatch(cleanNotificationCount());
         getView();
     }, []);
+    const logout = () => {
+        localStorage.removeItem('token');
+        window.location.href = "/";
+    }
     return (
         <BusinessLayout>
             <div>
@@ -118,11 +123,16 @@ export default function Business() {
                             <div className="d-flex">
                                 <div className="">
                                     <a href="/">
-                                    <Logo/>
+                                        <Logo />
                                     </a>
                                 </div>
                             </div>
-                            <div>
+                            <div className="d-flex">
+                                <div style={{
+                                    marginRight: 10
+                                }} onClick={logout}>
+                                    <IconButton icon={BoxArrowInLeft} color="white" />
+                                </div>
                                 <IconButton onClick={() => {
                                     form.setFormData(null)
                                     setOpenAdd(true);
@@ -256,7 +266,7 @@ export default function Business() {
                         </div>
                         {form.hookRender.map((item, index) => {
                             return <div className="mb-3" key={index}>
-                                <RenderFormFieldByList item={item} form={form}/>
+                                <RenderFormFieldByList item={item} form={form} />
                             </div>
                         })}
                     </form>
