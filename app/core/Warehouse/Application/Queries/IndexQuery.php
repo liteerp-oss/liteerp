@@ -32,6 +32,9 @@ class IndexQuery implements QueryInterface
         if ($dto->keywords) {
             $list = $list->whereAny(['warehouses.name', 'warehouses.address'], 'like', '%' . $dto->keywords . '%');
         }
+        if($dto->active) {
+            $list = $list->where('warehouses.active',$dto->active);
+        }
         $data = $this->hooks->dispatch(
             new HookContext(
                 action: HookAction::INDEX,
