@@ -31,7 +31,7 @@ class SupportUINav {
     }
     public function addItem(string $groupLabel,array $data) : SupportUINav {
         $index = array_search($groupLabel, array_column($this->data, 'label'));
-        if(!$index) {
+        if($index === false) {
             throw new BadException(__("Group NAV Invalid"));
         }
         $this->data[$index]['children'] = [
