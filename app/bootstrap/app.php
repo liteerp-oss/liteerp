@@ -6,6 +6,7 @@ use App\Http\Middleware\BusinessAdmin;
 use App\Http\Middleware\BusinessToken;
 use App\Http\Middleware\IsAdmin;
 use App\Http\Middleware\IsLogged;
+use App\Http\Middleware\RequestLockMiddleware;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -27,11 +28,13 @@ return Application::configure(basePath: dirname(__DIR__))
             'app.isAdmin'   => IsAdmin::class,
             'auth:sanctum' => EnsureFrontendRequestsAreStateful::class,
             'auth' => Authenticate::class,
-            'app.language' => AppLanguage::class
+            'app.language' => AppLanguage::class,
+            'app.lock' => RequestLockMiddleware::class
         ]);
         $middleware->group('business', [
             'business.token',
-            'app.language'
+            'app.language',
+            'app.lock'
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
