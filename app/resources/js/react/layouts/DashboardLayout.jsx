@@ -49,7 +49,7 @@ export default function DashboardLayout({
                 paddingLeft: 0
             }}>
                 <Topbar />
-                <div className='p-md-4 p-lg-4 mb-5'>
+                <div className='mb-5'>
                     {children}
                 </div>
             </div>

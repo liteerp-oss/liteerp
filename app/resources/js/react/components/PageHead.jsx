@@ -6,7 +6,7 @@ export default function PageHead({
     containerClass = 'container'
 }){
     const {t} = useI18n();
-    return <div className='pt-2 pb-2 border-bottom'>
+    return <div className='pt-4 pb-2 border-bottom'>
         <div className={containerClass}>
             <h2 className='h4 theme-title-highlight'>{t(title)}</h2>
             <p className='theme-title'>{t(subtitle)}</p>

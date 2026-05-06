@@ -96,7 +96,7 @@ export default function InvoiceOutDetail() {
                 setShowEdit(false);
                 openPopup({
                     type: 'success',
-                    message: t('You has been updated')
+                    message: t('update_success')
                 });
                 setDetail(form.formData);
                 form.setLoading(false)
@@ -117,7 +117,7 @@ export default function InvoiceOutDetail() {
     const confirmApproved = useCallback(() => {
         openPopup({
             type: 'warning',
-            message: t('Are you sure to take approve'),
+            message: t('confirm_approve'),
             onConfirm: () => {
                 form.handleChangeByKey('approved', true);
             }
@@ -427,6 +427,7 @@ export default function InvoiceOutDetail() {
                     loading={form.loading}
                     onClose={() => setShowEdit(false)}
                     title={t("Update invoice")}
+                    confirmText={t('Save changes')}
                     onConfirm={() => {
                         update();
                     }}

@@ -151,7 +151,7 @@ export default function EditOrder() {
     const confirmApprove = () => {
         openPopup({
             type: 'warning',
-            message: 'Are you sure wanna to take approved',
+            message: t('confirm_approve'),
             onConfirm: () => {
                 form.handleChangeByKey('status', 'approved');
             }
@@ -160,7 +160,7 @@ export default function EditOrder() {
     const confirmCancelled = () => {
         openPopup({
             type: 'warning',
-            message: 'Are you sure wanna to take cancelled',
+            message: t('confirm_cancel'),
             onConfirm: () => {
                 setShowCancelReason(true)
             }
@@ -288,19 +288,19 @@ export default function EditOrder() {
                                     <div className=''>
                                         {detail?.status !== 'cancelled' ?
                                             <CancelButton 
-                                            width={150}
+                                            
                                             loading={form.loading || shippingForm.loading} onClick={confirmCancelled} 
                                             label={t('button_cancel_label')} type={'order'} />
                                             : null}
                                     </div>
                                     <div className='mx-2'>
                                         {currentStep <= 2
-                                            ? <PrimaryButton width={120} loading={form.loading || shippingForm.loading} onClick={nextStep} 
+                                            ? <PrimaryButton loading={form.loading || shippingForm.loading} onClick={nextStep} 
                                             label={t('Next')} />
                                             : null}
 
                                         {currentStep === 3 && detail?.status === 'pending'
-                                            ? <ApproveButton type={'order'} width={120} loading={form.loading} onClick={confirmApprove} 
+                                            ? <ApproveButton type={'order'} loading={form.loading} onClick={confirmApprove} 
                                             label={t('Approved')} />
                                             : null}
                                     </div>

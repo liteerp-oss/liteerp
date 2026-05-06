@@ -1,6 +1,7 @@
 [data-theme="light-theme"] {
     --erp-bg: #f8fafc;
     --erp-text: #0f172a;
+    --erp-text-muted: #6a6b6e;
     --erp-text-highlight: #020617;
 
     --erp-topbar-bg: #ffffff;
@@ -18,6 +19,7 @@
 [data-theme="dark-theme"] {
     --erp-bg: #0f172a;
     --erp-text: #cbd5e1;
+    --erp-text-muted: #d2d5d8;
     --erp-text-highlight: #ffffff;
 
     --erp-topbar-bg: #111827;
@@ -38,8 +40,11 @@ body,.label, h1, h2, h3, h4, h5, h6 {
     color: var(--erp-text)!important;
     background-color: var(--erp-bg)!important;
 }
-.theme-title,.custom-text-muted,.fw-semibold {
+.theme-title,.fw-semibold {
     color: var(--erp-text)!important;
+}
+.custom-text-muted {
+    color: var(--erp-text-muted)!important;
 }
 .theme-title-highlight {
     color: var(--erp-text-highlight)!important;

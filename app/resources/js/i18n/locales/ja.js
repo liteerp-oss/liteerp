@@ -499,5 +499,9 @@ export default {
     "go_to_purchase": "仕入れを追加するへ移動",
     "go_to_customer_group":"顧客グループを追加する",
     "go_to_invoicein":"請求書へ移動",
-    "go_to_stockin":"在庫へ"
+    "go_to_stockin":"在庫へ",
+    "confirm_approve":"本当に承認されたらいいですか？",
+    "confirm_cancel":"本当にキャンセルしますか？",
+    "confirm_sent":"送信確認をしてもよろしいですか？",
+    "confirm_completed":"本当に完了を確認してもよろしいですか？"
 };

@@ -499,5 +499,9 @@ export default {
     "go_to_purchase":"Go to add purchase",
     "go_to_customer_group":"Go to add customer group",
     "go_to_invoicein":"Go to invoice in",
-    "go_to_stockin":"Go to stock in"
+    "go_to_stockin":"Go to stock in",
+    "confirm_approve":"Are you sure wanna to take approved?",
+    "confirm_cancel":"Are you sure wanna to take cancelled?",
+    "confirm_sent":"Are you sure to wanna confirm sent?",
+    "confirm_completed":"Are you sure to wanna confirm completed?"
 };

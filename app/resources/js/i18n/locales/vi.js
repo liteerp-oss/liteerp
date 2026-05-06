@@ -499,5 +499,9 @@ export default {
     "go_to_purchase": "Đi đến thêm nhập hàng",
     "go_to_customer_group":"Đi đến thêm nhóm khách hàng",
     "go_to_invoicein":"Đến hóa đơn đầu vào",
-    "go_to_stockin":"Đến phiếu nhập kho"
+    "go_to_stockin":"Đến phiếu nhập kho",
+    "confirm_approve":"Bạn có chắc chắn muốn chấp thuận không?",
+    "confirm_cancel":"Bạn có chắc chắn muốn hủy bỏ không?",
+    "confirm_sent":"Bạn có chắc chắn muốn xác nhận đã gửi không?",
+    "confirm_completed":"Bạn có chắc chắn muốn xác nhận đã hoàn tất không?"
 };

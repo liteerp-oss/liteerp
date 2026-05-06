@@ -58,7 +58,7 @@ export default function StockOutDetail() {
             .then((resp) => {
                 openPopup({
                     type: 'success',
-                    message: t('You has been updated')
+                    message: t('update_success')
                 })
                 setDetail(form.formData);
                 form.setLoading(false)
@@ -86,7 +86,7 @@ export default function StockOutDetail() {
             .then((resp) => {
                 openPopup({
                     type: 'success',
-                    message: t('You has been update')
+                    message: t('update_success')
                 })
                 setShowForm(false);
                 shippingForm.setLoading(false)
@@ -108,7 +108,7 @@ export default function StockOutDetail() {
     const confirmSent = useCallback(() => {
         openPopup({
             type: 'warning',
-            message: t('Are you sure to wanna confirm sent'),
+            message: t('confirm_sent'),
             onConfirm: () => {
                 //update();
                 form.handleChangeByKey('status', 'shipped')
@@ -118,7 +118,7 @@ export default function StockOutDetail() {
     const confirmCompleted = useCallback(() => {
         openPopup({
             type: 'warning',
-            message: t('Are you sure to wanna confirm completed'),
+            message: t('confirm_completed'),
             onConfirm: () => {
                 //update();
                 form.handleChangeByKey('status', 'completed')
@@ -244,7 +244,7 @@ export default function StockOutDetail() {
     return (
         <div className="min-vh-100">
             <PageHead
-                containerClass="m-4"
+                containerClass="mx-4"
                 title={t("Detail stock out")}
                 subtitle={t("stock_out_desc")}
             />
@@ -317,7 +317,7 @@ export default function StockOutDetail() {
                                         <h5 className="fw-semibold mb-3">{t("Summary")}</h5>
                                         <div className="d-flex justify-content-between theme-title">
                                             <span>{t("Type order")}</span>
-                                            <span className="badge bg-primary">{form.formData?.type}</span>
+                                            <span className="badge bg-primary">{t(form.formData?.type ?? '')}</span>
                                         </div>
                                         <div className="d-flex justify-content-between theme-title">
                                             <span>{t("Subtotal")}</span>
