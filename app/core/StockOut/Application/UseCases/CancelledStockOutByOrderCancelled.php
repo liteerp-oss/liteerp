@@ -24,6 +24,9 @@ class CancelledStockOutByOrderCancelled
             if ($entity->isCompleted()) {
                 throw new BadException(__("stockout::messages.order_completed_cannot_cancel"));
             }
+            if($entity->isShipped()) {
+                throw new BadException(__("stockout::messages.order_shipped_cannot_cancel"));
+            }
             $entity->markCancelled();
             $update = $this->service->update([
                 ...$entity->toArray(),
