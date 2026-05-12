@@ -42,9 +42,9 @@ class IndexQuery implements QueryInterface {
         if(!empty($dto->keywords)) {
             $index = $index->whereAny(['category_product.name', 'category_product.description'], 'like', '%' . $dto->keywords . '%');
         }
-        Event::dispatch(Permission::CATEGORYPRODUCT_INDEX->value, [
-            ...$data
-        ]);
+        // Event::dispatch(Permission::CATEGORYPRODUCT_INDEX->value, [
+        //     ...$data
+        // ]);
         return $index->orderBy('category_product.id', $dto->order_by)->paginate(15)->toArray();
     }
 }

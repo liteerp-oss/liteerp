@@ -46,9 +46,9 @@ class ShowShipping
                 module: 'Shipping'
             )
         );
-        Event::dispatch(Permission::SHIPPING_SHOW->value, [
-            ...$data,
-        ]);
+        // Event::dispatch(Permission::SHIPPING_SHOW->value, [
+        //     ...$data,
+        // ]);
         return $data;
     }
 }

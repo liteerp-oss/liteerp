@@ -52,9 +52,9 @@ class IndexQuery implements QueryInterface
         );
         $list = $data['query'];
         $data = $data['data'];
-        Event::dispatch(Permission::WAREHOUSE_INDEX->value, [
-            ...$data
-        ]);
+        // Event::dispatch(Permission::WAREHOUSE_INDEX->value, [
+        //     ...$data
+        // ]);
         return $list->groupBy("warehouses.id")->orderBy('warehouses.id', $dto->order_by)->paginate(15)->toArray();
     }
 }

@@ -75,10 +75,10 @@ class IndexQuery implements QueryInterface
         if ($dto->keywords) {
             $list->whereAny(['suppliers.unit_name','created_users.name','purchases.id'], 'like', '%' . $dto->keywords . '%');
         }
-        Event::dispatch(Permission::PURCHASE_INDEX->value, [
-            ...$data,
-            ...$dto->toArray(),
-        ]);
+        // Event::dispatch(Permission::PURCHASE_INDEX->value, [
+        //     ...$data,
+        //     ...$dto->toArray(),
+        // ]);
         return $list->paginate(15)->toArray();
     }
 }

@@ -50,9 +50,9 @@ class ShowCustomer
             )
         );
 
-        Event::dispatch(Permission::CUSTOMER_SHOW->value, [
-            ...$data
-        ]);
+        // Event::dispatch(Permission::CUSTOMER_SHOW->value, [
+        //     ...$data
+        // ]);
         DB::commit();
         return $data;
     }

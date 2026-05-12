@@ -45,9 +45,9 @@ class ShowCategoryProduct
                 module: 'CategoryProduct'
             )
         );
-        Event::dispatch(Permission::CATEGORYPRODUCT_SHOW->value,[
-            ...$data
-        ]);
+        // Event::dispatch(Permission::CATEGORYPRODUCT_SHOW->value,[
+        //     ...$data
+        // ]);
         return $data;
     }
 }

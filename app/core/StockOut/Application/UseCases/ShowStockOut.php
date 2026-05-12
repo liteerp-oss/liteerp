@@ -45,9 +45,9 @@ class ShowStockOut
                 module: 'StockOut'
             )
         );
-        Event::dispatch(Permission::STOCKOUT_SHOW->value, [
-            ...$data
-        ]);
+        // Event::dispatch(Permission::STOCKOUT_SHOW->value, [
+        //     ...$data
+        // ]);
         return $data;
     }
 }

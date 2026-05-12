@@ -64,9 +64,9 @@ class IndexQuery implements QueryInterface {
             'customers.name',
             'customers.email'], 'like', '%' . $dto->keywords . '%');        
         }
-        Event::dispatch(Permission::ORDER_INDEX->value, [
-            ...$data
-        ]);
+        // Event::dispatch(Permission::ORDER_INDEX->value, [
+        //     ...$data
+        // ]);
         return $list->orderBy("orders.id", $dto->order_by)
             ->paginate($dto->paginate)->toArray();
     }

@@ -71,9 +71,9 @@ class IndexQuery implements QueryInterface
                 '%' . $dto->keywords . '%'
             );
         }
-        Event::dispatch(Permission::STOCKOUT_INDEX->value, [
-            ...$data
-        ]);
+        // Event::dispatch(Permission::STOCKOUT_INDEX->value, [
+        //     ...$data
+        // ]);
         return $index->orderBy("stock_outs.id", $dto->order_by)->paginate(15)->toArray();
     }
 }

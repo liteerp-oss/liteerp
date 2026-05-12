@@ -44,9 +44,9 @@ class IndexQuery implements QueryInterface {
                 'custom_invoice_ins.description'], 'like',
                 '%'. $dto->keywords .'%');
         }
-        Event::dispatch(Permission::CUSTOMINVOICEIN_INDEX->value, [
-            ...$data
-        ]);
+        // Event::dispatch(Permission::CUSTOMINVOICEIN_INDEX->value, [
+        //     ...$data
+        // ]);
         return $index->orderBy("custom_invoice_ins.id",$dto->order_by)->paginate(15)->toArray();
     }
 }

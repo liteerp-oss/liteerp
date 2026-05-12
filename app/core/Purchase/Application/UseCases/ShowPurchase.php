@@ -47,9 +47,9 @@ class ShowPurchase
                 module: 'Purchase'
             )
         );
-        Event::dispatch(Permission::PURCHASE_SHOW->value, [
-            ...$data
-        ]);
+        // Event::dispatch(Permission::PURCHASE_SHOW->value, [
+        //     ...$data
+        // ]);
         return $data;
     }
 }

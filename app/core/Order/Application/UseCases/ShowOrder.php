@@ -47,9 +47,9 @@ class ShowOrder
                 module: 'Order'
             )
         );
-        Event::dispatch(Permission::ORDER_SHOW->value, [
-            ...$data
-        ]);
+        // Event::dispatch(Permission::ORDER_SHOW->value, [
+        //     ...$data
+        // ]);
         return $data;
     }
 }

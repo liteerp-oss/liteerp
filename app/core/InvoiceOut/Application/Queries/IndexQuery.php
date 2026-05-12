@@ -66,9 +66,9 @@ class IndexQuery implements QueryInterface
             'customers.name',
             'customers.email'], 'like', '%' . $dto->keywords . '%');    
         }
-        Event::dispatch(Permission::INVOICEOUT_INDEX->value, [
-            ...$data
-        ]);
+        // Event::dispatch(Permission::INVOICEOUT_INDEX->value, [
+        //     ...$data
+        // ]);
         return $list->orderBy("invoice_outs.id", $dto->order_by)->paginate(15)->toArray();
     }
 }

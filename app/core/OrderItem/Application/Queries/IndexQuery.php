@@ -92,9 +92,9 @@ class IndexQuery
         if( $dto->keywords) {
             $list = $list->whereAny(['products.name', 'products.sku'],'like', "%{$dto->keywords}%");
         }
-        Event::dispatch(Permission::ORDERITEM_INDEX->value, [
-            ...$data
-        ]);
+        // Event::dispatch(Permission::ORDERITEM_INDEX->value, [
+        //     ...$data
+        // ]);
         return $list->orderBy('order_items.id', $dto->order_by)
             ->paginate($dto->paginate)->toArray();
     }

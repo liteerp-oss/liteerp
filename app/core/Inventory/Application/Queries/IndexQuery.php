@@ -139,9 +139,9 @@ class IndexQuery implements QueryInterface
         );
         $rows = $data['query'];
         $data = $data['data'];
-        Event::dispatch(Permission::STOCKMOVEMENTIN_INDEX->value, [
-            ...$data
-        ]);
+        // Event::dispatch(Permission::STOCKMOVEMENTIN_INDEX->value, [
+        //     ...$data
+        // ]);
         return $rows->orderBy('products.name', $dto->order_by)->paginate($dto->paginate ?? 15)->toArray();
     }
 }

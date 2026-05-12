@@ -176,9 +176,9 @@ class IndexQuery implements QueryInterface
         );
         $rows = $data['query'];
         $data = $data['data'];
-        Event::dispatch(Permission::STOCKMOVEMENTIN_INDEX->value, [
-            ...$data
-        ]);
+        // Event::dispatch(Permission::STOCKMOVEMENTIN_INDEX->value, [
+        //     ...$data
+        // ]);
         return $rows->orderBy('stock_movements_in.id', $dto->order_by)->paginate(15)->toArray();
     }
 }

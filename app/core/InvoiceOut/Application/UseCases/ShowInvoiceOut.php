@@ -45,9 +45,9 @@ class ShowInvoiceOut
                 module: 'InvoiceOut'
             )
         );
-        Event::dispatch(Permission::INVOICEOUT_SHOW->value,[
-            ...$data
-        ]);
+        // Event::dispatch(Permission::INVOICEOUT_SHOW->value,[
+        //     ...$data
+        // ]);
         return $data;
     }
 }

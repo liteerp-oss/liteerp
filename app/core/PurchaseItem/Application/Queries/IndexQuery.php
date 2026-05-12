@@ -65,9 +65,9 @@ class IndexQuery implements QueryInterface {
             $list = $list->whereAny(['products.name', 'products.sku', 'category_product.name'],
             'like', "%{$dto->keywords}%");
         }
-        Event::dispatch(Permission::PURCHASEITEM_INDEX->value, [
-            ...$data
-        ]);
+        // Event::dispatch(Permission::PURCHASEITEM_INDEX->value, [
+        //     ...$data
+        // ]);
         return $list->orderBy('purchase_items.id', $dto->order_by)->paginate(15)->toArray();
     }
 }

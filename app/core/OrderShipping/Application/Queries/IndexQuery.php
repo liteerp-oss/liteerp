@@ -54,9 +54,9 @@ class IndexQuery implements QueryInterface
             $list = $list->whereAny(['shippings.tracking_number','shipping_providers.name'],
             'like', '%' . $dto->keywords . '%');
         }
-        Event::dispatch(Permission::ORDERSHIPPING_INDEX->value, [
-            ...$data
-        ]);
+        // Event::dispatch(Permission::ORDERSHIPPING_INDEX->value, [
+        //     ...$data
+        // ]);
         return $list->orderBy('shippings.id', $dto->order_by)->paginate(15)
             ->toArray();
     }

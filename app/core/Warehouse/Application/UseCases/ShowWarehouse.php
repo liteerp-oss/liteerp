@@ -48,7 +48,7 @@ class ShowWarehouse
                 module: 'Warehouse'
             )
         );
-        Event::dispatch(Permission::WAREHOUSE_SHOW->value,$data);
+        //Event::dispatch(Permission::WAREHOUSE_SHOW->value,$data);
         return $data;
     }
 }

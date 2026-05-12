@@ -45,7 +45,7 @@ class ShowOrderShipping
                 module: 'OrderShipping'
             )
         );
-        Event::dispatch(Permission::ORDERSHIPPING_SHOW->value,$data);
+        //Event::dispatch(Permission::ORDERSHIPPING_SHOW->value,$data);
         return $data;
     }
 }

@@ -9,7 +9,8 @@ class IndexStockMovementOutRequest
         public int $business_id,
         public int $order_item_id,
         public ?string $keywords = null,
-        public ?string $order_by = null
+        public ?string $order_by = null,
+        public ?int $stock_out_id = null
     ) {}
 
     public static function fromArray(array $data): self
@@ -19,7 +20,8 @@ class IndexStockMovementOutRequest
             business_id : (int) $data['business_id'],
             order_item_id: (int) $data['order_item_id'],
             keywords: $data['keywords'] ?? null,
-            order_by: $data['order_by'] ?? 'DESC'
+            order_by: $data['order_by'] ?? 'DESC',
+            stock_out_id: $data['stock_out_id'] ?? null,
         );
     }
 
@@ -30,7 +32,8 @@ class IndexStockMovementOutRequest
             'created_by'  => $this->created_by,
             'business_id' => $this->business_id,
             'keywords'    => $this->keywords,
-            'order_by'    => $this->order_by
+            'order_by'    => $this->order_by,
+            'stock_out_id' => $this->stock_out_id
         ];
     }
 }

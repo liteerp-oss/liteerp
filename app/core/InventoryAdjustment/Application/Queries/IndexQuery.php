@@ -52,9 +52,9 @@ class IndexQuery
             $list = $list->whereAny(['inventory_adjustments.reason', 'products.name', 'products.sku'], 
                     'LIKE', '%' . $data['keywords'] . '%');
         }
-        Event::dispatch(Permission::INVENTORYADJUSTMENT_INDEX->value, [
-            ...$data
-        ]);
+        // Event::dispatch(Permission::INVENTORYADJUSTMENT_INDEX->value, [
+        //     ...$data
+        // ]);
         return $list->orderBy('id',$dto->order_by)->paginate()->toArray();
     }
 }

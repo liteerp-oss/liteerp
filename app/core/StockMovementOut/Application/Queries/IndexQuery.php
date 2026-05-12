@@ -63,9 +63,9 @@ class IndexQuery implements QueryInterface {
         );
         $list = $data['query'];
         $data = $data['data'];
-        Event::dispatch(Permission::STOCKMOVEMENTOUT_INDEX->value, [
-            ...$data
-        ]);
+        // Event::dispatch(Permission::STOCKMOVEMENTOUT_INDEX->value, [
+        //     ...$data
+        // ]);
         return $list->orderBy('stock_movements_out.id', $dto->order_by)->paginate(15)->toArray();
     }
 }

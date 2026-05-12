@@ -58,9 +58,9 @@ class IndexQuery implements QueryInterface
             $rows = $rows->whereAny(['products.name','customer_group.name'],
             'like', '%' . $dto->keywords . '%');
         }
-        Event::dispatch(Permission::PRICELIST_INDEX->value, [
-            ...$data
-        ]);
+        // Event::dispatch(Permission::PRICELIST_INDEX->value, [
+        //     ...$data
+        // ]);
         return $rows->orderBy('price_list.id', $dto->order_by)->paginate(15)->toArray();
     }
 }

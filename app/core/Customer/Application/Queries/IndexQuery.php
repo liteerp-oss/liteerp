@@ -47,9 +47,9 @@ class IndexQuery implements QueryInterface
         if($dto->active) {
             $list = $list->where('customers.active', $dto->active);
         }
-        Event::dispatch(Permission::CUSTOMER_INDEX->value, [
-            ...$data
-        ]);
+        // Event::dispatch(Permission::CUSTOMER_INDEX->value, [
+        //     ...$data
+        // ]);
         return $list->orderBy('customers.id', $dto->order_by)->paginate(15)->toArray();
     }
 }

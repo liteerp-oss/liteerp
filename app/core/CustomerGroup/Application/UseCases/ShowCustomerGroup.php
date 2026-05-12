@@ -47,9 +47,9 @@ class ShowCustomerGroup
                 module: 'CustomerGroup'
             )
         );
-        Event::dispatch(Permission::CUSTOMERGROUP_SHOW->value,[
-            ...$data
-        ]);
+        // Event::dispatch(Permission::CUSTOMERGROUP_SHOW->value,[
+        //     ...$data
+        // ]);
         return $data;
     }
 }

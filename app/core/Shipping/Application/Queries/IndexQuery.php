@@ -45,9 +45,9 @@ class IndexQuery implements QueryInterface
         if($dto->active) {
             $index->where('shipping_providers.active', $dto->active);
         }
-        Event::dispatch(Permission::SHIPPING_INDEX->value, [
-            ...$data
-        ]);
+        // Event::dispatch(Permission::SHIPPING_INDEX->value, [
+        //     ...$data
+        // ]);
         return $index->orderBy('shipping_providers.id', $dto->order_by)->paginate(15)->toArray();
     }
 }

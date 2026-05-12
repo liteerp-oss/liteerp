@@ -55,9 +55,9 @@ class IndexQuery implements QueryInterface
             'suppliers.unit_name',
             'suppliers.email'], 'like', '%' . $dto->keywords . '%');
         }
-        Event::dispatch(Permission::INVOICEIN_INDEX->value, [
-            ...$data
-        ]);
+        // Event::dispatch(Permission::INVOICEIN_INDEX->value, [
+        //     ...$data
+        // ]);
         return $list->orderBy("invoice_ins.id", $dto->order_by)->paginate(15)->toArray();
     }
 }

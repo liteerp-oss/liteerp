@@ -50,9 +50,9 @@ class IndexQuery implements QueryInterface {
         );
         $rows = $hooks['query'];
         $data = $hooks['data'];
-        Event::dispatch(Permission::PRODUCT_INDEX->value, [
-            ...$data
-        ]);
+        // Event::dispatch(Permission::PRODUCT_INDEX->value, [
+        //     ...$data
+        // ]);
         return $rows->orderBy("products.id",$dto->order_by)
             ->paginate(15)->toArray();
     }

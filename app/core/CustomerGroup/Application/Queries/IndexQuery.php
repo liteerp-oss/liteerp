@@ -35,9 +35,9 @@ class IndexQuery
         $data = $data['data'];
         $list = $list->where('customer_group.name', 'like', '%' . $dto->keywords . '%');
         $list = $list->orderBy('id', $dto->order_by ?? 'DESC');
-        Event::dispatch(Permission::CUSTOMERGROUP_INDEX->value, [
-            ...$data
-        ]);
+        // Event::dispatch(Permission::CUSTOMERGROUP_INDEX->value, [
+        //     ...$data
+        // ]);
         return $list->paginate(15)->toArray();
     }
 }

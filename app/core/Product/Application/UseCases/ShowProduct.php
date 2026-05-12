@@ -47,9 +47,9 @@ class ShowProduct
                 module: 'Product'
             )
         );
-        Event::dispatch(Permission::PRODUCT_SHOW->value, [
-            ...$data
-        ]);
+        // Event::dispatch(Permission::PRODUCT_SHOW->value, [
+        //     ...$data
+        // ]);
         return $data;
     }
 }

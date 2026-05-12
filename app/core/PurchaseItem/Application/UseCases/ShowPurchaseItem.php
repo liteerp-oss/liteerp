@@ -49,9 +49,9 @@ class ShowPurchaseItem
                 module: 'PurchaseItem'
             )
         );
-        Event::dispatch(Permission::PURCHASEITEM_SHOW->value,[
-            ...$data
-        ]);
+        // Event::dispatch(Permission::PURCHASEITEM_SHOW->value,[
+        //     ...$data
+        // ]);
         DB::commit();
         return $data;
     }

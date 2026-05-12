@@ -50,9 +50,9 @@ class IndexQuery implements QueryInterface
         if($dto->active) {
             $list = $list->where('suppliers.active', $dto->active);
         }
-        Event::dispatch(Permission::SUPPLIER_INDEX->value, [
-            ...$data
-        ]);
+        // Event::dispatch(Permission::SUPPLIER_INDEX->value, [
+        //     ...$data
+        // ]);
         return $list->orderBy('suppliers.id', $dto->order_by)->paginate(15)->toArray();
     }
 }
