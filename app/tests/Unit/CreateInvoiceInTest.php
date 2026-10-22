@@ -57,6 +57,7 @@ class CreateInvoiceInTest extends TestCase
             'due_date' => '2024-02-15',
             'image' => 'invoice.jpg',
             'created_by' => 3,
+            'user_id' => 3,
             'username' => 'tester'
         ];
 
@@ -107,7 +108,24 @@ class CreateInvoiceInTest extends TestCase
             }))
             ->andReturn($data);
 
-        Event::shouldReceive('dispatch')->twice();
+        Event::shouldReceive('dispatch')
+            ->with('erp.invoicein.create', Mockery::type('array'))
+            ->once();
+        Event::shouldReceive('dispatch')
+            ->with('erp.notification.many', Mockery::type('array'))
+            ->once();
+
+        Event::shouldReceive('dispatch')
+            ->with('erp.activitylog.create', Mockery::on(function ($payload) use ($createdInvoiceIn, $data) {
+                return $payload === [
+                    'user_id' => $data['user_id'],
+                    'business_id' => $createdInvoiceIn->business_id,
+                    'type' => 'invoicein',
+                    'id' => $createdInvoiceIn->id,
+                    'data' => $createdInvoiceIn->toArray(),
+                ];
+            }))
+            ->once();
 
         $result = $this->useCase->handle($data);
 

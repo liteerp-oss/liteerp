@@ -25,6 +25,7 @@ class CustomerEntityTest extends TestCase
             'website' => 'https://example.com',
             'note' => 'Test note',
             'active' => true,
+            'national_id' => null,
         ];
 
         $customer = Customer::fromArray($data);
@@ -90,6 +91,7 @@ class CustomerEntityTest extends TestCase
             'website' => 'https://example.com',
             'note' => 'Test note',
             'active' => true,
+            'national_id' => null,
         ]);
         $customer->id = 1;
 
@@ -111,6 +113,7 @@ class CustomerEntityTest extends TestCase
             'website' => 'https://example.com',
             'note' => 'Test note',
             'active' => true,
+            'national_id' => null,
         ];
 
         $this->assertEquals($expected, $array);

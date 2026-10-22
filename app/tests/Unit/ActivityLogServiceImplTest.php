@@ -40,6 +40,11 @@ class ActivityLogServiceImplTest extends TestCase
         $activityLog = ActivityLog::fromArray($data);
         $activityLog->id = 1;
 
+        $this->repoMock->shouldReceive('getByEntityTypeAndEntityId')
+            ->once()
+            ->with('Customer', '123')
+            ->andReturnNull();
+
         $this->repoMock->shouldReceive('create')
             ->with(Mockery::on(function ($arg) {
                 return $arg instanceof ActivityLog &&

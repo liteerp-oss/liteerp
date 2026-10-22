@@ -63,7 +63,21 @@ class CreateWarehouseTest extends TestCase
             ->andReturn($data, $afterData);
         $this->serviceMock->shouldReceive('create')->andReturn($warehouse);
 
-        Event::shouldReceive('dispatch')->once();
+        Event::shouldReceive('dispatch')
+            ->with('erp.warehouse.create', Mockery::type('array'))
+            ->once();
+
+        Event::shouldReceive('dispatch')
+            ->with('erp.activitylog.create', Mockery::on(function ($payload) use ($warehouse, $data) {
+                return $payload === [
+                    'user_id' => $data['user_id'],
+                    'business_id' => $warehouse->business_id,
+                    'type' => 'warehouse',
+                    'id' => $warehouse->id,
+                    'data' => $warehouse->toArray(),
+                ];
+            }))
+            ->once();
 
         $result = $this->useCase->handle($data);
 

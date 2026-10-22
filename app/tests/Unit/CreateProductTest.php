@@ -63,7 +63,21 @@ class CreateProductTest extends TestCase
 
         $this->serviceMock->shouldReceive('create')->andReturn($product);
 
-        Event::shouldReceive('dispatch')->once();
+        Event::shouldReceive('dispatch')
+            ->with('erp.product.create', Mockery::type('array'))
+            ->once();
+
+        Event::shouldReceive('dispatch')
+            ->with('erp.activitylog.create', Mockery::on(function ($payload) use ($product, $data) {
+                return $payload === [
+                    'user_id' => $data['user_id'],
+                    'business_id' => $product->business_id,
+                    'type' => 'product',
+                    'id' => $product->id,
+                    'data' => $product->toArray(),
+                ];
+            }))
+            ->once();
 
         $result = $this->useCase->handle($data);
 

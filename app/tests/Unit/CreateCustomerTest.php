@@ -44,6 +44,7 @@ class CreateCustomerTest extends TestCase
             'phone' => '1234567890',
             'group' => 1,
             'created_by' => 1,
+            'user_id' => 1,
         ];
 
         $customer = Customer::fromArray([
@@ -60,7 +61,21 @@ class CreateCustomerTest extends TestCase
 
         $this->serviceMock->shouldReceive('create')->andReturn($customer);
 
-        Event::shouldReceive('dispatch')->once();
+        Event::shouldReceive('dispatch')
+            ->with('erp.customer.create', Mockery::type('array'))
+            ->once();
+
+        Event::shouldReceive('dispatch')
+            ->with('erp.activitylog.create', Mockery::on(function ($payload) use ($customer, $data) {
+                return $payload === [
+                    'user_id' => $data['user_id'],
+                    'business_id' => $customer->business_id,
+                    'type' => 'customer',
+                    'id' => $customer->id,
+                    'data' => $customer->toArray(),
+                ];
+            }))
+            ->once();
 
         $result = $this->useCase->handle($data);
 

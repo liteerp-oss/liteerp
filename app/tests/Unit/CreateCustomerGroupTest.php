@@ -75,6 +75,18 @@ class CreateCustomerGroupTest extends TestCase
             }))
             ->once();
 
+        Event::shouldReceive('dispatch')
+            ->with('erp.activitylog.create', Mockery::on(function ($payload) use ($customerGroup, $dto) {
+                return $payload === [
+                    'user_id' => $dto->created_by,
+                    'business_id' => $customerGroup->business_id,
+                    'type' => 'customergroup',
+                    'id' => $customerGroup->id,
+                    'data' => $customerGroup->toArray(),
+                ];
+            }))
+            ->once();
+
         $result = $this->useCase->handle([
             ...$dto->toArray(),
             'user_id' => 1,

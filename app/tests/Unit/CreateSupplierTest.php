@@ -44,6 +44,7 @@ class CreateSupplierTest extends TestCase
             'email' => 'supplier@example.com',
             'phone' => '1234567890',
             'created_by' => 1,
+            'user_id' => 1,
         ];
 
         $supplier = Supplier::fromArray($data);
@@ -55,7 +56,21 @@ class CreateSupplierTest extends TestCase
 
         $this->serviceMock->shouldReceive('create')->andReturn($supplier);
 
-        Event::shouldReceive('dispatch')->once();
+        Event::shouldReceive('dispatch')
+            ->with('erp.supplier.create', Mockery::type('array'))
+            ->once();
+
+        Event::shouldReceive('dispatch')
+            ->with('erp.activitylog.create', Mockery::on(function ($payload) use ($supplier, $data) {
+                return $payload === [
+                    'user_id' => $data['user_id'],
+                    'business_id' => $supplier->business_id,
+                    'type' => 'supplier',
+                    'id' => $supplier->id,
+                    'data' => $supplier->toArray(),
+                ];
+            }))
+            ->once();
 
         $result = $this->useCase->handle($data);
 

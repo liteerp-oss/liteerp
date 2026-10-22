@@ -92,8 +92,8 @@ class CreateBusinessTest extends TestCase
 
         $result = $this->useCase->handle($dto->toArray());
 
-        $this->assertInstanceOf(Business::class, $result);
-        $this->assertEquals(1, $result->id);
-        $this->assertEquals('Test Business', $result->name);
+        $this->assertIsArray($result);
+        $this->assertEquals(1, $result['id']);
+        $this->assertEquals('Test Business', $result['name']);
     }
 }

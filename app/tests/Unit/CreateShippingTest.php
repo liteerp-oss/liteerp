@@ -91,6 +91,18 @@ class CreateShippingTest extends TestCase
             }))
             ->once();
 
+        Event::shouldReceive('dispatch')
+            ->with('erp.activitylog.create', Mockery::on(function ($payload) use ($shipping, $data) {
+                return $payload === [
+                    'user_id' => $data['user_id'],
+                    'business_id' => $shipping->business_id,
+                    'type' => 'shipping',
+                    'id' => $shipping->id,
+                    'data' => $shipping->toArray(),
+                ];
+            }))
+            ->once();
+
         $result = $this->useCase->handle($data);
 
         $this->assertIsArray($result);

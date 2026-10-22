@@ -114,6 +114,18 @@ class CreatePurchaseTest extends TestCase
             }))
             ->once();
 
+        Event::shouldReceive('dispatch')
+            ->with('erp.activitylog.create', Mockery::on(function ($payload) use ($purchase, $data) {
+                return $payload === [
+                    'user_id' => $data['user_id'],
+                    'business_id' => $purchase->business_id,
+                    'type' => 'purchase',
+                    'id' => $purchase->id,
+                    'data' => $purchase->toArray(),
+                ];
+            }))
+            ->once();
+
         $result = $this->useCase->handle($data);
 
         $this->assertIsArray($result);
