@@ -43,4 +43,5 @@ jobs:
             docker compose exec -T app composer install
             docker compose exec -T app composer dump-autoload
             docker compose exec -T app php artisan migrate
+            docker compose exec -T app npm ci --include=dev
             docker compose exec -T app npm run build
